@@ -16,16 +16,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * @author 1218
  */
 public class O_SwerveModule {
-    //Drive
-        Talon cim;
-    //Turn
-        Talon turnMotor;
-        O_TurnEncoder turnEncoder;
-        PIDController turn;
-    //Data
-        O_Point location;
-        double speed;
-        double angle;
+    Talon cim;
+    Talon turnMotor;
+    O_TurnEncoder turnEncoder;
+    PIDController turn;
+    O_Point location;
+    double speed;
+    double angle;
     final double[] zeroingSpeed = {0.2, 0.24, 0.4, 0.15};
     double zeroSpeedOutput = 0.20;
     double desiredZeroSpeed = 40.0;
@@ -62,27 +59,25 @@ public class O_SwerveModule {
     }
     
     void zero() {   
-        if (isZeroing) {
-	        if(turnEncoder.zeroSensor.get()) {
-	            //zero mark reached
-	            System.out.println("done zeroing");
-	            turnMotor.set(0);
-	            turnEncoder.zero();
-	            turn.enable();
-	            isZeroing = false;
-	        } else { 
-	            //zero mark not reached
-	            System.out.println("zeroing: " + (turnMotor.getChannel() - 1));
-	            turn.disable();
-	            zeroSpeedOutput = zeroSpeedOutput + 0.00 * (desiredZeroSpeed - turnEncoder.encoder.getRate()) * (turnEncoder.encoder.getDirection() ? 1.0 : -1.0);
-	            if(zeroSpeedOutput > 1.0) {
-	                zeroSpeedOutput = 1.0;
-	            } else if(zeroSpeedOutput < 0.0) {
-	                zeroSpeedOutput = 0.0;
-	            }
-	            turnMotor.set(zeroSpeedOutput);
-	            isZeroing = true;
-	        }
+        if(turnEncoder.zeroSensor.get()) {
+            //zero mark reached
+            System.out.println("Zeroing Complete");
+            turnMotor.set(0);
+            turnEncoder.zero();
+            turn.enable();
+            isZeroing = false;
+        } else { 
+            //zero mark not reached
+            System.out.println("zeroing: " + (turnMotor.getChannel() - 1));
+            turn.disable();
+            zeroSpeedOutput = zeroSpeedOutput + 0.00 * (desiredZeroSpeed - turnEncoder.encoder.getRate()) * (turnEncoder.encoder.getDirection() ? 1.0 : -1.0);
+            if(zeroSpeedOutput > 1.0) {
+                zeroSpeedOutput = 1.0;
+            } else if(zeroSpeedOutput < 0.0) {
+                zeroSpeedOutput = 0.0;
+            }
+            turnMotor.set(zeroSpeedOutput);
+            isZeroing = true;
         }
     }
     
@@ -97,7 +92,6 @@ public class O_SwerveModule {
             
             if (requiredTravel > 180) requiredTravel = requiredTravel - 360;
             if (requiredTravel < -180) requiredTravel = requiredTravel + 360;
-            SmartDashboard.putNumber("requiredTravel", requiredTravel);
             
             if (Math.abs(requiredTravel) > maxTurnDegrees) {
                 //should reverse motor and change angle

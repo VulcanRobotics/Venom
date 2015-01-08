@@ -16,8 +16,7 @@ public class C_Swerve extends Command {
 
 	@Override
 	protected void execute() {
-	   // Robot.swerve.swerveDrive();
-		System.out.println("Swerve commented out");
+		Robot.swerve.swerveDrive();
 	}
 
 	@Override

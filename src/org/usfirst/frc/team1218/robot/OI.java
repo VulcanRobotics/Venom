@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -43,18 +42,15 @@ public class OI {
     public static double leftY() {
         return -xbox.getRawAxis(Axis.LeftY);
     }
-    
     public static double rightX() {
         return xbox.getRawAxis(Axis.RightX);
     }
-    
     public static double rightY() {
         return -xbox.getRawAxis(Axis.RightY);
     }
     
-    public static int leftAngle() {
-    	SmartDashboard.putNumber("LeftAngle", ((int)Math.toDegrees(Math.atan2(leftX(), -leftY()))));
-        return (int)Math.toDegrees(Math.atan2(leftX(), -leftY()));
+    public static double leftAngle() {
+        return Math.toDegrees(Math.atan2(leftX(), leftY()));
     }
     
     public static double leftMagnitude() {

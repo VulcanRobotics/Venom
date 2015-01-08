@@ -12,9 +12,11 @@ import org.usfirst.frc.team1218.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 /**
- * @author 1218
+ * @author afiolmahon
  */
+
 public class SS_Swerve extends Subsystem {
     
     O_SwerveModule[] module = new O_SwerveModule[4];
@@ -33,32 +35,30 @@ public class SS_Swerve extends Subsystem {
         setDefaultCommand(new C_Swerve());   
     }
     
-    public static void main(String[] args) {
+    public void swerveDrive() {
+    	double rX = (1 / Math.sqrt(2)) * OI.rightX();
+    	double lX = OI.leftX();
+    	double lY = OI.leftY();
     	
-    }
-
-    public void swerveDrive(double l, double r) {
-    	double magicAngle = (1 / Math.sqrt(2)) * r;//OI.rightX();
-    	double lX = l;//OI.leftX();
     	double xVector[] = {
-    			(lX + magicAngle),
-    			(lX - magicAngle),
-    			(lX - magicAngle),
-    			(lX + magicAngle)
+    			lX + rX,
+    			lX - rX,
+    			lX - rX,
+    			lX + rX
     	};
     	
     	double yVector[] = {
-    			(lX - magicAngle),
-    			(lX - magicAngle),
-    			(lX + magicAngle),
-    			(lX + magicAngle)
+    			lY - rX,
+    			lY - rX,
+    			lY + rX,
+    			lY + rX
     	};
     	
     	double angle[] = {
-    			Math.toDegrees(Math.atan(yVector[0] / xVector[0]) - 180),
-    			Math.toDegrees(Math.atan(yVector[1] / xVector[1]) - 180),
-    			Math.toDegrees(Math.atan(yVector[2] / xVector[2]) - 180),
-    			Math.toDegrees(Math.atan(yVector[3] / xVector[3]) - 180)
+    			Math.toDegrees(Math.atan(yVector[0] / xVector[0])) - 180,
+    			Math.toDegrees(Math.atan(yVector[1] / xVector[1])) - 180,
+    			Math.toDegrees(Math.atan(yVector[2] / xVector[2])) - 180,
+    			Math.toDegrees(Math.atan(yVector[3] / xVector[3])) - 180
     	};
     	
     	double magnitude[] = {
@@ -82,8 +82,8 @@ public class SS_Swerve extends Subsystem {
     	};
     	
     	for(int i = 0; i < 4; i++) {
-    		//module[i].update(angle[i], speed[i]);
-    		System.out.println("S "+speed[i] +"A: "+angle[i]);
+    		module[i].update(angle[i], speed[i]);
+    		System.out.println("Module: " + i + " S " + speed[i] + " A: "+Math.toRadians(angle[i]) + " Max Magnitude: " + maxMagnitude);
     	}
     }
     
@@ -91,15 +91,11 @@ public class SS_Swerve extends Subsystem {
      * Publishes all Swerve System Values to the dashboard.
      */
     public void syncDashboard() {
-    	SmartDashboard.putNumber("Wheel1Angle", module[0].angle);
-        SmartDashboard.putNumber("Wheel2Angle", module[1].angle);
-        SmartDashboard.putNumber("Wheel3Angle", module[2].angle);
-        SmartDashboard.putNumber("Wheel4Angle", module[3].angle);
-        SmartDashboard.putNumber("PIDTarget", module[3].turn.getSetpoint());
+    	SmartDashboard.putNumber("LeftStickAngle", OI.leftAngle());
+    	for(int i = 0; i < 4; i++) {
+    		SmartDashboard.putNumber("SM"+i+"_Angle", module[i].angle);
+    		SmartDashboard.putNumber("SM"+i+"_EncoderRaw", module[i].turnEncoder.encoder.getRaw());
+    	}
         //SmartDashboard.putNumber("GyroAngle", veerGyro.getIntAngle() % 360 - 180);
-        SmartDashboard.putNumber("SM0 Encoder", module[0].turnEncoder.encoder.getRaw());
-        SmartDashboard.putNumber("SM1 Encoder", module[1].turnEncoder.encoder.getRaw());
-        SmartDashboard.putNumber("SM2 Encoder", module[2].turnEncoder.encoder.getRaw());
-        SmartDashboard.putNumber("SM3 Encoder", module[3].turnEncoder.encoder.getRaw());
     }
 }
