@@ -25,7 +25,7 @@ public class OI {
     public static Button ButtonUnused;
     
     public OI() {
-        xbox = new Joystick(RobotMap.J1);
+        xbox = new Joystick(RobotMap.JOYSTICK_1);
         
         ZeroModules = new JoystickButton(xbox, ButtonType.A);
             ZeroModules.whenPressed(new org.usfirst.frc.team1218.subsystem.swerve.C_ZeroModules());
@@ -36,17 +36,17 @@ public class OI {
     
     
     public static double leftX() {
-        return xbox.getRawAxis(Axis.LeftX);
+        return xbox.getRawAxis(Axis.LEFT_X);
     }
     
     public static double leftY() {
-        return -xbox.getRawAxis(Axis.LeftY);
+        return -xbox.getRawAxis(Axis.LEFT_Y);
     }
     public static double rightX() {
-        return xbox.getRawAxis(Axis.RightX);
+        return xbox.getRawAxis(Axis.RIGHT_X);
     }
     public static double rightY() {
-        return -xbox.getRawAxis(Axis.RightY);
+        return -xbox.getRawAxis(Axis.RIGHT_Y);
     }
     
     public static double leftAngle() {
@@ -61,26 +61,26 @@ public class OI {
         GenericHID joystick;
         
         public Bumper(GenericHID joystick) {
-        	super(joystick, Axis.TriggerL);
+        	super(joystick, Axis.TRIGGER_L);
             this.joystick = joystick;
         }
         
         public boolean getLeftBumper() {
-            return joystick.getRawAxis(Axis.TriggerL) > 0.1;
+            return joystick.getRawAxis(Axis.TRIGGER_L) > 0.1;
         }
         
         public boolean getRightBumper() {
-        	return joystick.getRawAxis(Axis.TriggerR) > 0.1;
+        	return joystick.getRawAxis(Axis.TRIGGER_R) > 0.1;
         }
     }
 	
 	public static class Axis {
-	    public static int LeftX = 0;
-	    public static int LeftY = 1;
-	    public static int TriggerL = 2;
-	    public static int TriggerR = 3;
-	    public static int RightX = 4;
-	    public static int RightY = 5;
+	    public static int LEFT_X = 0;
+	    public static int LEFT_Y = 1;
+	    public static int TRIGGER_L = 2;
+	    public static int TRIGGER_R = 3;
+	    public static int RIGHT_X = 4;
+	    public static int RIGHT_Y = 5;
 	}
 	
 	public static class ButtonType {
@@ -90,8 +90,8 @@ public class OI {
 		 public static int Y = 4;
 		 public static int L1 = 5;
 		 public static int R1 = 6;
-		 public static int LeftThumb = 9;
-		 public static int RightThumb = 10;
+		 public static int LEFT_THUMB = 9;
+		 public static int RIGHT_THUMB = 10;
 	}
 }
 

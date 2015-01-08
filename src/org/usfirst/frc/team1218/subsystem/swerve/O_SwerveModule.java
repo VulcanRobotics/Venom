@@ -81,7 +81,7 @@ public class O_SwerveModule {
     }
     
     public void setAngle(double angle) {
-        if(turnMotor.getChannel() == RobotMap.SM0_banebot | turnMotor.getChannel() == RobotMap.SM1_banebot ) angle = -angle;
+        if(turnMotor.getChannel() == RobotMap.SM0_BANEBOT | turnMotor.getChannel() == RobotMap.SM1_BANEBOT ) angle = -angle;
         if (speed > 0.1) {
             int requiredTravel = (int)(angle - turnEncoder.pidGet());
             if (requiredTravel > 180) requiredTravel = requiredTravel - 360;
