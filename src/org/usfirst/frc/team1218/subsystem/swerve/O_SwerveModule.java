@@ -29,7 +29,8 @@ public class O_SwerveModule {
     
     boolean isZeroing = false;
     
-    double shouldReverse = 1.0; //1 is forward, //-1 is backwards
+    double shouldReverse = 1.0;
+        
     final int maxTurnDegrees  = 150;
     
     public O_SwerveModule(O_Point center, int CimPort, int turnPort, int turnEncoderA, int turnEncoderB, int zeroPort, double zeroOffset, boolean reverseEncoder){
@@ -61,14 +62,12 @@ public class O_SwerveModule {
     void zero() {   
         if(turnEncoder.zeroSensor.get()) {
             //zero mark reached
-            System.out.println("Zeroing Complete");
             turnMotor.set(0);
             turnEncoder.zero();
             turn.enable();
             isZeroing = false;
         } else { 
             //zero mark not reached
-            System.out.println("zeroing: " + (turnMotor.getChannel() - 1));
             turn.disable();
             zeroSpeedOutput = zeroSpeedOutput + 0.00 * (desiredZeroSpeed - turnEncoder.encoder.getRate()) * (turnEncoder.encoder.getDirection() ? 1.0 : -1.0);
             if(zeroSpeedOutput > 1.0) {
@@ -82,25 +81,15 @@ public class O_SwerveModule {
     }
     
     public void setAngle(double angle) {
-
-        if(turnMotor.getChannel() == RobotMap.SM0_banebot | turnMotor.getChannel() == RobotMap.SM1_banebot ) {
-            angle = angle * -1.0;
-        }
-        
+        if(turnMotor.getChannel() == RobotMap.SM0_banebot | turnMotor.getChannel() == RobotMap.SM1_banebot ) angle = -angle;
         if (speed > 0.1) {
             int requiredTravel = (int)(angle - turnEncoder.pidGet());
-            
             if (requiredTravel > 180) requiredTravel = requiredTravel - 360;
             if (requiredTravel < -180) requiredTravel = requiredTravel + 360;
-            
             if (Math.abs(requiredTravel) > maxTurnDegrees) {
-                //should reverse motor and change angle
-                if (angle > 0) { 
-                    angle = angle - 180;
-                }
-                if (angle < 0) {
-                    angle = angle + 180;
-                }
+                //Reverses motor and changes angle
+                if (angle > 0) angle = angle - 180;
+                if (angle < 0) angle = angle + 180;
                 shouldReverse = -1.0;
             } else {
                 shouldReverse = 1.0;
@@ -110,8 +99,7 @@ public class O_SwerveModule {
     }
     
     public void setPower(double power) {
-        power = power * shouldReverse; // multiplies by -1 to reverse 
-        cim.set(power * 0.5);
+        cim.set(power * 0.5 * shouldReverse);
     }
 }
 

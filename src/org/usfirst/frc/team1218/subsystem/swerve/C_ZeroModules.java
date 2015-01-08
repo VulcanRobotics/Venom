@@ -22,35 +22,30 @@ public class C_ZeroModules extends Command {
         requires(Robot.swerve);
     }
 
-    // Called just before this Command runs the first time
     protected void initialize() {
+    	System.out.println("Zeroing Modules...");
         for(int k = 0; k<4; k++) {
             Robot.swerve.module[k].isZeroing = true;
         }
     }
 
-    // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	numberOfModulesZeroed = 0;
-    
-       for(int k = 0; k<4; k++) {
-            Robot.swerve.module[k].zero();
+        for(int k = 0; k<4; k++) {
+        	Robot.swerve.module[k].zero();
             if (!Robot.swerve.module[k].isZeroing) numberOfModulesZeroed++;
         }
     }
 
-    // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
         return numberOfModulesZeroed == 4 | OI.CancelZeroModules.get();
     }
 
-    // Called once after isFinished returns true
     protected void end() {
         System.out.println("Swerve Modules Zeroed");
     }
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
     protected void interrupted() {
+    	System.out.println("Swerve Module Zeroing Interrupted");
     }
 }

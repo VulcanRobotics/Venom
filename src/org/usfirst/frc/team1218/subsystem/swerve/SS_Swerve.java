@@ -7,6 +7,7 @@ package org.usfirst.frc.team1218.subsystem.swerve;
  */
 import org.usfirst.frc.team1218.math.MathUtils;
 import org.usfirst.frc.team1218.math.O_Point;
+import org.usfirst.frc.team1218.math.O_Vector;
 import org.usfirst.frc.team1218.robot.OI;
 import org.usfirst.frc.team1218.robot.RobotMap;
 
@@ -40,50 +41,29 @@ public class SS_Swerve extends Subsystem {
     	double lX = OI.leftX();
     	double lY = OI.leftY();
     	
-    	double xVector[] = {
-    			lX + rX,
-    			lX - rX,
-    			lX - rX,
-    			lX + rX
-    	};
-    	
-    	double yVector[] = {
-    			lY - rX,
-    			lY - rX,
-    			lY + rX,
-    			lY + rX
-    	};
-    	
-    	double angle[] = {
-    			Math.toDegrees(Math.atan(yVector[0] / xVector[0])) - 180,
-    			Math.toDegrees(Math.atan(yVector[1] / xVector[1])) - 180,
-    			Math.toDegrees(Math.atan(yVector[2] / xVector[2])) - 180,
-    			Math.toDegrees(Math.atan(yVector[3] / xVector[3])) - 180
-    	};
-    	
-    	double magnitude[] = {
-    			Math.sqrt(xVector[0] * xVector[0] + yVector[0] * yVector[0]),
-    			Math.sqrt(xVector[1] * xVector[1] + yVector[1] * yVector[1]),
-    			Math.sqrt(xVector[2] * xVector[2] + yVector[2] * yVector[2]),
-    			Math.sqrt(xVector[3] * xVector[3] + yVector[3] * yVector[3])
+    	O_Vector vector[] = {
+    			new O_Vector(lX + rX, lY - rX),
+    			new O_Vector(lX - rX, lY - rX),
+    			new O_Vector(lX - rX, lY + rX),
+    			new O_Vector(lX + rX, lY + rX)
     	};
     	
     	double maxMagnitude = 0;
     	
     	for(int i = 0; i < 4; i++) {
-    		if (magnitude[i] > maxMagnitude) maxMagnitude = magnitude[i];
+    		if (vector[i].getMagnitude() > maxMagnitude) maxMagnitude = vector[i].getMagnitude();
     	}
     	
     	double speed[] = {
-    		MathUtils.mapValues(magnitude[0], 0, maxMagnitude, -1.0, 1.0),
-    		MathUtils.mapValues(magnitude[1], 0, maxMagnitude, -1.0, 1.0),
-    		MathUtils.mapValues(magnitude[2], 0, maxMagnitude, -1.0, 1.0),
-    		MathUtils.mapValues(magnitude[3], 0, maxMagnitude, -1.0, 1.0)
+    		MathUtils.mapValues(vector[0].getMagnitude(), 0, maxMagnitude, -1.0, 1.0),
+    		MathUtils.mapValues(vector[1].getMagnitude(), 0, maxMagnitude, -1.0, 1.0),
+    		MathUtils.mapValues(vector[2].getMagnitude(), 0, maxMagnitude, -1.0, 1.0),
+    		MathUtils.mapValues(vector[3].getMagnitude(), 0, maxMagnitude, -1.0, 1.0)
     	};
     	
     	for(int i = 0; i < 4; i++) {
-    		module[i].update(angle[i], speed[i]);
-    		System.out.println("Module: " + i + " S " + speed[i] + " A: "+Math.toRadians(angle[i]) + " Max Magnitude: " + maxMagnitude);
+    		module[i].update(vector[i].getAngle(), speed[i]);
+    		System.out.println("Module Set: " + i + " S: " + speed[i] + " A: " + vector[i].getAngle() + " Max Magnitude: " + maxMagnitude);
     	}
     }
     
@@ -95,6 +75,7 @@ public class SS_Swerve extends Subsystem {
     	for(int i = 0; i < 4; i++) {
     		SmartDashboard.putNumber("SM"+i+"_Angle", module[i].angle);
     		SmartDashboard.putNumber("SM"+i+"_EncoderRaw", module[i].turnEncoder.encoder.getRaw());
+    		SmartDashboard.putBoolean("SM"+i+"_isZeroing", module[i].isZeroing);
     	}
         //SmartDashboard.putNumber("GyroAngle", veerGyro.getIntAngle() % 360 - 180);
     }

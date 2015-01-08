@@ -21,7 +21,6 @@ class O_TurnEncoder implements PIDSource{
     }
     
     /**
-     * 
      * @return Wheel angle
      */
     public double pidGet() {
@@ -37,6 +36,4 @@ class O_TurnEncoder implements PIDSource{
     public double getDistance() {
         return 360.0 * (encoder.getRaw() / 3500.0);
     }
-    
-    
 }
