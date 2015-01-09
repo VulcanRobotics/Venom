@@ -6,14 +6,14 @@ package org.usfirst.frc.team1218.robot;
  * floating around.
  */
 public class RobotMap {
-    public static int SM0_CIM = 0;
-    public static int SM0_BANEBOT = 1;
-    public static int SM1_CIM = 2;
-    public static int SM1_BANEBOT = 3;
-    public static int SM2_CIM = 4;
-    public static int SM2_BANEBOT = 5;
-    public static int SM3_CIM = 6;
-    public static int SM3_BANEBOT = 7; 
+    public static int SM0_DRIVE_MOTOR = 0;
+    public static int SM0_TURN_MOTOR = 1;
+    public static int SM1_DRIVE_MOTOR = 2;
+    public static int SM1_TURN_MOTOR = 3;
+    public static int SM2_DRIVE_MOTOR = 4;
+    public static int SM2_TURN_MOTOR = 5;
+    public static int SM3_DRIVE_MOTOR = 6;
+    public static int SM3_TURN_MOTOR = 7; 
     
     public static int SM0_ENCODER_A = 0;
     public static int SM0_ENCODER_B = 1;

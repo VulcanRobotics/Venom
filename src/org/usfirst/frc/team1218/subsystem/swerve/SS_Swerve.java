@@ -5,14 +5,11 @@ package org.usfirst.frc.team1218.subsystem.swerve;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-import org.usfirst.frc.team1218.math.MathUtils;
-import org.usfirst.frc.team1218.math.O_Point;
 import org.usfirst.frc.team1218.math.O_Vector;
 import org.usfirst.frc.team1218.robot.OI;
 import org.usfirst.frc.team1218.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * @author afiolmahon
@@ -20,15 +17,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SS_Swerve extends Subsystem {
     
-    O_SwerveModule[] module = new O_SwerveModule[4];
+    public O_SwerveModule[] module = new O_SwerveModule[4];
 
-    //O_VeerGyro veerGyro = new O_VeerGyro(RobotMap.Gyro);
+    O_VeerGyro veerGyro = new O_VeerGyro(RobotMap.GYRO);
     
     public SS_Swerve() {
-        module[0] = new O_SwerveModule(new O_Point(1,1), RobotMap.SM0_CIM, RobotMap.SM0_BANEBOT, RobotMap.SM0_ENCODER_A, RobotMap.SM0_ENCODER_B, RobotMap.SM0_ZERO, 35, true);
-        module[1] = new O_SwerveModule(new O_Point(-1,1), RobotMap.SM1_CIM, RobotMap.SM1_BANEBOT, RobotMap.SM1_ENCODER_A, RobotMap.SM1_ENCODER_B, RobotMap.SM1_ZERO, -35, true);
-        module[2] = new O_SwerveModule(new O_Point(-1,-1), RobotMap.SM2_CIM, RobotMap.SM2_BANEBOT, RobotMap.SM2_ENCODER_A, RobotMap.SM2_ENCODER_B, RobotMap.SM2_ZERO, -170, false);
-        module[3] = new O_SwerveModule(new O_Point(1,-1), RobotMap.SM3_CIM, RobotMap.SM3_BANEBOT, RobotMap.SM3_ENCODER_A, RobotMap.SM3_ENCODER_B, RobotMap.SM3_ZERO, 100, false);
+        module[0] = new O_SwerveModule(RobotMap.SM0_DRIVE_MOTOR, RobotMap.SM0_TURN_MOTOR, RobotMap.SM0_ENCODER_A, RobotMap.SM0_ENCODER_B);
+        module[1] = new O_SwerveModule(RobotMap.SM1_DRIVE_MOTOR, RobotMap.SM1_TURN_MOTOR, RobotMap.SM1_ENCODER_A, RobotMap.SM1_ENCODER_B);
+        module[2] = new O_SwerveModule(RobotMap.SM2_DRIVE_MOTOR, RobotMap.SM2_TURN_MOTOR, RobotMap.SM2_ENCODER_A, RobotMap.SM2_ENCODER_B);
+        module[3] = new O_SwerveModule(RobotMap.SM3_DRIVE_MOTOR, RobotMap.SM3_TURN_MOTOR, RobotMap.SM3_ENCODER_A, RobotMap.SM3_ENCODER_B);
         System.out.println("Swerve Modules Initialized");
     }
     
@@ -54,29 +51,17 @@ public class SS_Swerve extends Subsystem {
     		if (vector[i].getMagnitude() > maxMagnitude) maxMagnitude = vector[i].getMagnitude();
     	}
     	
-    	double speed[] = {
-    		MathUtils.mapValues(vector[0].getMagnitude(), 0, maxMagnitude, -1.0, 1.0),
-    		MathUtils.mapValues(vector[1].getMagnitude(), 0, maxMagnitude, -1.0, 1.0),
-    		MathUtils.mapValues(vector[2].getMagnitude(), 0, maxMagnitude, -1.0, 1.0),
-    		MathUtils.mapValues(vector[3].getMagnitude(), 0, maxMagnitude, -1.0, 1.0)
-    	};
+    	double scaleFactor = (maxMagnitude > 1.0) ? 1.0/maxMagnitude : 1.0;
     	
-    	for(int i = 0; i < 4; i++) {
-    		module[i].update(vector[i].getAngle(), speed[i]);
-    		System.out.println("Module Set: " + i + " S: " + speed[i] + " A: " + vector[i].getAngle() + " Max Magnitude: " + maxMagnitude);
+    	double power[] = {
+    		vector[0].getMagnitude() * scaleFactor,
+    		vector[1].getMagnitude() * scaleFactor,
+    		vector[2].getMagnitude() * scaleFactor,
+    		vector[3].getMagnitude() * scaleFactor
+    	};
+    	for(int i = 0; i < 4; i++) {//FIXME compensate for other SM math (all use module 0 math)
+    		double fAngle = (vector[i].getAngle() < 0) ? 360-Math.abs(vector[i].getAngle()): vector[i].getAngle();
+        	module[i].updateSM(fAngle, power[i]); 
     	}
-    }
-    
-    /**
-     * Publishes all Swerve System Values to the dashboard.
-     */
-    public void syncDashboard() {
-    	SmartDashboard.putNumber("LeftStickAngle", OI.leftAngle());
-    	for(int i = 0; i < 4; i++) {
-    		SmartDashboard.putNumber("SM"+i+"_Angle", module[i].angle);
-    		SmartDashboard.putNumber("SM"+i+"_EncoderRaw", module[i].turnEncoder.encoder.getRaw());
-    		SmartDashboard.putBoolean("SM"+i+"_isZeroing", module[i].isZeroing);
-    	}
-        //SmartDashboard.putNumber("GyroAngle", veerGyro.getIntAngle() % 360 - 180);
     }
 }

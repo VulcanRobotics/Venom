@@ -1,9 +1,6 @@
 package org.usfirst.frc.team1218.robot;
 
-import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.buttons.Button;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -14,24 +11,9 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 public class OI {
 	
 	public static Joystick xbox;
-    public static Button Snake;
-    public static Button GoToHeading;
-    public static Button Pivot0;
-    public static Button Pivot1;
-    public static Bumper Pivot2;
-    public static Button ZeroModules;
-    public static Button ResetGyro;
-    public static Button CancelZeroModules;
-    public static Button ButtonUnused;
     
     public OI() {
         xbox = new Joystick(RobotMap.JOYSTICK_1);
-        
-        ZeroModules = new JoystickButton(xbox, ButtonType.A);
-            ZeroModules.whenPressed(new org.usfirst.frc.team1218.subsystem.swerve.C_ZeroModules());
-        ResetGyro = new JoystickButton(xbox, ButtonType.B);
-        	ResetGyro.whenPressed(new org.usfirst.frc.team1218.subsystem.swerve.C_ResetGyro());
-        CancelZeroModules = new JoystickButton(xbox, ButtonType.X);
     }
     
     
@@ -55,23 +37,6 @@ public class OI {
     
     public static double leftMagnitude() {
         return Math.sqrt(leftX() * leftX() + leftY() * leftY());
-    }
-    
-	public class Bumper extends JoystickButton {
-        GenericHID joystick;
-        
-        public Bumper(GenericHID joystick) {
-        	super(joystick, Axis.TRIGGER_L);
-            this.joystick = joystick;
-        }
-        
-        public boolean getLeftBumper() {
-            return joystick.getRawAxis(Axis.TRIGGER_L) > 0.1;
-        }
-        
-        public boolean getRightBumper() {
-        	return joystick.getRawAxis(Axis.TRIGGER_R) > 0.1;
-        }
     }
 	
 	public static class Axis {

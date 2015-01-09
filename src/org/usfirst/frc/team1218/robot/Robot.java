@@ -71,8 +71,7 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
-    	Robot.swerve.syncDashboard();
-        Scheduler.getInstance().run();
+    	Scheduler.getInstance().run();
     }
     
     /**
