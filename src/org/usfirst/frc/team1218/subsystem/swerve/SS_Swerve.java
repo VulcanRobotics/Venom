@@ -1,14 +1,10 @@
 package org.usfirst.frc.team1218.subsystem.swerve;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 import org.usfirst.frc.team1218.math.O_Vector;
 import org.usfirst.frc.team1218.robot.OI;
 import org.usfirst.frc.team1218.robot.RobotMap;
 
+import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -17,26 +13,40 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class SS_Swerve extends Subsystem {
     
-    public O_SwerveModule[] module = new O_SwerveModule[4];
+    private final O_SwerveModule[] module;
 
-    O_VeerGyro veerGyro = new O_VeerGyro(RobotMap.GYRO);
+    private final Gyro gyro;
+    private static double GYRO_SENSITIVITY = 0.00738888;
     
     public SS_Swerve() {
-        module[0] = new O_SwerveModule(RobotMap.SM0_DRIVE_MOTOR, RobotMap.SM0_TURN_MOTOR, RobotMap.SM0_ENCODER_A, RobotMap.SM0_ENCODER_B);
-        module[1] = new O_SwerveModule(RobotMap.SM1_DRIVE_MOTOR, RobotMap.SM1_TURN_MOTOR, RobotMap.SM1_ENCODER_A, RobotMap.SM1_ENCODER_B);
-        module[2] = new O_SwerveModule(RobotMap.SM2_DRIVE_MOTOR, RobotMap.SM2_TURN_MOTOR, RobotMap.SM2_ENCODER_A, RobotMap.SM2_ENCODER_B);
-        module[3] = new O_SwerveModule(RobotMap.SM3_DRIVE_MOTOR, RobotMap.SM3_TURN_MOTOR, RobotMap.SM3_ENCODER_A, RobotMap.SM3_ENCODER_B);
-        System.out.println("Swerve Modules Initialized");
+    	this.module = new O_SwerveModule[4];
+    	this.module[0] = new O_SwerveModule(0, RobotMap.SM0_DRIVE_MOTOR, RobotMap.SM0_TURN_MOTOR, RobotMap.SM0_ENCODER_A, RobotMap.SM0_ENCODER_B);
+    	this.module[1] = new O_SwerveModule(1, RobotMap.SM1_DRIVE_MOTOR, RobotMap.SM1_TURN_MOTOR, RobotMap.SM1_ENCODER_A, RobotMap.SM1_ENCODER_B);
+    	this.module[2] = new O_SwerveModule(2, RobotMap.SM2_DRIVE_MOTOR, RobotMap.SM2_TURN_MOTOR, RobotMap.SM2_ENCODER_A, RobotMap.SM2_ENCODER_B);
+    	this.module[3] = new O_SwerveModule(3, RobotMap.SM3_DRIVE_MOTOR, RobotMap.SM3_TURN_MOTOR, RobotMap.SM3_ENCODER_A, RobotMap.SM3_ENCODER_B);
+    	this.gyro =  new Gyro(RobotMap.GYRO);
+    	this.gyro.setSensitivity(GYRO_SENSITIVITY);
+        System.out.println("Swerve System Initialized");
     }
     
     public void initDefaultCommand() {
         setDefaultCommand(new C_Swerve());   
     }
     
+    /**
+     * Gyroscope reset accessor
+     */
+    public void resetGyro() {
+    	this.gyro.reset();
+    }
+    
+    /**
+     * Creates angle and power for all swerve modules
+     */
     public void swerveDrive() {
-    	double rX = (1 / Math.sqrt(2)) * OI.rightX();
-    	double lX = OI.leftX();
-    	double lY = OI.leftY();
+    	double rX = (1 / Math.sqrt(2)) * OI.getRightX();
+    	double lX = OI.getLeftX();
+    	double lY = OI.getLeftY();
     	
     	O_Vector vector[] = {
     			new O_Vector(lX + rX, lY - rX),
@@ -61,7 +71,7 @@ public class SS_Swerve extends Subsystem {
     	};
     	for(int i = 0; i < 4; i++) {//FIXME compensate for other SM math (all use module 0 math)
     		double fAngle = (vector[i].getAngle() < 0) ? 360-Math.abs(vector[i].getAngle()): vector[i].getAngle();
-        	module[i].updateSM(fAngle, power[i]); 
+    		this.module[i].updateSM(fAngle, power[i]); 
     	}
     }
 }

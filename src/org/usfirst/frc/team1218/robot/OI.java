@@ -17,26 +17,25 @@ public class OI {
     }
     
     
-    public static double leftX() {
+    public static double getLeftX() {
         return xbox.getRawAxis(Axis.LEFT_X);
     }
-    
-    public static double leftY() {
+    public static double getLeftY() {
         return -xbox.getRawAxis(Axis.LEFT_Y);
     }
-    public static double rightX() {
+    public static double getRightX() {
         return xbox.getRawAxis(Axis.RIGHT_X);
     }
-    public static double rightY() {
+    public static double getRightY() {
         return -xbox.getRawAxis(Axis.RIGHT_Y);
     }
     
     public static double leftAngle() {
-        return Math.toDegrees(Math.atan2(leftX(), leftY()));
+        return Math.toDegrees(Math.atan2(getLeftX(), getLeftY()));
     }
     
     public static double leftMagnitude() {
-        return Math.sqrt(leftX() * leftX() + leftY() * leftY());
+        return Math.sqrt(getLeftX() * getLeftX() + getLeftY() * getLeftY());
     }
 	
 	public static class Axis {

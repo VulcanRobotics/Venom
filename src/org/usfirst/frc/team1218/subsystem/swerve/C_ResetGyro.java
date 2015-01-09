@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
- * @author liamcook
+ * @author afiolmahon
  */
 public class C_ResetGyro extends Command {
     
@@ -19,27 +19,21 @@ public class C_ResetGyro extends Command {
         requires(Robot.swerve);
     }
 
-    // Called just before this Command runs the first time
     protected void initialize() {
-        //Robot.swerve.veerGyro.reset();
+        Robot.swerve.resetGyro();
     }
 
-    // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     }
 
-    // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
         return true;
     }
 
-    // Called once after isFinished returns true
     protected void end() {
         System.out.println("Gyro zeroed");
     }
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
     protected void interrupted() {
     }
 }

@@ -14,7 +14,7 @@ public class O_Vector {
     }
     
     public double getMagnitude() {
-      return Math.sqrt(x * x + y * y);
+    	return Math.sqrt(x * x + y * y);
     }
     
     /**
