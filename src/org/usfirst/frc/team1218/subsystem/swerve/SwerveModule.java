@@ -64,12 +64,17 @@ public class SwerveModule extends Object{
 	 * @param angle Desired wheel angle. Can be any value
 	 */
 	public void setAngle(double angle) {
+		if(Angle.diffBetweenAngles(angle, this.angle) > 90) {
+			invertModule = !invertModule;
+		}
 		this.angle = angle;
+		angle += (invertModule) ? 180 : 0;
 		angle += MODULE_ANGLE_OFFSET[moduleNumber]; //adds angle zeroing point offset to the modules written angle.
 		this.angleController.setSetpoint(Angle.get360Angle(((MODULE_REVERSED[moduleNumber]) ? 360 - angle : angle))); //applies module specific direction preferences
 	}
 	
 	public void setPower(double power) {
+		power = power * ((invertModule) ? -1.0 : 1.0);
 		this.driveMotor.set(DRIVE_POWER_SCALE * power * ((MODULE_REVERSED[moduleNumber]) ? 1.0 : -1.0)); //Applies module specific motor preferences
 	}
 	
