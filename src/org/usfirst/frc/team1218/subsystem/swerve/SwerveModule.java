@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1218.subsystem.swerve;
 
+import org.usfirst.frc.team1218.math.Angle;
 import org.usfirst.frc.team1218.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -12,24 +13,27 @@ public class SwerveModule extends Object{
 	
 	private final int moduleNumber; //Used to retrieve module specific offsets and modifiers
 	
-	private final Talon driveMotor;
-	private final Talon angleMotor;
 	
+	private boolean isZeroing = false;
+
+	private final Talon angleMotor;
 	private final DigitalInput zeroSensor;
 	private final AngleEncoder angleEncoder;
-	
 	private final PIDController angleController;
 	private static final double ANGLE_CONTROLLER_P = -0.01;
 	private static final double ANGLE_CONTROLLER_I = 0.0;
 	private static final double ANGLE_CONTROLLER_D = 0.0;
-	
-	private boolean isZeroing = false;
+	private static final double[] MODULE_ANGLE_OFFSET = {40.0, -36.0, -22.0, 85.0};
+	private double angle = 0; //Current module angle
 	
 	private static final boolean[] MODULE_REVERSED = {false, false, true, true};
-	private static final double[] MODULE_ANGLE_OFFSET = {40.0, -36.0, -22.0, 85.0};
 	
+	private boolean invertModule = false;
+	
+	private final Talon driveMotor;
 	private static final double RESET_TURN_POWER = 0.25;
-
+	private static final double DRIVE_POWER_SCALE = 0.5;
+	private static final double DRIVE_MOTOR_OUTPUT_RANGE = 0.85;
 	
 	public SwerveModule(int moduleNumber) {
 		this.moduleNumber = moduleNumber;
@@ -39,7 +43,7 @@ public class SwerveModule extends Object{
 		this.zeroSensor = new DigitalInput(RobotMap.SM_ZERO[moduleNumber]);
 		this.angleController = new PIDController(ANGLE_CONTROLLER_P, ANGLE_CONTROLLER_I, ANGLE_CONTROLLER_D, angleEncoder, angleMotor);
 		this.angleController.setInputRange(0.0, 360.0);
-		this.angleController.setOutputRange(-0.85, 0.85);
+		this.angleController.setOutputRange(-DRIVE_MOTOR_OUTPUT_RANGE, DRIVE_MOTOR_OUTPUT_RANGE);
 		this.angleController.setContinuous();
 		this.angleEncoder.reset();
 		this.angleController.enable();
@@ -50,30 +54,31 @@ public class SwerveModule extends Object{
 	 * @param angle Desired module angle
 	 * @param power Desired power for module drive motor
 	 */
+	public void setValues(double angle, double power) {
+		if (Math.abs(power) > 0.1) setAngle(angle); //Prevents Module from setting wheels to zero when joystick is released
+		setPower(power);
+	}
 
+	/**
+	 * angleController setpoint should always be set through this method in order to apply zeroing offsets
+	 * @param angle Desired wheel angle. Can be any value
+	 */
+	public void setAngle(double angle) {
+		this.angle = angle;
+		angle += MODULE_ANGLE_OFFSET[moduleNumber]; //adds angle zeroing point offset to the modules written angle.
+		this.angleController.setSetpoint(Angle.get360Angle(((MODULE_REVERSED[moduleNumber]) ? 360 - angle : angle))); //applies module specific direction preferences
+	}
+	
+	public void setPower(double power) {
+		this.driveMotor.set(DRIVE_POWER_SCALE * power * ((MODULE_REVERSED[moduleNumber]) ? 1.0 : -1.0)); //Applies module specific motor preferences
+	}
+	
 	public void setZeroing() {
 		this.isZeroing = true;
 	}
 	
 	public boolean getZeroing() {
 		return this.isZeroing;
-	}
-	
-	public void setValues(double angle, double power) {
-		if (Math.abs(power) > 0.1) setAngle(angle); //Prevents Module from setting wheels to zero when joystick is released
-		this.driveMotor.set(0.4 * power * ((MODULE_REVERSED[moduleNumber]) ? 1.0 : -1.0)); //Applies module specific motor preferences
-		//XXX added 0.75 motor scale
-	}
-	
-	/**
-	 * angleController setpoint should always be set through this method in order to apply zeroing offsets
-	 * @param angle Desired wheel angle. Can be any value
-	 */
-	public void setAngle(double angle) {
-		angle += MODULE_ANGLE_OFFSET[moduleNumber]; //adds angle zeroing point offset to the modules written angle.
-		if (angle < 0) angle = 360.0 - Math.abs(angle); //forces angle to be a positive value.
-		angle = angle % 360; //forces angle to be less than 360
-		this.angleController.setSetpoint(((MODULE_REVERSED[moduleNumber]) ? 360 - angle : angle)); //applies module specific direction preferences
 	}
 	
 	/**

@@ -29,20 +29,8 @@ public class O_Vector {
     	return y;
     }
     
-    public  void offsetByAngle(double angleOffset) {
-    	double magnitude = getMagnitude();
-    	this.x = Math.cos(getAngle() + angleOffset) * magnitude;
-    	this.y = Math.sin(getAngle() + angleOffset) * magnitude;
-    }
-    
     public double getMagnitude() {
     	return Math.sqrt(x * x + y * y);
-    }
-    
-    
-    
-    public boolean isNegativeY() {
-		return y < 0;
     }
     
     /**

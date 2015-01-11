@@ -68,7 +68,7 @@ public class SS_SwerveSystem extends Subsystem {
     		if (vector[i].getMagnitude() > maxMagnitude) maxMagnitude = vector[i].getMagnitude();
     	}
     	
-    	double scaleFactor = ((maxMagnitude > 1.0) ? 1.0/maxMagnitude : 1.0);
+    	double scaleFactor = ((maxMagnitude > 1.0) ? 1.0 / maxMagnitude : 1.0);
     	
     	double power[] = {
     		vector[0].getMagnitude() * scaleFactor,
@@ -79,7 +79,7 @@ public class SS_SwerveSystem extends Subsystem {
     	
     	for(int i = 0; i < 4; i++) {
     		double mAngle = vector[i].getAngle();
-    		mAngle = (vector[i].isNegativeY()) ? (mAngle + 180) % 360 : mAngle; //Invert angle if wheel power should be negative;
+    		mAngle = (vector[i].getY() < 0) ? (mAngle + 180) % 360 : mAngle; //Invert angle if wheel power should be negative;
     		module[i].setValues(mAngle, power[i]);
     	}
     }
