@@ -1,8 +1,7 @@
 package org.usfirst.frc.team1218.robot;
 
-import org.usfirst.frc.team1218.math.Vector;
-import org.usfirst.frc.team1218.subsystem.swerve.command.ResetGyro;
-import org.usfirst.frc.team1218.subsystem.swerve.command.ZeroModules;
+import org.usfirst.frc.team1218.subsystem.swerve.C_ResetGyro;
+import org.usfirst.frc.team1218.subsystem.swerve.C_ZeroModules;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -25,18 +24,32 @@ public class OI {
     public OI() {
         xbox = new Joystick(RobotMap.JOYSTICK_1);
         zeroModules = new JoystickButton(xbox, ButtonType.A);
-        zeroModules.whenPressed(new ZeroModules());
+        zeroModules.whenPressed(new C_ZeroModules());
         cancelResetModules = new JoystickButton(xbox, ButtonType.X);
         resetGyro = new JoystickButton(xbox, ButtonType.B);
-        resetGyro.whenPressed(new ResetGyro());
+        resetGyro.whenPressed(new C_ResetGyro());
     }
     
-    public static Vector getLeftJoystickVector() {
-    	return new Vector(xbox.getRawAxis(Axis.LEFT_X), -xbox.getRawAxis(Axis.LEFT_Y));
+    
+    public static double getLeftX() {
+        return xbox.getRawAxis(Axis.LEFT_X);
+    }
+    public static double getLeftY() {
+        return -xbox.getRawAxis(Axis.LEFT_Y);
+    }
+    public static double getRightX() {
+        return xbox.getRawAxis(Axis.RIGHT_X);
+    }
+    public static double getRightY() {
+        return -xbox.getRawAxis(Axis.RIGHT_Y);
     }
     
-    public static Vector getRightJoystickVector() {
-    	return new Vector(xbox.getRawAxis(Axis.RIGHT_X), -xbox.getRawAxis(Axis.RIGHT_Y));
+    public static double leftAngle() {
+        return Math.toDegrees(Math.atan2(getLeftX(), getLeftY()));
+    }
+    
+    public static double leftMagnitude() {
+        return Math.sqrt(getLeftX() * getLeftX() + getLeftY() * getLeftY());
     }
 	
 	public static class Axis {

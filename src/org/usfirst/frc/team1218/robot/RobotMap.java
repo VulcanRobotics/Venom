@@ -8,11 +8,11 @@ package org.usfirst.frc.team1218.robot;
 public class RobotMap {
 	public static final int[] SM_DRIVE_MOTOR = {0, 2, 4, 6};
 	public static final int[] SM_TURN_MOTOR = {1, 3, 5, 7};
-    public static final int[] SM_ENCODER_A = {0, 2, 4, 6};
-    public static final int[] SM_ENCODER_B = {1, 3, 5, 7};
-    public static final int[] SM_ZERO = {8, 9, 10, 11};
+	public static final int[] SM_ENCODER_A = {0, 2, 4, 6};
+	public static final int[] SM_ENCODER_B = {1, 3, 5, 7};
+	public static final int[] SM_ZERO = {8, 9, 10, 11};
 
     public static final int JOYSTICK_1 = 0;
     
-    public static final int GYRO = 1;
+    public static final int GYRO = 1; //Analog input
 }

@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1218.robot.command;
+package org.usfirst.frc.team1218.robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -6,9 +6,9 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  * @author afiolmahon
  */
-public class AutonCommand extends Command {
+class C_AutonCommand extends Command {
 
-    public AutonCommand() {
+    public C_AutonCommand() {
     }
 
     protected void initialize() {
