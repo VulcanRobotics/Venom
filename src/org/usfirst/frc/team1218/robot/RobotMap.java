@@ -29,8 +29,7 @@ public class RobotMap {
     public static final int SM2_ZERO = 10;
     public static final int SM3_ZERO = 11;
 
-    //Joysticks
     public static final int JOYSTICK_1 = 0;
-    //Sensors
+    
     public static final int GYRO = 1; //Analog input
 }

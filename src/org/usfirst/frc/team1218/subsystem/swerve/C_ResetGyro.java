@@ -16,11 +16,11 @@ import edu.wpi.first.wpilibj.command.Command;
 public class C_ResetGyro extends Command {
     
     public C_ResetGyro() {
-        requires(Robot.swerve);
+        requires(Robot.swerveSystem);
     }
 
     protected void initialize() {
-        Robot.swerve.resetGyro();
+        Robot.swerveSystem.resetGyro();
     }
 
     protected void execute() {

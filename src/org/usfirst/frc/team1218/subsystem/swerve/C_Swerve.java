@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class C_Swerve extends Command {
 
 	public C_Swerve() {
-		requires(Robot.swerve);
+		requires(Robot.swerveSystem);
 	}
 	
 	@Override
@@ -16,7 +16,7 @@ public class C_Swerve extends Command {
 
 	@Override
 	protected void execute() {
-		Robot.swerve.swerveDrive();
+		Robot.swerveSystem.swerveDrive();
 	}
 
 	@Override
