@@ -31,5 +31,5 @@ public class RobotMap {
 
     public static final int JOYSTICK_1 = 0;
     
-    public static final int GYRO = 1; //Analog input
+    public static final int GYRO = 1;
 }

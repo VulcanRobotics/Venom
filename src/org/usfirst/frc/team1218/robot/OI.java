@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1218.robot;
 
+import org.usfirst.frc.team1218.math.Vector;
 import org.usfirst.frc.team1218.subsystem.swerve.C_ResetGyro;
 import org.usfirst.frc.team1218.subsystem.swerve.C_ZeroModules;
 
@@ -30,26 +31,12 @@ public class OI {
         resetGyro.whenPressed(new C_ResetGyro());
     }
     
-    
-    public static double getLeftX() {
-        return xbox.getRawAxis(Axis.LEFT_X);
-    }
-    public static double getLeftY() {
-        return -xbox.getRawAxis(Axis.LEFT_Y);
-    }
-    public static double getRightX() {
-        return xbox.getRawAxis(Axis.RIGHT_X);
-    }
-    public static double getRightY() {
-        return -xbox.getRawAxis(Axis.RIGHT_Y);
+    public static Vector getLeftJoystickVector() {
+    	return new Vector(xbox.getRawAxis(Axis.LEFT_X), -xbox.getRawAxis(Axis.LEFT_Y));
     }
     
-    public static double leftAngle() {
-        return Math.toDegrees(Math.atan2(getLeftX(), getLeftY()));
-    }
-    
-    public static double leftMagnitude() {
-        return Math.sqrt(getLeftX() * getLeftX() + getLeftY() * getLeftY());
+    public static Vector getRightJoystickVector() {
+    	return new Vector(xbox.getRawAxis(Axis.RIGHT_X), -xbox.getRawAxis(Axis.RIGHT_Y));
     }
 	
 	public static class Axis {
