@@ -13,6 +13,8 @@ public class O_SwerveModule extends Object{
 	
 	private final int moduleNumber; //Used to retrieve module specific offsets and modifiers
 
+	private boolean moduleInverted = false; //Used to prevent robot from seeking more than 90 degrees to an angle by inverting both direction and power of module
+	
 	//Angle Controller
 	private final Talon angleMotor;
 	private final AngleEncoder angleEncoder;
@@ -52,29 +54,17 @@ public class O_SwerveModule extends Object{
 	}
 	
 	/**
-	 * Update the swerve module wheel power and angle.
-	 * @param angle Desired module angle
-	 * @param power Desired power for module drive motor
-	 */
-	public void setDirectValues(double angle, double power) {//TODO remove once setValues is tested
-		if (Math.abs(power) > ANGLE_UPDATE_MINIMUM_WHEEL_POWER) setAngle(angle);
-		setPower(power);
-	}
-	
-	/**
 	 * Intelligently sets module to prevent travel farther than 90 degrees for any position.
 	 * @param angle Desired module angle
 	 * @param power Desired power for module drive motor
 	 */
 	public void setValues(double angle, double power) {//TODO Test this method on robot
 		double angleChange = Angle.angleDifference(angleController.getSetpoint(), angle); //Calculate angle difference
-		if (angleChange > 90.0) { //fakes inversion to jump orientation 180 degrees
-			if (Math.abs(power) > ANGLE_UPDATE_MINIMUM_WHEEL_POWER) setAngle(angle + 180.0);
-			setPower(power * -1.0);
-		} else {
-			if (Math.abs(power) > ANGLE_UPDATE_MINIMUM_WHEEL_POWER) setAngle(angle);
-			setPower(power);
+		if (Math.abs(power) >= ANGLE_UPDATE_MINIMUM_WHEEL_POWER) {
+			if (angleChange > 90.0) moduleInverted = !moduleInverted; //fakes inversion to jump orientation 180 degrees
+			setAngle(angle);
 		}
+		setPower(power);
 	}
 	
 	/**
@@ -84,24 +74,26 @@ public class O_SwerveModule extends Object{
 	public void setVector(Vector vector) {
 			setValues(vector.getAngle(), vector.getMagnitude());
 	}
-		
 	
 	/**
-	 * angleController setpoint should always be set through this method in order to apply zeroing offsets
+	 * angleController setpoint should always be set through this method because writing directly to angleController will not apply offsets
 	 * @param angle Desired wheel angle. Can be any value
 	 */
 	public void setAngle(double angle) {
-		angle += MODULE_ANGLE_OFFSET[moduleNumber]; //ZERO CODE adds angle zeroing point offset to the modules written angle.
-		angle = Angle.get360Angle(angle);
+		angle = Angle.get360Angle(angle + MODULE_ANGLE_OFFSET[moduleNumber] + ((moduleInverted) ? 180 : 0)); //Applies angle offset and inversion settings then coerces value to 0 - 360
 		this.angleController.setSetpoint(((MODULE_REVERSED[moduleNumber]) ? 360.0 - angle : angle)); //applies module specific direction preferences
 	}
 	
+	/**
+	 * Sets motor power safely and applies module offsets.
+	 * @param power desired motor magnitude and direction
+	 */
 	public void setPower(double power) {
 		if(Math.abs(power) > 1) {
 			System.out.println("Invalid power written to SM_" + moduleNumber + ". Power " + power + " is out of range");
 			this.driveMotor.set(0.0);
 		} else {
-			this.driveMotor.set(power * WHEEL_POWER_SCALE * ((MODULE_REVERSED[moduleNumber]) ? 1.0 : -1.0)); //Applies module specific motor preferences
+			this.driveMotor.set(power * WHEEL_POWER_SCALE * ((MODULE_REVERSED[moduleNumber]) ? 1.0 : -1.0) * ((moduleInverted) ? -1.0 : 1.0));
 		}
 	}
 	
