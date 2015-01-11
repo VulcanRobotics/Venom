@@ -1,12 +1,12 @@
-package org.usfirst.frc.team1218.subsystem.swerve;
+package org.usfirst.frc.team1218.subsystem.swerve.command;
 
 import org.usfirst.frc.team1218.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class C_Swerve extends Command {
+public class Swerve extends Command {
 
-	public C_Swerve() {
+	public Swerve() {
 		requires(Robot.swerveSystem);
 	}
 	

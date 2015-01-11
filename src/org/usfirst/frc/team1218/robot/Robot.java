@@ -1,6 +1,7 @@
 
 package org.usfirst.frc.team1218.robot;
 
+import org.usfirst.frc.team1218.robot.command.AutonCommand;
 import org.usfirst.frc.team1218.subsystem.swerve.SS_SwerveSystem;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -30,7 +31,7 @@ public class Robot extends IterativeRobot {
     	swerveSystem = new SS_SwerveSystem();
 		oi = new OI();
         // instantiate the command used for the autonomous period
-        autonomousCommand = new C_AutonCommand();
+        autonomousCommand = new AutonCommand();
         System.out.println("Robot Initialized");
     }
 	

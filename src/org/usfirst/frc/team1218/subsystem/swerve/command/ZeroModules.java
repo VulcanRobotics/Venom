@@ -1,15 +1,15 @@
-package org.usfirst.frc.team1218.subsystem.swerve;
+package org.usfirst.frc.team1218.subsystem.swerve.command;
 
 import org.usfirst.frc.team1218.robot.OI;
 import org.usfirst.frc.team1218.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class C_ZeroModules extends Command {
+public class ZeroModules extends Command {
 
 	private int modulesReset = 0;
 	
-    public C_ZeroModules() {
+    public ZeroModules() {
         requires(Robot.swerveSystem);
     }
 

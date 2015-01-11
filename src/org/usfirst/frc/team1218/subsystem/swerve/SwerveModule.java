@@ -2,6 +2,7 @@ package org.usfirst.frc.team1218.subsystem.swerve;
 
 import org.usfirst.frc.team1218.math.Angle;
 import org.usfirst.frc.team1218.math.Vector;
+import org.usfirst.frc.team1218.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
@@ -9,7 +10,7 @@ import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class O_SwerveModule extends Object{
+public class SwerveModule extends Object{
 	
 	private final int moduleNumber; //Used to retrieve module specific offsets and modifiers
 
@@ -39,12 +40,12 @@ public class O_SwerveModule extends Object{
 	private static final double RESET_TURN_POWER = 0.25;
 	private boolean isZeroing = false;
 	
-	public O_SwerveModule(int moduleNumber, int driveMotorChannel, int angleMotorChannel, int encoderAChannel, int encoderBChannel, int zeroSensorChannel) {
+	public SwerveModule(int moduleNumber) {
 		this.moduleNumber = moduleNumber;
-		this.driveMotor = new Talon(driveMotorChannel);
-		this.angleMotor = new Talon(angleMotorChannel);
-		this.angleEncoder = new AngleEncoder(encoderAChannel, encoderBChannel, MODULE_REVERSED[moduleNumber]);
-		this.zeroSensor = new DigitalInput(zeroSensorChannel);//ZERO CODE
+		this.driveMotor = new Talon(RobotMap.SM_DRIVE_MOTOR[moduleNumber]);
+		this.angleMotor = new Talon(RobotMap.SM_TURN_MOTOR[moduleNumber]);
+		this.angleEncoder = new AngleEncoder(RobotMap.SM_ENCODER_A[moduleNumber], RobotMap.SM_ENCODER_B[moduleNumber], MODULE_REVERSED[moduleNumber]);
+		this.zeroSensor = new DigitalInput(RobotMap.SM_ZERO[moduleNumber]);//ZERO CODE
 		this.angleController = new PIDController(ANGLE_CONTROLLER_P, ANGLE_CONTROLLER_I, ANGLE_CONTROLLER_D, angleEncoder, angleMotor);
 		this.angleController.setInputRange(0.0, 360.0);
 		this.angleController.setOutputRange(-ANGLE_MOTOR_MAXIMUM_POWER, ANGLE_MOTOR_MAXIMUM_POWER);
