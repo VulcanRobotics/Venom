@@ -13,17 +13,15 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class SS_SwerveSystem extends Subsystem {
     
-    public O_SwerveModule[] module;
+    public SwerveModule[] module;
 
     private final Gyro gyro;
     private static double GYRO_SENSITIVITY = 0.00738888;
     
     public SS_SwerveSystem() {
-    	module = new O_SwerveModule[4];
-    	module[0] = new O_SwerveModule(0, RobotMap.SM0_DRIVE_MOTOR, RobotMap.SM0_TURN_MOTOR, RobotMap.SM0_ENCODER_A, RobotMap.SM0_ENCODER_B, RobotMap.SM0_ZERO);
-    	module[1] = new O_SwerveModule(1, RobotMap.SM1_DRIVE_MOTOR, RobotMap.SM1_TURN_MOTOR, RobotMap.SM1_ENCODER_A, RobotMap.SM1_ENCODER_B, RobotMap.SM1_ZERO);
-    	module[2] = new O_SwerveModule(2, RobotMap.SM2_DRIVE_MOTOR, RobotMap.SM2_TURN_MOTOR, RobotMap.SM2_ENCODER_A, RobotMap.SM2_ENCODER_B, RobotMap.SM2_ZERO);
-    	module[3] = new O_SwerveModule(3, RobotMap.SM3_DRIVE_MOTOR, RobotMap.SM3_TURN_MOTOR, RobotMap.SM3_ENCODER_A, RobotMap.SM3_ENCODER_B, RobotMap.SM3_ZERO);
+    	module = new SwerveModule[4];
+    	for (int i = 0; i < 4; i++) module[i] = new SwerveModule(i);
+    	
     	gyro =  new Gyro(RobotMap.GYRO);
     	gyro.setSensitivity(GYRO_SENSITIVITY);
         System.out.println("Swerve System Initialized");
@@ -82,8 +80,7 @@ public class SS_SwerveSystem extends Subsystem {
     	for(int i = 0; i < 4; i++) {
     		double mAngle = vector[i].getAngle();
     		mAngle = (vector[i].isNegativeY()) ? (mAngle + 180) % 360 : mAngle; //Invert angle if wheel power should be negative;
-    		double mPower = power[i];
-    		module[i].setValues(mAngle, mPower);
+    		module[i].setValues(mAngle, power[i]);
     	}
     }
 }
