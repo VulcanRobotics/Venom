@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1218.subsystem.swerve;
 
-import org.usfirst.frc.team1218.math.O_Vector;
+import org.usfirst.frc.team1218.math.Angle;
+import org.usfirst.frc.team1218.math.Vector;
 import org.usfirst.frc.team1218.robot.OI;
 import org.usfirst.frc.team1218.robot.RobotMap;
 
@@ -17,6 +18,7 @@ public class SS_SwerveSystem extends Subsystem {
 
     private final Gyro gyro;
     private static double GYRO_SENSITIVITY = 0.00738888;
+    public String[] test = {"Test", "hi"};
     
     public SS_SwerveSystem() {
     	module = new SwerveModule[4];
@@ -52,14 +54,16 @@ public class SS_SwerveSystem extends Subsystem {
      */
     public void swerveDrive() {
     	double rX = (1 / Math.sqrt(2)) * OI.getRightX();
-    	O_Vector joystickVector = new O_Vector(OI.getLeftX(), OI.getLeftY());
-    	//joystickVector.offsetByAngle( - (gyro.getAngle() % 360));
-    	    	
-    	O_Vector vector[] = {
-    			new O_Vector(joystickVector.getX() + rX, joystickVector.getY()  - rX),
-    			new O_Vector(joystickVector.getX() - rX, joystickVector.getY()  - rX),
-    			new O_Vector(joystickVector.getX() - rX, joystickVector.getY()  + rX),
-    			new O_Vector(joystickVector.getX()  + rX, joystickVector.getY()  + rX)
+    	Vector joystickVector = new Vector(OI.getLeftX(), OI.getLeftY());
+    	System.out.println(joystickVector.getAngle());
+    	joystickVector.pushAngle( - Angle.get360Angle(gyro.getAngle()));
+    	
+    	
+    	Vector vector[] = {
+    			new Vector(joystickVector.getX() + rX, joystickVector.getY()  - rX),
+    			new Vector(joystickVector.getX() - rX, joystickVector.getY()  - rX),
+    			new Vector(joystickVector.getX() - rX, joystickVector.getY()  + rX),
+    			new Vector(joystickVector.getX()  + rX, joystickVector.getY()  + rX)
     	};
     	
     	double maxMagnitude = 0;
@@ -79,7 +83,9 @@ public class SS_SwerveSystem extends Subsystem {
     	
     	for(int i = 0; i < 4; i++) {
     		double mAngle = vector[i].getAngle();
-    		mAngle = (vector[i].getY() < 0) ? (mAngle + 180) % 360 : mAngle; //Invert angle if wheel power should be negative;
+    		//if (vector[i].getY() < 0) {
+    		//	mAngle = (mAngle + 180) % 360;
+    		//}
     		module[i].setValues(mAngle, power[i]);
     	}
     }

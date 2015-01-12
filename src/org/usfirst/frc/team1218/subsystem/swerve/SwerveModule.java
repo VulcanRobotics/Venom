@@ -33,7 +33,7 @@ public class SwerveModule extends Object{
 	private final Talon driveMotor;
 	private static final double RESET_TURN_POWER = 0.25;
 	private static final double DRIVE_POWER_SCALE = 0.5;
-	private static final double DRIVE_MOTOR_OUTPUT_RANGE = 0.85;
+	private static final double DRIVE_MOTOR_OUTPUT_RANGE = 1.0;
 	
 	public SwerveModule(int moduleNumber) {
 		this.moduleNumber = moduleNumber;
