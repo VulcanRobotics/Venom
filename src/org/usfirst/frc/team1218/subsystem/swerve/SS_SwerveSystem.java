@@ -1,6 +1,5 @@
 package org.usfirst.frc.team1218.subsystem.swerve;
 
-import org.usfirst.frc.team1218.math.Angle;
 import org.usfirst.frc.team1218.math.Vector;
 import org.usfirst.frc.team1218.robot.OI;
 import org.usfirst.frc.team1218.robot.RobotMap;
@@ -14,11 +13,10 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class SS_SwerveSystem extends Subsystem {
     
-    public SwerveModule[] module;
+    protected SwerveModule[] module;
 
     private final Gyro gyro;
     private static double GYRO_SENSITIVITY = 0.00738888;
-    public String[] test = {"Test", "hi"};
     
     public SS_SwerveSystem() {
     	module = new SwerveModule[4];
@@ -53,17 +51,16 @@ public class SS_SwerveSystem extends Subsystem {
      * Creates angle and power for all swerve modules
      */
     public void swerveDrive() {
-    	double rX = (1 / Math.sqrt(2)) * OI.getRightX();
-    	Vector joystickVector = new Vector(OI.getLeftX(), OI.getLeftY());
-    	System.out.println(joystickVector.getAngle());
-    	joystickVector.pushAngle( - Angle.get360Angle(gyro.getAngle()));
-    	
+    	double rX = (1 / Math.sqrt(2)) * OI.getRightJoystickVector().getX();
+    	Vector translationVector = OI.getLeftJoystickVector();
+    	System.out.println(translationVector.getAngle());
+    	translationVector.pushAngle(-gyro.getAngle());//Makes Robot field Centric
     	
     	Vector vector[] = {
-    			new Vector(joystickVector.getX() + rX, joystickVector.getY()  - rX),
-    			new Vector(joystickVector.getX() - rX, joystickVector.getY()  - rX),
-    			new Vector(joystickVector.getX() - rX, joystickVector.getY()  + rX),
-    			new Vector(joystickVector.getX()  + rX, joystickVector.getY()  + rX)
+    			new Vector(translationVector.getX() + rX, translationVector.getY()  - rX),
+    			new Vector(translationVector.getX() - rX, translationVector.getY()  - rX),
+    			new Vector(translationVector.getX() - rX, translationVector.getY()  + rX),
+    			new Vector(translationVector.getX()  + rX, translationVector.getY()  + rX)
     	};
     	
     	double maxMagnitude = 0;
@@ -74,19 +71,8 @@ public class SS_SwerveSystem extends Subsystem {
     	
     	double scaleFactor = ((maxMagnitude > 1.0) ? 1.0 / maxMagnitude : 1.0);
     	
-    	double power[] = {
-    		vector[0].getMagnitude() * scaleFactor,
-    		vector[1].getMagnitude() * scaleFactor,
-    		vector[2].getMagnitude() * scaleFactor,
-    		vector[3].getMagnitude() * scaleFactor
-    	};
+    	for (int i = 0; i < 4; i++) vector[i].scaleMagnitude(scaleFactor);
     	
-    	for(int i = 0; i < 4; i++) {
-    		double mAngle = vector[i].getAngle();
-    		//if (vector[i].getY() < 0) {
-    		//	mAngle = (mAngle + 180) % 360;
-    		//}
-    		module[i].setValues(mAngle, power[i]);
-    	}
+    	for(int i = 0; i < 4; i++) module[i].setVector(vector[i]);
     }
 }

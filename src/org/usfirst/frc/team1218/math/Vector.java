@@ -33,6 +33,14 @@ public class Vector {
     	return Math.sqrt(x * x + y * y);
     }
     
+    public void scaleMagnitude(double scalar) {
+     	double angle = getAngle();
+     	double magnitude = getMagnitude();
+    	this.x = Math.cos(Math.toRadians(angle)) * (magnitude * scalar);
+    	this.y = Math.sin(Math.toRadians(angle)) * (magnitude * scalar);
+    }
+
+    
     /**
      * @return angle of vector
      */
@@ -42,6 +50,7 @@ public class Vector {
     }
     
     public void pushAngle(double angleChange) {
+    	angleChange = Angle.get360Angle(angleChange);
     	setAngle(Angle.get360Angle(angleChange + this.getAngle()));
     }
     
