@@ -1,7 +1,6 @@
 package org.usfirst.frc.team1218.subsystem.swerve;
 
 import org.usfirst.frc.team1218.math.Angle;
-import org.usfirst.frc.team1218.math.Vector;
 import org.usfirst.frc.team1218.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -55,13 +54,9 @@ public class SwerveModule extends Object{
 	 * @param angle Desired module angle
 	 * @param power Desired power for module drive motor
 	 */
-	private void setValues(double angle, double power) {
+	public void setValues(double angle, double power) {
 		if (Math.abs(power) > 0.1) setAngle(angle); //Prevents Module from setting wheels to zero when joystick is released
 		setPower(power);
-	}
-	
-	public void setVector(Vector moduleVector) {
-		setValues(moduleVector.getAngle(), moduleVector.getMagnitude());
 	}
 
 	/**
