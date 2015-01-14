@@ -81,12 +81,6 @@ public class SS_SwerveSystem extends Subsystem {
     		vector[3].getMagnitude() * scaleFactor
     	};
     	
-    	for(int i = 0; i < 4; i++) {
-    		double mAngle = vector[i].getAngle();
-    		//if (vector[i].getY() < 0) {
-    		//	mAngle = (mAngle + 180) % 360;
-    		//}
-    		module[i].setValues(mAngle, power[i]);
-    	}
+    	for(int i = 0; i < 4; i++) module[i].setValues(vector[i].getAngle(), power[i]);
     }
 }

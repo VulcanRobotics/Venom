@@ -6,17 +6,17 @@ import org.usfirst.frc.team1218.robot.RobotMap;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDController;
-import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class SwerveModule extends Object{
+public class SwerveModule extends Object {
 	
 	private final int moduleNumber; //Used to retrieve module specific offsets and modifiers
 	
 	
 	private boolean isZeroing = false;
 
-	private final Talon angleMotor;
+	private final CANTalon angleMotor;
 	private final DigitalInput zeroSensor;
 	private final AngleEncoder angleEncoder;
 	private final PIDController angleController;
@@ -30,20 +30,20 @@ public class SwerveModule extends Object{
 	
 	private boolean invertModule = false;
 	
-	private final Talon driveMotor;
+	private final CANTalon driveMotor;
 	private static final double RESET_TURN_POWER = 0.25;
 	private static final double DRIVE_POWER_SCALE = 0.5;
-	private static final double DRIVE_MOTOR_OUTPUT_RANGE = 1.0;
+	private static final double ANGLE_MOTOR_OUTPUT_RANGE = 1.0;
 	
 	public SwerveModule(int moduleNumber) {
 		this.moduleNumber = moduleNumber;
-		this.driveMotor = new Talon(RobotMap.SM_DRIVE_MOTOR[moduleNumber]);
-		this.angleMotor = new Talon(RobotMap.SM_TURN_MOTOR[moduleNumber]);
+		this.driveMotor = new CANTalon(RobotMap.SM_DRIVE_MOTOR[moduleNumber]);
+		this.angleMotor = new CANTalon(RobotMap.SM_TURN_MOTOR[moduleNumber]);
 		this.angleEncoder = new AngleEncoder(RobotMap.SM_ENCODER_A[moduleNumber], RobotMap.SM_ENCODER_B[moduleNumber], MODULE_REVERSED[moduleNumber]);
 		this.zeroSensor = new DigitalInput(RobotMap.SM_ZERO[moduleNumber]);
 		this.angleController = new PIDController(ANGLE_CONTROLLER_P, ANGLE_CONTROLLER_I, ANGLE_CONTROLLER_D, angleEncoder, angleMotor);
 		this.angleController.setInputRange(0.0, 360.0);
-		this.angleController.setOutputRange(-DRIVE_MOTOR_OUTPUT_RANGE, DRIVE_MOTOR_OUTPUT_RANGE);
+		this.angleController.setOutputRange(-ANGLE_MOTOR_OUTPUT_RANGE, ANGLE_MOTOR_OUTPUT_RANGE);
 		this.angleController.setContinuous();
 		this.angleEncoder.reset();
 		this.angleController.enable();
