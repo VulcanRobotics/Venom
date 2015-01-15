@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1218.subsystem.swerve;
 
 import org.usfirst.frc.team1218.math.Angle;
+import org.usfirst.frc.team1218.math.Vector;
 import org.usfirst.frc.team1218.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -32,8 +33,8 @@ public class SwerveModule extends Object {
 	
 	private final CANTalon driveMotor;
 	private static final double RESET_TURN_POWER = 0.25;
-	private static final double DRIVE_POWER_SCALE = 0.5;
 	private static final double ANGLE_MOTOR_OUTPUT_RANGE = 1.0;
+	private static final double DRIVE_POWER_SCALE = 0.5;
 	
 	public SwerveModule(int moduleNumber) {
 		this.moduleNumber = moduleNumber;
@@ -57,6 +58,10 @@ public class SwerveModule extends Object {
 	public void setValues(double angle, double power) {
 		if (Math.abs(power) > 0.1) setAngle(angle); //Prevents Module from setting wheels to zero when joystick is released
 		setPower(power);
+	}
+	
+	public void setVector(Vector vector) {
+		setValues(vector.getAngle(), vector.getMagnitude());
 	}
 
 	/**
@@ -109,6 +114,7 @@ public class SwerveModule extends Object {
 	public class AngleEncoder extends Encoder {
 		private static final double ENCODER_COUNTS_PER_ROTATION = 500;
 		private static final double WHEEL_ENCODER_RATIO = 24.0 / 42.0;
+		private static final double ENCODER_CLICK_DEGREE_RATIO = (360.0 / ENCODER_COUNTS_PER_ROTATION) * WHEEL_ENCODER_RATIO;
 		
 		public AngleEncoder(int aChannel, int bChannel, boolean reverseDirection) {
 			super(aChannel, bChannel, reverseDirection);
@@ -116,11 +122,7 @@ public class SwerveModule extends Object {
 		
 		@Override
 		public double pidGet() {
-			double encoderAngle = (get() * (360.0 / ENCODER_COUNTS_PER_ROTATION) * WHEEL_ENCODER_RATIO) % 360.0;
-			if (encoderAngle < 0) {
-				encoderAngle = 360.0 - Math.abs(encoderAngle); //Converts encoderOutput from -180 to 180 degrees to 0 to 360 scale.
-			}
-			return (encoderAngle);
+			return Angle.get360Angle(get() * ENCODER_CLICK_DEGREE_RATIO);
 		}
 	}
 	

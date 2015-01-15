@@ -1,6 +1,5 @@
 package org.usfirst.frc.team1218.subsystem.swerve;
 
-import org.usfirst.frc.team1218.math.Angle;
 import org.usfirst.frc.team1218.math.Vector;
 import org.usfirst.frc.team1218.robot.OI;
 import org.usfirst.frc.team1218.robot.RobotMap;
@@ -18,7 +17,6 @@ public class SS_SwerveSystem extends Subsystem {
 
     private final Gyro gyro;
     private static double GYRO_SENSITIVITY = 0.00738888;
-    public String[] test = {"Test", "hi"};
     
     public SS_SwerveSystem() {
     	module = new SwerveModule[4];
@@ -44,9 +42,7 @@ public class SS_SwerveSystem extends Subsystem {
      * Write module set and sensor values to dashboard
      */
     public void publishModuleValues() {
-		for (int i = 0; i < 4; i++) {
-			module[i].publishValues();
-		}
+		for (int i = 0; i < 4; i++) module[i].publishValues();
 	}
     
     /**
@@ -54,11 +50,8 @@ public class SS_SwerveSystem extends Subsystem {
      */
     public void swerveDrive() {
     	double rX = (1 / Math.sqrt(2)) * OI.getRightX();
-    	Vector joystickVector = new Vector(OI.getLeftX(), OI.getLeftY());
-    	System.out.println(joystickVector.getAngle());
-    	joystickVector.pushAngle( - Angle.get360Angle(gyro.getAngle()));
-    	
-    	
+    	Vector joystickVector = OI.getLeftJoystickVector();
+    	joystickVector.pushAngle(-gyro.getAngle());
     	Vector vector[] = {
     			new Vector(joystickVector.getX() + rX, joystickVector.getY()  - rX),
     			new Vector(joystickVector.getX() - rX, joystickVector.getY()  - rX),
@@ -69,18 +62,14 @@ public class SS_SwerveSystem extends Subsystem {
     	double maxMagnitude = 0;
     	
     	for(int i = 0; i < 4; i++) {
-    		if (vector[i].getMagnitude() > maxMagnitude) maxMagnitude = vector[i].getMagnitude();
+    		maxMagnitude = (vector[i].getMagnitude() > maxMagnitude) ? vector[i].getMagnitude() : maxMagnitude;
     	}
     	
     	double scaleFactor = ((maxMagnitude > 1.0) ? 1.0 / maxMagnitude : 1.0);
     	
-    	double power[] = {
-    		vector[0].getMagnitude() * scaleFactor,
-    		vector[1].getMagnitude() * scaleFactor,
-    		vector[2].getMagnitude() * scaleFactor,
-    		vector[3].getMagnitude() * scaleFactor
-    	};
-    	
-    	for(int i = 0; i < 4; i++) module[i].setValues(vector[i].getAngle(), power[i]);
+    	for (int i = 0; i < 4; i++) {
+    		vector[i].scaleMagnitude(scaleFactor);
+    		module[i].setVector(vector[i]);
+    	}    	
     }
 }

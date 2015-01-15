@@ -33,6 +33,16 @@ public class Vector {
     	return Math.sqrt(x * x + y * y);
     }
     
+    public void setMagnitude(double newMagnitude) {
+    	double oldMagnitude = this.getMagnitude();
+    	this.setX(getX() / oldMagnitude * newMagnitude);
+    	this.setY(getY() / oldMagnitude * newMagnitude);
+    }
+    
+    public void scaleMagnitude(double scalar) {
+    	setMagnitude(this.getMagnitude() * scalar);
+    }
+    
     /**
      * @return angle of vector
      */
@@ -42,12 +52,21 @@ public class Vector {
     }
     
     public void pushAngle(double angleChange) {
-    	setAngle(Angle.get360Angle(angleChange + this.getAngle()));
+    	setAngle(angleChange + this.getAngle());
     }
     
     public void setAngle(double angle) {
     	double magnitude = this.getMagnitude();
 		x = Math.sin(Math.toRadians(angle)) * magnitude;
 		y = Math.cos(Math.toRadians(angle)) * magnitude;
+    }
+    
+    /**
+     * Print all properties of angle for debug
+     * @return
+     */
+    public String debug(String label) {
+    	String out = "Vector[ " + label + " ]: X[ " + getX() + " ] Y[ " + getY() + " ] Angle[ " + getAngle() + " ] Magnitude[ " + getMagnitude() + " ]";
+		return out;
     }
 }
