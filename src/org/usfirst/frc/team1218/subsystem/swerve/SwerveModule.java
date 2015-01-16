@@ -2,6 +2,7 @@ package org.usfirst.frc.team1218.subsystem.swerve;
 
 import org.usfirst.frc.team1218.math.Angle;
 import org.usfirst.frc.team1218.math.Vector;
+import org.usfirst.frc.team1218.robot.Robot;
 import org.usfirst.frc.team1218.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -34,7 +35,7 @@ public class SwerveModule extends Object {
 	private final CANTalon driveMotor;
 	private static final double RESET_TURN_POWER = 0.25;
 	private static final double ANGLE_MOTOR_OUTPUT_RANGE = 1.0;
-	private static final double DRIVE_POWER_SCALE = 0.4;
+	//private static final double DRIVE_POWER_SCALE = 0.4;
 	
 	public SwerveModule(int moduleNumber) {
 		this.moduleNumber = moduleNumber;
@@ -79,8 +80,11 @@ public class SwerveModule extends Object {
 	}
 	
 	public void setPower(double power) {
-		power = power * ((invertModule) ? -1.0 : 1.0);
-		this.driveMotor.set(DRIVE_POWER_SCALE * power * ((MODULE_REVERSED[moduleNumber]) ? 1.0 : -1.0)); //Applies module specific motor preferences
+		if (Math.abs(power) > 1){
+			System.out.println("Illegal power " + power + " written to module: " + moduleNumber);
+		} else {
+			this.driveMotor.set(power * Robot.swerveSystem.Module_Power * ((invertModule) ? -1.0 : 1.0) * ((MODULE_REVERSED[moduleNumber]) ? 1.0 : -1.0)); //Applies module specific motor preferences
+		}
 	}
 	
 	public void setZeroing() {

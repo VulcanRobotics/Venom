@@ -2,6 +2,7 @@ package org.usfirst.frc.team1218.robot;
 
 import org.usfirst.frc.team1218.math.Vector;
 import org.usfirst.frc.team1218.subsystem.swerve.C_ResetGyro;
+import org.usfirst.frc.team1218.subsystem.swerve.C_TogglePower;
 import org.usfirst.frc.team1218.subsystem.swerve.C_ZeroModules;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -21,6 +22,7 @@ public class OI {
 	public static Button zeroModules;
 	public static Button cancelResetModules;
 	public static Button resetGyro;
+	public static Button changePower;
 	
     public OI() {
         xbox = new Joystick(RobotMap.JOYSTICK_1);
@@ -29,6 +31,8 @@ public class OI {
         cancelResetModules = new JoystickButton(xbox, ButtonType.X);
         resetGyro = new JoystickButton(xbox, ButtonType.B);
         resetGyro.whenPressed(new C_ResetGyro());
+        changePower = new JoystickButton(xbox, ButtonType.Y);
+        changePower.whenPressed(new C_TogglePower());
     }
     
     public static Vector getLeftJoystickVector() {

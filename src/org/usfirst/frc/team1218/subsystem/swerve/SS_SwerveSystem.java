@@ -21,7 +21,6 @@ public class SS_SwerveSystem extends Subsystem {
     public SS_SwerveSystem() {
     	module = new SwerveModule[4];
     	for (int i = 0; i < 4; i++) module[i] = new SwerveModule(i);
-    	
     	gyro =  new Gyro(RobotMap.GYRO);
     	gyro.setSensitivity(GYRO_SENSITIVITY);
         System.out.println("Swerve System Initialized");
@@ -44,6 +43,20 @@ public class SS_SwerveSystem extends Subsystem {
     public void publishModuleValues() {
 		for (int i = 0; i < 4; i++) module[i].publishValues();
 	}
+    
+    public double Module_Power = 0.5;
+    
+    public void toggleModulePower() {
+    	double power = Module_Power;
+    	if (power < 1){
+    		power += 0.1;
+    	}
+    	if (power > 1) {
+    		power = 0.1;
+    	}
+    	Module_Power = power;
+    }
+    
     
     /**
      * Creates angle and power for all swerve modules
