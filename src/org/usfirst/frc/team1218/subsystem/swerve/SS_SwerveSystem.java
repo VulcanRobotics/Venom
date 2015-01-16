@@ -49,7 +49,7 @@ public class SS_SwerveSystem extends Subsystem {
      * Creates angle and power for all swerve modules
      */
     public void swerveDrive() {
-    	double rX = (1 / Math.sqrt(2)) * OI.getRightX();
+    	double rX = (1 / Math.sqrt(2)) * Math.pow(OI.getRightX(), 3);
     	Vector joystickVector = OI.getLeftJoystickVector();
     	joystickVector.pushAngle(-gyro.getAngle());
     	Vector vector[] = {

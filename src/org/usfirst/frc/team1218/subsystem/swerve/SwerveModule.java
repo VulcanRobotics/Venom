@@ -34,7 +34,7 @@ public class SwerveModule extends Object {
 	private final CANTalon driveMotor;
 	private static final double RESET_TURN_POWER = 0.25;
 	private static final double ANGLE_MOTOR_OUTPUT_RANGE = 1.0;
-	private static final double DRIVE_POWER_SCALE = 0.5;
+	private static final double DRIVE_POWER_SCALE = 0.4;
 	
 	public SwerveModule(int moduleNumber) {
 		this.moduleNumber = moduleNumber;
