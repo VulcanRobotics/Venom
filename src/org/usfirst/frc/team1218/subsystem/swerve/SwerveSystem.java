@@ -11,14 +11,14 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  * @author afiolmahon
  */
 
-public class SS_SwerveSystem extends Subsystem {
+public class SwerveSystem extends Subsystem {
     
     public SwerveModule[] module;
 
     private final Gyro gyro;
     private static double GYRO_SENSITIVITY = 0.00738888;
     
-    public SS_SwerveSystem() {
+    public SwerveSystem() {
     	module = new SwerveModule[4];
     	for (int i = 0; i < 4; i++) module[i] = new SwerveModule(i);
     	

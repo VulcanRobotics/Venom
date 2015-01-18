@@ -4,7 +4,6 @@ import org.usfirst.frc.team1218.math.Angle;
 import org.usfirst.frc.team1218.math.Vector;
 import org.usfirst.frc.team1218.robot.RobotMap;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.CANTalon;
@@ -18,8 +17,7 @@ public class SwerveModule extends Object {
 	private boolean isZeroing = false;
 
 	private final CANTalon angleMotor;
-	private final DigitalInput zeroSensor;
-	private final AngleEncoder angleEncoder;
+	public final AngleEncoder angleEncoder;
 	private final PIDController angleController;
 	private static final double ANGLE_CONTROLLER_P = -0.01;
 	private static final double ANGLE_CONTROLLER_I = 0.0;
@@ -32,7 +30,6 @@ public class SwerveModule extends Object {
 	private boolean invertModule = false;
 	
 	private final CANTalon driveMotor;
-	private static final double RESET_TURN_POWER = 0.25;
 	private static final double ANGLE_MOTOR_OUTPUT_RANGE = 1.0;
 	private static final double DRIVE_POWER_SCALE = 0.4;
 	
@@ -40,8 +37,11 @@ public class SwerveModule extends Object {
 		this.moduleNumber = moduleNumber;
 		this.driveMotor = new CANTalon(RobotMap.SM_DRIVE_MOTOR[moduleNumber]);
 		this.angleMotor = new CANTalon(RobotMap.SM_TURN_MOTOR[moduleNumber]);
-		this.angleEncoder = new AngleEncoder(RobotMap.SM_ENCODER_A[moduleNumber], RobotMap.SM_ENCODER_B[moduleNumber], MODULE_REVERSED[moduleNumber]);
-		this.zeroSensor = new DigitalInput(RobotMap.SM_ZERO[moduleNumber]);
+		this.angleEncoder = new AngleEncoder(
+				RobotMap.SM_ENCODER_A[moduleNumber],
+				RobotMap.SM_ENCODER_B[moduleNumber],
+				RobotMap.SM_ENCODER_I[moduleNumber],
+				MODULE_REVERSED[moduleNumber]);
 		this.angleController = new PIDController(ANGLE_CONTROLLER_P, ANGLE_CONTROLLER_I, ANGLE_CONTROLLER_D, angleEncoder, angleMotor);
 		this.angleController.setInputRange(0.0, 360.0);
 		this.angleController.setOutputRange(-ANGLE_MOTOR_OUTPUT_RANGE, ANGLE_MOTOR_OUTPUT_RANGE);
@@ -91,38 +91,18 @@ public class SwerveModule extends Object {
 		return this.isZeroing;
 	}
 	
-	/**
-	 * State Machine that drives C_ResetModules
-	 */
-	public void zeroModule() {
-		this.driveMotor.set(0.0);
-		if (zeroSensor.get()) {
-			//At Zero
-			this.angleEncoder.reset();
-			this.angleMotor.set(0.0);
-			this.setAngle(0);
-			this.angleController.enable();
-			this.isZeroing = false;
-		}else {
-			//Finding Zero
-			this.angleController.disable();
-			this.angleMotor.set(RESET_TURN_POWER);
-			this.setZeroing();
-		}
-	}
-	
 	public class AngleEncoder extends Encoder {
 		private static final double ENCODER_COUNTS_PER_ROTATION = 500;
-		private static final double WHEEL_ENCODER_RATIO = 24.0 / 42.0;
-		private static final double ENCODER_CLICK_DEGREE_RATIO = (360.0 / ENCODER_COUNTS_PER_ROTATION) * WHEEL_ENCODER_RATIO;
+		private static final double ENCODER_CLICK_DEGREE_RATIO = 360.0 / ENCODER_COUNTS_PER_ROTATION;
 		
-		public AngleEncoder(int aChannel, int bChannel, boolean reverseDirection) {
-			super(aChannel, bChannel, reverseDirection);
+		public AngleEncoder(int aChannel, int bChannel, int iChannel, boolean reverseDirection) {
+			super(aChannel, bChannel, iChannel, reverseDirection);
+			this.setDistancePerPulse(ENCODER_CLICK_DEGREE_RATIO);
 		}
 		
 		@Override
 		public double pidGet() {
-			return Angle.get360Angle(get() * ENCODER_CLICK_DEGREE_RATIO);
+			return Angle.get360Angle(get());
 		}
 	}
 	
@@ -131,6 +111,5 @@ public class SwerveModule extends Object {
 		SmartDashboard.putNumber("SM_" + moduleNumber + " WheelPower", driveMotor.get());
 		SmartDashboard.putBoolean("SM_" + moduleNumber + " isZeroing", isZeroing);
 		SmartDashboard.putBoolean("SM_" + moduleNumber + " AngleControllerEnabled", angleController.isEnable());
-		SmartDashboard.putBoolean("SM_" + moduleNumber + " ZeroSensor", zeroSensor.get());
 	}
 }
