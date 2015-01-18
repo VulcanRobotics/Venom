@@ -16,7 +16,6 @@ public class C_TogglePower extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
     	Robot.swerveSystem.toggleModulePower();
-    	System.out.println("Changed Max power");
     }
 
     // Called repeatedly when this Command is scheduled to run

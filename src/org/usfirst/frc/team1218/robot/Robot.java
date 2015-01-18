@@ -68,6 +68,7 @@ public class Robot extends IterativeRobot {
     public void teleopPeriodic() {
     	Scheduler.getInstance().run();
     	Robot.swerveSystem.publishModuleValues();
+    	System.out.println("Max power: " + Robot.swerveSystem.Module_Power);
     }
     
     /**
