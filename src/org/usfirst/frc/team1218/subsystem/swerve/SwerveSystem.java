@@ -13,16 +13,16 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class SwerveSystem extends Subsystem {
     
-    public SwerveModule[] module;
-
+    private SwerveModule[] module;
     private final Gyro gyro;
-    private static double GYRO_SENSITIVITY = 0.00738888;
+    private static final double GYRO_SENSITIVITY = 0.00738888;
+	private static final double WHEEL_PERPENDICULAR_CONSTANT = 1 / Math.sqrt(2);
+    
     
     public SwerveSystem() {
     	module = new SwerveModule[4];
     	for (int i = 0; i < 4; i++) module[i] = new SwerveModule(i);
-    	
-    	gyro =  new Gyro(RobotMap.GYRO);
+    	gyro = new Gyro(RobotMap.GYRO);
     	gyro.setSensitivity(GYRO_SENSITIVITY);
         System.out.println("Swerve System Initialized");
     }
@@ -39,7 +39,7 @@ public class SwerveSystem extends Subsystem {
     }
     
     /**
-     * Write module set and sensor values to dashboard
+     * Write module values to dashboard
      */
     public void publishModuleValues() {
 		for (int i = 0; i < 4; i++) module[i].publishValues();
@@ -49,21 +49,19 @@ public class SwerveSystem extends Subsystem {
      * Creates angle and power for all swerve modules
      */
     public void swerveDrive() {
-    	double rX = (1 / Math.sqrt(2)) * Math.pow(OI.getRightX(), 3);
+    	double rX = WHEEL_PERPENDICULAR_CONSTANT * Math.pow(OI.getRightX(), 3);
     	Vector joystickVector = OI.getLeftJoystickVector();
     	joystickVector.pushAngle(-gyro.getAngle());
     	Vector vector[] = {
-    			new Vector(joystickVector.getX() + rX, joystickVector.getY()  - rX),
-    			new Vector(joystickVector.getX() - rX, joystickVector.getY()  - rX),
-    			new Vector(joystickVector.getX() - rX, joystickVector.getY()  + rX),
-    			new Vector(joystickVector.getX()  + rX, joystickVector.getY()  + rX)
+    			new Vector(joystickVector.getX() + rX, joystickVector.getY() - rX),
+    			new Vector(joystickVector.getX() - rX, joystickVector.getY() - rX),
+    			new Vector(joystickVector.getX() - rX, joystickVector.getY() + rX),
+    			new Vector(joystickVector.getX() + rX, joystickVector.getY() + rX)
     	};
     	
     	double maxMagnitude = 0;
     	
-    	for(int i = 0; i < 4; i++) {
-    		maxMagnitude = (vector[i].getMagnitude() > maxMagnitude) ? vector[i].getMagnitude() : maxMagnitude;
-    	}
+    	for (int i = 0; i < 4; i++) maxMagnitude = (vector[i].getMagnitude() > maxMagnitude) ? vector[i].getMagnitude() : maxMagnitude;
     	
     	double scaleFactor = ((maxMagnitude > 1.0) ? 1.0 / maxMagnitude : 1.0);
     	
