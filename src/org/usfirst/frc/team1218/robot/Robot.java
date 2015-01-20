@@ -1,7 +1,7 @@
 
 package org.usfirst.frc.team1218.robot;
 
-import org.usfirst.frc.team1218.subsystem.swerve.SS_SwerveSystem;
+import org.usfirst.frc.team1218.subsystem.swerve.SwerveSystem;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -16,20 +16,20 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
  * directory.
  */
 public class Robot extends IterativeRobot {
-
-	public static SS_SwerveSystem swerveSystem;
+	
+	public static SwerveSystem swerveSystem;
 	public static OI oi;
-
+	
     Command autonomousCommand;
-
+    
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
      */
     public void robotInit() {
-    	swerveSystem = new SS_SwerveSystem();
+    	swerveSystem = new SwerveSystem();
 		oi = new OI();
-        // instantiate the command used for the autonomous period
+        //instantiate the command used for the autonomous period
         autonomousCommand = new C_AutonCommand();
         System.out.println("Robot Initialized");
     }

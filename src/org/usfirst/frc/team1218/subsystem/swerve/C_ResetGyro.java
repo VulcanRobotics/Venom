@@ -18,22 +18,22 @@ public class C_ResetGyro extends Command {
     public C_ResetGyro() {
         requires(Robot.swerveSystem);
     }
-
+    
     protected void initialize() {
         Robot.swerveSystem.resetGyro();
     }
-
+    
     protected void execute() {
     }
-
+    
     protected boolean isFinished() {
         return true;
     }
-
+    
     protected void end() {
         System.out.println("Gyro zeroed");
     }
-
+    
     protected void interrupted() {
     }
 }
