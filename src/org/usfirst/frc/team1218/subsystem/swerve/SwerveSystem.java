@@ -5,10 +5,11 @@ import java.util.List;
 
 import org.usfirst.frc.team1218.math.Vector;
 import org.usfirst.frc.team1218.robot.OI;
-import org.usfirst.frc.team1218.robot.RobotMap;
 import org.usfirst.frc.team1218.subsystem.swerve.legacyModule.LegacyModule;
 
-import edu.wpi.first.wpilibj.Gyro;
+import com.kauailabs.nav6.frc.IMUAdvanced;
+
+import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -18,9 +19,10 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class SwerveSystem extends Subsystem {
     
     public List<LegacyModule> module;
-    //private VulcanSwerveModule[] modules;
-    private final Gyro gyro;
-    private static final double GYRO_SENSITIVITY = 0.00738888;
+    //private List<VulcanSwerveModule> module;
+    
+    private SerialPort navSerialPort;
+    private IMUAdvanced navModule;
 	private static final double WHEEL_PERPENDICULAR_CONSTANT = 1 / Math.sqrt(2);
 	
     public SwerveSystem() {
@@ -30,8 +32,8 @@ public class SwerveSystem extends Subsystem {
     	module.add(new LegacyModule(2));
     	module.add(new LegacyModule(3));
     	
-    	gyro =  new Gyro(RobotMap.GYRO);
-    	gyro.setSensitivity(GYRO_SENSITIVITY);
+		navSerialPort = new SerialPort(57600, SerialPort.Port.kMXP);
+		navModule = new IMUAdvanced(navSerialPort);
         System.out.println("Swerve System Initialized");
     }
     
@@ -43,7 +45,7 @@ public class SwerveSystem extends Subsystem {
      * Gyroscope reset accessor
      */
     public void resetGyro() {
-    	this.gyro.reset();
+    	this.navModule.zeroYaw();
     }
     
     /**
@@ -69,7 +71,7 @@ public class SwerveSystem extends Subsystem {
     public void swerveDrive() {
     	double rX = WHEEL_PERPENDICULAR_CONSTANT * Math.pow(OI.getRightX(), 3);
     	Vector joystickVector = OI.getLeftJoystickVector();
-    	joystickVector.pushAngle(-gyro.getAngle());
+    	joystickVector.pushAngle(-this.navModule.getYaw());
     	Vector vector[] = {
     			new Vector(joystickVector.getX() + rX, joystickVector.getY() - rX),
     			new Vector(joystickVector.getX() - rX, joystickVector.getY() - rX),
@@ -80,7 +82,7 @@ public class SwerveSystem extends Subsystem {
     	double maxMagnitude = 0;
     	
     	for (int i = 0; i < 4; i++) maxMagnitude = (vector[i].getMagnitude() > maxMagnitude) ? vector[i].getMagnitude() : maxMagnitude;
-    	
+    	    	
     	double scaleFactor = ((maxMagnitude > 1.0) ? 1.0 / maxMagnitude : 1.0);
     	
     	for (int i = 0; i < 4; i++) vector[i].scaleMagnitude(scaleFactor);

@@ -19,13 +19,13 @@ public class C_ZeroModules extends Command {
     
     protected void execute() {
     	modulesReset = 0;
-    	for (int i = 0; i < 4; i++) {
-    		if (Robot.swerveSystem.module.get(i).getZeroing()) {
-    			Robot.swerveSystem.module.get(i).zeroModule();
+    	Robot.swerveSystem.module.stream().forEach(m -> {
+    		if (m.getZeroing()) {
+    			m.zeroModule();
     		} else {
     			modulesReset += 1;
     		}
-    	}
+    	});
     }
     
     protected boolean isFinished() {
