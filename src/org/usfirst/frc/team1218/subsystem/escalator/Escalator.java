@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1218.subsystem.vescelator;
+package org.usfirst.frc.team1218.subsystem.escalator;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 /**
  *
  */
-public class Vescelator extends Subsystem {
+public class Escalator extends Subsystem {
     
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
@@ -21,8 +21,7 @@ public class Vescelator extends Subsystem {
 	CANTalon dartR;
 
     public void initDefaultCommand() {
-        // Set the default command for a subsystem here.
-        //setDefaultCommand(new MySpecialCommand());
+       setDefaultCommand(new C_EscalatorDefault());
     }
 }
 

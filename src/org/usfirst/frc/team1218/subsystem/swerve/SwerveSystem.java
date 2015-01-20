@@ -69,5 +69,5 @@ public class SwerveSystem extends Subsystem {
     		vector[i].scaleMagnitude(scaleFactor);
     		module[i].setVector(vector[i]);
     	}    	
-    }
+    }    
 }

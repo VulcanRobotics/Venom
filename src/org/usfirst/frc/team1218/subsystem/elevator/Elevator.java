@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 /**
  *
  */
-public class Velevator extends Subsystem {
+public class Elevator extends Subsystem {
     
 	private final CANTalon liftL;
 	private final CANTalon liftR;
@@ -27,7 +27,7 @@ public class Velevator extends Subsystem {
         setDefaultCommand(new C_ElevatorDefault());
     }
     
-    public Velevator() {
+    public Elevator() {
     	liftL = new CANTalon(RobotMap.ELEVATOR_LIFT_L);
     	liftR = new CANTalon(RobotMap.ELEVATOR_LIFT_R);
     	liftUpperLimit = new DigitalInput(RobotMap.ELEVATOR_LIFT_UPPER_LIMIT);
@@ -41,9 +41,19 @@ public class Velevator extends Subsystem {
     	intakeR = new CANTalon(RobotMap.ELEVATOR_INTAKE_R);
     }
     
-    public void Ratchet() {
+    /**
+     * Lifts possessed tote and stacks another bin from below
+     */
+    public void lift() {
     	//TODO Moves all bins up one
+    	//Lift
+    	//hooks out
+    	//lift down
     }
     
+    public void release() {
+    	//release hooks
+    	//lower
+    }
 }
 
