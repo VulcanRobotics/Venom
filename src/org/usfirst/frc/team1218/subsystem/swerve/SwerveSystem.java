@@ -13,15 +13,15 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class SwerveSystem extends Subsystem {
     
-    private SwerveModule[] module;
+    private VulcanSwerveModule[] module;
     private final Gyro gyro;
     private static final double GYRO_SENSITIVITY = 0.00738888;
 	private static final double WHEEL_PERPENDICULAR_CONSTANT = 1 / Math.sqrt(2);
     
     
     public SwerveSystem() {
-    	module = new SwerveModule[4];
-    	for (int i = 0; i < 4; i++) module[i] = new SwerveModule(i);
+    	module = new VulcanSwerveModule[4];
+    	for (int i = 0; i < 4; i++) module[i] = new VulcanSwerveModule(i);
     	gyro = new Gyro(RobotMap.GYRO);
     	gyro.setSensitivity(GYRO_SENSITIVITY);
         System.out.println("Swerve System Initialized");

@@ -44,14 +44,14 @@ public class Elevator extends Subsystem {
     /**
      * Lifts possessed tote and stacks another bin from below
      */
-    public void lift() {
-    	//TODO Moves all bins up one
+    public void lift() {//TODO write lift()
+    	//Moves all bins up one
     	//Lift
     	//hooks out
     	//lift down
     }
     
-    public void release() {
+    public void release() {//TODO write release()
     	//release hooks
     	//lower
     }

@@ -4,11 +4,12 @@ import org.usfirst.frc.team1218.math.Angle;
 import org.usfirst.frc.team1218.math.Vector;
 import org.usfirst.frc.team1218.robot.RobotMap;
 
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class SwerveModule extends Object {
+public class VulcanSwerveModule extends Object {
 	
 	private final int moduleNumber; //Used to retrieve module specific offsets and modifiers
 	
@@ -28,10 +29,10 @@ public class SwerveModule extends Object {
 	private final CANTalon driveMotor;
 	private static final double DRIVE_POWER_SCALE = 0.4;
 	
-	public SwerveModule(int moduleNumber) {
+	public VulcanSwerveModule(int moduleNumber) {
 		this.moduleNumber = moduleNumber;
-		this.driveMotor = new CANTalon(RobotMap.SM_DRIVE_MOTOR[moduleNumber]);
-		this.angleMotor = new CANTalon(RobotMap.SM_TURN_MOTOR[moduleNumber]);
+		this.driveMotor = new CANTalon(RobotMap.SM_DRIVE_MOTOR_CAN[moduleNumber]);
+		this.angleMotor = new CANTalon(RobotMap.SM_TURN_MOTOR_CAN[moduleNumber]);
 		this.angleEncoder = new AngleEncoder(
 				RobotMap.SM_ENCODER_A[moduleNumber],
 				RobotMap.SM_ENCODER_B[moduleNumber],
@@ -89,5 +90,19 @@ public class SwerveModule extends Object {
 		SmartDashboard.putBoolean("SM_" + moduleNumber + "_AngleControllerEnabled", angleController.isEnable());
 		SmartDashboard.putNumber("SM_" + moduleNumber + "_AngleControllerError", angleController.getError());
 		SmartDashboard.putNumber("SM_" + moduleNumber + "_AngleControllerSetpoint", angleController.getSetpoint());
+	}
+	
+	public class AngleEncoder extends Encoder {
+		private static final double ENCODER_CLICK_DEGREE_RATIO = 360.0 / 500; //Degrees over Number of Clicks
+		
+		public AngleEncoder(int aChannel, int bChannel, int iChannel, boolean reverseDirection) {
+			super(aChannel, bChannel, iChannel, reverseDirection);
+			this.setDistancePerPulse(ENCODER_CLICK_DEGREE_RATIO);
+		}
+		
+		@Override
+		public double pidGet() {
+			return Angle.get360Angle(get());
+		}
 	}
 }
