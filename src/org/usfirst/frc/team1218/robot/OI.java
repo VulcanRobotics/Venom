@@ -3,7 +3,7 @@ package org.usfirst.frc.team1218.robot;
 import org.usfirst.frc.team1218.math.Vector;
 import org.usfirst.frc.team1218.subsystem.swerve.C_ResetGyro;
 import org.usfirst.frc.team1218.subsystem.swerve.C_TogglePower;
-import org.usfirst.frc.team1218.subsystem.swerve.C_ZeroModules;
+import org.usfirst.frc.team1218.subsystem.swerve.legacyModule.C_ZeroModules;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;

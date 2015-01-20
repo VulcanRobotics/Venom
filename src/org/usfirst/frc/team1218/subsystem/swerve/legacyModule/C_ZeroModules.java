@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1218.subsystem.swerve;
+package org.usfirst.frc.team1218.subsystem.swerve.legacyModule;
 
 import org.usfirst.frc.team1218.robot.OI;
 import org.usfirst.frc.team1218.robot.Robot;

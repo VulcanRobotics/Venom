@@ -3,6 +3,7 @@ package org.usfirst.frc.team1218.subsystem.swerve;
 import org.usfirst.frc.team1218.math.Vector;
 import org.usfirst.frc.team1218.robot.OI;
 import org.usfirst.frc.team1218.robot.RobotMap;
+import org.usfirst.frc.team1218.subsystem.swerve.legacyModule.LegacyModule;
 
 import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -13,14 +14,14 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class SS_SwerveSystem extends Subsystem {
     
-    public SwerveModule[] module;
+    public LegacyModule[] module;
 
     private final Gyro gyro;
     private static double GYRO_SENSITIVITY = 0.00738888;
     
     public SS_SwerveSystem() {
-    	module = new SwerveModule[4];
-    	for (int i = 0; i < 4; i++) module[i] = new SwerveModule(i);
+    	module = new LegacyModule[4];
+    	for (int i = 0; i < 4; i++) module[i] = new LegacyModule(i);
     	gyro =  new Gyro(RobotMap.GYRO);
     	gyro.setSensitivity(GYRO_SENSITIVITY);
         System.out.println("Swerve System Initialized");
