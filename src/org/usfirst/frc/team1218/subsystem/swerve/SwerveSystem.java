@@ -25,7 +25,11 @@ public class SwerveSystem extends Subsystem {
 	
     public SwerveSystem() {
     	module = new ArrayList<LegacyModule>();
-    	for (int i = 0; i < 4; i++) module.add(new LegacyModule(i));
+    	module.add(new LegacyModule(0));
+    	module.add(new LegacyModule(1));
+    	module.add(new LegacyModule(2));
+    	module.add(new LegacyModule(3));
+    	
     	gyro =  new Gyro(RobotMap.GYRO);
     	gyro.setSensitivity(GYRO_SENSITIVITY);
         System.out.println("Swerve System Initialized");

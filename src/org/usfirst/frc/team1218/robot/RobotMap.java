@@ -14,8 +14,6 @@ public class RobotMap {
 	public static final int[] SM_ZERO = {8, 9, 10, 11};
 	
 	//New Robot Port Mappings
-	public static final int[] SM_DRIVE_MOTOR_CAN = {10, 12, 14, 16};
-	public static final int[] SM_TURN_MOTOR_CAN = {11, 13, 15, 17};
 	//public static final int[] SM_ENCODER_A = {0, 3, 6, 9};
 	//public static final int[] SM_ENCODER_B = {1, 4, 7, 10};
 	public static final int[] SM_ENCODER_I = {2, 5, 8, 11};

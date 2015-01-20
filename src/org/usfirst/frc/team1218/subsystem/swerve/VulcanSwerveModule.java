@@ -31,8 +31,8 @@ public class VulcanSwerveModule extends Object {
 	
 	public VulcanSwerveModule(int moduleNumber) {
 		this.moduleNumber = moduleNumber;
-		this.driveMotor = new CANTalon(RobotMap.SM_DRIVE_MOTOR_CAN[moduleNumber]);
-		this.angleMotor = new CANTalon(RobotMap.SM_TURN_MOTOR_CAN[moduleNumber]);
+		this.driveMotor = new CANTalon(RobotMap.SM_DRIVE_MOTOR[moduleNumber]);
+		this.angleMotor = new CANTalon(RobotMap.SM_TURN_MOTOR[moduleNumber]);
 		this.angleEncoder = new AngleEncoder(
 				RobotMap.SM_ENCODER_A[moduleNumber],
 				RobotMap.SM_ENCODER_B[moduleNumber],

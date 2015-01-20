@@ -33,7 +33,6 @@ public class LegacyModule extends Object {
 	private final CANTalon driveMotor;
 	private static final double RESET_TURN_POWER = 0.25;
 	private static final double ANGLE_MOTOR_OUTPUT_RANGE = 1.0;
-	//private static final double DRIVE_POWER_SCALE = 0.4;
 	
 	public LegacyModule(int moduleNumber) {
 		this.moduleNumber = moduleNumber;
@@ -102,7 +101,7 @@ public class LegacyModule extends Object {
 			//At Zero
 			this.angleEncoder.reset();
 			this.angleMotor.set(0.0);
-			this.setAngle(0);
+			this.setAngle(0.0);
 			this.angleController.enable();
 			this.isZeroing = false;
 		}else {
@@ -134,5 +133,6 @@ public class LegacyModule extends Object {
 		SmartDashboard.putBoolean("SM_" + moduleNumber + " isZeroing", isZeroing);
 		SmartDashboard.putBoolean("SM_" + moduleNumber + " AngleControllerEnabled", angleController.isEnable());
 		SmartDashboard.putBoolean("SM_" + moduleNumber + " ZeroSensor", zeroSensor.get());
+		SmartDashboard.putNumber("SM_" + moduleNumber + " AngleSetpoint", angleController.getSetpoint());
 	}
 }
