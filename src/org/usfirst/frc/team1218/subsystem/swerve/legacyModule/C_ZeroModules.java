@@ -15,7 +15,7 @@ public class C_ZeroModules extends Command {
 
     protected void initialize() {
     	for (int i = 0; i < 4; i++) {
-    		Robot.swerveSystem.module[i].setZeroing();
+    		Robot.swerveSystem.module.get(i).setZeroing();
     		System.out.println("setZeroing on module " + i);
     	}
     }
@@ -23,8 +23,8 @@ public class C_ZeroModules extends Command {
     protected void execute() {
     	modulesReset = 0;
     	for (int i = 0; i < 4; i++) {
-    		if (Robot.swerveSystem.module[i].getZeroing()) {
-    			Robot.swerveSystem.module[i].zeroModule();
+    		if (Robot.swerveSystem.module.get(i).getZeroing()) {
+    			Robot.swerveSystem.module.get(i).zeroModule();
     		} else {
     			modulesReset += 1;
     			System.out.println("Module " + i + " complete zero. standing by");

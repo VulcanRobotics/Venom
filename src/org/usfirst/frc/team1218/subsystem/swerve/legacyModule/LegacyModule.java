@@ -12,8 +12,7 @@ import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class LegacyModule extends Object {
-	private final int moduleNumber; //Used to retrieve module specific offsets and modifiers
-	
+	public final int moduleNumber; //Used to retrieve module specific offsets and modifiers
 	
 	private boolean isZeroing = false;
 

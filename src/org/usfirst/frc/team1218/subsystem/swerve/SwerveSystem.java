@@ -1,5 +1,8 @@
 package org.usfirst.frc.team1218.subsystem.swerve;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.usfirst.frc.team1218.math.Vector;
 import org.usfirst.frc.team1218.robot.OI;
 import org.usfirst.frc.team1218.robot.RobotMap;
@@ -14,15 +17,15 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class SwerveSystem extends Subsystem {
     
-    public LegacyModule[] module;
+    public List<LegacyModule> module;
     //private VulcanSwerveModule[] modules;
     private final Gyro gyro;
     private static final double GYRO_SENSITIVITY = 0.00738888;
 	private static final double WHEEL_PERPENDICULAR_CONSTANT = 1 / Math.sqrt(2);
 	
     public SwerveSystem() {
-    	module = new LegacyModule[4];
-    	for (int i = 0; i < 4; i++) module[i] = new LegacyModule(i);
+    	module = new ArrayList<LegacyModule>();
+    	for (int i = 0; i < 4; i++) module.add(new LegacyModule(i));
     	gyro =  new Gyro(RobotMap.GYRO);
     	gyro.setSensitivity(GYRO_SENSITIVITY);
         System.out.println("Swerve System Initialized");
@@ -43,19 +46,15 @@ public class SwerveSystem extends Subsystem {
      * Write module values to dashboard
      */
     public void publishModuleValues() {
-		for (int i = 0; i < 4; i++) module[i].publishValues();
+    	module.stream().forEach(m -> m.publishValues());
 	}
     
     public double Module_Power = 0.5;
     
     public void toggleModulePower() {
     	double power = Module_Power;
-    	if (power < 1){
-    		power += 0.1;
-    	}
-    	if (power > 1) {
-    		power = 0.1;
-    	}
+    	if (power < 1) power += 0.1;
+    	if (power > 1) power = 0.1;
     	Module_Power = power;
     }
     
@@ -80,9 +79,8 @@ public class SwerveSystem extends Subsystem {
     	
     	double scaleFactor = ((maxMagnitude > 1.0) ? 1.0 / maxMagnitude : 1.0);
     	
-    	for (int i = 0; i < 4; i++) {
-    		vector[i].scaleMagnitude(scaleFactor);
-    		module[i].setVector(vector[i]);
-    	}    	
+    	for (int i = 0; i < 4; i++) vector[i].scaleMagnitude(scaleFactor);
+    	
+    	module.stream().forEach(m -> m.setVector(vector[m.moduleNumber]));
     }    
 }
