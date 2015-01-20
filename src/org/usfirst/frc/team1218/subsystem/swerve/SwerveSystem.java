@@ -14,28 +14,16 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class SwerveSystem extends Subsystem {
     
-<<<<<<< HEAD:src/org/usfirst/frc/team1218/subsystem/swerve/SS_SwerveSystem.java
     public LegacyModule[] module;
-
-=======
-    private VulcanSwerveModule[] module;
->>>>>>> 2015:src/org/usfirst/frc/team1218/subsystem/swerve/SwerveSystem.java
+    //private VulcanSwerveModule[] modules;
     private final Gyro gyro;
     private static final double GYRO_SENSITIVITY = 0.00738888;
 	private static final double WHEEL_PERPENDICULAR_CONSTANT = 1 / Math.sqrt(2);
-    
-<<<<<<< HEAD:src/org/usfirst/frc/team1218/subsystem/swerve/SS_SwerveSystem.java
-    public SS_SwerveSystem() {
+	
+    public SwerveSystem() {
     	module = new LegacyModule[4];
     	for (int i = 0; i < 4; i++) module[i] = new LegacyModule(i);
     	gyro =  new Gyro(RobotMap.GYRO);
-=======
-    
-    public SwerveSystem() {
-    	module = new VulcanSwerveModule[4];
-    	for (int i = 0; i < 4; i++) module[i] = new VulcanSwerveModule(i);
-    	gyro = new Gyro(RobotMap.GYRO);
->>>>>>> 2015:src/org/usfirst/frc/team1218/subsystem/swerve/SwerveSystem.java
     	gyro.setSensitivity(GYRO_SENSITIVITY);
         System.out.println("Swerve System Initialized");
     }
