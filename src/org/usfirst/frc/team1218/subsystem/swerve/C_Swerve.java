@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1218.subsystem.swerve;
 
+import org.usfirst.frc.team1218.robot.OI;
 import org.usfirst.frc.team1218.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -16,7 +17,11 @@ public class C_Swerve extends Command {
 
 	@Override
 	protected void execute() {
-		Robot.swerveSystem.swerveDrive();
+		Robot.swerveSystem.swerveDrive(
+				OI.getLeftJoystickVector(),
+				Math.pow(OI.getRightX(), 3),
+				Robot.swerveSystem.navModule.getYaw()
+				);
 	}
 
 	@Override

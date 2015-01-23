@@ -19,10 +19,10 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class SwerveSystem extends Subsystem {
     
     public List<LegacyModule> module;
-    //private List<VulcanSwerveModule> module;
+    //public List<VulcanSwerveModule> module;
     
     private SerialPort navSerialPort;
-    private IMUAdvanced navModule;
+    protected IMUAdvanced navModule;
 	private static final double WHEEL_PERPENDICULAR_CONSTANT = 1 / Math.sqrt(2);
 	
     public SwerveSystem() {
@@ -67,16 +67,18 @@ public class SwerveSystem extends Subsystem {
     
     /**
      * Creates angle and power for all swerve modules
+     * @param translationVector vector with magnitude <= 1
+     * @param rotation a value from 1 to -1 representing the amount of rotation to add to the robot angle
+     * @param fieldCentricCompensator a gyroscope output that can let the robot drive field-centric, pass 0 if robot centric drive is desired.
      */
-    public void swerveDrive() {
-    	double rX = WHEEL_PERPENDICULAR_CONSTANT * Math.pow(OI.getRightX(), 3);
-    	Vector joystickVector = OI.getLeftJoystickVector();
-    	joystickVector.pushAngle(-this.navModule.getYaw());
+    public void swerveDrive(Vector translationVector, double rotation, double fieldCentricCompensator) {
+    	rotation *= WHEEL_PERPENDICULAR_CONSTANT;
+    	translationVector.pushAngle(-fieldCentricCompensator);
     	Vector vector[] = {
-    			new Vector(joystickVector.getX() + rX, joystickVector.getY() - rX),
-    			new Vector(joystickVector.getX() - rX, joystickVector.getY() - rX),
-    			new Vector(joystickVector.getX() - rX, joystickVector.getY() + rX),
-    			new Vector(joystickVector.getX() + rX, joystickVector.getY() + rX)
+    			new Vector(translationVector.getX() + rotation, translationVector.getY() - rotation),
+    			new Vector(translationVector.getX() - rotation, translationVector.getY() - rotation),
+    			new Vector(translationVector.getX() - rotation, translationVector.getY() + rotation),
+    			new Vector(translationVector.getX() + rotation, translationVector.getY() + rotation)
     	};
     	
     	double maxMagnitude = 0;

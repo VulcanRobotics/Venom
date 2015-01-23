@@ -83,6 +83,14 @@ public class VulcanSwerveModule extends Object {
 		this.driveMotor.set(DRIVE_POWER_SCALE * power * ((MODULE_REVERSED[moduleNumber]) ? 1.0 : -1.0)); //Applies module specific motor preferences
 	}
 	
+	public boolean getZeroing() {//XXX Compatibility for zeroing
+		return false;
+	}
+	
+	public void zeroModule() {//XXX Compatibility For zeroing
+		
+	}
+	
 	public void publishValues() {
 		SmartDashboard.putNumber("SM_" + moduleNumber + "_WheelPower", driveMotor.get());
 		SmartDashboard.putBoolean("SM_" + moduleNumber + "_isModuleInverted", invertModule);
