@@ -86,11 +86,11 @@ public class VulcanSwerveModule extends Object {
 		}
 	}
 	
-	public void publishValues() {
-		SmartDashboard.putNumber("SM" + moduleNumber + "_Angle", angleEncoder.pidGet());
-		SmartDashboard.putNumber("SM" + moduleNumber + "_WheelPower", driveMotor.get());
-		SmartDashboard.putBoolean("SM" + moduleNumber + "_AngleControllerEnabled", angleController.isEnable());
-		SmartDashboard.putNumber("SM" + moduleNumber + "_AngleSetpoint", angleController.getSetpoint());
+	public void publishValues() {//TODO fix driver station value keys
+		SmartDashboard.putNumber("SM_" + moduleNumber + "_Angle", angleEncoder.pidGet());
+		SmartDashboard.putNumber("SM_" + moduleNumber + "_WheelPower", driveMotor.get());
+		SmartDashboard.putBoolean("SM_" + moduleNumber + "_AngleControllerEnabled", angleController.isEnable());
+		SmartDashboard.putNumber("SM_" + moduleNumber + "_AngleSetpoint", angleController.getSetpoint());
 		SmartDashboard.putNumber("SM_" + moduleNumber + "_RelativeAngle", Angle.get360Angle(displayAngle));
 	}
 	
