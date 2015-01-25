@@ -20,8 +20,10 @@ public class VulcanSwerveModule extends Object {
 	private static final double ANGLE_CONTROLLER_I = 0.0;
 	private static final double ANGLE_CONTROLLER_D = 0.0;
 	private static final double ANGLE_MOTOR_OUTPUT_RANGE = 1.0;
-
+	
 	protected static final boolean[] MODULE_REVERSED = {false, false, true, true};
+	
+	private static final double ENCODER_CLICK_DEGREE_RATIO = 360.0 / 500; //Degrees over Number of Clicks
 	
 	protected boolean invertModule = false;
 	protected double angle = 0; //Current module angle
@@ -84,12 +86,6 @@ public class VulcanSwerveModule extends Object {
 		}
 	}
 	
-	public boolean getZeroing() {return false;} //XXX Compatibility for zeroing
-	
-	public void zeroModule() {} //XXX Compatibility For zeroing
-	
-	public void setZeroing() {} //XXX Compatibility For zeroing
-	
 	public void publishValues() {
 		SmartDashboard.putNumber("SM" + moduleNumber + "_Angle", angleEncoder.pidGet());
 		SmartDashboard.putNumber("SM" + moduleNumber + "_WheelPower", driveMotor.get());
@@ -99,7 +95,6 @@ public class VulcanSwerveModule extends Object {
 	}
 	
 	public class AngleEncoder extends Encoder {
-		private static final double ENCODER_CLICK_DEGREE_RATIO = 360.0 / 500; //Degrees over Number of Clicks
 		
 		public AngleEncoder(int moduleNumber) {
 			super(RobotMap.SM_ENCODER_A[moduleNumber],
@@ -112,7 +107,7 @@ public class VulcanSwerveModule extends Object {
 		
 		@Override
 		public double pidGet() {
-			return Angle.get360Angle(get());
+			return Angle.get360Angle(get() * ENCODER_CLICK_DEGREE_RATIO);
 		}
 	}
 }

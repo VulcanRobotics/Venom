@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.usfirst.frc.team1218.math.Angle;
 import org.usfirst.frc.team1218.math.Vector;
-import org.usfirst.frc.team1218.subsystem.swerve.legacyModule.LegacyModule;
 
 import com.kauailabs.nav6.frc.IMUAdvanced;
 
@@ -19,19 +18,18 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SwerveSystem extends Subsystem {
     
-    public List<LegacyModule> module;
-    //public List<VulcanSwerveModule> module;
+    protected List<VulcanSwerveModule> module;
     
     private SerialPort navSerialPort;
     protected IMUAdvanced navModule;
 	private static final double WHEEL_PERPENDICULAR_CONSTANT = 1 / Math.sqrt(2);
 	
     public SwerveSystem() {
-    	module = new ArrayList<LegacyModule>();
-    	module.add(new LegacyModule(0));
-    	module.add(new LegacyModule(1));
-    	module.add(new LegacyModule(2));
-    	module.add(new LegacyModule(3));
+    	module = new ArrayList<VulcanSwerveModule>();
+    	module.add(new VulcanSwerveModule(0));
+    	module.add(new VulcanSwerveModule(1));
+    	module.add(new VulcanSwerveModule(2));
+    	module.add(new VulcanSwerveModule(3));
     	
 		navSerialPort = new SerialPort(57600, SerialPort.Port.kMXP);
 		navModule = new IMUAdvanced(navSerialPort);
