@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class LegacyModule extends VulcanSwerveModule {
-	public final int moduleNumber; //Used to retrieve module specific offsets and modifiers
 	
 	private boolean isZeroing = false;
 
@@ -25,21 +24,17 @@ public class LegacyModule extends VulcanSwerveModule {
 	private static final double ANGLE_CONTROLLER_I = 0.0;
 	private static final double ANGLE_CONTROLLER_D = 0.0;
 	private static final double[] MODULE_ANGLE_OFFSET = {40.0, -36.0, -22.0, 85.0};
-	private static final double[] MODULE_ANGLE_DISPLAY_OFFSET = {};
 	private double angle = 0; //Current module angle
 	
 	private static final boolean[] MODULE_REVERSED = {false, false, true, true};
 	
 	private boolean invertModule = false;
-	private double displayAngle = 0;
 	
-	private final CANTalon driveMotor;
 	private static final double RESET_TURN_POWER = 0.25;
 	private static final double ANGLE_MOTOR_OUTPUT_RANGE = 1.0;
 	
 	public LegacyModule(int moduleNumber) {
-		this.moduleNumber = moduleNumber;
-		this.driveMotor = new CANTalon(RobotMap.SM_DRIVE_MOTOR[moduleNumber]);
+		super(moduleNumber);
 		this.angleMotor = new CANTalon(RobotMap.SM_TURN_MOTOR[moduleNumber]);
 		this.angleEncoder = new AngleEncoder(RobotMap.SM_ENCODER_A[moduleNumber], RobotMap.SM_ENCODER_B[moduleNumber], MODULE_REVERSED[moduleNumber]);
 		this.zeroSensor = new DigitalInput(RobotMap.SM_ZERO[moduleNumber]);
@@ -51,24 +46,7 @@ public class LegacyModule extends VulcanSwerveModule {
 		this.angleController.enable();
 	}
 	
-	/**
-	 * Update the swerve module wheel power and angle.
-	 * @param angle Desired module angle
-	 * @param power Desired power for module drive motor
-	 */
-	public void setValues(double angle, double power) {
-		if (Math.abs(power) > 0.1) setAngle(angle); //Prevents Module from setting wheels to zero when joystick is released
-		setPower(power);
-	}
-	
-	public void setVector(Vector vector) {
-		setValues(vector.getAngle(), vector.getMagnitude());
-	}
-
-	/**
-	 * angleController setpoint should always be set through this method in order to apply zeroing offsets
-	 * @param angle Desired wheel angle. Can be any value
-	 */
+	@Override
 	public void setAngle(double angle) {
 		if(Angle.diffBetweenAngles(angle, this.angle) > 90) {
 			invertModule = !invertModule;
@@ -82,18 +60,11 @@ public class LegacyModule extends VulcanSwerveModule {
 		this.angleController.setSetpoint(angle); //applies module specific direction preferences
 	}
 	
-	public void setPower(double power) {
-		if (Math.abs(power) > 1){
-			System.out.println("Illegal power " + power + " written to module: " + moduleNumber);
-		} else {
-			this.driveMotor.set(power * Robot.swerveSystem.Module_Power * ((invertModule) ? -1.0 : 1.0) * ((MODULE_REVERSED[moduleNumber]) ? 1.0 : -1.0)); //Applies module specific motor preferences
-		}
-	}
-	
 	public void setZeroing() {
 		this.isZeroing = true;
 	}
 	
+	@Override
 	public boolean getZeroing() {
 		return this.isZeroing;
 	}
@@ -119,13 +90,9 @@ public class LegacyModule extends VulcanSwerveModule {
 	}
 	
 	public void publishValues() {
-		SmartDashboard.putNumber("SM" + moduleNumber + "_Angle", angleEncoder.pidGet());
-		SmartDashboard.putNumber("SM" + moduleNumber + "_WheelPower", driveMotor.get());
+		super.publishValues();
 		SmartDashboard.putBoolean("SM" + moduleNumber + "_isZeroing", isZeroing);
-		SmartDashboard.putBoolean("SM" + moduleNumber + "_AngleControllerEnabled", angleController.isEnable());
 		SmartDashboard.putBoolean("SM" + moduleNumber + "_ZeroSensor", zeroSensor.get());
-		SmartDashboard.putNumber("SM" + moduleNumber + "_AngleSetpoint", angleController.getSetpoint());
-		SmartDashboard.putNumber("SM_" + moduleNumber + "_RelativeAngle", Angle.get360Angle(displayAngle));
 	}
 	
 	public class AngleEncoder extends Encoder {

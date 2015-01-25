@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class VulcanSwerveModule extends Object {
 	
-	private final int moduleNumber; //Used to retrieve module specific offsets and modifiers
+	protected final int moduleNumber; //Used to retrieve module specific offsets and modifiers
 	
 	private final CANTalon angleMotor;
 	private final AngleEncoder angleEncoder;
@@ -25,8 +25,9 @@ public class VulcanSwerveModule extends Object {
 	
 	private boolean invertModule = false;
 	private double angle = 0; //Current module angle
+	private double displayAngle = 0; //Angle Relative to Robot 0
 	
-	private final CANTalon driveMotor;
+	protected final CANTalon driveMotor;
 	private static final double DRIVE_POWER_SCALE = 0.4;
 	
 	public VulcanSwerveModule(int moduleNumber) {
@@ -79,8 +80,12 @@ public class VulcanSwerveModule extends Object {
 	}
 	
 	public void setPower(double power) {
-		power *= (invertModule) ? -1.0 : 1.0;
-		this.driveMotor.set(DRIVE_POWER_SCALE * power * ((MODULE_REVERSED[moduleNumber]) ? 1.0 : -1.0)); //Applies module specific motor preferences
+		if (Math.abs(power) > 1){
+			System.out.println("Illegal power " + power + " written to module: " + moduleNumber);
+		} else {
+			power *= (invertModule) ? -1.0 : 1.0;
+			this.driveMotor.set(DRIVE_POWER_SCALE * power * ((MODULE_REVERSED[moduleNumber]) ? 1.0 : -1.0)); //Applies module specific motor preferences
+		}
 	}
 	
 	public boolean getZeroing() {//XXX Compatibility for zeroing
@@ -92,12 +97,11 @@ public class VulcanSwerveModule extends Object {
 	}
 	
 	public void publishValues() {
-		SmartDashboard.putNumber("SM" + moduleNumber + "_WheelPower", driveMotor.get());
-		SmartDashboard.putBoolean("SM" + moduleNumber + "_isModuleInverted", invertModule);
 		SmartDashboard.putNumber("SM" + moduleNumber + "_Angle", angleEncoder.pidGet());
+		SmartDashboard.putNumber("SM" + moduleNumber + "_WheelPower", driveMotor.get());
 		SmartDashboard.putBoolean("SM" + moduleNumber + "_AngleControllerEnabled", angleController.isEnable());
-		SmartDashboard.putNumber("SM" + moduleNumber + "_AngleControllerError", angleController.getError());
 		SmartDashboard.putNumber("SM" + moduleNumber + "_AngleSetpoint", angleController.getSetpoint());
+		SmartDashboard.putNumber("SM_" + moduleNumber + "_RelativeAngle", Angle.get360Angle(displayAngle));
 	}
 	
 	public class AngleEncoder extends Encoder {
