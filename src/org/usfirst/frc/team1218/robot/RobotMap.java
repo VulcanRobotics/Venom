@@ -28,6 +28,12 @@ public class RobotMap {
 	public static final int ELEVATOR_INTAKE_L = 0;
 	public static final int ELEVATOR_INTAKE_R = 0;
 	
+	public static final int ESCALATOR_LEFT_DART = 0;
+	public static final int ESCALATOR_RIGHT_DART = 0;
+	public static final int ESCALATOR_INTAKE_L = 0;
+	public static final int ESCALATOR_INTAKE_R = 0;
+	public static final int ESCALATOR_CLAMP_SOLENOID = 0;
+	
     public static final int JOYSTICK_1 = 0;
     
     public static final int GYRO = 1;

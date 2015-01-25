@@ -3,6 +3,7 @@ package org.usfirst.frc.team1218.robot;
 import org.usfirst.frc.team1218.math.Vector;
 import org.usfirst.frc.team1218.subsystem.swerve.C_ResetGyro;
 import org.usfirst.frc.team1218.subsystem.swerve.C_TogglePower;
+import org.usfirst.frc.team1218.subsystem.swerve.C_MaintainHeading;
 import org.usfirst.frc.team1218.subsystem.swerve.legacyModule.C_ZeroModules;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -23,6 +24,7 @@ public class OI {
 	public static Button resetGyro;
 	public static Button changePower;
 	public static Button zeroModules;
+	public static Button maintainHeading;
 	
     public OI() {
         xbox = new Joystick(RobotMap.JOYSTICK_1);
@@ -33,10 +35,16 @@ public class OI {
         zeroModules.whenPressed(new C_ZeroModules());
         changePower = new JoystickButton(xbox, ButtonType.Y);
         changePower.whenPressed(new C_TogglePower());
+        maintainHeading = new JoystickButton(xbox, ButtonType.L1);
+        maintainHeading.whileHeld(new C_MaintainHeading());
     }
     
     public static Vector getLeftJoystickVector() {
     	return new Vector(xbox.getRawAxis(Axis.LEFT_X), -xbox.getRawAxis(Axis.LEFT_Y));
+    }
+    
+    public static Vector getRightJoystickVector() {
+    	return new Vector(xbox.getRawAxis(Axis.RIGHT_X), -xbox.getRawAxis(Axis.RIGHT_Y));
     }
     
     public static double getRightX() {

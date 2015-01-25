@@ -3,14 +3,15 @@ package org.usfirst.frc.team1218.subsystem.swerve;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.usfirst.frc.team1218.math.Angle;
 import org.usfirst.frc.team1218.math.Vector;
-import org.usfirst.frc.team1218.robot.OI;
 import org.usfirst.frc.team1218.subsystem.swerve.legacyModule.LegacyModule;
 
 import com.kauailabs.nav6.frc.IMUAdvanced;
 
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * @author afiolmahon
@@ -53,8 +54,9 @@ public class SwerveSystem extends Subsystem {
      */
     public void publishModuleValues() {
     	module.stream().forEach(m -> m.publishValues());
+    	SmartDashboard.putNumber("RobotHeading", Angle.get360Angle(navModule.getYaw()));
 	}
-    
+     
     public double Module_Power = 0.5;
     
     public void toggleModulePower() {

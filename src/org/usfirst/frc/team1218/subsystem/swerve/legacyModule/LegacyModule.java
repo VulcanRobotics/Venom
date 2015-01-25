@@ -4,6 +4,7 @@ import org.usfirst.frc.team1218.math.Angle;
 import org.usfirst.frc.team1218.math.Vector;
 import org.usfirst.frc.team1218.robot.Robot;
 import org.usfirst.frc.team1218.robot.RobotMap;
+import org.usfirst.frc.team1218.subsystem.swerve.VulcanSwerveModule;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
@@ -11,7 +12,7 @@ import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class LegacyModule extends Object {
+public class LegacyModule extends VulcanSwerveModule {
 	public final int moduleNumber; //Used to retrieve module specific offsets and modifiers
 	
 	private boolean isZeroing = false;
@@ -24,11 +25,13 @@ public class LegacyModule extends Object {
 	private static final double ANGLE_CONTROLLER_I = 0.0;
 	private static final double ANGLE_CONTROLLER_D = 0.0;
 	private static final double[] MODULE_ANGLE_OFFSET = {40.0, -36.0, -22.0, 85.0};
+	private static final double[] MODULE_ANGLE_DISPLAY_OFFSET = {};
 	private double angle = 0; //Current module angle
 	
 	private static final boolean[] MODULE_REVERSED = {false, false, true, true};
 	
 	private boolean invertModule = false;
+	private double displayAngle = 0;
 	
 	private final CANTalon driveMotor;
 	private static final double RESET_TURN_POWER = 0.25;
@@ -73,7 +76,10 @@ public class LegacyModule extends Object {
 		this.angle = angle;
 		angle += (invertModule) ? 180 : 0;
 		angle += MODULE_ANGLE_OFFSET[moduleNumber]; //adds angle zeroing point offset to the modules written angle.
-		this.angleController.setSetpoint(Angle.get360Angle(((MODULE_REVERSED[moduleNumber]) ? 360 - angle : angle))); //applies module specific direction preferences
+		angle = (MODULE_REVERSED[moduleNumber]) ? 360 - angle : angle;
+		angle = Angle.get360Angle(angle);
+		displayAngle = angle;
+		this.angleController.setSetpoint(angle); //applies module specific direction preferences
 	}
 	
 	public void setPower(double power) {
@@ -112,6 +118,16 @@ public class LegacyModule extends Object {
 		}
 	}
 	
+	public void publishValues() {
+		SmartDashboard.putNumber("SM" + moduleNumber + "_Angle", angleEncoder.pidGet());
+		SmartDashboard.putNumber("SM" + moduleNumber + "_WheelPower", driveMotor.get());
+		SmartDashboard.putBoolean("SM" + moduleNumber + "_isZeroing", isZeroing);
+		SmartDashboard.putBoolean("SM" + moduleNumber + "_AngleControllerEnabled", angleController.isEnable());
+		SmartDashboard.putBoolean("SM" + moduleNumber + "_ZeroSensor", zeroSensor.get());
+		SmartDashboard.putNumber("SM" + moduleNumber + "_AngleSetpoint", angleController.getSetpoint());
+		SmartDashboard.putNumber("SM_" + moduleNumber + "_RelativeAngle", Angle.get360Angle(displayAngle));
+	}
+	
 	public class AngleEncoder extends Encoder {
 		private static final double ENCODER_COUNTS_PER_ROTATION = 500;
 		private static final double WHEEL_ENCODER_RATIO = 24.0 / 42.0;
@@ -125,14 +141,5 @@ public class LegacyModule extends Object {
 		public double pidGet() {
 			return Angle.get360Angle(get() * ENCODER_CLICK_DEGREE_RATIO);
 		}
-	}
-	
-	public void publishValues() {
-		SmartDashboard.putNumber("SM" + moduleNumber + " Angle", angleEncoder.pidGet());
-		SmartDashboard.putNumber("SM_" + moduleNumber + " WheelPower", driveMotor.get());
-		SmartDashboard.putBoolean("SM_" + moduleNumber + " isZeroing", isZeroing);
-		SmartDashboard.putBoolean("SM_" + moduleNumber + " AngleControllerEnabled", angleController.isEnable());
-		SmartDashboard.putBoolean("SM_" + moduleNumber + " ZeroSensor", zeroSensor.get());
-		SmartDashboard.putNumber("SM_" + moduleNumber + " AngleSetpoint", angleController.getSetpoint());
 	}
 }

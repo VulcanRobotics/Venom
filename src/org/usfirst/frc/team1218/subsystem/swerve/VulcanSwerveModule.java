@@ -92,12 +92,12 @@ public class VulcanSwerveModule extends Object {
 	}
 	
 	public void publishValues() {
-		SmartDashboard.putNumber("SM_" + moduleNumber + "_WheelPower", driveMotor.get());
-		SmartDashboard.putBoolean("SM_" + moduleNumber + "_isModuleInverted", invertModule);
-		SmartDashboard.putNumber("SM_" + moduleNumber + "_EncoderAngle", angleEncoder.pidGet());
-		SmartDashboard.putBoolean("SM_" + moduleNumber + "_AngleControllerEnabled", angleController.isEnable());
-		SmartDashboard.putNumber("SM_" + moduleNumber + "_AngleControllerError", angleController.getError());
-		SmartDashboard.putNumber("SM_" + moduleNumber + "_AngleControllerSetpoint", angleController.getSetpoint());
+		SmartDashboard.putNumber("SM" + moduleNumber + "_WheelPower", driveMotor.get());
+		SmartDashboard.putBoolean("SM" + moduleNumber + "_isModuleInverted", invertModule);
+		SmartDashboard.putNumber("SM" + moduleNumber + "_Angle", angleEncoder.pidGet());
+		SmartDashboard.putBoolean("SM" + moduleNumber + "_AngleControllerEnabled", angleController.isEnable());
+		SmartDashboard.putNumber("SM" + moduleNumber + "_AngleControllerError", angleController.getError());
+		SmartDashboard.putNumber("SM" + moduleNumber + "_AngleSetpoint", angleController.getSetpoint());
 	}
 	
 	public class AngleEncoder extends Encoder {
