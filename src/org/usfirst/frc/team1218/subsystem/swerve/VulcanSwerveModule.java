@@ -13,19 +13,19 @@ public class VulcanSwerveModule extends Object {
 	
 	protected final int moduleNumber; //Used to retrieve module specific offsets and modifiers
 	
-	private final CANTalon angleMotor;
-	private final AngleEncoder angleEncoder;
-	private final PIDController angleController;
+	protected final CANTalon angleMotor;
+	protected AngleEncoder angleEncoder;
+	protected final PIDController angleController;
 	private static final double ANGLE_CONTROLLER_P = -0.01;
 	private static final double ANGLE_CONTROLLER_I = 0.0;
 	private static final double ANGLE_CONTROLLER_D = 0.0;
 	private static final double ANGLE_MOTOR_OUTPUT_RANGE = 1.0;
 
-	private static final boolean[] MODULE_REVERSED = {false, false, true, true};
+	protected static final boolean[] MODULE_REVERSED = {false, false, true, true};
 	
-	private boolean invertModule = false;
-	private double angle = 0; //Current module angle
-	private double displayAngle = 0; //Angle Relative to Robot 0
+	protected boolean invertModule = false;
+	protected double angle = 0; //Current module angle
+	protected double displayAngle = 0; //Angle Relative to Robot 0
 	
 	protected final CANTalon driveMotor;
 	private static final double DRIVE_POWER_SCALE = 0.4;
@@ -34,11 +34,7 @@ public class VulcanSwerveModule extends Object {
 		this.moduleNumber = moduleNumber;
 		this.driveMotor = new CANTalon(RobotMap.SM_DRIVE_MOTOR[moduleNumber]);
 		this.angleMotor = new CANTalon(RobotMap.SM_TURN_MOTOR[moduleNumber]);
-		this.angleEncoder = new AngleEncoder(
-				RobotMap.SM_ENCODER_A[moduleNumber],
-				RobotMap.SM_ENCODER_B[moduleNumber],
-				RobotMap.SM_ENCODER_I[moduleNumber],
-				MODULE_REVERSED[moduleNumber]);
+		this.angleEncoder = new AngleEncoder(moduleNumber);
 		//Initialize PID
 		this.angleController = new PIDController(
 				ANGLE_CONTROLLER_P,
@@ -67,7 +63,7 @@ public class VulcanSwerveModule extends Object {
 	public void setVector(Vector vector) {
 		setValues(vector.getAngle(), vector.getMagnitude());
 	}
-
+	
 	/**
 	 * angleController setpoint should always be set through this method in order to apply zeroing offsets
 	 * @param angle Desired wheel angle. Can be any value
@@ -88,13 +84,11 @@ public class VulcanSwerveModule extends Object {
 		}
 	}
 	
-	public boolean getZeroing() {//XXX Compatibility for zeroing
-		return false;
-	}
+	public boolean getZeroing() {return false;} //XXX Compatibility for zeroing
 	
-	public void zeroModule() {//XXX Compatibility For zeroing
-		
-	}
+	public void zeroModule() {} //XXX Compatibility For zeroing
+	
+	public void setZeroing() {} //XXX Compatibility For zeroing
 	
 	public void publishValues() {
 		SmartDashboard.putNumber("SM" + moduleNumber + "_Angle", angleEncoder.pidGet());
@@ -107,8 +101,12 @@ public class VulcanSwerveModule extends Object {
 	public class AngleEncoder extends Encoder {
 		private static final double ENCODER_CLICK_DEGREE_RATIO = 360.0 / 500; //Degrees over Number of Clicks
 		
-		public AngleEncoder(int aChannel, int bChannel, int iChannel, boolean reverseDirection) {
-			super(aChannel, bChannel, iChannel, reverseDirection);
+		public AngleEncoder(int moduleNumber) {
+			super(RobotMap.SM_ENCODER_A[moduleNumber],
+					RobotMap.SM_ENCODER_B[moduleNumber],
+					RobotMap.SM_ENCODER_I[moduleNumber],
+					MODULE_REVERSED[moduleNumber]
+					);
 			this.setDistancePerPulse(ENCODER_CLICK_DEGREE_RATIO);
 		}
 		

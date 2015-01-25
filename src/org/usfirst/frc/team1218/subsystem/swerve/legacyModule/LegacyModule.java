@@ -1,49 +1,30 @@
 package org.usfirst.frc.team1218.subsystem.swerve.legacyModule;
 
 import org.usfirst.frc.team1218.math.Angle;
-import org.usfirst.frc.team1218.math.Vector;
-import org.usfirst.frc.team1218.robot.Robot;
 import org.usfirst.frc.team1218.robot.RobotMap;
 import org.usfirst.frc.team1218.subsystem.swerve.VulcanSwerveModule;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.PIDController;
-import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class LegacyModule extends VulcanSwerveModule {
 	
-	private boolean isZeroing = false;
-
-	private final CANTalon angleMotor;
 	private final DigitalInput zeroSensor;
-	private final AngleEncoder angleEncoder;
-	private final PIDController angleController;
-	private static final double ANGLE_CONTROLLER_P = -0.01;
-	private static final double ANGLE_CONTROLLER_I = 0.0;
-	private static final double ANGLE_CONTROLLER_D = 0.0;
-	private static final double[] MODULE_ANGLE_OFFSET = {40.0, -36.0, -22.0, 85.0};
-	private double angle = 0; //Current module angle
 	
-	private static final boolean[] MODULE_REVERSED = {false, false, true, true};
-	
-	private boolean invertModule = false;
-	
+	private boolean isZeroing = false;
+		
 	private static final double RESET_TURN_POWER = 0.25;
-	private static final double ANGLE_MOTOR_OUTPUT_RANGE = 1.0;
+	
+	private static final double[] MODULE_ANGLE_OFFSET = {40.0, -36.0, -22.0, 85.0};
+	
+	AngleEncoder angleEncoder;
+	
 	
 	public LegacyModule(int moduleNumber) {
 		super(moduleNumber);
-		this.angleMotor = new CANTalon(RobotMap.SM_TURN_MOTOR[moduleNumber]);
-		this.angleEncoder = new AngleEncoder(RobotMap.SM_ENCODER_A[moduleNumber], RobotMap.SM_ENCODER_B[moduleNumber], MODULE_REVERSED[moduleNumber]);
 		this.zeroSensor = new DigitalInput(RobotMap.SM_ZERO[moduleNumber]);
-		this.angleController = new PIDController(ANGLE_CONTROLLER_P, ANGLE_CONTROLLER_I, ANGLE_CONTROLLER_D, angleEncoder, angleMotor);
-		this.angleController.setInputRange(0.0, 360.0);
-		this.angleController.setOutputRange(-ANGLE_MOTOR_OUTPUT_RANGE, ANGLE_MOTOR_OUTPUT_RANGE);
-		this.angleController.setContinuous();
-		this.angleEncoder.reset();
-		this.angleController.enable();
+		this.angleEncoder = new AngleEncoder(moduleNumber);
 	}
 	
 	@Override
@@ -60,6 +41,7 @@ public class LegacyModule extends VulcanSwerveModule {
 		this.angleController.setSetpoint(angle); //applies module specific direction preferences
 	}
 	
+	@Override
 	public void setZeroing() {
 		this.isZeroing = true;
 	}
@@ -69,9 +51,7 @@ public class LegacyModule extends VulcanSwerveModule {
 		return this.isZeroing;
 	}
 	
-	/**
-	 * State Machine that drives C_ResetModules
-	 */
+	@Override
 	public void zeroModule() {
 		this.driveMotor.set(0.0);
 		if (zeroSensor.get()) {
@@ -89,6 +69,7 @@ public class LegacyModule extends VulcanSwerveModule {
 		}
 	}
 	
+	@Override
 	public void publishValues() {
 		super.publishValues();
 		SmartDashboard.putBoolean("SM" + moduleNumber + "_isZeroing", isZeroing);
@@ -100,8 +81,12 @@ public class LegacyModule extends VulcanSwerveModule {
 		private static final double WHEEL_ENCODER_RATIO = 24.0 / 42.0;
 		private static final double ENCODER_CLICK_DEGREE_RATIO = (360.0 / ENCODER_COUNTS_PER_ROTATION) * WHEEL_ENCODER_RATIO;
 		
-		public AngleEncoder(int aChannel, int bChannel, boolean reverseDirection) {
-			super(aChannel, bChannel, reverseDirection);
+		public AngleEncoder(int moduleNumber) {
+			super(RobotMap.SM_ENCODER_A[moduleNumber],
+					RobotMap.SM_ENCODER_B[moduleNumber],
+					RobotMap.SM_ENCODER_I[moduleNumber],
+					MODULE_REVERSED[moduleNumber]
+					);
 		}
 		
 		@Override
