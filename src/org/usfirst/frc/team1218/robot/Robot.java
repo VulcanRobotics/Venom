@@ -67,7 +67,7 @@ public class Robot extends IterativeRobot {
      */
     public void teleopPeriodic() {
     	Scheduler.getInstance().run();
-    	Robot.swerveSystem.publishModuleValues();
+    	Robot.swerveSystem.syncDashboard();
     }
     
     /**

@@ -13,14 +13,14 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  * @author afiolmahon
  */
-public class C_ResetGyro extends Command {
+public class C_ZeroRobotHeading extends Command {
     
-    public C_ResetGyro() {
+    public C_ZeroRobotHeading() {
         requires(Robot.swerveSystem);
     }
     
     protected void initialize() {
-        Robot.swerveSystem.resetGyro();
+        Robot.swerveSystem.navModule.zeroYaw();
     }
     
     protected void execute() {

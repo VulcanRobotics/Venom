@@ -20,9 +20,11 @@ public class SwerveSystem extends Subsystem {
     
     protected List<VulcanSwerveModule> module;
     
-    private SerialPort navSerialPort;
-    protected IMUAdvanced navModule;
+    private final SerialPort navSerialPort;
+    protected final IMUAdvanced navModule;
 	private static final double WHEEL_PERPENDICULAR_CONSTANT = 1 / Math.sqrt(2);
+	
+    protected double Module_Power = 0.5;
 	
     public SwerveSystem() {
     	module = new ArrayList<VulcanSwerveModule>();
@@ -40,30 +42,11 @@ public class SwerveSystem extends Subsystem {
         setDefaultCommand(new C_Swerve());   
     }
     
-    /**
-     * Gyroscope reset accessor
-     */
-    public void resetGyro() {
-    	this.navModule.zeroYaw();
-    }
-    
-    /**
-     * Write module values to dashboard
-     */
-    public void publishModuleValues() {
+    public void syncDashboard() {
     	module.stream().forEach(m -> m.publishValues());
     	SmartDashboard.putNumber("RobotHeading", Angle.get360Angle(navModule.getYaw()));
 	}
      
-    public double Module_Power = 0.5;
-    
-    public void toggleModulePower() {
-    	double power = Module_Power;
-    	if (power < 1) power += 0.1;
-    	if (power > 1) power = 0.1;
-    	Module_Power = power;
-    }
-    
     
     /**
      * Creates angle and power for all swerve modules

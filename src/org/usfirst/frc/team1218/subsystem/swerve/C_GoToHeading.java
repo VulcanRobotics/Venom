@@ -8,11 +8,11 @@ import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.command.Command;
 
-public class C_MaintainHeading extends Command implements PIDOutput, PIDSource{
+public class C_GoToHeading extends Command implements PIDOutput, PIDSource{
 
 	PIDController headingController;
 	
-	public C_MaintainHeading() {
+	public C_GoToHeading() {
 		requires(Robot.swerveSystem);
 	}
 	
