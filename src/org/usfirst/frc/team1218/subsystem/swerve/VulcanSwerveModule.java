@@ -13,23 +13,22 @@ public class VulcanSwerveModule extends Object {
 	
 	protected final int moduleNumber; //Used to retrieve module specific offsets and modifiers
 	
-	protected final CANTalon angleMotor;
-	protected AngleEncoder angleEncoder;
-	protected final PIDController angleController;
+	private final CANTalon angleMotor;
+	private AngleEncoder angleEncoder;
+	private static final double ENCODER_CLICK_DEGREE_RATIO = 360.0 / 500; //Degrees over Number of Clicks
+
+	private final PIDController angleController;
 	private static final double ANGLE_CONTROLLER_P = -0.01;
 	private static final double ANGLE_CONTROLLER_I = 0.0;
 	private static final double ANGLE_CONTROLLER_D = 0.0;
 	private static final double ANGLE_MOTOR_OUTPUT_RANGE = 1.0;
 	
-	protected static final boolean[] MODULE_REVERSED = {false, false, true, true};
+	private static final boolean[] MODULE_REVERSED = {false, false, true, true};
 	
-	private static final double ENCODER_CLICK_DEGREE_RATIO = 360.0 / 500; //Degrees over Number of Clicks
+	private boolean invertModule = false;
+	private double angle = 0; //Current module angle
 	
-	protected boolean invertModule = false;
-	protected double angle = 0; //Current module angle
-	protected double displayAngle = 0; //Angle Relative to Robot 0
-	
-	protected final CANTalon driveMotor;
+	private final CANTalon driveMotor;
 	private static final double DRIVE_POWER_SCALE = 0.4;
 	
 	public VulcanSwerveModule(int moduleNumber) {
@@ -86,20 +85,19 @@ public class VulcanSwerveModule extends Object {
 		}
 	}
 	
-	public void publishValues() {//TODO fix driver station value keys
-		SmartDashboard.putNumber("SM_" + moduleNumber + "_Angle", angleEncoder.pidGet());
+	public void syncDashboard() {//TODO fix driver station value keys
+		SmartDashboard.putNumber("SM_" + moduleNumber + "_Encoder", angleEncoder.pidGet());
 		SmartDashboard.putNumber("SM_" + moduleNumber + "_WheelPower", driveMotor.get());
-		SmartDashboard.putBoolean("SM_" + moduleNumber + "_AngleControllerEnabled", angleController.isEnable());
+		SmartDashboard.putBoolean("SM_" + moduleNumber + "_IsAngleControllerEnabled", angleController.isEnable());
 		SmartDashboard.putNumber("SM_" + moduleNumber + "_AngleSetpoint", angleController.getSetpoint());
-		SmartDashboard.putNumber("SM_" + moduleNumber + "_RelativeAngle", Angle.get360Angle(displayAngle));
 	}
 	
 	public class AngleEncoder extends Encoder {
 		
 		public AngleEncoder(int moduleNumber) {
-			super(RobotMap.SM_ENCODER_A[moduleNumber],
-					RobotMap.SM_ENCODER_B[moduleNumber],
-					RobotMap.SM_ENCODER_I[moduleNumber],
+			super(RobotMap.SM_ANGLE_ENCODER_A[moduleNumber],
+					RobotMap.SM_ANGLE_ENCODER_B[moduleNumber],
+					RobotMap.SM_ANGLE_ENCODER_I[moduleNumber],
 					MODULE_REVERSED[moduleNumber]
 					);
 			this.setDistancePerPulse(ENCODER_CLICK_DEGREE_RATIO);

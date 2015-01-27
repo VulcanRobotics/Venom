@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1218.subsystem.swerve;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.usfirst.frc.team1218.math.Angle;
@@ -18,21 +19,20 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SwerveSystem extends Subsystem {
     
-    protected List<VulcanSwerveModule> module;
+    private List<VulcanSwerveModule> module;
     
     private final SerialPort navSerialPort;
     protected final IMUAdvanced navModule;
-	private static final double WHEEL_PERPENDICULAR_CONSTANT = 1 / Math.sqrt(2);
-	
-    protected double Module_Power = 0.5;
-	
+    
+	private static final double WHEEL_PERPENDICULAR_CONSTANT = 1 / Math.sqrt(2);//FIXME Update Constant
+		
     public SwerveSystem() {
-    	module = new ArrayList<VulcanSwerveModule>();
-    	module.add(new VulcanSwerveModule(0));
-    	module.add(new VulcanSwerveModule(1));
-    	module.add(new VulcanSwerveModule(2));
-    	module.add(new VulcanSwerveModule(3));
-    	
+    	module = new ArrayList<VulcanSwerveModule>(Arrays.asList(
+    				new VulcanSwerveModule(0),
+    				new VulcanSwerveModule(1),
+    				new VulcanSwerveModule(2),
+    				new VulcanSwerveModule(3)
+    			));	
 		navSerialPort = new SerialPort(57600, SerialPort.Port.kMXP);
 		navModule = new IMUAdvanced(navSerialPort);
         System.out.println("Swerve System Initialized");
@@ -43,7 +43,7 @@ public class SwerveSystem extends Subsystem {
     }
     
     public void syncDashboard() {
-    	module.stream().forEach(m -> m.publishValues());
+    	module.stream().forEach(m -> m.syncDashboard());
     	SmartDashboard.putNumber("RobotHeading", Angle.get360Angle(navModule.getYaw()));
 	}
      
