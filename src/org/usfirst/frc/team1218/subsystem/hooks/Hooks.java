@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- *
+ *@author afiol-mahon
  */
 public class Hooks extends Subsystem {
     private final Solenoid hookDeploy;

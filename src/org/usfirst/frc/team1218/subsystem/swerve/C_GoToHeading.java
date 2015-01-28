@@ -8,6 +8,11 @@ import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.command.Command;
 
+/**
+ * 
+ * @author afiol-mahon
+ *
+ */
 public class C_GoToHeading extends Command implements PIDOutput, PIDSource{//FIXME Tune PID
 
 	PIDController headingController;

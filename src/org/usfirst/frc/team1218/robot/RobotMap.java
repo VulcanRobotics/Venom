@@ -4,6 +4,7 @@ package org.usfirst.frc.team1218.robot;
  * to a variable name. This provides flexibility changing wiring, makes checking
  * the wiring easier and significantly reduces the number of magic numbers
  * floating around.
+ * @author afiol-mahon
  */
 public class RobotMap {
 	//Swerve Drive

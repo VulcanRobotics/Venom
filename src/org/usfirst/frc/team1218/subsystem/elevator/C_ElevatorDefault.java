@@ -6,7 +6,7 @@ import org.usfirst.frc.team1218.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- *
+ *@author afiol-mahon
  */
 public class C_ElevatorDefault extends Command {
 
@@ -18,7 +18,7 @@ public class C_ElevatorDefault extends Command {
     }
 
     protected void execute() {
-    	setToteIntakeByTrigger();
+    	setToteIntakeByButton();
     }
 
     protected boolean isFinished() {
@@ -33,7 +33,7 @@ public class C_ElevatorDefault extends Command {
     	end();
     }
     
-    private void setToteIntakeByTrigger() {
+    private void setToteIntakeByButton() {
     	if (OI.runToteIntake.get()) {
         	Robot.elevator.setIntake(Elevator.TOTE_INTAKE_POWER);
     	} else {

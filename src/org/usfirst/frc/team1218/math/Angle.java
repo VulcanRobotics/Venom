@@ -1,5 +1,8 @@
 package org.usfirst.frc.team1218.math;
 
+/**
+ * @author afiolmahon
+ */
 public class Angle {
 	
 	/**

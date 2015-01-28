@@ -3,6 +3,7 @@ package org.usfirst.frc.team1218.math;
 /**
  *
  * @author 1218
+ * @author afiolmahon
  */
 public class Vector {
     private double x;

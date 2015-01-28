@@ -1,5 +1,10 @@
 package org.usfirst.frc.team1218.math;
 
+/**
+ * 
+ * @author afiol-mahon
+ *
+ */
 public class Test_Angle {
 	/**
 	 * Test get360Angle()

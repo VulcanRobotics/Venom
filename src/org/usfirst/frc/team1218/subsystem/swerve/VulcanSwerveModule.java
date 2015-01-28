@@ -9,6 +9,9 @@ import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+/**
+ * @author afiol-mahon
+ */
 public class VulcanSwerveModule extends Object {
 	
 	protected final int moduleNumber; //Used to retrieve module specific offsets and modifiers

@@ -3,8 +3,6 @@ package org.usfirst.frc.team1218.robot;
 import org.usfirst.frc.team1218.math.Vector;
 import org.usfirst.frc.team1218.subsystem.elevator.C_SetElevatorPosition;
 import org.usfirst.frc.team1218.subsystem.elevator.Elevator;
-import org.usfirst.frc.team1218.subsystem.escalator.C_OpenGrabber;
-import org.usfirst.frc.team1218.subsystem.escalator.C_RunBinIntake;
 import org.usfirst.frc.team1218.subsystem.hooks.C_DeployHooks;
 import org.usfirst.frc.team1218.subsystem.swerve.C_ZeroRobotHeading;
 import org.usfirst.frc.team1218.subsystem.swerve.C_GoToHeading;
@@ -70,10 +68,8 @@ public class OI {
         	stepPosition.whenPressed(new C_SetElevatorPosition(Elevator.ELEVATOR_STEP_POSITION));
         	
         runBinIntake = new JoystickButton(operator, RobotMap.BUTTON_RUN_BIN_INTAKE);
-        	runBinIntake.whileHeld(new C_RunBinIntake());
         
         openGrabber = new JoystickButton(operator, RobotMap.BUTTON_OPEN_GRABBER);
-        	openGrabber.whileHeld(new C_OpenGrabber());
     }
     
     public static Vector getDriverLeftJoystickVector() {

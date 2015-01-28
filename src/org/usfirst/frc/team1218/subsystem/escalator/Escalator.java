@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- *
+ *@author afiol-mahon
  */
 public class Escalator extends Subsystem {
     
@@ -33,10 +33,8 @@ public class Escalator extends Subsystem {
 	public Escalator() {
 		dartL = new CANTalon(RobotMap.ESCALATOR_LEFT_DART);
 		initializeDart(dartL);
-		dartL.enableControl();
 		dartR = new CANTalon(RobotMap.ESCALATOR_RIGHT_DART);
 		initializeDart(dartR);
-		dartR.enableControl();
 		intakeL = new CANTalon(RobotMap.ELEVATOR_INTAKE_L);
 		intakeR = new CANTalon(RobotMap.ELEVATOR_INTAKE_R);
 		clamp = new Solenoid(RobotMap.ESCALATOR_CLAMP_SOLENOID);
@@ -65,11 +63,11 @@ public class Escalator extends Subsystem {
     
     /**
      * Set position of escalator
-     * @param setpoint value from 0-1023
+     * @param set value from 0-1023 if position, -1.0 to 1.0 if power.
      */
-    public void setSetpoint(int setpoint) {
-    	dartL.set(setpoint);
-    	dartR.set(setpoint);
+    public void setDarts(double set) {
+    	dartL.set(set);
+    	dartR.set(set);
     }
     
     /**
@@ -83,7 +81,18 @@ public class Escalator extends Subsystem {
     	dartController.enableBrakeMode(true);
     	dartController.setPID(DART_P, DART_I, DART_D);
     	dartController.setFeedbackDevice(CANTalon.FeedbackDevice.AnalogPot);
-    	dartController.changeControlMode(CANTalon.ControlMode.Position);
+    }
+    
+    protected void dartManualMode() {
+    	dartL.changeControlMode(CANTalon.ControlMode.PercentVbus);
+    	dartR.changeControlMode(CANTalon.ControlMode.PercentVbus);
+    }
+    
+    private void dartPositionMode() {
+    	dartL.changeControlMode(CANTalon.ControlMode.Position);
+    	dartL.set(dartL.get());
+    	dartR.changeControlMode(CANTalon.ControlMode.Position);
+    	dartR.set(dartR.get());
     }
     
     public void syncDashboard() {
