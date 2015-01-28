@@ -5,6 +5,7 @@ import org.usfirst.frc.team1218.robot.RobotMap;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -39,6 +40,7 @@ public class Escalator extends Subsystem {
 		intakeL = new CANTalon(RobotMap.ELEVATOR_INTAKE_L);
 		intakeR = new CANTalon(RobotMap.ELEVATOR_INTAKE_R);
 		clamp = new Solenoid(RobotMap.ESCALATOR_CLAMP_SOLENOID);
+		System.out.println("Escalator Initialized");
 	}
 	
     public void initDefaultCommand() {
@@ -82,6 +84,13 @@ public class Escalator extends Subsystem {
     	dartController.setPID(DART_P, DART_I, DART_D);
     	dartController.setFeedbackDevice(CANTalon.FeedbackDevice.AnalogPot);
     	dartController.changeControlMode(CANTalon.ControlMode.Position);
-    }    
+    }
+    
+    public void syncDashboard() {
+    	SmartDashboard.putNumber("Escalator_Left_Dart_Setpoint", dartL.getSetpoint());
+    	SmartDashboard.putNumber("Escalator_Right_Dart_Setpoint", dartR.getSetpoint());
+    	SmartDashboard.putBoolean("Escalator_Clamps_Open", clamp.get());
+    	SmartDashboard.putNumber("Escalator_Intake_Power", intakeL.get());
+    }
 }
 

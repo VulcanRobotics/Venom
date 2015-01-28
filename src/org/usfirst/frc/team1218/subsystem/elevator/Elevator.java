@@ -4,6 +4,7 @@ import org.usfirst.frc.team1218.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -20,9 +21,11 @@ public class Elevator extends Subsystem {
 	private static final double ELEVATOR_I = 0.0;
 	private static final double ELEVATOR_D = 0.0;
 	
-	protected static final int ELEVATOR_DROP_POSITION = 200;
-	protected static final int ELEVATOR_RAISE_POSITION = 700;
-	protected static final int ELEVATOR_STEP_POSITION = 500;
+	public static final int ELEVATOR_DROP_POSITION = 200;
+	public static final int ELEVATOR_RAISE_POSITION = 700;
+	public static final int ELEVATOR_STEP_POSITION = 500;
+	
+	public static final double TOTE_INTAKE_POWER = 1.0;
 	
     public void initDefaultCommand() {
         setDefaultCommand(new C_ElevatorDefault());
@@ -67,4 +70,9 @@ public class Elevator extends Subsystem {
     	slave.set(master.getDeviceID());
     	master.enableControl();
 	}
+    
+    public void syncDashboard() {
+    	SmartDashboard.putNumber("Elevator_Position", liftMaster.getSetpoint());
+    	SmartDashboard.putNumber("Intake_Power", intakeL.getSetpoint());
+    }
 }

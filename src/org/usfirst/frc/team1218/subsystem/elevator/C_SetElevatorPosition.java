@@ -7,26 +7,29 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class C_RunToteIntake extends Command {
-
-    public C_RunToteIntake() {
+public class C_SetElevatorPosition extends Command {
+	
+	private final int newSetpoint;
+	
+    public C_SetElevatorPosition(int newSetpoint) {
         requires(Robot.elevator);
+        this.newSetpoint = newSetpoint;
     }
-
+    
+    
     protected void initialize() {
-    	Robot.elevator.setIntake(1.0);
-    	System.out.println("Tote Rollers Enabled");
+    	Robot.elevator.setElevatorSetpoint(newSetpoint);
+    	System.out.println("Elevator position set to" + newSetpoint);
     }
 
     protected void execute() {
     }
 
     protected boolean isFinished() {
-        return false;
+        return true;
     }
 
     protected void end() {
-    	Robot.elevator.setIntake(0.0);
     }
 
     protected void interrupted() {

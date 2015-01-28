@@ -78,6 +78,9 @@ public class Robot extends IterativeRobot {
     public void teleopPeriodic() {
     	Scheduler.getInstance().run();
     	Robot.swerveSystem.syncDashboard();
+    	Robot.elevator.syncDashboard();
+    	Robot.escalator.syncDashboard();
+    	Robot.hooks.syncDashboard();
     }
     
     /**

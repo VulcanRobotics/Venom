@@ -25,7 +25,18 @@ public class RobotMap {
 	public static final int ESCALATOR_CLAMP_SOLENOID = -1;
 	//Hooks
 	public static final int HOOK_DEPLOY_SOLENOID = -1;
-	//Control
+	//Driver Mapping
 	public static final int DRIVER_JOYSTICK = 0;
+	public static final int BUTTON_RESET_GYRO = OI.ButtonType.B;
+	public static final int BUTTON_MAINTAIN_HEADING = OI.ButtonType.L1;
+	//Operator Mapping
 	public static final int OPERATOR_JOYSTICK = 1;
+	public static final int BUTTON_LOWER_HOOKS = 0;
+	public static final int BUTTON_RAISE_HOOKS = 0;
+	public static final int BUTTON_RUN_TOTE_INTAKE = 0;
+	public static final int BUTTON_DROP_STACK = 0;
+	public static final int BUTTON_RAISE_STACK = 0;
+	public static final int BUTTON_STEP_POSITION = 0;
+	public static final int BUTTON_RUN_BIN_INTAKE = 0;
+	public static final int BUTTON_OPEN_GRABBER = 0;
 }

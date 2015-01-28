@@ -1,10 +1,8 @@
 package org.usfirst.frc.team1218.robot;
 
 import org.usfirst.frc.team1218.math.Vector;
-import org.usfirst.frc.team1218.subsystem.elevator.C_DropStack;
-import org.usfirst.frc.team1218.subsystem.elevator.C_GoToStepPosition;
-import org.usfirst.frc.team1218.subsystem.elevator.C_RaiseStack;
-import org.usfirst.frc.team1218.subsystem.elevator.C_RunToteIntake;
+import org.usfirst.frc.team1218.subsystem.elevator.C_SetElevatorPosition;
+import org.usfirst.frc.team1218.subsystem.elevator.Elevator;
 import org.usfirst.frc.team1218.subsystem.escalator.C_OpenGrabber;
 import org.usfirst.frc.team1218.subsystem.escalator.C_RunBinIntake;
 import org.usfirst.frc.team1218.subsystem.hooks.C_DeployHooks;
@@ -45,37 +43,36 @@ public class OI {
     	//Driver
     	driver = new Joystick(RobotMap.DRIVER_JOYSTICK);
     	
-        resetGyro = new JoystickButton(driver, ButtonType.B);
+        resetGyro = new JoystickButton(driver, RobotMap.BUTTON_RESET_GYRO);
         	resetGyro.whenPressed(new C_ZeroRobotHeading());
         
-        maintainHeading = new JoystickButton(driver, ButtonType.L1);
+        maintainHeading = new JoystickButton(driver, RobotMap.BUTTON_MAINTAIN_HEADING);
         	maintainHeading.whileHeld(new C_GoToHeading());
         
         //Operator
         operator = new Joystick(RobotMap.OPERATOR_JOYSTICK);
         
-        lowerHooks = new JoystickButton(operator, 0);//TODO assign
+        lowerHooks = new JoystickButton(operator, RobotMap.BUTTON_LOWER_HOOKS);
         	lowerHooks.whenPressed(new C_DeployHooks(true));
         	
-        raiseHooks = new JoystickButton(operator, 0);//TODO assign
+        raiseHooks = new JoystickButton(operator, RobotMap.BUTTON_RAISE_HOOKS);
         	raiseHooks.whenPressed(new C_DeployHooks(false));
         	
-        runToteIntake = new JoystickButton(operator, 0);//TODO assign
-        	runToteIntake.whileHeld(new C_RunToteIntake());
+        runToteIntake = new JoystickButton(operator, RobotMap.BUTTON_RUN_TOTE_INTAKE);
         	
-        dropStack = new JoystickButton(operator, 0);//TODO assign
-        	dropStack.whenPressed(new C_DropStack());
+        dropStack = new JoystickButton(operator, RobotMap.BUTTON_DROP_STACK);
+        	dropStack.whenPressed(new C_SetElevatorPosition(Elevator.ELEVATOR_DROP_POSITION));
         	
-        raiseStack = new JoystickButton(operator, 0);//TODO assign
-        	raiseStack.whenPressed(new C_RaiseStack());
+        raiseStack = new JoystickButton(operator, RobotMap.BUTTON_RAISE_STACK);
+        	raiseStack.whenPressed(new C_SetElevatorPosition(Elevator.ELEVATOR_RAISE_POSITION));
         	
-        stepPosition = new JoystickButton(operator, 0);//TODO assign
-        	stepPosition.whenPressed(new C_GoToStepPosition());
+        stepPosition = new JoystickButton(operator, RobotMap.BUTTON_STEP_POSITION);
+        	stepPosition.whenPressed(new C_SetElevatorPosition(Elevator.ELEVATOR_STEP_POSITION));
         	
-        runBinIntake = new JoystickButton(operator, 0);//TODO assign
+        runBinIntake = new JoystickButton(operator, RobotMap.BUTTON_RUN_BIN_INTAKE);
         	runBinIntake.whileHeld(new C_RunBinIntake());
         
-        openGrabber = new JoystickButton(operator, 0);//TODO assign
+        openGrabber = new JoystickButton(operator, RobotMap.BUTTON_OPEN_GRABBER);
         	openGrabber.whileHeld(new C_OpenGrabber());
     }
     
