@@ -7,13 +7,15 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class C_ElevatorDefault extends Command {
+public class C_RunToteIntake extends Command {
 
-    public C_ElevatorDefault() {
+    public C_RunToteIntake() {
         requires(Robot.elevator);
     }
 
     protected void initialize() {
+    	Robot.elevator.setIntake(1.0);
+    	System.out.println("Tote Rollers Enabled");
     }
 
     protected void execute() {
@@ -24,6 +26,7 @@ public class C_ElevatorDefault extends Command {
     }
 
     protected void end() {
+    	Robot.elevator.setIntake(0.0);
     }
 
     protected void interrupted() {

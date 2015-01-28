@@ -1,6 +1,9 @@
 
 package org.usfirst.frc.team1218.robot;
 
+import org.usfirst.frc.team1218.subsystem.elevator.Elevator;
+import org.usfirst.frc.team1218.subsystem.escalator.Escalator;
+import org.usfirst.frc.team1218.subsystem.hooks.Hooks;
 import org.usfirst.frc.team1218.subsystem.swerve.SwerveSystem;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -18,6 +21,9 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 public class Robot extends IterativeRobot {
 	
 	public static SwerveSystem swerveSystem;
+	public static Escalator escalator;
+	public static Elevator elevator;
+	public static Hooks hooks;
 	public static OI oi;
 	
     Command autonomousCommand;
@@ -28,7 +34,11 @@ public class Robot extends IterativeRobot {
      */
     public void robotInit() {
     	swerveSystem = new SwerveSystem();
+    	escalator = new Escalator();
+    	elevator = new Elevator();
+    	hooks = new Hooks();
 		oi = new OI();
+		
         //instantiate the command used for the autonomous period
         autonomousCommand = new C_AutonCommand();
         System.out.println("Robot Initialized");

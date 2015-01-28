@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.command.Command;
 
-public class C_GoToHeading extends Command implements PIDOutput, PIDSource{
+public class C_GoToHeading extends Command implements PIDOutput, PIDSource{//FIXME Tune PID
 
 	PIDController headingController;
 	
@@ -35,10 +35,7 @@ public class C_GoToHeading extends Command implements PIDOutput, PIDSource{
 
 	@Override
 	protected void execute() {
-		headingController.setPID(0.001, 0.001, 0.00);
-		if (OI.getRightJoystickVector().getMagnitude() > 0.2) {
-			headingController.setSetpoint(0);
-		}
+		headingController.setSetpoint(0);
 	}
 
 	@Override
@@ -59,7 +56,7 @@ public class C_GoToHeading extends Command implements PIDOutput, PIDSource{
 	@Override
 	public void pidWrite(double output) {
 		Robot.swerveSystem.swerveDrive(
-				OI.getLeftJoystickVector(),
+				OI.getDriverLeftJoystickVector(),
 				output,
 				Robot.swerveSystem.navModule.getYaw()
 				);

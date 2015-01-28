@@ -1,5 +1,7 @@
 package org.usfirst.frc.team1218.subsystem.hooks;
 
+import org.usfirst.frc.team1218.robot.Robot;
+
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
@@ -8,8 +10,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class C_HooksDefault extends Command {
 
     public C_HooksDefault() {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
+        requires(Robot.hooks);
     }
 
     // Called just before this Command runs the first time

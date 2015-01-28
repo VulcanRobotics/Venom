@@ -1,6 +1,13 @@
 package org.usfirst.frc.team1218.robot;
 
 import org.usfirst.frc.team1218.math.Vector;
+import org.usfirst.frc.team1218.subsystem.elevator.C_DropStack;
+import org.usfirst.frc.team1218.subsystem.elevator.C_GoToStepPosition;
+import org.usfirst.frc.team1218.subsystem.elevator.C_RaiseStack;
+import org.usfirst.frc.team1218.subsystem.elevator.C_RunToteIntake;
+import org.usfirst.frc.team1218.subsystem.escalator.C_OpenGrabber;
+import org.usfirst.frc.team1218.subsystem.escalator.C_RunBinIntake;
+import org.usfirst.frc.team1218.subsystem.hooks.C_DeployHooks;
 import org.usfirst.frc.team1218.subsystem.swerve.C_ZeroRobotHeading;
 import org.usfirst.frc.team1218.subsystem.swerve.C_GoToHeading;
 
@@ -16,34 +23,75 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
  */
 public class OI {
 	
-	public static Joystick xbox;
-    
-	public static Button cancelResetModules;
+    //Driver
+	public static Joystick driver;
 	public static Button resetGyro;
 	public static Button maintainHeading;
 	
+	//Operator
+	public static Joystick operator;
+	public static Button lowerHooks;
+	public static Button raiseHooks;
+	
+	public static Button runToteIntake;
+	public static Button dropStack;
+	public static Button raiseStack;
+	public static Button stepPosition;
+	
+	public static Button runBinIntake;
+	public static Button openGrabber;
+	
     public OI() {
-        xbox = new Joystick(RobotMap.JOYSTICK_1);
-        cancelResetModules = new JoystickButton(xbox, ButtonType.X);
-        resetGyro = new JoystickButton(xbox, ButtonType.B);
-        resetGyro.whenPressed(new C_ZeroRobotHeading());
-        maintainHeading = new JoystickButton(xbox, ButtonType.L1);
-        maintainHeading.whileHeld(new C_GoToHeading());
+    	//Driver
+    	driver = new Joystick(RobotMap.DRIVER_JOYSTICK);
+    	
+        resetGyro = new JoystickButton(driver, ButtonType.B);
+        	resetGyro.whenPressed(new C_ZeroRobotHeading());
+        
+        maintainHeading = new JoystickButton(driver, ButtonType.L1);
+        	maintainHeading.whileHeld(new C_GoToHeading());
+        
+        //Operator
+        operator = new Joystick(RobotMap.OPERATOR_JOYSTICK);
+        
+        lowerHooks = new JoystickButton(operator, 0);//TODO assign
+        	lowerHooks.whenPressed(new C_DeployHooks(true));
+        	
+        raiseHooks = new JoystickButton(operator, 0);//TODO assign
+        	raiseHooks.whenPressed(new C_DeployHooks(false));
+        	
+        runToteIntake = new JoystickButton(operator, 0);//TODO assign
+        	runToteIntake.whileHeld(new C_RunToteIntake());
+        	
+        dropStack = new JoystickButton(operator, 0);//TODO assign
+        	dropStack.whenPressed(new C_DropStack());
+        	
+        raiseStack = new JoystickButton(operator, 0);//TODO assign
+        	raiseStack.whenPressed(new C_RaiseStack());
+        	
+        stepPosition = new JoystickButton(operator, 0);//TODO assign
+        	stepPosition.whenPressed(new C_GoToStepPosition());
+        	
+        runBinIntake = new JoystickButton(operator, 0);//TODO assign
+        	runBinIntake.whileHeld(new C_RunBinIntake());
+        
+        openGrabber = new JoystickButton(operator, 0);//TODO assign
+        	openGrabber.whileHeld(new C_OpenGrabber());
     }
     
-    public static Vector getLeftJoystickVector() {
-    	return new Vector(xbox.getRawAxis(Axis.LEFT_X), -xbox.getRawAxis(Axis.LEFT_Y));
+    public static Vector getDriverLeftJoystickVector() {
+    	return new Vector(driver.getRawAxis(Axis.LEFT_X), -driver.getRawAxis(Axis.LEFT_Y));
     }
     
-    public static Vector getRightJoystickVector() {
-    	return new Vector(xbox.getRawAxis(Axis.RIGHT_X), -xbox.getRawAxis(Axis.RIGHT_Y));
+    public static Vector getDriverRightJoystickVector() {
+    	return new Vector(driver.getRawAxis(Axis.RIGHT_X), -driver.getRawAxis(Axis.RIGHT_Y));
     }
     
-    public static double getRightX() {
-        return xbox.getRawAxis(Axis.RIGHT_X);
+    public static double getDriverRightX() {
+        return driver.getRawAxis(Axis.RIGHT_X);
     }
-    public static double getRightY() {
-        return -xbox.getRawAxis(Axis.RIGHT_Y);
+    public static double getDriverRightY() {
+        return -driver.getRawAxis(Axis.RIGHT_Y);
     }
 	
 	public static class Axis {

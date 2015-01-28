@@ -26,5 +26,6 @@ public class RobotMap {
 	//Hooks
 	public static final int HOOK_DEPLOY_SOLENOID = -1;
 	//Control
-    public static final int JOYSTICK_1 = 0;
+	public static final int DRIVER_JOYSTICK = 0;
+	public static final int OPERATOR_JOYSTICK = 1;
 }

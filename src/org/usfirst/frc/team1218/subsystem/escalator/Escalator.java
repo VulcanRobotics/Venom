@@ -18,14 +18,24 @@ public class Escalator extends Subsystem {
 	private final CANTalon intakeL;
 	private final CANTalon intakeR;
 	
-	private final CANTalon dartL;
-	private final CANTalon dartR;
+	protected final CANTalon dartL;
+	protected final CANTalon dartR;
+	
+	private static final double DART_P = 0.01;
+	private static final double DART_I = 0.0;
+	private static final double DART_D = 0.0;
+	
+	protected static final int ESCALATOR_HIGH_POSITION = 700;
+	protected static final int ESCALATOR_MIDDLE_POSITION = 500;
+	protected static final int ESCALATOR_LOW_POSITION = 300;
 	
 	public Escalator() {
 		dartL = new CANTalon(RobotMap.ESCALATOR_LEFT_DART);
 		initializeDart(dartL);
+		dartL.enableControl();
 		dartR = new CANTalon(RobotMap.ESCALATOR_RIGHT_DART);
 		initializeDart(dartR);
+		dartR.enableControl();
 		intakeL = new CANTalon(RobotMap.ELEVATOR_INTAKE_L);
 		intakeR = new CANTalon(RobotMap.ELEVATOR_INTAKE_R);
 		clamp = new Solenoid(RobotMap.ESCALATOR_CLAMP_SOLENOID);
@@ -36,11 +46,11 @@ public class Escalator extends Subsystem {
     }
     
     /**
-     * Close Bin Grabber
-     * @param enabled true for closed
+     * Open Bin Grabber
+     * @param opened true for open grabber
      */
-    public void setGrabber(boolean enabled) {//TODO verify that true is closed clamps
-    	clamp.set(enabled);
+    public void openGrabber(boolean opened) {//TODO verify that true is open clamps
+    	clamp.set(opened);
     }
     
     /**
@@ -52,6 +62,15 @@ public class Escalator extends Subsystem {
     }
     
     /**
+     * Set position of escalator
+     * @param setpoint value from 0-1023
+     */
+    public void setSetpoint(int setpoint) {
+    	dartL.set(setpoint);
+    	dartR.set(setpoint);
+    }
+    
+    /**
      * Configures motor controller for use with dart linear actuator
      * @param dartController dart to be configured
      */
@@ -60,8 +79,9 @@ public class Escalator extends Subsystem {
     	dartController.ConfigFwdLimitSwitchNormallyOpen(false);
     	dartController.ConfigRevLimitSwitchNormallyOpen(false);
     	dartController.enableBrakeMode(true);
+    	dartController.setPID(DART_P, DART_I, DART_D);
     	dartController.setFeedbackDevice(CANTalon.FeedbackDevice.AnalogPot);
     	dartController.changeControlMode(CANTalon.ControlMode.Position);
-    }
+    }    
 }
 

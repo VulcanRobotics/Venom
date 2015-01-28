@@ -7,13 +7,15 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class C_ElevatorDefault extends Command {
+public class C_GoToStepPosition extends Command {
 
-    public C_ElevatorDefault() {
+    public C_GoToStepPosition() {
         requires(Robot.elevator);
     }
 
     protected void initialize() {
+    	Robot.elevator.setElevatorSetpoint(Elevator.ELEVATOR_STEP_POSITION);
+    	System.out.println("Elevator set to step position");
     }
 
     protected void execute() {

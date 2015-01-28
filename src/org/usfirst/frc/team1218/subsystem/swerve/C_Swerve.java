@@ -18,8 +18,8 @@ public class C_Swerve extends Command {
 	@Override
 	protected void execute() {
 		Robot.swerveSystem.swerveDrive(
-				OI.getLeftJoystickVector(),
-				Math.pow(OI.getRightX(), 3),
+				OI.getDriverLeftJoystickVector(),
+				Math.pow(OI.getDriverRightX(), 3),
 				Robot.swerveSystem.navModule.getYaw()
 				);
 	}
