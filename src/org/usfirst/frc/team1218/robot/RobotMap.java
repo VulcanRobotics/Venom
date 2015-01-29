@@ -41,14 +41,14 @@ public class RobotMap {
 	public static final int BUTTON_LOWER_HOOKS = 7;
 	public static final int BUTTON_RAISE_HOOKS = 9;
 	
-	public static final int BUTTON_RUN_TOTE_INTAKE = 3;
-	public static final int BUTTON_DROP_STACK = 4;
-	public static final int BUTTON_RAISE_STACK = 6;
-	public static final int BUTTON_STEP_POSITION = 5;
+	public static final int BUTTON_ELEVATOR_RUN_TOTE_INTAKE = 3;
+	public static final int BUTTON_ELEVATOR_DROP_STACK = 4;
+	public static final int BUTTON_ELEVATOR_RAISE_STACK = 6;
+	public static final int BUTTON_ELEVATOR_STEP_POSITION = 5;
 	
-	public static final int BUTTON_RUN_BIN_INTAKE = 2;
-	public static final int BUTTON_OPEN_GRABBER = 1;
 	public static final int AXIS_ESCALATOR_CONTROL = 1;
+	public static final int BUTTON_ESCALATOR_RUN_BIN_INTAKE = 2;
+	public static final int BUTTON_ESCALATOR_OPEN_GRABBER = 1;
 	public static final int BUTTON_ESCALATOR_HIGH_POSITION = 8;
 	public static final int BUTTON_ESCALATOR_MIDDLE_POSITION = 10;
 	public static final int BUTTON_ESCALATOR_LOW_POSITION = 12;

@@ -25,7 +25,7 @@ public class Elevator extends Subsystem {
 	public static final int ELEVATOR_RAISE_POSITION = 700;
 	public static final int ELEVATOR_STEP_POSITION = 500;
 	
-	public static final double TOTE_INTAKE_POWER = 1.0;
+	protected static final double TOTE_INTAKE_POWER = 1.0;
 	
     public void initDefaultCommand() {
         setDefaultCommand(new C_ElevatorDefault());
@@ -43,7 +43,7 @@ public class Elevator extends Subsystem {
      * Set state for intake motors
      * @param power positive value for intake and negative value for output
      */
-    public void setIntake(double power) {//TODO Verify direction is correct
+    public void setIntakePower(double power) {//TODO Verify direction is correct
     	intakeL.set(power);
     	intakeR.set(-power);
     }

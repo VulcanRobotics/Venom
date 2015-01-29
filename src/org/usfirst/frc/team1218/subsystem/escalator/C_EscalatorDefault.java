@@ -20,7 +20,7 @@ public class C_EscalatorDefault extends Command {
     }
 
     protected void execute() {
-    	joystickEscalatorControl();
+    	joystickEscalatorControl(OI.getEscalatorControlAxis());
     	setBinIntakeByButton();
     	setGrabberByButton();
     }
@@ -40,24 +40,32 @@ public class C_EscalatorDefault extends Command {
     	end();
     }
     
-    private void joystickEscalatorControl() {
-    	double pow = OI.getEscalatorControlAxis();
-    	if (pow > 0.1) Robot.escalator.setDarts(pow);
+    /**
+     * Method binds a joystick axis to escalator motor
+     */
+    private void joystickEscalatorControl(double pow) {
+    	if (pow > 0.1) {
+    		Robot.escalator.setDarts(pow);
+    	} else {
+    		Robot.escalator.setDarts(0.0);
+    	}
     }
     
+    /**
+     * Method binds button to intake control
+     */
     private void setBinIntakeByButton() {
-    	if (OI.runBinIntake.get()) {
+    	if (OI.escalatorRunBinIntake.get()) {
     		Robot.escalator.setIntake(1.0);
     	} else {
         	Robot.escalator.setIntake(0.0);
     	}
     }
     
+    /**
+     * Method binds button to grabber control
+     */
     private void setGrabberByButton() {
-    	if (OI.openGrabber.get()) {
-    		Robot.escalator.openGrabber(true);
-    	} else {
-    		Robot.escalator.openGrabber(false);
-    	}
+    	Robot.escalator.openGrabber(OI.escalatorOpenGrabber.get());
     }
 }

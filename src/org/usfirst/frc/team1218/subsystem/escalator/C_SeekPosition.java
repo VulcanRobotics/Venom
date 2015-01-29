@@ -27,7 +27,8 @@ public class C_SeekPosition extends Command {
     }
 
     protected boolean isFinished() {
-        return false;
+        //Relies on OI Button to end command when released
+    	return false;
     }
 
     protected void end() {

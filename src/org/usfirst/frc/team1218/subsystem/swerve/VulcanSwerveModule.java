@@ -1,8 +1,8 @@
 package org.usfirst.frc.team1218.subsystem.swerve;
 
-import org.usfirst.frc.team1218.math.Angle;
-import org.usfirst.frc.team1218.math.Vector;
 import org.usfirst.frc.team1218.robot.RobotMap;
+import org.usfirst.frc.team1218.subsystem.swerve.math.Angle;
+import org.usfirst.frc.team1218.subsystem.swerve.math.Vector;
 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDController;

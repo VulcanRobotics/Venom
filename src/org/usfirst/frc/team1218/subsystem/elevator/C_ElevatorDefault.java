@@ -26,7 +26,7 @@ public class C_ElevatorDefault extends Command {
     }
 
     protected void end() {
-    	Robot.elevator.setIntake(0.0);
+    	Robot.elevator.setIntakePower(0.0);
     }
 
     protected void interrupted() {
@@ -34,10 +34,10 @@ public class C_ElevatorDefault extends Command {
     }
     
     private void setToteIntakeByButton() {
-    	if (OI.runToteIntake.get()) {
-        	Robot.elevator.setIntake(Elevator.TOTE_INTAKE_POWER);
+    	if (OI.elevatorRunToteIntake.get()) {
+        	Robot.elevator.setIntakePower(Elevator.TOTE_INTAKE_POWER);
     	} else {
-        	Robot.elevator.setIntake(0.0);
+        	Robot.elevator.setIntakePower(0.0);
     	}
     }
 }

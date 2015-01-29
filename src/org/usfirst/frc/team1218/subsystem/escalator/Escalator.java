@@ -110,6 +110,8 @@ public class Escalator extends Subsystem {
     	SmartDashboard.putNumber("Escalator_Right_Dart_Setpoint", dartR.getSetpoint());
     	SmartDashboard.putBoolean("Escalator_Clamps_Open", clamp.get());
     	SmartDashboard.putNumber("Escalator_Intake_Power", intakeL.get());
+    	SmartDashboard.putBoolean("Escalator_Manual_Control", (dartL.getControlMode() == CANTalon.ControlMode.PercentVbus));
+    	SmartDashboard.putBoolean("Escalator_Position_Control", (dartL.getControlMode() == CANTalon.ControlMode.Position));    	
     }
 }
 

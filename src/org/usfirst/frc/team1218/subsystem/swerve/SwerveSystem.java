@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.usfirst.frc.team1218.math.Angle;
-import org.usfirst.frc.team1218.math.Vector;
+import org.usfirst.frc.team1218.subsystem.swerve.math.Angle;
+import org.usfirst.frc.team1218.subsystem.swerve.math.Vector;
 
 import com.kauailabs.nav6.frc.IMUAdvanced;
 
