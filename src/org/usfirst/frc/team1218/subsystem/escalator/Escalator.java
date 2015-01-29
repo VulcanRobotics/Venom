@@ -26,9 +26,9 @@ public class Escalator extends Subsystem {
 	private static final double DART_I = 0.0;
 	private static final double DART_D = 0.0;
 	
-	protected static final int ESCALATOR_HIGH_POSITION = 700;
-	protected static final int ESCALATOR_MIDDLE_POSITION = 500;
-	protected static final int ESCALATOR_LOW_POSITION = 300;
+	public static final int ESCALATOR_HIGH_POSITION = 700;
+	public static final int ESCALATOR_MIDDLE_POSITION = 500;
+	public static final int ESCALATOR_LOW_POSITION = 300;
 	
 	public Escalator() {
 		dartL = new CANTalon(RobotMap.ESCALATOR_LEFT_DART);
@@ -70,15 +70,6 @@ public class Escalator extends Subsystem {
     	dartR.set(set);
     }
     
-    public void setDartSetpoint(double setpoint) {
-    	if ((dartL.getControlMode() == CANTalon.ControlMode.Position) && (dartR.getControlMode() == CANTalon.ControlMode.Position)) {
-    		dartL.set(setpoint);
-    		dartR.set(setpoint);
-    	} else {
-    		System.out.println("Warning: Position Written to Escalator while talon is in Power Mode");
-    	}
-    }
-    
     /**
      * Configures motor controller for use with dart linear actuator
      * @param dartController dart to be configured
@@ -97,11 +88,21 @@ public class Escalator extends Subsystem {
     	dartR.changeControlMode(CANTalon.ControlMode.PercentVbus);
     }
     
-    private void dartPositionMode() {
+    protected void dartPositionMode() {
     	dartL.changeControlMode(CANTalon.ControlMode.Position);
     	dartL.set(dartL.get());
     	dartR.changeControlMode(CANTalon.ControlMode.Position);
     	dartR.set(dartR.get());
+    }
+    
+    protected void disableDarts() {
+    	dartL.disableControl();
+    	dartL.disableControl();
+    }
+    
+    protected void enableDarts() {
+    	dartL.enableControl();
+    	dartR.enableControl();
     }
     
     public void syncDashboard() {

@@ -16,6 +16,7 @@ public class C_EscalatorDefault extends Command {
 
     protected void initialize() {
     	Robot.escalator.dartManualMode();
+    	Robot.escalator.enableDarts();
     }
 
     protected void execute() {
@@ -32,6 +33,7 @@ public class C_EscalatorDefault extends Command {
     	Robot.escalator.setDarts(0.0);
     	Robot.escalator.setIntake(0.0);
 		Robot.escalator.openGrabber(false);
+		Robot.escalator.disableDarts();
     }
     
     protected void interrupted() {
@@ -40,9 +42,7 @@ public class C_EscalatorDefault extends Command {
     
     private void joystickEscalatorControl() {
     	double pow = OI.getEscalatorControlAxis();
-    	if (pow > 0.1) {
-    		Robot.escalator.setDarts(pow);
-    	}
+    	if (pow > 0.1) Robot.escalator.setDarts(pow);
     }
     
     private void setBinIntakeByButton() {
