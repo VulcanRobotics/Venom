@@ -70,6 +70,15 @@ public class Escalator extends Subsystem {
     	dartR.set(set);
     }
     
+    public void setDartSetpoint(double setpoint) {
+    	if ((dartL.getControlMode() == CANTalon.ControlMode.Position) && (dartR.getControlMode() == CANTalon.ControlMode.Position)) {
+    		dartL.set(setpoint);
+    		dartR.set(setpoint);
+    	} else {
+    		System.out.println("Warning: Position Written to Escalator while talon is in Power Mode");
+    	}
+    }
+    
     /**
      * Configures motor controller for use with dart linear actuator
      * @param dartController dart to be configured

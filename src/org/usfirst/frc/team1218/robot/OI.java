@@ -86,6 +86,10 @@ public class OI {
     public static double getDriverRightY() {
         return -driver.getRawAxis(Axis.RIGHT_Y);
     }
+    
+    public static double getEscalatorControlAxis() {
+		return operator.getRawAxis(RobotMap.AXIS_ESCALATOR_CONTROL);
+    }
 	
 	public static class Axis {
 	    public final static int LEFT_X = 0;

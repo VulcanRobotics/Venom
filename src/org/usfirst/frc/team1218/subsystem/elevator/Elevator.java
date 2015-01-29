@@ -68,7 +68,6 @@ public class Elevator extends Subsystem {
     	slave.changeControlMode(CANTalon.ControlMode.Follower);
     	slave.reverseOutput(true);
     	slave.set(master.getDeviceID());
-    	master.enableControl();
 	}
     
     public void syncDashboard() {

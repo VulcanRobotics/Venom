@@ -19,7 +19,7 @@ public class C_EscalatorDefault extends Command {
     }
 
     protected void execute() {
-    	//TODO follow operator joysticks
+    	joystickEscalatorControl();
     	setBinIntakeByButton();
     	setGrabberByButton();
     }
@@ -33,9 +33,16 @@ public class C_EscalatorDefault extends Command {
     	Robot.escalator.setIntake(0.0);
 		Robot.escalator.openGrabber(false);
     }
-
+    
     protected void interrupted() {
     	end();
+    }
+    
+    private void joystickEscalatorControl() {
+    	double pow = OI.getEscalatorControlAxis();
+    	if (pow > 0.1) {
+    		Robot.escalator.setDarts(pow);
+    	}
     }
     
     private void setBinIntakeByButton() {

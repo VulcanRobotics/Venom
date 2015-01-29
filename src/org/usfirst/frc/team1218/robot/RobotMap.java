@@ -40,4 +40,5 @@ public class RobotMap {
 	public static final int BUTTON_STEP_POSITION = 0;
 	public static final int BUTTON_RUN_BIN_INTAKE = 0;
 	public static final int BUTTON_OPEN_GRABBER = 0;
+	public static final int AXIS_ESCALATOR_CONTROL = 0;
 }
