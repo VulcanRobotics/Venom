@@ -25,10 +25,10 @@ public class RobotMap {
 	public static final int ESCALATOR_RIGHT_DART = -1;
 	public static final int ESCALATOR_INTAKE_L = -1;
 	public static final int ESCALATOR_INTAKE_R = -1;
-	public static final int ESCALATOR_CLAMP_SOLENOID = -1;
+	public static final int ESCALATOR_INTAKE_SOLENOID = 0;
 	
 	//Hooks
-	public static final int HOOK_DEPLOY_SOLENOID = -1;
+	public static final int HOOK_DEPLOY_SOLENOID = 1;
 	
 	//Driver Mapping
 	public static final int DRIVER_JOYSTICK = 0;

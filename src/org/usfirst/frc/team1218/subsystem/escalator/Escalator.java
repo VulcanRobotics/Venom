@@ -37,7 +37,7 @@ public class Escalator extends Subsystem {
 		initializeDart(dartR);
 		intakeL = new CANTalon(RobotMap.ELEVATOR_INTAKE_L);
 		intakeR = new CANTalon(RobotMap.ELEVATOR_INTAKE_R);
-		clamp = new Solenoid(RobotMap.ESCALATOR_CLAMP_SOLENOID);
+		clamp = new Solenoid(RobotMap.ESCALATOR_INTAKE_SOLENOID);
 		System.out.println("Escalator Initialized");
 	}
 	
