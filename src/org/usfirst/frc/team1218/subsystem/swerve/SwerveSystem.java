@@ -19,19 +19,20 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SwerveSystem extends Subsystem {
     
-    private List<VulcanSwerveModule> module;
+    private List<EmbeddedSwerveModule> module;
     
     private final SerialPort navSerialPort;
     protected final IMUAdvanced navModule;
+    protected EncoderIndexer indexer = new EncoderIndexer(); //Subsystem manages constant encoder indexing
     
 	private static final double WHEEL_PERPENDICULAR_CONSTANT = 1 / Math.sqrt(2);//FIXME Update Constant
-		
+	
     public SwerveSystem() {
-    	module = new ArrayList<VulcanSwerveModule>(Arrays.asList(
-    				new VulcanSwerveModule(0),
-    				new VulcanSwerveModule(1),
-    				new VulcanSwerveModule(2),
-    				new VulcanSwerveModule(3)
+    	module = new ArrayList<EmbeddedSwerveModule>(Arrays.asList(
+    				new EmbeddedSwerveModule(0),
+    				new EmbeddedSwerveModule(1),
+    				new EmbeddedSwerveModule(2),
+    				new EmbeddedSwerveModule(3)
     			));	
 		navSerialPort = new SerialPort(57600, SerialPort.Port.kMXP);
 		navModule = new IMUAdvanced(navSerialPort);
@@ -46,6 +47,10 @@ public class SwerveSystem extends Subsystem {
     	module.stream().forEach(m -> m.syncDashboard());
     	SmartDashboard.putNumber("RobotHeading", Angle.get360Angle(navModule.getYaw()));
 	}
+    
+    protected void zeroEncodersOnIndex() {
+    	module.stream().forEach(m -> m.zeroEncoderOnIndex());
+    }
      
     
     /**
@@ -74,4 +79,13 @@ public class SwerveSystem extends Subsystem {
     	
     	module.stream().forEach(m -> m.setVector(vector[m.moduleNumber]));
     }    
+    
+    private class EncoderIndexer extends Subsystem {
+
+		@Override
+		protected void initDefaultCommand() {
+			setDefaultCommand(new C_IndexPeriodic());
+		}
+    	
+    }
 }

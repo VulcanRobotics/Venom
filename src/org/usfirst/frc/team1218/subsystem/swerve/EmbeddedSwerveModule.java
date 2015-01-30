@@ -37,11 +37,11 @@ public class EmbeddedSwerveModule extends Object {
 		this.moduleNumber = moduleNumber;
 		this.driveMotor = new CANTalon(RobotMap.SM_DRIVE_MOTOR[moduleNumber]);
 		this.angleMotor = new CANTalon(RobotMap.SM_TURN_MOTOR[moduleNumber]);
-		angleMotor.changeControlMode(CANTalon.ControlMode.Position);
-		angleMotor.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
-		angleMotor.reverseSensor(MODULE_REVERSED[moduleNumber]);
-		angleMotor.setPID(ANGLE_CONTROLLER_P, ANGLE_CONTROLLER_I, ANGLE_CONTROLLER_D);
-		angleMotor.setStatusFrameRateMs(CANTalon.StatusFrameRate.QuadEncoder, 1);//XXX Running this really fast check CANBus Utilization
+		this.angleMotor.changeControlMode(CANTalon.ControlMode.Position);
+		this.angleMotor.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
+		this.angleMotor.reverseSensor(MODULE_REVERSED[moduleNumber]);
+		this.angleMotor.setPID(ANGLE_CONTROLLER_P, ANGLE_CONTROLLER_I, ANGLE_CONTROLLER_D);
+		this.angleMotor.setStatusFrameRateMs(CANTalon.StatusFrameRate.QuadEncoder, 1);//XXX Running this really fast check CANBus Utilization
 	}
 	
 	/**
@@ -97,5 +97,14 @@ public class EmbeddedSwerveModule extends Object {
 	private void setModuleAngle(double angle) {
 		this.angleMotor.set(Angle.get360Angle(angle * ENCODER_CLICKS_PER_DEGREE));
 	}
+	
+	private int encoderRisingEdges = 0;
+	protected void zeroEncoderOnIndex() {
+		int currentEncRisingEdges = angleMotor.getNumberOfQuadIdxRises();
+		if (currentEncRisingEdges > encoderRisingEdges) {
+			angleMotor.setPosition(0);
+			encoderRisingEdges = currentEncRisingEdges;
+		}
+ 	}
 	
 }
