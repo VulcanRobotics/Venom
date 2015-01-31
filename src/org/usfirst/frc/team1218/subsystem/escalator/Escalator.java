@@ -14,7 +14,7 @@ public class Escalator extends Subsystem {
     
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
-	private final Solenoid clamp;
+	//XXX private final Solenoid clamp;
 	
 	private final CANTalon intakeL;
 	private final CANTalon intakeR;
@@ -26,9 +26,9 @@ public class Escalator extends Subsystem {
 	private static final double DART_I = 0.0;
 	private static final double DART_D = 0.0;
 	
-	public static final int ESCALATOR_HIGH_POSITION = 700;
-	public static final int ESCALATOR_MIDDLE_POSITION = 500;
-	public static final int ESCALATOR_LOW_POSITION = 300;
+	public static final int ESCALATOR_HIGH_POSITION = -6400;
+	public static final int ESCALATOR_MIDDLE_POSITION = -6658;
+	public static final int ESCALATOR_LOW_POSITION = -6977;
 	
 	public Escalator() {
 		dartL = new CANTalon(RobotMap.ESCALATOR_LEFT_DART);
@@ -37,7 +37,7 @@ public class Escalator extends Subsystem {
 		initializeDart(dartR);
 		intakeL = new CANTalon(RobotMap.ELEVATOR_INTAKE_L);
 		intakeR = new CANTalon(RobotMap.ELEVATOR_INTAKE_R);
-		clamp = new Solenoid(RobotMap.ESCALATOR_INTAKE_SOLENOID);
+		//XXX clamp = new Solenoid(RobotMap.ESCALATOR_INTAKE_SOLENOID);
 		System.out.println("Escalator Initialized");
 	}
 	
@@ -50,7 +50,7 @@ public class Escalator extends Subsystem {
      * @param opened true for open grabber
      */
     public void openGrabber(boolean opened) {//TODO verify that true is open clamps
-    	clamp.set(opened);
+    	//XXX clamp.set(opened);
     }
     
     /**
@@ -97,7 +97,7 @@ public class Escalator extends Subsystem {
     
     protected void disableDarts() {
     	dartL.disableControl();
-    	dartL.disableControl();
+    	dartR.disableControl();
     }
     
     protected void enableDarts() {
@@ -108,7 +108,9 @@ public class Escalator extends Subsystem {
     public void syncDashboard() {
     	SmartDashboard.putNumber("Escalator_Left_Dart_Setpoint", dartL.getSetpoint());
     	SmartDashboard.putNumber("Escalator_Right_Dart_Setpoint", dartR.getSetpoint());
-    	SmartDashboard.putBoolean("Escalator_Clamps_Open", clamp.get());
+    	SmartDashboard.putNumber("Escalator_Left_Dart_Power", dartL.get());
+    	SmartDashboard.putNumber("Escalator_Left_Dart_Position", dartL.getPosition());
+    	//XXX SmartDashboard.putBoolean("Escalator_Clamps_Open", clamp.get());
     	SmartDashboard.putNumber("Escalator_Intake_Power", intakeL.get());
     	SmartDashboard.putBoolean("Escalator_Manual_Control", (dartL.getControlMode() == CANTalon.ControlMode.PercentVbus));
     	SmartDashboard.putBoolean("Escalator_Position_Control", (dartL.getControlMode() == CANTalon.ControlMode.Position));    	

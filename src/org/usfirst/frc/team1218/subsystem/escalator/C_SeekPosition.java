@@ -17,13 +17,15 @@ public class C_SeekPosition extends Command {
     }
 
     protected void initialize() {
-    	Robot.escalator.dartPositionMode();
     	Robot.escalator.enableDarts();
+    	Robot.escalator.dartPositionMode();
     	Robot.escalator.setDarts(setpoint);
     	System.out.println("[Escalator]: Seeking Position...");
     }
 
     protected void execute() {
+    	Robot.escalator.dartL.setPID(10.0, 0.0, 0.0);
+    	System.out.println(Robot.escalator.dartL.getClosedLoopError());
     }
 
     protected boolean isFinished() {

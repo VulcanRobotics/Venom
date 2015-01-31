@@ -44,7 +44,7 @@ public class C_EscalatorDefault extends Command {
      * Method binds a joystick axis to escalator motor
      */
     private void joystickEscalatorControl(double pow) {
-    	if (pow > 0.1) {
+    	if (Math.abs(pow) > 0.1) {
     		Robot.escalator.setDarts(pow);
     	} else {
     		Robot.escalator.setDarts(0.0);

@@ -15,16 +15,16 @@ public class RobotMap {
 	public static final int[] SM_ANGLE_ENCODER_I = {2, 5, 8, 11};
 	
 	//Elevator
-	public static final int ELEVATOR_LIFT_MASTER = -1;
-	public static final int ELEVATOR_LIFT_SLAVE = -1;
-	public static final int ELEVATOR_INTAKE_L = -1;
-	public static final int ELEVATOR_INTAKE_R = -1;
+	public static final int ELEVATOR_LIFT_MASTER = 30;
+	public static final int ELEVATOR_LIFT_SLAVE = 31;
+	public static final int ELEVATOR_INTAKE_L = 32;
+	public static final int ELEVATOR_INTAKE_R = 33;
 	
 	//Escalator
-	public static final int ESCALATOR_LEFT_DART = -1;
-	public static final int ESCALATOR_RIGHT_DART = -1;
-	public static final int ESCALATOR_INTAKE_L = -1;
-	public static final int ESCALATOR_INTAKE_R = -1;
+	public static final int ESCALATOR_LEFT_DART = 20;
+	public static final int ESCALATOR_RIGHT_DART = 21;
+	public static final int ESCALATOR_INTAKE_L = 22;
+	public static final int ESCALATOR_INTAKE_R = 23;
 	public static final int ESCALATOR_INTAKE_SOLENOID = 0;
 	
 	//Hooks
