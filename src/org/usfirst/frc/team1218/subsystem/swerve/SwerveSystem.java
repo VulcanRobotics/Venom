@@ -19,16 +19,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SwerveSystem extends Subsystem {
     
-    private List<EmbeddedSwerveModule> module;
+    private List<SwerveModule> module;
     
     private final SerialPort navSerialPort;
     protected final IMUAdvanced navModule;
-    protected EncoderIndexer indexer = new EncoderIndexer(); //Subsystem manages constant encoder indexing
     
 	private static final double WHEEL_PERPENDICULAR_CONSTANT = 1 / Math.sqrt(2);//FIXME Update Constant
 	
     public SwerveSystem() {
-    	module = new ArrayList<EmbeddedSwerveModule>(Arrays.asList(
+    	module = new ArrayList<SwerveModule>(Arrays.asList(
     				new EmbeddedSwerveModule(0),
     				new EmbeddedSwerveModule(1),
     				new EmbeddedSwerveModule(2),
@@ -47,12 +46,7 @@ public class SwerveSystem extends Subsystem {
     	module.stream().forEach(m -> m.syncDashboard());
     	SmartDashboard.putNumber("RobotHeading", Angle.get360Angle(navModule.getYaw()));
 	}
-    
-    protected void zeroEncodersOnIndex() {
-    	module.stream().forEach(m -> m.zeroEncoderOnIndex());
-    }
      
-    
     /**
      * Creates angle and power for all swerve modules
      * @param translationVector vector with magnitude <= 1
@@ -72,7 +66,7 @@ public class SwerveSystem extends Subsystem {
     	double maxMagnitude = 0;
     	
     	for (int i = 0; i < 4; i++) maxMagnitude = (vector[i].getMagnitude() > maxMagnitude) ? vector[i].getMagnitude() : maxMagnitude;
-    	    	
+    	
     	double scaleFactor = ((maxMagnitude > 1.0) ? 1.0 / maxMagnitude : 1.0);
     	
     	for (int i = 0; i < 4; i++) vector[i].scaleMagnitude(scaleFactor);
@@ -80,12 +74,7 @@ public class SwerveSystem extends Subsystem {
     	module.stream().forEach(m -> m.setVector(vector[m.moduleNumber]));
     }    
     
-    private class EncoderIndexer extends Subsystem {
-
-		@Override
-		protected void initDefaultCommand() {
-			setDefaultCommand(new C_IndexPeriodic());
-		}
-    	
+    protected List<SwerveModule> getModuleList() {
+    	return module;
     }
 }
