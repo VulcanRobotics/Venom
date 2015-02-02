@@ -14,6 +14,9 @@ public class SRX_Profiler {
 	 * @param talon
 	 */
 	public static void optimizeForIntakeWheel(CANTalon talon) {
+		talon.enableBrakeMode(false);
+		talon.setExpiration(1000);
+		talon.setSafetyEnabled(true);
 		int pollRate = 5000;
 		talon.setStatusFrameRateMs(CANTalon.StatusFrameRate.AnalogTempVbat, pollRate);
 		talon.setStatusFrameRateMs(CANTalon.StatusFrameRate.Feedback, pollRate);

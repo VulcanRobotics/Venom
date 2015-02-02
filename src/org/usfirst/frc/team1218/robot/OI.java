@@ -5,6 +5,7 @@ import org.usfirst.frc.team1218.subsystem.elevator.Elevator;
 import org.usfirst.frc.team1218.subsystem.escalator.C_SeekPosition;
 import org.usfirst.frc.team1218.subsystem.escalator.Escalator;
 import org.usfirst.frc.team1218.subsystem.hooks.C_DeployHooks;
+import org.usfirst.frc.team1218.subsystem.swerve.C_ToggleStableMode;
 import org.usfirst.frc.team1218.subsystem.swerve.C_ZeroRobotHeading;
 import org.usfirst.frc.team1218.subsystem.swerve.C_GoToHeading;
 import org.usfirst.frc.team1218.subsystem.swerve.math.Vector;
@@ -25,6 +26,7 @@ public class OI {
 	public static Joystick driver;
 	public static Button resetGyro;
 	public static Button maintainHeading;
+	public static Button toggleStableMode;
 	
 	//Operator
 	public static Joystick operator;
@@ -52,6 +54,9 @@ public class OI {
         
         maintainHeading = new JoystickButton(driver, RobotMap.BUTTON_MAINTAIN_HEADING);
         maintainHeading.whileHeld(new C_GoToHeading());
+        
+        toggleStableMode = new JoystickButton(driver, RobotMap.BUTTON_TOGGLE_STABLE_MODE);
+        toggleStableMode.whenPressed(new C_ToggleStableMode());
         
         //Operator
         operator = new Joystick(RobotMap.OPERATOR_JOYSTICK);

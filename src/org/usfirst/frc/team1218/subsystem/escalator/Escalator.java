@@ -3,7 +3,6 @@ package org.usfirst.frc.team1218.subsystem.escalator;
 import org.usfirst.frc.team1218.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.CANTalon;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -22,13 +21,16 @@ public class Escalator extends Subsystem {
 	protected final CANTalon dartL;
 	protected final CANTalon dartR;
 	
-	private static final double DART_P = 0.01;
+	private static final double DART_P = 10.0;//TODO Test and Tune Dart PID under load
 	private static final double DART_I = 0.0;
 	private static final double DART_D = 0.0;
 	
-	public static final int ESCALATOR_HIGH_POSITION = -6400;
-	public static final int ESCALATOR_MIDDLE_POSITION = -6658;
-	public static final int ESCALATOR_LOW_POSITION = -6977;
+	private static final int DART_SOFT_LIMIT_FORWARD = 1024;//TODO Tune Dart soft limits
+	private static final int DART_SOFT_LIMIT_REVERSE = 0;
+	
+	public static final int ESCALATOR_HIGH_POSITION = 700;//TODO Test and Tune Dart Preset Positions
+	public static final int ESCALATOR_MIDDLE_POSITION = 500;
+	public static final int ESCALATOR_LOW_POSITION = 200;
 	
 	public Escalator() {
 		dartL = new CANTalon(RobotMap.ESCALATOR_LEFT_DART);
@@ -78,6 +80,8 @@ public class Escalator extends Subsystem {
     	dartController.enableLimitSwitch(true, true);
     	dartController.ConfigFwdLimitSwitchNormallyOpen(false);
     	dartController.ConfigRevLimitSwitchNormallyOpen(false);
+    	dartController.setForwardSoftLimit(DART_SOFT_LIMIT_FORWARD);
+    	dartController.setReverseSoftLimit(DART_SOFT_LIMIT_REVERSE);
     	dartController.enableBrakeMode(true);
     	dartController.setPID(DART_P, DART_I, DART_D);
     	dartController.setFeedbackDevice(CANTalon.FeedbackDevice.AnalogPot);
@@ -109,11 +113,15 @@ public class Escalator extends Subsystem {
     	SmartDashboard.putNumber("Escalator_Left_Dart_Setpoint", dartL.getSetpoint());
     	SmartDashboard.putNumber("Escalator_Right_Dart_Setpoint", dartR.getSetpoint());
     	SmartDashboard.putNumber("Escalator_Left_Dart_Power", dartL.get());
+    	SmartDashboard.putNumber("Escalator_Right_Dart_Power", dartR.get());
     	SmartDashboard.putNumber("Escalator_Left_Dart_Position", dartL.getPosition());
+    	SmartDashboard.putNumber("Escalator_Right_Dart_Position", dartR.getPosition());
+    	SmartDashboard.putBoolean("Escalator_Left_Dart_Manual_Control", (dartL.getControlMode() == CANTalon.ControlMode.PercentVbus));
+    	SmartDashboard.putBoolean("Escalator_Right_Dart_Manual_Control", (dartR.getControlMode() == CANTalon.ControlMode.PercentVbus));
+    	SmartDashboard.putBoolean("Escalator_Left_Dart_Position_Control", (dartL.getControlMode() == CANTalon.ControlMode.Position));
+    	SmartDashboard.putBoolean("Escalator_Right_Dart_Position_Control", (dartR.getControlMode() == CANTalon.ControlMode.Position));
     	//XXX SmartDashboard.putBoolean("Escalator_Clamps_Open", clamp.get());
     	SmartDashboard.putNumber("Escalator_Intake_Power", intakeL.get());
-    	SmartDashboard.putBoolean("Escalator_Manual_Control", (dartL.getControlMode() == CANTalon.ControlMode.PercentVbus));
-    	SmartDashboard.putBoolean("Escalator_Position_Control", (dartL.getControlMode() == CANTalon.ControlMode.Position));    	
     }
 }
 

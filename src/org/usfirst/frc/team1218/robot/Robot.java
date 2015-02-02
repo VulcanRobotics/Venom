@@ -4,7 +4,7 @@ package org.usfirst.frc.team1218.robot;
 import org.usfirst.frc.team1218.subsystem.elevator.Elevator;
 import org.usfirst.frc.team1218.subsystem.escalator.Escalator;
 import org.usfirst.frc.team1218.subsystem.hooks.Hooks;
-import org.usfirst.frc.team1218.subsystem.swerve.SwerveSystem;
+import org.usfirst.frc.team1218.subsystem.swerve.SwerveDrive;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -21,7 +21,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
  */
 public class Robot extends IterativeRobot {
 	
-	public static SwerveSystem swerveSystem;
+	public static SwerveDrive swerveSystem;
 	public static Escalator escalator;
 	public static Elevator elevator;
 	public static Hooks hooks;
@@ -34,7 +34,7 @@ public class Robot extends IterativeRobot {
      * used for any initialization code.
      */
     public void robotInit() {
-    	swerveSystem = new SwerveSystem();
+    	swerveSystem = new SwerveDrive();
     	escalator = new Escalator();
     	elevator = new Elevator();
     	hooks = new Hooks();

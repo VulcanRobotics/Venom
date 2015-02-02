@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  * @author afiol-mahon
  */
-public class EmbeddedSwerveModule extends SwerveModule {
+public class SwerveModule_Embedded extends SwerveModule {
 	
 	private final CANTalon angleMotor;
 	
@@ -19,12 +19,12 @@ public class EmbeddedSwerveModule extends SwerveModule {
 	private static final double ENCODER_CLICKS = 500.0;
 	private static final double ENCODER_CLICKS_PER_DEGREE = ENCODER_CLICKS / DEGREES;
 	private static final double DEGREES_PER_ENCODER_CLICK = DEGREES / ENCODER_CLICKS; //Degrees over Number of Clicks
-
-	private static final double ANGLE_CONTROLLER_P = -0.01;
+	
+	private static final double ANGLE_CONTROLLER_P = 0.01;
 	private static final double ANGLE_CONTROLLER_I = 0.0;
 	private static final double ANGLE_CONTROLLER_D = 0.0;
 	
-	public EmbeddedSwerveModule(int moduleNumber) {
+	public SwerveModule_Embedded(int moduleNumber) {
 		super(moduleNumber);
 		this.angleMotor = new CANTalon(RobotMap.SM_TURN_MOTOR[moduleNumber]);
 		this.angleMotor.changeControlMode(CANTalon.ControlMode.Position);
@@ -70,9 +70,9 @@ public class EmbeddedSwerveModule extends SwerveModule {
 	 */
 	public class C_IndexPeriodic extends Command {
 		
-		private EmbeddedSwerveModule module;
+		private SwerveModule_Embedded module;
 		
-		public C_IndexPeriodic(EmbeddedSwerveModule module) {
+		public C_IndexPeriodic(SwerveModule_Embedded module) {
 			this.module = module;
 		}
 		

@@ -11,20 +11,20 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  * @author afiol-mahon
  */
-public class VulcanSwerveModule extends SwerveModule {
+public class SwerveModule_Digital extends SwerveModule {
 	
 	
 	private final CANTalon angleMotor;
-	private AngleEncoder angleEncoder;
+	public AngleEncoder angleEncoder;
 	private static final double ENCODER_CLICK_DEGREE_RATIO = 360.0 / 500; //Degrees over Number of Clicks
 
 	private final PIDController angleController;
-	private static final double ANGLE_CONTROLLER_P = -0.01;
+	private static final double ANGLE_CONTROLLER_P = 0.01;
 	private static final double ANGLE_CONTROLLER_I = 0.0;
 	private static final double ANGLE_CONTROLLER_D = 0.0;
 	private static final double ANGLE_MOTOR_OUTPUT_RANGE = 1.0;
 	
-	public VulcanSwerveModule(int moduleNumber) {
+	public SwerveModule_Digital(int moduleNumber) {
 		super(moduleNumber);
 		this.angleMotor = new CANTalon(RobotMap.SM_TURN_MOTOR[moduleNumber]);
 		this.angleEncoder = new AngleEncoder(moduleNumber);
@@ -68,7 +68,7 @@ public class VulcanSwerveModule extends SwerveModule {
 		
 		@Override
 		public double pidGet() {
-			return Angle.get360Angle(get() * ENCODER_CLICK_DEGREE_RATIO);
+			return Angle.get360Angle(get() * ENCODER_CLICK_DEGREE_RATIO);//XXX Redundant?
 		}
 	}
 }

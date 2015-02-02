@@ -1,10 +1,12 @@
 package org.usfirst.frc.team1218.subsystem.swerve;
 
+import org.usfirst.frc.team1218.robot.OI;
 import org.usfirst.frc.team1218.robot.RobotMap;
 import org.usfirst.frc.team1218.subsystem.swerve.math.Angle;
 import org.usfirst.frc.team1218.subsystem.swerve.math.Vector;
 
 import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -16,15 +18,29 @@ public abstract class SwerveModule {
 	protected final int moduleNumber; //Used to retrieve module specific offsets and modifiers
 	
 	protected double robotCentricAngle = 0; //Angle relative to front of robot
-	protected boolean invertModule = false;
+	
+	//Module Runtime Settings
+	private boolean invertModule = false;
+	private boolean stableMode = false;
+	
 	protected final CANTalon driveWheelController;
 	private static final double DRIVE_POWER_SCALE = 0.4;
 	protected static final boolean[] MODULE_REVERSED = {false, false, true, true};
+	
+	private static final double NORMAL_MODE_RAMP_RATE = 0;
+	private static final double STABLE_MODE_RAMP_RATE = 0;
 	
 	public SwerveModule(int moduleNumber) {
 		this.moduleNumber = moduleNumber;
 		this.driveWheelController = new CANTalon(RobotMap.SM_DRIVE_MOTOR[moduleNumber]);
 		
+	}
+	
+	/**
+	 * @return true if the module is currently operating in stable mode.
+	 */
+	public boolean getStableMode() {
+		return stableMode;
 	}
 	
 	/**
@@ -37,10 +53,19 @@ public abstract class SwerveModule {
 		setPower(power);
 	}
 	
+	/**
+	 * Directly Write the magnitude and power of a given angle to the module.
+	 * Makes it very straightforward to write any calculated vector to the module.
+	 * @param vector
+	 */
 	public void setVector(Vector vector) {
 		setValues(vector.getAngle(), vector.getMagnitude());
 	}
 	
+	/**
+	 * Set the wheels to any angle that is relative to the robot's front.
+	 * @param angle
+	 */
 	public void writeRobotCentricAngle(double angle) {
 		if(Angle.diffBetweenAngles(angle, this.robotCentricAngle) > 90) invertModule = !invertModule;
 		this.robotCentricAngle = angle;
@@ -61,6 +86,10 @@ public abstract class SwerveModule {
 	 */
 	public abstract void setRealAngle(double angle);
 	
+	/**
+	 * Writes a power to the wheel that corresponds with module settings.
+	 * @param power
+	 */
 	public void setPower(double power) {
 		if (Math.abs(power) > 1){
 			System.out.println("Illegal power " + power + " written to module: " + moduleNumber);
@@ -70,10 +99,28 @@ public abstract class SwerveModule {
 		}
 	}
 	
-	public CANTalon getDriveWheelController() {
-		return driveWheelController;
+	/**
+	 * Puts robot into a less agile and more precise control mode that is intended for safely controlling large stacks
+	 * without fear of tipping them.
+	 * @param enabled
+	 */
+	protected void setStableMode(boolean enabled) {
+		if (enabled) {
+			driveWheelController.setVoltageRampRate(STABLE_MODE_RAMP_RATE);
+			stableMode = true;
+		} else {
+			driveWheelController.setVoltageRampRate(NORMAL_MODE_RAMP_RATE);
+		}
+		driveWheelController.enableBrakeMode(enabled);
+    	OI.driver.setRumble(Joystick.RumbleType.kLeftRumble, (enabled) ? 0.15f : 0.0f);
+    	OI.driver.setRumble(Joystick.RumbleType.kRightRumble, (enabled) ? 0.15f : 0.0f); 
+		stableMode = enabled;
+		SmartDashboard.putBoolean("SM_" + moduleNumber + "_isStableMode", stableMode);
 	}
 	
+	/**
+	 * Update the dashboard with current module information.
+	 */
 	public void syncDashboard() {//TODO fix driver station value keys
 		SmartDashboard.putNumber("SM_" + moduleNumber + "_WheelPower", driveWheelController.get());
 	}

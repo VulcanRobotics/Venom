@@ -25,7 +25,9 @@ public class C_SeekPosition extends Command {
 
     protected void execute() {
     	Robot.escalator.dartL.setPID(10.0, 0.0, 0.0);
-    	System.out.println(Robot.escalator.dartL.getClosedLoopError());
+    	Robot.escalator.dartR.setPID(10.0, 0.0, 0.0);
+    	System.out.println("Left Dart: " + Robot.escalator.dartL.getClosedLoopError());
+    	System.out.print(" RightDart: " + Robot.escalator.dartR.getClosedLoopError());
     }
 
     protected boolean isFinished() {

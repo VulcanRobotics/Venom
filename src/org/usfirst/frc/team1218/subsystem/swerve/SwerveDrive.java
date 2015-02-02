@@ -14,24 +14,25 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
+ * Provides Mid/High level module control code.
  * @author afiolmahon
  */
 
-public class SwerveSystem extends Subsystem {
+public class SwerveDrive extends Subsystem {
     
-    private List<SwerveModule> module;
+    private List<SwerveModule_Digital> module;
     
     private final SerialPort navSerialPort;
     protected final IMUAdvanced navModule;
     
 	private static final double WHEEL_PERPENDICULAR_CONSTANT = 1 / Math.sqrt(2);//FIXME Update Constant
 	
-    public SwerveSystem() {
-    	module = new ArrayList<SwerveModule>(Arrays.asList(
-    				new EmbeddedSwerveModule(0),
-    				new EmbeddedSwerveModule(1),
-    				new EmbeddedSwerveModule(2),
-    				new EmbeddedSwerveModule(3)
+    public SwerveDrive() {
+    	module = new ArrayList<SwerveModule_Digital>(Arrays.asList(
+    				new SwerveModule_Digital(0),
+    				new SwerveModule_Digital(1),
+    				new SwerveModule_Digital(2),
+    				new SwerveModule_Digital(3)
     			));	
 		navSerialPort = new SerialPort(57600, SerialPort.Port.kMXP);
 		navModule = new IMUAdvanced(navSerialPort);
@@ -74,7 +75,7 @@ public class SwerveSystem extends Subsystem {
     	module.stream().forEach(m -> m.setVector(vector[m.moduleNumber]));
     }    
     
-    protected List<SwerveModule> getModuleList() {
+    protected List<SwerveModule_Digital> getModuleList() {
     	return module;
     }
 }
