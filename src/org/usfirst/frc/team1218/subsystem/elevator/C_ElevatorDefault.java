@@ -15,6 +15,7 @@ public class C_ElevatorDefault extends Command {
     }
 
     protected void initialize() {
+    	configureElevatorMotorControllersForPID();
     }
 
     protected void execute() {

@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Elevator extends Subsystem {
     
+	private final DigitalInput toteDetector;
+	
 	private final CANTalon liftMaster;
 	private final CANTalon liftSlave;
 		
@@ -62,13 +64,20 @@ public class Elevator extends Subsystem {
     	master.enableLimitSwitch(true, true);
     	master.ConfigFwdLimitSwitchNormallyOpen(false);
     	master.ConfigRevLimitSwitchNormallyOpen(false);
-    	master.setFeedbackDevice(CANTalon.FeedbackDevice.AnalogEncoder);
-    	master.changeControlMode(CANTalon.ControlMode.Position);
-    	master.setPID(ELEVATOR_P, ELEVATOR_I, ELEVATOR_D);
     	slave.changeControlMode(CANTalon.ControlMode.Follower);
     	slave.reverseOutput(true);
     	slave.set(master.getDeviceID());
 	}
+    
+    private void configureElevatorMotorControllersForPID() {
+    	master.setFeedbackDevice(CANTalon.FeedbackDevice.AnalogEncoder);
+    	master.changeControlMode(CANTalon.ControlMode.Position);
+    	master.setPID(ELEVATOR_P, ELEVATOR_I, ELEVATOR_D);
+    }
+    
+    private void configureElevatorMotorControllersForSpeedControl() {
+    	master.changeControlMode(CANTalon.ControlMode.Speed);
+    }
     
     public void syncDashboard() {
     	SmartDashboard.putNumber("Elevator_Position", liftMaster.getSetpoint());
