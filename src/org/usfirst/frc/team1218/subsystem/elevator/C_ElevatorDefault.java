@@ -10,16 +10,39 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class C_ElevatorDefault extends Command {
 
+	boolean hasToteInBrushes;
+	
     public C_ElevatorDefault() {
         requires(Robot.elevator);
     }
 
     protected void initialize() {
-    	configureElevatorMotorControllersForPID();
+    	hasToteInBrushes = false;
+    	Robot.elevator.configureElevatorMotorControllersForPID();
+    	Robot.elevator.setElevatorSetpoint(Robot.elevator.ELEVATOR_RAISE_POSITION);
     }
 
     protected void execute() {
-    	setToteIntakeByButton();
+    	if (Robot.elevator.getHasTote() & !hasToteInBrushes) {
+    		//once a tote enters the robot and it has not already benn picked up, stop intake and lower brushes
+    		Robot.elevator.setElevatorSetpoint(Robot.elevator.ELEVATOR_DROP_POSITION);
+    		Robot.totePickup.setIntakePower(0.0);
+    	}
+    	if (Robot.elevator.getPosition() < Robot.elevator.ELEVATOR_CAPTURE_POSITION)
+    	{
+    		//if elevator is below tote, it has it in brushes and can now raise it
+    		hasToteInBrushes = true;	
+    	}
+    	
+    	if (hasToteInBrushes) {
+    		//if the elevator has grabbed tote with brushes, it should lift it to max height
+    		Robot.elevator.setElevatorSetpoint(Robot.elevator.ELEVATOR_RAISE_POSITION);
+    	}
+    	
+    	if (hasToteInBrushes & Robot.elevator.getPosition() > Robot.elevator.ELEVATOR_CLEARNCE_POSITION) {
+    		//if tote has been sucessfully picked up, allow robot to pickup another
+    		hasToteInBrushes = false;
+    	}
     }
 
     protected boolean isFinished() {
@@ -27,18 +50,10 @@ public class C_ElevatorDefault extends Command {
     }
 
     protected void end() {
-    	Robot.elevator.setIntakePower(0.0);
     }
 
     protected void interrupted() {
     	end();
     }
     
-    private void setToteIntakeByButton() {
-    	if (OI.elevatorRunToteIntake.get()) {
-        	Robot.elevator.setIntakePower(Elevator.TOTE_INTAKE_POWER);
-    	} else {
-        	Robot.elevator.setIntakePower(0.0);
-    	}
-    }
 }

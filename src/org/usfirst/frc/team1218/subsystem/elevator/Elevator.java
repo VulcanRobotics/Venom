@@ -25,7 +25,7 @@ public class Elevator extends Subsystem {
 	public static final int ELEVATOR_CAPTURE_POSITION = 250; //Minimum height needed to get tote in brushes
 	public static final int ELEVATOR_CLEARNCE_POSITION = 650;
 	public static final int ELEVATOR_RAISE_POSITION = 700;
-		public static final int ELEVATOR_STEP_POSITION = 500;
+	public static final int ELEVATOR_STEP_POSITION = 500;
 	
     public void initDefaultCommand() {
         setDefaultCommand(new C_ElevatorDefault());
