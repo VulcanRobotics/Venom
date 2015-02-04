@@ -5,6 +5,7 @@ import org.usfirst.frc.team1218.robot.RobotMap;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.DigitalInput;
 
 /**
  *@author afiol-mahon
@@ -39,6 +40,7 @@ public class Elevator extends Subsystem {
     	configureElevatorMotorControllers(liftMaster, liftSlave);
     	intakeL = new CANTalon(RobotMap.ELEVATOR_INTAKE_L);
     	intakeR = new CANTalon(RobotMap.ELEVATOR_INTAKE_R);
+    	toteDetector = new DigitalInput(RobotMap.TOTE_DETECTOR);
     }
 
 	/**
@@ -58,6 +60,10 @@ public class Elevator extends Subsystem {
     	liftMaster.set(setpoint);
     }
     
+    public void setElevatorSpeed(double velocity) {
+    	liftMaster.set(velocity);
+    }
+    
     private void configureElevatorMotorControllers(CANTalon master, CANTalon slave) {
     	master.enableBrakeMode(true);
     	slave.enableBrakeMode(true);
@@ -70,13 +76,13 @@ public class Elevator extends Subsystem {
 	}
     
     private void configureElevatorMotorControllersForPID() {
-    	master.setFeedbackDevice(CANTalon.FeedbackDevice.AnalogEncoder);
-    	master.changeControlMode(CANTalon.ControlMode.Position);
-    	master.setPID(ELEVATOR_P, ELEVATOR_I, ELEVATOR_D);
+    	liftMaster.setFeedbackDevice(CANTalon.FeedbackDevice.AnalogEncoder);
+    	liftMaster.changeControlMode(CANTalon.ControlMode.Position);
+    	liftMaster.setPID(ELEVATOR_P, ELEVATOR_I, ELEVATOR_D);
     }
     
-    private void configureElevatorMotorControllersForSpeedControl() {
-    	master.changeControlMode(CANTalon.ControlMode.Speed);
+    void configureElevatorMotorControllersForSpeedControl() {
+    	liftMaster.changeControlMode(CANTalon.ControlMode.Speed);
     }
     
     public void syncDashboard() {

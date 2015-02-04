@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class C_ElevatorManual extends Command {
 
-    public C_ElevatorDefault() {
+    public C_ElevatorManual() {
         requires(Robot.elevator);
     }
 
@@ -19,7 +19,10 @@ public class C_ElevatorManual extends Command {
     }
 
     protected void execute() {
-    	
+    	double power = 0.0;
+    	power += OI.elevatorRaise.get() ? 1 : 0;
+    	power += OI.elevatorLower.get() ? -1 : 0;
+    	Robot.elevator.setElevatorSpeed(power);
     }
 
     protected boolean isFinished() {
