@@ -22,6 +22,8 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
  */
 public class OI {
 	
+	public static Button userButton;
+	
     //Driver
 	public static Joystick driver;
 	public static Button resetGyro;

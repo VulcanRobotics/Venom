@@ -14,7 +14,7 @@ public class C_ToggleStableMode extends Command {
     }
     
     protected void initialize() {
-    	Robot.swerveSystem.getModuleList().stream().forEach(
+    	Robot.swerveSystem.module.stream().forEach(
     		m -> m.setStableMode(!m.getStableMode())
     	);
     }

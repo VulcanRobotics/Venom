@@ -63,12 +63,13 @@ public class SwerveModule_Digital extends SwerveModule {
 					RobotMap.SM_ANGLE_ENCODER_I[moduleNumber],
 					MODULE_REVERSED[moduleNumber]
 					);
-			this.setDistancePerPulse(ENCODER_CLICK_DEGREE_RATIO);
 		}
 		
 		@Override
 		public double pidGet() {
-			return Angle.get360Angle(get() * ENCODER_CLICK_DEGREE_RATIO);//XXX Redundant?
+			double angle = get() * ENCODER_CLICK_DEGREE_RATIO;
+			angle = Angle.get360Angle(angle);
+			return angle;
 		}
 	}
 }

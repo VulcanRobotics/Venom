@@ -24,7 +24,7 @@ public abstract class SwerveModule {
 	private boolean stableMode = false;
 	
 	protected final CANTalon driveWheelController;
-	private static final double DRIVE_POWER_SCALE = 0.4;
+	private static final double DRIVE_POWER_SCALE = 0.2;
 	protected static final boolean[] MODULE_REVERSED = {false, false, true, true};
 	
 	private static final double NORMAL_MODE_RAMP_RATE = 0;

@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SwerveDrive extends Subsystem {
     
-    private List<SwerveModule_Digital> module;
+    protected List<SwerveModule_Digital> module;
     
     private final SerialPort navSerialPort;
     protected final IMUAdvanced navModule;
@@ -47,7 +47,7 @@ public class SwerveDrive extends Subsystem {
     	module.stream().forEach(m -> m.syncDashboard());
     	SmartDashboard.putNumber("RobotHeading", Angle.get360Angle(navModule.getYaw()));
 	}
-     
+    
     /**
      * Creates angle and power for all swerve modules
      * @param translationVector vector with magnitude <= 1
@@ -73,9 +73,5 @@ public class SwerveDrive extends Subsystem {
     	for (int i = 0; i < 4; i++) vector[i].scaleMagnitude(scaleFactor);
     	
     	module.stream().forEach(m -> m.setVector(vector[m.moduleNumber]));
-    }    
-    
-    protected List<SwerveModule_Digital> getModuleList() {
-    	return module;
     }
 }
