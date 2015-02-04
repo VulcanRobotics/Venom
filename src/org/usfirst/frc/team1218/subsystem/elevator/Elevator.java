@@ -16,9 +16,6 @@ public class Elevator extends Subsystem {
 	
 	private final CANTalon liftMaster;
 	private final CANTalon liftSlave;
-		
-	private final CANTalon intakeL;
-	private final CANTalon intakeR;
 	
 	private static final double ELEVATOR_P = 0.01;
 	private static final double ELEVATOR_I = 0.0;
@@ -38,19 +35,9 @@ public class Elevator extends Subsystem {
     	liftMaster = new CANTalon(RobotMap.ELEVATOR_LIFT_MASTER);
     	liftSlave = new CANTalon(RobotMap.ELEVATOR_LIFT_SLAVE);
     	configureElevatorMotorControllers(liftMaster, liftSlave);
-    	intakeL = new CANTalon(RobotMap.ELEVATOR_INTAKE_L);
-    	intakeR = new CANTalon(RobotMap.ELEVATOR_INTAKE_R);
     	toteDetector = new DigitalInput(RobotMap.TOTE_DETECTOR);
     }
-
-	/**
-     * Set state for intake motors
-     * @param power positive value for intake and negative value for output
-     */
-    public void setIntakePower(double power) {//TODO Verify direction is correct
-    	intakeL.set(power);
-    	intakeR.set(-power);
-    }
+   
     
     /**
      * Set position of elevator
@@ -87,6 +74,6 @@ public class Elevator extends Subsystem {
     
     public void syncDashboard() {
     	SmartDashboard.putNumber("Elevator_Position", liftMaster.getSetpoint());
-    	SmartDashboard.putNumber("Intake_Power", intakeL.getSetpoint());
+    	//SmartDashboard.putNumber("Intake_Power", intakeL.getSetpoint());
     }
 }
