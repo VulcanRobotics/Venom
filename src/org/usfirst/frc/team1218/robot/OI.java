@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import org.usfirst.frc.team1218.subsystem.elevator.C_ElevatorManual;
+import org.usfirst.frc.team1218.subsystem.elevator.C_RunTotePickup;
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
@@ -72,6 +73,7 @@ public class OI {
         	
         //Elevator
         elevatorRunToteIntake = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_RUN_TOTE_INTAKE);
+        elevatorRunToteIntake.whileHeld(new C_RunTotePickup());
         
         elevatorDropStack = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_DROP_STACK);
         elevatorDropStack.whenPressed(new C_SetElevatorPosition(Elevator.ELEVATOR_DROP_POSITION));

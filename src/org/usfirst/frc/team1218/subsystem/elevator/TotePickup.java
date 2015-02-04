@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
  *
+ *	@author Bob Marley
  */
 public class TotePickup extends Subsystem {
     
@@ -15,6 +16,8 @@ public class TotePickup extends Subsystem {
 
 	private final CANTalon intakeL;
 	private final CANTalon intakeR;
+	
+	protected final double TOTE_INTAKE_POWER = 1.0;
 	
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
