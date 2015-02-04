@@ -22,10 +22,10 @@ public class Elevator extends Subsystem {
 	private static final double ELEVATOR_D = 0.0;
 	
 	public static final int ELEVATOR_DROP_POSITION = 200;
+	public static final int ELEVATOR_CAPTURE_POSITION = 250; //Minimum height needed to get tote in brushes
+	public static final int ELEVATOR_CLEARNCE_POSITION = 650;
 	public static final int ELEVATOR_RAISE_POSITION = 700;
-	public static final int ELEVATOR_STEP_POSITION = 500;
-	
-	protected static final double TOTE_INTAKE_POWER = 1.0;
+		public static final int ELEVATOR_STEP_POSITION = 500;
 	
     public void initDefaultCommand() {
         setDefaultCommand(new C_ElevatorDefault());
@@ -34,7 +34,7 @@ public class Elevator extends Subsystem {
     public Elevator() {
     	liftMaster = new CANTalon(RobotMap.ELEVATOR_LIFT_MASTER);
     	liftSlave = new CANTalon(RobotMap.ELEVATOR_LIFT_SLAVE);
-    	configureElevatorMotorControllers(liftMaster, liftSlave);
+    	configureElevatorMotorControllers();
     	toteDetector = new DigitalInput(RobotMap.TOTE_DETECTOR);
     }
    
@@ -51,18 +51,23 @@ public class Elevator extends Subsystem {
     	liftMaster.set(velocity);
     }
     
-    private void configureElevatorMotorControllers(CANTalon master, CANTalon slave) {
-    	master.enableBrakeMode(true);
-    	slave.enableBrakeMode(true);
-    	master.enableLimitSwitch(true, true);
-    	master.ConfigFwdLimitSwitchNormallyOpen(false);
-    	master.ConfigRevLimitSwitchNormallyOpen(false);
-    	slave.changeControlMode(CANTalon.ControlMode.Follower);
-    	slave.reverseOutput(true);
-    	slave.set(master.getDeviceID());
+    private void configureElevatorMotorControllers() {
+    	liftMaster.enableBrakeMode(true);
+    	liftSlave.enableBrakeMode(true);
+    	liftMaster.enableLimitSwitch(true, true);
+    	liftMaster.ConfigFwdLimitSwitchNormallyOpen(false);
+    	liftMaster.ConfigRevLimitSwitchNormallyOpen(false);
+    	liftSlave.changeControlMode(CANTalon.ControlMode.Follower);
+    	liftSlave.reverseOutput(true);
+    	liftSlave.set(liftMaster.getDeviceID());
 	}
     
-    private void configureElevatorMotorControllersForPID() {
+   int getPosition() {
+	   //TODO: check this get position
+	   return liftMaster.getAnalogInPosition();
+   }
+    
+    void configureElevatorMotorControllersForPID() {
     	liftMaster.setFeedbackDevice(CANTalon.FeedbackDevice.AnalogEncoder);
     	liftMaster.changeControlMode(CANTalon.ControlMode.Position);
     	liftMaster.setPID(ELEVATOR_P, ELEVATOR_I, ELEVATOR_D);
@@ -70,6 +75,10 @@ public class Elevator extends Subsystem {
     
     void configureElevatorMotorControllersForSpeedControl() {
     	liftMaster.changeControlMode(CANTalon.ControlMode.Speed);
+    }
+    
+    public boolean getHasTote() {
+    	return toteDetector.get();
     }
     
     public void syncDashboard() {
