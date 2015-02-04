@@ -19,6 +19,7 @@ public class RobotMap {
 	public static final int ELEVATOR_LIFT_SLAVE = 31;
 	public static final int ELEVATOR_INTAKE_L = 32;
 	public static final int ELEVATOR_INTAKE_R = 33;
+	public static final int TOTE_DETECTOR = 1;
 	
 	//Escalator
 	public static final int ESCALATOR_LEFT_DART = 20;
@@ -45,6 +46,8 @@ public class RobotMap {
 	public static final int BUTTON_ELEVATOR_DROP_STACK = 4;
 	public static final int BUTTON_ELEVATOR_RAISE_STACK = 6;
 	public static final int BUTTON_ELEVATOR_STEP_POSITION = 5;
+	public static final int BUTTON_ELEVATOR_MANUAL_UP = 9;
+	public static final int BUTTON_ELEVATOR_MANUAL_DOWN = 11;
 	
 	public static final int AXIS_ESCALATOR_CONTROL = 1;
 	public static final int BUTTON_ESCALATOR_RUN_BIN_INTAKE = 2;
@@ -52,4 +55,9 @@ public class RobotMap {
 	public static final int BUTTON_ESCALATOR_HIGH_POSITION = 8;
 	public static final int BUTTON_ESCALATOR_MIDDLE_POSITION = 10;
 	public static final int BUTTON_ESCALATOR_LOW_POSITION = 12;
+	
+	//Control Panel Mapping
+	public static final int CONTROL_PANEL = 2;
+	
+	public static final int SWITCH_ELEVATOR_MANUAL_CONTROL = 1; //placeholder
 }

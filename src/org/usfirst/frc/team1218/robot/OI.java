@@ -12,7 +12,7 @@ import org.usfirst.frc.team1218.subsystem.swerve.math.Vector;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-
+import org.usfirst.frc.team1218.subsystem.elevator.C_ElevatorManual;
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
@@ -36,6 +36,8 @@ public class OI {
 	public static Button elevatorDropStack;
 	public static Button elevatorRaiseStack;
 	public static Button elevatorToStepPosition;
+	public static Button elevatorLower;
+	public static Button elevatorRaise;
 	
 	public static Button escalatorRunBinIntake;
 	public static Button escalatorOpenGrabber;
@@ -43,7 +45,12 @@ public class OI {
 	public static Button escalatorMiddlePosition;
 	public static Button escalatorLowPosition;
 	
-    public OI() {
+	//Control Panel
+	public static Joystick controlPanel;
+    
+	public static Button manualControl;
+	
+	public OI() {
     	//Driver
     	driver = new Joystick(RobotMap.DRIVER_JOYSTICK);
     	
@@ -75,6 +82,9 @@ public class OI {
         elevatorToStepPosition = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_STEP_POSITION);
         elevatorToStepPosition.whenPressed(new C_SetElevatorPosition(Elevator.ELEVATOR_STEP_POSITION));
         
+        elevatorRaise = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_MANUAL_UP);
+        elevatorLower = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_MANUAL_DOWN);
+        
         //Escalator
         escalatorRunBinIntake = new JoystickButton(operator, RobotMap.BUTTON_ESCALATOR_RUN_BIN_INTAKE);
         
@@ -88,6 +98,13 @@ public class OI {
         	
         escalatorLowPosition = new JoystickButton(operator, RobotMap.BUTTON_ESCALATOR_LOW_POSITION);
         escalatorLowPosition.whileHeld(new C_SeekPosition(Escalator.ESCALATOR_LOW_POSITION));
+   
+        //Control Panel
+        controlPanel = new Joystick(RobotMap.CONTROL_PANEL);
+        
+        manualControl = new JoystickButton(controlPanel, RobotMap.SWITCH_ELEVATOR_MANUAL_CONTROL);
+        manualControl.whileHeld(new C_ElevatorManual());
+        
     }
     
     public static Vector getDriverLeftJoystickVector() {
