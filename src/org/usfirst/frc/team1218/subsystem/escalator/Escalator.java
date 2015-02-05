@@ -34,11 +34,13 @@ public class Escalator extends Subsystem {
 	
 	public Escalator() {
 		dartL = new CANTalon(RobotMap.ESCALATOR_LEFT_DART);
-		initializeDart(dartL);
+		initDart(dartL);
 		dartR = new CANTalon(RobotMap.ESCALATOR_RIGHT_DART);
-		initializeDart(dartR);
+		initDart(dartR);
 		intakeL = new CANTalon(RobotMap.ELEVATOR_INTAKE_L);
+		initIntakeWheel(intakeL);
 		intakeR = new CANTalon(RobotMap.ELEVATOR_INTAKE_R);
+		initIntakeWheel(intakeR);
 		//XXX clamp = new Solenoid(RobotMap.ESCALATOR_INTAKE_SOLENOID);
 		System.out.println("Escalator Initialized");
 	}
@@ -76,7 +78,7 @@ public class Escalator extends Subsystem {
      * Configures motor controller for use with dart linear actuator
      * @param dartController dart to be configured
      */
-    private static void initializeDart(CANTalon dartController) {
+    private static void initDart(CANTalon dartController) {
     	dartController.enableLimitSwitch(true, true);
     	dartController.ConfigFwdLimitSwitchNormallyOpen(false);
     	dartController.ConfigRevLimitSwitchNormallyOpen(false);
@@ -86,6 +88,17 @@ public class Escalator extends Subsystem {
     	dartController.setPID(DART_P, DART_I, DART_D);
     	dartController.setFeedbackDevice(CANTalon.FeedbackDevice.AnalogPot);
     }
+    
+    private static void initIntakeWheel(CANTalon intakeWheelController) {
+		intakeWheelController.enableBrakeMode(false);
+		intakeWheelController.setExpiration(1000);
+		intakeWheelController.setSafetyEnabled(true);
+		int pollRate = 5000;
+		intakeWheelController.setStatusFrameRateMs(CANTalon.StatusFrameRate.AnalogTempVbat, pollRate);
+		intakeWheelController.setStatusFrameRateMs(CANTalon.StatusFrameRate.Feedback, pollRate);
+		intakeWheelController.setStatusFrameRateMs(CANTalon.StatusFrameRate.General, pollRate);
+		intakeWheelController.setStatusFrameRateMs(CANTalon.StatusFrameRate.QuadEncoder, pollRate);
+	}
     
     protected void dartManualMode() {
     	dartL.changeControlMode(CANTalon.ControlMode.PercentVbus);

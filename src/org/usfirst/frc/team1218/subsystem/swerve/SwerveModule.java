@@ -6,6 +6,7 @@ import org.usfirst.frc.team1218.subsystem.swerve.math.Angle;
 import org.usfirst.frc.team1218.subsystem.swerve.math.Vector;
 
 import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -27,13 +28,29 @@ public abstract class SwerveModule {
 	private static final double DRIVE_POWER_SCALE = 0.2;
 	protected static final boolean[] MODULE_REVERSED = {false, false, true, true};
 	
+	protected final CANTalon angleController;
+	protected static final double MAX_ANGLE_CONTROLLER_POWER = 1.0;
+	
+	private static final double ENCODER_CLICKS_PER_REVOLUTION = 500.0;
+	protected static final double ENCODER_CLICK_TO_DEGREE = 360.0 / ENCODER_CLICKS_PER_REVOLUTION; //Degrees over Number of Clicks
+	protected static final double ENCODER_DEGREE_TO_CLICK = ENCODER_CLICKS_PER_REVOLUTION / 360.0;
+	protected static final double ENCODER_FEET_PER_CLICK = 0; //TODO Get Value
+	
+	
 	private static final double NORMAL_MODE_RAMP_RATE = 0;
 	private static final double STABLE_MODE_RAMP_RATE = 0;
 	
 	public SwerveModule(int moduleNumber) {
 		this.moduleNumber = moduleNumber;
 		this.driveWheelController = new CANTalon(RobotMap.SM_DRIVE_MOTOR[moduleNumber]);
-		
+		this.driveWheelController.setFeedbackDevice(FeedbackDevice.AnalogEncoder);
+		this.driveWheelController.enableBrakeMode(false);
+		this.driveWheelController.enableLimitSwitch(false, false);
+		this.driveWheelController.enableForwardSoftLimit(false);
+		this.driveWheelController.enableReverseSoftLimit(false);
+		this.driveWheelController.setExpiration(100);
+		this.driveWheelController.setSafetyEnabled(true);
+		this.angleController = new CANTalon(RobotMap.SM_TURN_MOTOR[moduleNumber]);
 	}
 	
 	/**
@@ -62,18 +79,19 @@ public abstract class SwerveModule {
 		setValues(vector.getAngle(), vector.getMagnitude());
 	}
 	
-	/**
-	 * Set the wheels to any angle that is relative to the robot's front.
-	 * @param angle
-	 */
-	public void writeRobotCentricAngle(double angle) {
-		if(Angle.diffBetweenAngles(angle, this.robotCentricAngle) > 90) invertModule = !invertModule;
-		this.robotCentricAngle = angle;
-		angle += (invertModule) ? 180 : 0;
-		angle = (MODULE_REVERSED[moduleNumber]) ? 360 - angle : angle;
-		angle = Angle.get360Angle(angle);
-		setRealAngle(angle);
+	public double getVelocity() { //TODO write
+		return 0;
 	}
+	
+	public double getDistance() { //TODO write
+		return 0;
+	}
+	
+	/**
+	 * Get the value of the encoder currently used on the angle
+	 * @returns degree position of encoder
+	 */
+	public abstract double getEncoderAngle();
 	
 	/**
 	 * Method that controls final stage of setting a properly offset angle
@@ -123,6 +141,20 @@ public abstract class SwerveModule {
 	 */
 	public void syncDashboard() {//TODO fix driver station value keys
 		SmartDashboard.putNumber("SM_" + moduleNumber + "_WheelPower", driveWheelController.get());
+		SmartDashboard.putNumber("SM_" + moduleNumber + "_EncoderAngle", getEncoderAngle());
+		SmartDashboard.putNumber("SM_" + moduleNumber + "_RobotCentricAngle", robotCentricAngle);
 	}
 	
+	/**
+	 * Set the wheels to any angle that is relative to the robot's front.
+	 * @param angle
+	 */
+	public void writeRobotCentricAngle(double angle) {
+		if(Angle.diffBetweenAngles(angle, this.robotCentricAngle) > 90) invertModule = !invertModule;
+		this.robotCentricAngle = angle;
+		angle += (invertModule) ? 180 : 0;
+		angle = (MODULE_REVERSED[moduleNumber]) ? 360 - angle : angle;
+		angle = Angle.get360Angle(angle);
+		setRealAngle(angle);
+	}
 }

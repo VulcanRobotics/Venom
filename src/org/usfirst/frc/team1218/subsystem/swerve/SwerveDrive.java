@@ -57,21 +57,25 @@ public class SwerveDrive extends Subsystem {
     public void swerveDrive(Vector translationVector, double rotation, double fieldCentricCompensator) {
     	rotation *= WHEEL_PERPENDICULAR_CONSTANT;
     	translationVector.pushAngle(-fieldCentricCompensator);
-    	Vector vector[] = {
+    	
+    	List<Vector> moduleVector = new ArrayList<Vector>(Arrays.asList(
     			new Vector(translationVector.getX() + rotation, translationVector.getY() - rotation),
     			new Vector(translationVector.getX() - rotation, translationVector.getY() - rotation),
     			new Vector(translationVector.getX() - rotation, translationVector.getY() + rotation),
     			new Vector(translationVector.getX() + rotation, translationVector.getY() + rotation)
-    	};
+    			));
     	
     	double maxMagnitude = 0;
     	
-    	for (int i = 0; i < 4; i++) maxMagnitude = (vector[i].getMagnitude() > maxMagnitude) ? vector[i].getMagnitude() : maxMagnitude;
+    	for (int i = 0; i < 4; i++) maxMagnitude = (moduleVector.get(i).getMagnitude() > maxMagnitude) ? moduleVector.get(i).getMagnitude() : maxMagnitude;
     	
     	double scaleFactor = ((maxMagnitude > 1.0) ? 1.0 / maxMagnitude : 1.0);
-    	
-    	for (int i = 0; i < 4; i++) vector[i].scaleMagnitude(scaleFactor);
-    	
-    	module.stream().forEach(m -> m.setVector(vector[m.moduleNumber]));
+    	    	
+    	moduleVector.stream().forEach(v -> v.scaleMagnitude(scaleFactor));    	
+    	module.stream().forEach(m -> m.setVector(moduleVector.get(m.moduleNumber)));
+    }    
+    
+    protected List<SwerveModule_Digital> getModuleList() {
+    	return module;
     }
 }
