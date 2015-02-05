@@ -35,6 +35,7 @@ public class RobotMap {
 	public static final int BUTTON_RESET_GYRO = OI.ButtonType.B;
 	public static final int BUTTON_MAINTAIN_HEADING = OI.ButtonType.L1;
 	public static final int BUTTON_TOGGLE_STABLE_MODE = OI.ButtonType.RIGHT_THUMB;
+	public static final int BUTTON_INDEX_MODULES = OI.ButtonType.A;
 	
 	//Operator Mapping
 	public static final int OPERATOR_JOYSTICK = 1;
