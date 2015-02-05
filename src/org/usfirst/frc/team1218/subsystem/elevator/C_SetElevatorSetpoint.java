@@ -7,19 +7,19 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *@author afiol-mahon
  */
-public class C_SetElevatorPosition extends Command {
+public class C_SetElevatorSetpoint extends Command {
 	
 	private final int newSetpoint;
 	
-    public C_SetElevatorPosition(int newSetpoint) {
+    public C_SetElevatorSetpoint(int newSetpoint) {
         requires(Robot.elevator);
         this.newSetpoint = newSetpoint;
     }
     
     
     protected void initialize() {
-    	Robot.elevator.setElevatorSetpoint(newSetpoint);
-    	System.out.println("Elevator position set to" + newSetpoint);
+        Robot.elevator.enablePID(true);
+    	Robot.elevator.setElevator(newSetpoint);
     }
 
     protected void execute() {
@@ -30,6 +30,7 @@ public class C_SetElevatorPosition extends Command {
     }
 
     protected void end() {
+    	System.out.println("Elevator position set to" + newSetpoint);
     }
 
     protected void interrupted() {
