@@ -1,8 +1,7 @@
 package org.usfirst.frc.team1218.subsystem.elevator;
 
 import edu.wpi.first.wpilibj.command.Command;
-import src.org.usfirst.frc.team1218.robot.Robot;
-import src.org.usfirst.frc.team1218.elevator.Elevator;
+import org.usfirst.frc.team1218.robot.Robot;
 
 /**
  *
@@ -31,10 +30,10 @@ public class C_ZeroElevator extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	if (Robot.elevator.liftMaster.getFaultRevLim()) {
+    	if (Robot.elevator.getBottomLimit()) {
     		//if bottom limit switch is hit
     		Robot.elevator.setElevatorSpeed(0.0);
-    		Robot.elevator.liftMaster.setPosition(0);
+    		Robot.elevator.zeroSensor();
     		return true;
     	}
     	if(isTimedOut()) {
