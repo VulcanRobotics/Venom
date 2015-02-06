@@ -56,7 +56,7 @@ public class Elevator extends Subsystem {
     	liftMaster.set(velocity);
     }
     
-    private void configureElevatorMotorControllers() {
+    protected void configureElevatorMotorControllers() {
     	liftMaster.enableBrakeMode(true);
     	liftSlave.enableBrakeMode(true);
     	
@@ -99,6 +99,15 @@ public class Elevator extends Subsystem {
     public void syncDashboard() {
     	SmartDashboard.putNumber("Elevator_Position", liftMaster.getSetpoint());
     	//SmartDashboard.putNumber("Intake_Power", intakeL.getSetpoint());
+    }
+    
+    protected void zeroSensor() {
+    	liftMaster.setPosition(0);
+    }
+    
+    protected boolean getBottomLimit() {
+    	//if 1, limit switch hit
+    	return liftMaster.getFaultRevLim() == 1;
     }
 }
 
