@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
  */
 public class Elevator extends Subsystem {
     
-	private final DigitalInput toteDetector; //Triggers if tote is inside robot able to be manipulated by elevator
+	//private final DigitalInput toteDetector; //Triggers if tote is inside robot able to be manipulated by elevator
 	
 	private final CANTalon liftMaster;
 	private final CANTalon liftSlave;
@@ -47,9 +47,7 @@ public class Elevator extends Subsystem {
     	liftSlave.changeControlMode(CANTalon.ControlMode.Follower);
     	liftSlave.reverseOutput(true);
     	liftSlave.set(liftMaster.getDeviceID());
-    	
-    	toteDetector = new DigitalInput(RobotMap.TOTE_DETECTOR);
-    	this.enablePID(true);
+       	this.enablePID(true);
     	this.setElevator(ELEVATOR_DEFAULT_POSITION);
     }
     
@@ -81,12 +79,7 @@ public class Elevator extends Subsystem {
    		}
    	}
     
-    public boolean hasTote() {
-    	return toteDetector.get();
-    }
-    
     public void syncDashboard() {
     	SmartDashboard.putNumber("Elevator_Position", getPosition());
-    	SmartDashboard.putBoolean("Elevator_Has_Tote", hasTote());
     }
 }

@@ -14,10 +14,9 @@ public class SwerveModule_Digital extends SwerveModule {
 	public AngleEncoder angleEncoder;
 	private final PIDController anglePIDController;
 	
-	private static final double ANGLE_CONTROLLER_P = 0.01;
+	private static final double ANGLE_CONTROLLER_P = -0.1;
 	private static final double ANGLE_CONTROLLER_I = 0.0;
-	private static final double ANGLE_CONTROLLER_D = 0.0;
-	private static final double ANGLE_MOTOR_OUTPUT_RANGE = 1.0;
+	private static final double ANGLE_CONTROLLER_D = 0.01;
 	
 	public SwerveModule_Digital(int moduleNumber) {
 		super(moduleNumber);
@@ -30,7 +29,7 @@ public class SwerveModule_Digital extends SwerveModule {
 				angleEncoder,
 				angleController);
 		this.anglePIDController.setInputRange(0.0, 360.0);
-		this.anglePIDController.setOutputRange(-ANGLE_MOTOR_OUTPUT_RANGE, ANGLE_MOTOR_OUTPUT_RANGE);
+		this.anglePIDController.setOutputRange(-MAX_ANGLE_CONTROLLER_POWER, MAX_ANGLE_CONTROLLER_POWER);;
 		this.anglePIDController.setContinuous();
 		//Begin Module
 		this.angleEncoder.reset();
@@ -39,6 +38,8 @@ public class SwerveModule_Digital extends SwerveModule {
 	
 	@Override
 	public double getEncoderAngle() {
+		anglePIDController.setPID(-0.01, 0.0001, 0.4);
+		anglePIDController.setPercentTolerance(1);
 		return angleEncoder.pidGet();
 	}
 	
@@ -52,10 +53,8 @@ public class SwerveModule_Digital extends SwerveModule {
 		public AngleEncoder(int moduleNumber) {
 			super(RobotMap.SM_ANGLE_ENCODER_A[moduleNumber],
 					RobotMap.SM_ANGLE_ENCODER_B[moduleNumber],
-					RobotMap.SM_ANGLE_ENCODER_I[moduleNumber],
-					MODULE_REVERSED[moduleNumber]
+					RobotMap.SM_ANGLE_ENCODER_I[moduleNumber]
 					);
-			this.setDistancePerPulse(ENCODER_CLICK_TO_DEGREE);
 		}
 		
 		@Override

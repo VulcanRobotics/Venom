@@ -25,11 +25,11 @@ public abstract class SwerveModule {
 	private boolean stableMode = false;
 	
 	protected final CANTalon driveWheelController;
-	private static final double DRIVE_POWER_SCALE = 0.2;
-	protected static final boolean[] MODULE_REVERSED = {false, false, true, true};
+	private static final double DRIVE_POWER_SCALE = 0.5;
+	protected static final boolean[] MODULE_REVERSED = {false, true, false, false};
 	
 	protected final CANTalon angleController;
-	protected static final double MAX_ANGLE_CONTROLLER_POWER = 1.0;
+	protected static final double MAX_ANGLE_CONTROLLER_POWER = 0.3;
 	
 	private static final double ENCODER_CLICKS_PER_REVOLUTION = 500.0;
 	protected static final double ENCODER_CLICK_TO_DEGREE = 360.0 / ENCODER_CLICKS_PER_REVOLUTION; //Degrees over Number of Clicks
