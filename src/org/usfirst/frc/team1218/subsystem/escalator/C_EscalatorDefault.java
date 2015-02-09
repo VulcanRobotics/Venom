@@ -31,8 +31,6 @@ public class C_EscalatorDefault extends Command {
 
     protected void end() {
     	Robot.escalator.setDarts(0.0);
-    	//Robot.escalator.setIntake(0.0);
-		Robot.escalator.openGrabber(false);
 		Robot.escalator.disableDarts();
     }
     
@@ -51,22 +49,4 @@ public class C_EscalatorDefault extends Command {
     	}
     }
     
-    /**
-     * Method binds button to intake control
-     
-    private void setBinIntakeByButton() {
-    	if (OI.escalatorRunBinIntake.get()) {
-    		Robot.escalator.setIntake(1.0);
-    	} else {
-        	Robot.escalator.setIntake(0.0);
-    	}
-    }
-    */
-    /**
-     * Method binds button to grabber control
-     
-    private void setGrabberByButton() {
-    	Robot.escalator.openGrabber(OI.escalatorOpenGrabber.get());
-    }
-    */
 }

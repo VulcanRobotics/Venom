@@ -1,10 +1,11 @@
 package org.usfirst.frc.team1218.subsystem.binIntake;
 
 import org.usfirst.frc.team1218.robot.RobotMap;
-import edu.wpi.first.wpilibj.DigitalInput;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Solenoid;
 /**
  *
@@ -26,9 +27,23 @@ public class BinIntake extends Subsystem {
 	public BinIntake() {
 		intakeL = new CANTalon(RobotMap.ELEVATOR_INTAKE_L);
 		intakeR = new CANTalon(RobotMap.ELEVATOR_INTAKE_R);
+		initIntakeWheel(intakeL);
+		initIntakeWheel(intakeR);
 		clamp = new Solenoid(RobotMap.ESCALATOR_INTAKE_SOLENOID);
 		binDetector = new DigitalInput(RobotMap.ESCALATOR_INTAKE_DETECTOR);
 	}
+
+    private static void initIntakeWheel(CANTalon intakeWheelController) {
+		intakeWheelController.enableBrakeMode(false);
+		intakeWheelController.setExpiration(1000);
+		intakeWheelController.setSafetyEnabled(true);
+		int pollRate = 1000;
+		intakeWheelController.setStatusFrameRateMs(CANTalon.StatusFrameRate.AnalogTempVbat, pollRate);
+		intakeWheelController.setStatusFrameRateMs(CANTalon.StatusFrameRate.Feedback, pollRate);
+		intakeWheelController.setStatusFrameRateMs(CANTalon.StatusFrameRate.General, pollRate);
+		intakeWheelController.setStatusFrameRateMs(CANTalon.StatusFrameRate.QuadEncoder, pollRate);
+	}
+    
 	
 	public void openClamp(){
 		setClamp(true);
@@ -51,6 +66,11 @@ public class BinIntake extends Subsystem {
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
+    }
+    
+    public void syncDashboard() {
+    	SmartDashboard.putBoolean("Escalator_Clamps_Open", clamp.get());
+    	SmartDashboard.putNumber("Escalator_Intake_Power", intakeL.get());
     }
     
     public boolean getHasBin() {
