@@ -11,6 +11,7 @@ import org.usfirst.frc.team1218.subsystem.swerve.C_ZeroRobotHeading;
 import org.usfirst.frc.team1218.subsystem.swerve.C_GoToHeading;
 import org.usfirst.frc.team1218.subsystem.swerve.math.Vector;
 import org.usfirst.frc.team1218.subsystem.toteIntake.C_RunToteIntake;
+import org.usfirst.frc.team1218.subsystem.binIntake.*;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -99,8 +100,10 @@ public class OI {
         
         //Escalator
         escalatorRunBinIntake = new JoystickButton(operator, RobotMap.BUTTON_ESCALATOR_RUN_BIN_INTAKE);
+        escalatorRunBinIntake.whileHeld(new C_PickupBin());
         
         escalatorOpenGrabber = new JoystickButton(operator, RobotMap.BUTTON_ESCALATOR_OPEN_GRABBER);
+        escalatorOpenGrabber.whenPressed(new C_DropBin());
         
         escalatorHighPosition = new JoystickButton(operator, RobotMap.BUTTON_ESCALATOR_HIGH_POSITION);
         escalatorHighPosition.whileHeld(new C_SeekPosition(Escalator.ESCALATOR_HIGH_POSITION));

@@ -29,6 +29,8 @@ public class RobotMap {
 	public static final int ESCALATOR_INTAKE_R = 23;
 	public static final int ESCALATOR_INTAKE_SOLENOID = 0;
 	
+	public static final int ESCALATOR_INTAKE_DETECTOR = 2; //DIO
+	
 	//Hooks
 	public static final int HOOK_DEPLOY_SOLENOID = 1;
 	

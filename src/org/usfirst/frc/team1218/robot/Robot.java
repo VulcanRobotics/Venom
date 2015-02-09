@@ -6,7 +6,7 @@ import org.usfirst.frc.team1218.subsystem.escalator.Escalator;
 import org.usfirst.frc.team1218.subsystem.hooks.Hooks;
 import org.usfirst.frc.team1218.subsystem.swerve.SwerveDrive;
 import org.usfirst.frc.team1218.subsystem.toteIntake.ToteIntake;
-
+import org.usfirst.frc.team1218.subsystem.binIntake.BinIntake;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -27,6 +27,7 @@ public class Robot extends IterativeRobot {
 	public static Elevator elevator;
 	public static Hooks hooks;
 	public static ToteIntake toteIntake;
+	public static BinIntake binIntake;
 	public static OI oi;
 	
     Command autonomousCommand;
@@ -41,6 +42,7 @@ public class Robot extends IterativeRobot {
     	elevator = new Elevator();
     	hooks = new Hooks();
     	toteIntake = new ToteIntake();
+    	binIntake = new BinIntake();
 		oi = new OI();
 		
         //instantiate the command used for the autonomous period
