@@ -21,14 +21,20 @@ public class Escalator extends Subsystem {
 	protected final CANTalon dartL;
 	protected final CANTalon dartR;
 	
-	private static final double DART_P = 1.0;//TODO Test and Tune Dart PID under load
+	protected final DartSafety dartSafety;
+	
+	private static final double DART_P = 1.0;
 	private static final double DART_I = 0.0;
 	private static final double DART_D = 0.0;
 	
-	private static final int DART_SOFT_LIMIT_FORWARD = 1024;//TODO Tune Dart soft limits
+	private static final double DART_FAILSAFE_DISTANCE = 70;
+	private static final double DART_REALIGN_DISTANCE = 50;
+	protected static final double DART_REALIGN_POWER = 0.2;
+	
+	private static final int DART_SOFT_LIMIT_FORWARD = 1024; //TODO Tune Dart soft limits
 	private static final int DART_SOFT_LIMIT_REVERSE = 0;
 	
-	public static final int ESCALATOR_HIGH_POSITION = 550;//TODO Test and Tune Dart Preset Positions
+	public static final int ESCALATOR_HIGH_POSITION = 600;
 	public static final int ESCALATOR_MIDDLE_POSITION = 500;
 	public static final int ESCALATOR_LOW_POSITION = 400;
 	
@@ -42,6 +48,8 @@ public class Escalator extends Subsystem {
 		intakeR = new CANTalon(RobotMap.ELEVATOR_INTAKE_R);
 		initIntakeWheel(intakeR);
 		//XXX clamp = new Solenoid(RobotMap.ESCALATOR_INTAKE_SOLENOID);
+		dartSafety = new DartSafety(dartL, dartR, DART_FAILSAFE_DISTANCE, DART_REALIGN_DISTANCE);
+		
 		System.out.println("Escalator Initialized");
 	}
 	
@@ -60,7 +68,7 @@ public class Escalator extends Subsystem {
     /**
      * @param power Positive value for intake, negative value for output
      */
-    public void setIntake(double power) {//TODO Verify that positive value is intake and both motors move same direction
+    public void setIntake(double power) {
     	intakeL.set(power);
     	intakeR.set(-power);
     }

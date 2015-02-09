@@ -11,9 +11,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *	@author Bob Marley
  */
 public class ToteIntake extends Subsystem {
-    
-    // Put methods for controlling this subsystem
-    // here. Call these from Commands.
 
 	private final CANTalon intakeL;
 	private final CANTalon intakeR;
@@ -33,7 +30,7 @@ public class ToteIntake extends Subsystem {
     	intakeR = new CANTalon(RobotMap.ELEVATOR_INTAKE_R);
     }
     
-    public void setIntakePower(double power) {//TODO Verify direction is correct
+    public void setIntakePower(double power) {
     	intakeL.set(power);
     	intakeR.set(-power);
     }
