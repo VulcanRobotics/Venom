@@ -1,6 +1,5 @@
 package org.usfirst.frc.team1218.subsystem.elevator;
 
-import org.usfirst.frc.team1218.robot.OI;
 import org.usfirst.frc.team1218.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -8,34 +7,32 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *@author afiol-mahon
  */
-public class C_ElevatorManual extends Command {
-
-    public C_ElevatorManual() {
+public class C_SetElevatorSetpoint extends Command {
+	
+	private final int newSetpoint;
+	
+    public C_SetElevatorSetpoint(int newSetpoint) {
         requires(Robot.elevator);
+        this.newSetpoint = newSetpoint;
     }
-
+    
+    
     protected void initialize() {
-    	Robot.elevator.configureElevatorMotorControllersForSpeedControl();
+        Robot.elevator.enablePID(true);
+    	Robot.elevator.setElevator(newSetpoint);
     }
 
     protected void execute() {
-    	double power = 0.0;
-    	power += OI.elevatorRaise.get() ? 1 : 0;
-    	power += OI.elevatorLower.get() ? -1 : 0;
-    	Robot.elevator.setElevatorSpeed(power);
     }
 
     protected boolean isFinished() {
-        return false;
+        return true;
     }
 
     protected void end() {
-    	
+    	System.out.println("Elevator position set to" + newSetpoint);
     }
 
     protected void interrupted() {
-    	end();
     }
-    
-   
 }

@@ -14,24 +14,26 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
+ * Provides Mid/High level module control code.
  * @author afiolmahon
  */
 
-public class SwerveSystem extends Subsystem {
+public class SwerveDrive extends Subsystem {
     
-    private List<SwerveModule> module;
+    protected List<SwerveModule> module;
     
     private final SerialPort navSerialPort;
     protected final IMUAdvanced navModule;
     
-	private static final double WHEEL_PERPENDICULAR_CONSTANT = 1 / Math.sqrt(2);//FIXME Update Constant
+	private static final double X_PERPENDICULAR_CONSTANT = 0.546;
+	private static final double Y_PERPENDICULAR_CONSTANT = 0.837;
 	
-    public SwerveSystem() {
+    public SwerveDrive() {
     	module = new ArrayList<SwerveModule>(Arrays.asList(
-    				new EmbeddedSwerveModule(0),
-    				new EmbeddedSwerveModule(1),
-    				new EmbeddedSwerveModule(2),
-    				new EmbeddedSwerveModule(3)
+    				new SwerveModule_Embedded(0),
+    				new SwerveModule_Embedded(1),
+    				new SwerveModule_Embedded(2),
+    				new SwerveModule_Embedded(3)
     			));	
 		navSerialPort = new SerialPort(57600, SerialPort.Port.kMXP);
 		navModule = new IMUAdvanced(navSerialPort);
@@ -46,7 +48,7 @@ public class SwerveSystem extends Subsystem {
     	module.stream().forEach(m -> m.syncDashboard());
     	SmartDashboard.putNumber("RobotHeading", Angle.get360Angle(navModule.getYaw()));
 	}
-     
+    
     /**
      * Creates angle and power for all swerve modules
      * @param translationVector vector with magnitude <= 1
@@ -54,24 +56,26 @@ public class SwerveSystem extends Subsystem {
      * @param fieldCentricCompensator a gyroscope output that can let the robot drive field-centric, pass 0 if robot centric drive is desired.
      */
     public void swerveDrive(Vector translationVector, double rotation, double fieldCentricCompensator) {
-    	rotation *= WHEEL_PERPENDICULAR_CONSTANT;
+    	double xPerpendicular = rotation * X_PERPENDICULAR_CONSTANT;
+    	double yPerpendicular = rotation * Y_PERPENDICULAR_CONSTANT;
+    	
     	translationVector.pushAngle(-fieldCentricCompensator);
-    	Vector vector[] = {
-    			new Vector(translationVector.getX() + rotation, translationVector.getY() - rotation),
-    			new Vector(translationVector.getX() - rotation, translationVector.getY() - rotation),
-    			new Vector(translationVector.getX() - rotation, translationVector.getY() + rotation),
-    			new Vector(translationVector.getX() + rotation, translationVector.getY() + rotation)
-    	};
+    	
+    	List<Vector> moduleVector = new ArrayList<Vector>(Arrays.asList(
+    			new Vector(translationVector.getX() + xPerpendicular, translationVector.getY() - yPerpendicular),
+    			new Vector(translationVector.getX() - xPerpendicular, translationVector.getY() - yPerpendicular),
+    			new Vector(translationVector.getX() - xPerpendicular, translationVector.getY() + yPerpendicular),
+    			new Vector(translationVector.getX() + xPerpendicular, translationVector.getY() + yPerpendicular)
+    			));
     	
     	double maxMagnitude = 0;
     	
-    	for (int i = 0; i < 4; i++) maxMagnitude = (vector[i].getMagnitude() > maxMagnitude) ? vector[i].getMagnitude() : maxMagnitude;
+    	for (int i = 0; i < 4; i++) maxMagnitude = (moduleVector.get(i).getMagnitude() > maxMagnitude) ? moduleVector.get(i).getMagnitude() : maxMagnitude;
     	
     	double scaleFactor = ((maxMagnitude > 1.0) ? 1.0 / maxMagnitude : 1.0);
-    	
-    	for (int i = 0; i < 4; i++) vector[i].scaleMagnitude(scaleFactor);
-    	
-    	module.stream().forEach(m -> m.setVector(vector[m.moduleNumber]));
+    	    	
+    	moduleVector.stream().forEach(v -> v.scaleMagnitude(scaleFactor));    	
+    	module.stream().forEach(m -> m.setVector(moduleVector.get(m.moduleNumber)));
     }    
     
     protected List<SwerveModule> getModuleList() {
