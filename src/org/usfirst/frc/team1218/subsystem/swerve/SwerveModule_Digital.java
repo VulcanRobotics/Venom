@@ -42,7 +42,7 @@ public class SwerveModule_Digital extends SwerveModule {
 	}
 	
 	@Override
-	public void setRealAngle(double angle) {
+	public void setPIDAngle(double angle) {
 		this.anglePIDController.setSetpoint(angle); //applies module specific direction preferences
 	}
 	

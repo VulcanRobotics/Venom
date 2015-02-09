@@ -24,14 +24,14 @@ public abstract class SwerveModule {
 	private boolean invertModule = false;
 	private boolean stableMode = false;
 	
-	protected final CANTalon driveWheelController;
+	private final CANTalon driveWheelController;
 	private static final double DRIVE_POWER_SCALE = 0.7;
 	
 	protected final CANTalon angleController;
 	protected static final double MAX_ANGLE_CONTROLLER_POWER = 0.7;
 	protected static final double[] MODULE_ANGLE_OFFSET = {-2.0, 133.0, -15.0, -145.0};
 	
-	private static final double ENCODER_CLICKS_PER_REVOLUTION = 500.0;
+	protected static final double ENCODER_CLICKS_PER_REVOLUTION = 500.0;
 	protected static final double ENCODER_CLICK_TO_DEGREE = 360.0 / ENCODER_CLICKS_PER_REVOLUTION; //Degrees over Number of Clicks
 	protected static final double ENCODER_DEGREE_TO_CLICK = ENCODER_CLICKS_PER_REVOLUTION / 360.0;
 	protected static final double ENCODER_FEET_PER_CLICK = 0; //TODO Get Value
@@ -101,7 +101,7 @@ public abstract class SwerveModule {
 	 * so they just have to define the last part of the angle write
 	 * @param angle Desired wheel angle. Can be any value
 	 */
-	public abstract void setRealAngle(double angle);
+	public abstract void setPIDAngle(double angle);
 	
 	/**
 	 * Writes a power to the wheel that corresponds with module settings.
@@ -154,6 +154,6 @@ public abstract class SwerveModule {
 		angle += (invertModule) ? 180 : 0;
 		angle = 360 - angle;
 		angle = Angle.get360Angle(angle);
-		setRealAngle(angle);
+		setPIDAngle(angle);
 	}
 }

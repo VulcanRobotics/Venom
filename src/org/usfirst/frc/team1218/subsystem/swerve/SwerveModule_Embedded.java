@@ -1,10 +1,12 @@
 package org.usfirst.frc.team1218.subsystem.swerve;
 
+import org.usfirst.frc.team1218.subsystem.swerve.math.Angle;
+
 import edu.wpi.first.wpilibj.CANTalon.ControlMode;
 import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
 import edu.wpi.first.wpilibj.CANTalon.StatusFrameRate;
+import edu.wpi.first.wpilibj.buttons.Trigger;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -12,103 +14,108 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class SwerveModule_Embedded extends SwerveModule {
 		
-	private static final double ANGLE_CONTROLLER_P = 0.1;
-	private static final double ANGLE_CONTROLLER_I = 0.1;
-	private static final double ANGLE_CONTROLLER_D = 0.0;
+	private double ANGLE_CONTROLLER_P = 0.1;
+	private double ANGLE_CONTROLLER_I = 0.1;
+	private double ANGLE_CONTROLLER_D = 0.0;
+	private int QUAD_ENCODER_UPDATE_FRAME_RATE = 3;
+	
+	private IndexTrigger indexTrigger;
+	
+	private double encoderClickPosition = 0;
 	
 	public SwerveModule_Embedded(int moduleNumber) {
 		super(moduleNumber);
 		this.angleController.setFeedbackDevice(FeedbackDevice.QuadEncoder);
 		this.angleController.changeControlMode(ControlMode.Position);
 		this.angleController.setPID(ANGLE_CONTROLLER_P, ANGLE_CONTROLLER_I, ANGLE_CONTROLLER_D);
-		this.angleController.setStatusFrameRateMs(StatusFrameRate.QuadEncoder, 3);
-		this.angleController.set(0);
-		//new IndexSystem(this);
+		this.angleController.setStatusFrameRateMs(StatusFrameRate.QuadEncoder, QUAD_ENCODER_UPDATE_FRAME_RATE);
+		indexTrigger = new IndexTrigger();
+		indexTrigger.whenActive(new IndexModule());
 	}
 	
 	@Override
-	public void setRealAngle(double angle) {
+	public void setPIDAngle(double angle) {
+		encoderClickPosition += this.angleController.getEncPosition();
+		this.angleController.setPosition(0);
+		
+		angle = Angle.get360Angle(angle);
 		angle *= ENCODER_DEGREE_TO_CLICK;
-		this.angleController.set(angle);
+		
+		double error = angle - getEncoderAngle();
+		double maxInput = ENCODER_CLICKS_PER_REVOLUTION;
+		double minInput = 0;
+		//Continuous Code from WPI Library PIDController Class
+		if (Math.abs(error) > (maxInput - minInput) / 2) {
+            if (error > 0) {
+                error = error - maxInput + minInput;
+            } else {
+                error = error + maxInput - minInput;
+            }
+        }
+		this.angleController.set(error);
 	}
 	
 	@Override
 	public double getEncoderAngle() {
-		double position = this.angleController.getEncPosition();
-		position *= ENCODER_CLICK_TO_DEGREE;
-		//position = Angle.get360Angle(position);
-		return position;
+		return encoderClickPosition * ENCODER_CLICK_TO_DEGREE;
 	}
 	
 	private int lastIndexCount = -1;
-	protected void zeroEncoderOnIndex() {
+	
+	private boolean hasHitIndex() {
 		int currentIndexCount = angleController.getNumberOfQuadIdxRises();
 		if (currentIndexCount != lastIndexCount) {
-			angleController.setPosition(SwerveModule.MODULE_ANGLE_OFFSET[moduleNumber]);
 			lastIndexCount = currentIndexCount;
-			System.out.println("INDEX OF SM_" + moduleNumber + ": Reset");
+			System.out.println("SM_" + moduleNumber + ": Index Hit");
+			return true;
+		} else {
+			return false;
 		}
 	}
+
 	@Override
 	public void syncDashboard() {
 		super.syncDashboard();
-		SmartDashboard.putNumber("SM_" + moduleNumber + "_AngleError", angleController.getClosedLoopError());
-		SmartDashboard.putNumber("SM_" + moduleNumber + "_AngleMotorVoltage", angleController.getOutputVoltage());
-		SmartDashboard.putNumber("SM_" + moduleNumber + "_QuadCount", angleController.getNumberOfQuadIdxRises());
-		SmartDashboard.putNumber("SM_" + moduleNumber + "_Raw_Position", angleController.getPosition());
-		SmartDashboard.putNumber("SM_" + moduleNumber + "_Raw_Setpoint", angleController.getSetpoint());
-		angleController.setPID(10.0, 0.0, 0.0001);
+		SmartDashboard.putNumber("SM_" + moduleNumber + "_Angle_Controller_PID_Error", angleController.getClosedLoopError());
+		SmartDashboard.putNumber("SM_" + moduleNumber + "_Angle_Controller_Output_Voltage", angleController.getOutputVoltage());
+		SmartDashboard.putNumber("SM_" + moduleNumber + "_Index_Count", angleController.getNumberOfQuadIdxRises());
+		SmartDashboard.putNumber("SM_" + moduleNumber + "_Click_Position_Internal", angleController.getPosition());
+		SmartDashboard.putNumber("SM_" + moduleNumber + "_Click_Position_True", encoderClickPosition);
+		SmartDashboard.putNumber("SM_" + moduleNumber + "_Click_Setpoint", angleController.getSetpoint());
+		SmartDashboard.putNumber("SM_" + moduleNumber + "_Angle_Controller_P_Value", angleController.getP());
+		SmartDashboard.putNumber("SM_" + moduleNumber + "_Angle_Controller_I_Value", angleController.getI());
+		SmartDashboard.putNumber("SM_" + moduleNumber + "_Angle_Controller_D_Value", angleController.getD());
+		angleController.setPID(ANGLE_CONTROLLER_P, ANGLE_CONTROLLER_I, ANGLE_CONTROLLER_D);//XXX find better place for this periodic task
 	}
 	
-	/**
-	 * Command functions as an event handling loop for the index pin
-	 * @author afiol-mahon
-	 */
-	public class IndexSystem extends Subsystem{
+	class IndexTrigger extends Trigger {
+		@Override
+		public boolean get() {
+			return hasHitIndex();
+		}
+	}
+	
+	class IndexModule extends Command {
 		
-		SwerveModule_Embedded module;
-		
-		public IndexSystem(SwerveModule_Embedded module) {
-			this.module = module;
+		@Override
+		protected void initialize() {
+			encoderClickPosition = MODULE_ANGLE_OFFSET[moduleNumber] * ENCODER_DEGREE_TO_CLICK;
+			//FIXME try adding if this doesn't work initially
+			//this.angleController.setPosition(0);
+			System.out.println("SM_" + moduleNumber + ": Reset");
 		}
 		
 		@Override
-		protected void initDefaultCommand() {
-			setDefaultCommand(new C_IndexPeriodic(module, this));
+		protected void execute() {}
+		
+		@Override
+		protected boolean isFinished() {
+			return true;
 		}
-		class C_IndexPeriodic extends Command{
-			SwerveModule_Embedded module;
-			public C_IndexPeriodic(SwerveModule_Embedded module, Subsystem sub) {
-				this.module = module;
-				requires(sub);
-			}
-			
-			@Override
-			protected void initialize() {
-				System.out.println("Index Watch " + module.moduleNumber + " has started");
-			}
-			
-			@Override
-			protected void execute() {
-				module.zeroEncoderOnIndex();
-				
-			}
-			
-			@Override
-			protected boolean isFinished() {
-				return false;
-			}
 
-			@Override
-			protected void end() {
-				System.out.println("Warning: Index watcher " + module.moduleNumber + " has been terminated.");
-			}
-
-			@Override
-			protected void interrupted() {
-				end();
-			}
-			
-		}
+		@Override
+		protected void end() {}
+		@Override
+		protected void interrupted() {}
 	}
 }

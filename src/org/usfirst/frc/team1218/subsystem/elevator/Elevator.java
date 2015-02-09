@@ -26,8 +26,8 @@ public class Elevator extends Subsystem {
 	public static final int ELEVATOR_SOFT_LIMIT_BOTTOM = 200;
 	public static final int ELEVATOR_DROP_POSITION = 250;
 	public static final int ELEVATOR_CAPTURE_POSITION = 500; //Minimum height needed to get tote in brushes
-	public static final int ELEVATOR_STEP_POSITION = 3000;
-	public static final int ELEVATOR_CLEARNCE_POSITION = 4000; //height that totes 
+	public static final int ELEVATOR_STEP_POSITION = 3000; // could we just lower elevator to ground to drop offf totes?
+	public static final int ELEVATOR_CLEARNCE_POSITION = 4000; //height that stored totes clear totes on ground
 	public static final int ELEVATOR_RAISE_POSITION = 5000;
 	public static final int ELEVATOR_SOFT_LIMIT_TOP = 5500;
 
