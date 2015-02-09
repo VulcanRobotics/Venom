@@ -1,88 +1,114 @@
 package org.usfirst.frc.team1218.subsystem.swerve;
 
-import org.usfirst.frc.team1218.subsystem.swerve.math.Angle;
-
-import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.CANTalon.ControlMode;
+import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
+import edu.wpi.first.wpilibj.CANTalon.StatusFrameRate;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * @author afiol-mahon
  */
 public class SwerveModule_Embedded extends SwerveModule {
 		
-	private static final double ANGLE_CONTROLLER_P = 0.01;
-	private static final double ANGLE_CONTROLLER_I = 0.0;
+	private static final double ANGLE_CONTROLLER_P = 0.1;
+	private static final double ANGLE_CONTROLLER_I = 0.1;
 	private static final double ANGLE_CONTROLLER_D = 0.0;
 	
 	public SwerveModule_Embedded(int moduleNumber) {
 		super(moduleNumber);
-		this.angleController.changeControlMode(CANTalon.ControlMode.Position);
-		this.angleController.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
-		this.angleController.reverseSensor(MODULE_REVERSED[moduleNumber]);
-		Scheduler.getInstance().add(new C_IndexPeriodic(this)); //Begin a command to monitor the encoder index pin
+		this.angleController.setFeedbackDevice(FeedbackDevice.QuadEncoder);
+		this.angleController.changeControlMode(ControlMode.Position);
 		this.angleController.setPID(ANGLE_CONTROLLER_P, ANGLE_CONTROLLER_I, ANGLE_CONTROLLER_D);
-		this.angleController.setStatusFrameRateMs(CANTalon.StatusFrameRate.QuadEncoder, 1);//XXX Running this really fast check CANBus Utilization
-		this.angleController.setPosition(0);
+		this.angleController.setStatusFrameRateMs(StatusFrameRate.QuadEncoder, 3);
+		this.angleController.set(0);
+		//new IndexSystem(this);
 	}
 	
 	@Override
 	public void setRealAngle(double angle) {
 		angle *= ENCODER_DEGREE_TO_CLICK;
-		angle = Angle.get360Angle(angle);
 		this.angleController.set(angle);
 	}
 	
 	@Override
 	public double getEncoderAngle() {
 		double position = this.angleController.getEncPosition();
-		position *=ENCODER_CLICK_TO_DEGREE;
-		position = Angle.get360Angle(position);
+		position *= ENCODER_CLICK_TO_DEGREE;
+		//position = Angle.get360Angle(position);
 		return position;
 	}
 	
-	private int encoderIndexRisingEdges = 0;
+	private int lastIndexCount = -1;
 	protected void zeroEncoderOnIndex() {
-		int currentEncRisingEdges = angleController.getNumberOfQuadIdxRises();
-		if (currentEncRisingEdges > encoderIndexRisingEdges) {
-			angleController.setPosition(0);
-			encoderIndexRisingEdges = currentEncRisingEdges;
+		int currentIndexCount = angleController.getNumberOfQuadIdxRises();
+		if (currentIndexCount != lastIndexCount) {
+			angleController.setPosition(SwerveModule.MODULE_ANGLE_OFFSET[moduleNumber]);
+			lastIndexCount = currentIndexCount;
+			System.out.println("INDEX OF SM_" + moduleNumber + ": Reset");
 		}
+	}
+	@Override
+	public void syncDashboard() {
+		super.syncDashboard();
+		SmartDashboard.putNumber("SM_" + moduleNumber + "_AngleError", angleController.getClosedLoopError());
+		SmartDashboard.putNumber("SM_" + moduleNumber + "_AngleMotorVoltage", angleController.getOutputVoltage());
+		SmartDashboard.putNumber("SM_" + moduleNumber + "_QuadCount", angleController.getNumberOfQuadIdxRises());
+		SmartDashboard.putNumber("SM_" + moduleNumber + "_Raw_Position", angleController.getPosition());
+		SmartDashboard.putNumber("SM_" + moduleNumber + "_Raw_Setpoint", angleController.getSetpoint());
+		angleController.setPID(10.0, 0.0, 0.0001);
 	}
 	
 	/**
 	 * Command functions as an event handling loop for the index pin
 	 * @author afiol-mahon
 	 */
-	public class C_IndexPeriodic extends Command {
+	public class IndexSystem extends Subsystem{
 		
-		private SwerveModule_Embedded module;
+		SwerveModule_Embedded module;
 		
-		public C_IndexPeriodic(SwerveModule_Embedded module) {
+		public IndexSystem(SwerveModule_Embedded module) {
 			this.module = module;
 		}
 		
 		@Override
-		protected void initialize() {}
-
-		@Override
-		protected void execute() {
-			module.zeroEncoderOnIndex();
+		protected void initDefaultCommand() {
+			setDefaultCommand(new C_IndexPeriodic(module, this));
 		}
+		class C_IndexPeriodic extends Command{
+			SwerveModule_Embedded module;
+			public C_IndexPeriodic(SwerveModule_Embedded module, Subsystem sub) {
+				this.module = module;
+				requires(sub);
+			}
+			
+			@Override
+			protected void initialize() {
+				System.out.println("Index Watch " + module.moduleNumber + " has started");
+			}
+			
+			@Override
+			protected void execute() {
+				module.zeroEncoderOnIndex();
+				
+			}
+			
+			@Override
+			protected boolean isFinished() {
+				return false;
+			}
 
-		@Override
-		protected boolean isFinished() {
-			return false;
-		}
+			@Override
+			protected void end() {
+				System.out.println("Warning: Index watcher " + module.moduleNumber + " has been terminated.");
+			}
 
-		@Override
-		protected void end() {
-			System.out.println("Warning! Index Watch for SM_" + moduleNumber + " has ended");
-		}
-
-		@Override
-		protected void interrupted() {
-			end();
+			@Override
+			protected void interrupted() {
+				end();
+			}
+			
 		}
 	}
 }

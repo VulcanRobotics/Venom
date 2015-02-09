@@ -21,16 +21,16 @@ public class Escalator extends Subsystem {
 	protected final CANTalon dartL;
 	protected final CANTalon dartR;
 	
-	private static final double DART_P = 10.0;//TODO Test and Tune Dart PID under load
+	private static final double DART_P = 1.0;//TODO Test and Tune Dart PID under load
 	private static final double DART_I = 0.0;
 	private static final double DART_D = 0.0;
 	
 	private static final int DART_SOFT_LIMIT_FORWARD = 1024;//TODO Tune Dart soft limits
 	private static final int DART_SOFT_LIMIT_REVERSE = 0;
 	
-	public static final int ESCALATOR_HIGH_POSITION = 700;//TODO Test and Tune Dart Preset Positions
+	public static final int ESCALATOR_HIGH_POSITION = 550;//TODO Test and Tune Dart Preset Positions
 	public static final int ESCALATOR_MIDDLE_POSITION = 500;
-	public static final int ESCALATOR_LOW_POSITION = 200;
+	public static final int ESCALATOR_LOW_POSITION = 400;
 	
 	public Escalator() {
 		dartL = new CANTalon(RobotMap.ESCALATOR_LEFT_DART);
@@ -93,7 +93,7 @@ public class Escalator extends Subsystem {
 		intakeWheelController.enableBrakeMode(false);
 		intakeWheelController.setExpiration(1000);
 		intakeWheelController.setSafetyEnabled(true);
-		int pollRate = 5000;
+		int pollRate = 1000;
 		intakeWheelController.setStatusFrameRateMs(CANTalon.StatusFrameRate.AnalogTempVbat, pollRate);
 		intakeWheelController.setStatusFrameRateMs(CANTalon.StatusFrameRate.Feedback, pollRate);
 		intakeWheelController.setStatusFrameRateMs(CANTalon.StatusFrameRate.General, pollRate);
@@ -135,6 +135,15 @@ public class Escalator extends Subsystem {
     	SmartDashboard.putBoolean("Escalator_Right_Dart_Position_Control", (dartR.getControlMode() == CANTalon.ControlMode.Position));
     	//XXX SmartDashboard.putBoolean("Escalator_Clamps_Open", clamp.get());
     	SmartDashboard.putNumber("Escalator_Intake_Power", intakeL.get());
+    	
+    	SmartDashboard.putNumber("Escalator_Left_Dart_P_Value", dartL.getP());
+    	SmartDashboard.putNumber("Escalator_Right_Dart_P_Value", dartR.getP());
+    	
+    	SmartDashboard.putNumber("Escalator_Left_Dart_I_Value", dartL.getI());
+    	SmartDashboard.putNumber("Escalator_Right_Dart_I_Value", dartR.getI());
+    	
+    	SmartDashboard.putNumber("Escalator_Left_Dart_D_Value", dartL.getD());
+    	SmartDashboard.putNumber("Escalator_Right_Dart_D_Value", dartR.getD());
     }
 }
 

@@ -20,19 +20,20 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SwerveDrive extends Subsystem {
     
-    protected List<SwerveModule_Digital> module;
+    protected List<SwerveModule> module;
     
     private final SerialPort navSerialPort;
     protected final IMUAdvanced navModule;
     
-	private static final double WHEEL_PERPENDICULAR_CONSTANT = 1 / Math.sqrt(2);//FIXME Update Constant
+	private static final double X_PERPENDICULAR_CONSTANT = 0.546;
+	private static final double Y_PERPENDICULAR_CONSTANT = 0.837;
 	
     public SwerveDrive() {
-    	module = new ArrayList<SwerveModule_Digital>(Arrays.asList(
-    				//new SwerveModule_Digital(0),
-    				new SwerveModule_Digital(1)
-    				//new SwerveModule_Digital(2),
-    				//new SwerveModule_Digital(3)
+    	module = new ArrayList<SwerveModule>(Arrays.asList(
+    				new SwerveModule_Embedded(0),
+    				new SwerveModule_Embedded(1),
+    				new SwerveModule_Embedded(2),
+    				new SwerveModule_Embedded(3)
     			));	
 		navSerialPort = new SerialPort(57600, SerialPort.Port.kMXP);
 		navModule = new IMUAdvanced(navSerialPort);
@@ -55,14 +56,16 @@ public class SwerveDrive extends Subsystem {
      * @param fieldCentricCompensator a gyroscope output that can let the robot drive field-centric, pass 0 if robot centric drive is desired.
      */
     public void swerveDrive(Vector translationVector, double rotation, double fieldCentricCompensator) {
-    	rotation *= WHEEL_PERPENDICULAR_CONSTANT;
+    	double xPerpendicular = rotation * X_PERPENDICULAR_CONSTANT;
+    	double yPerpendicular = rotation * Y_PERPENDICULAR_CONSTANT;
+    	
     	translationVector.pushAngle(-fieldCentricCompensator);
     	
     	List<Vector> moduleVector = new ArrayList<Vector>(Arrays.asList(
-    			new Vector(translationVector.getX() + rotation, translationVector.getY() - rotation),
-    			new Vector(translationVector.getX() - rotation, translationVector.getY() - rotation),
-    			new Vector(translationVector.getX() - rotation, translationVector.getY() + rotation),
-    			new Vector(translationVector.getX() + rotation, translationVector.getY() + rotation)
+    			new Vector(translationVector.getX() + xPerpendicular, translationVector.getY() - yPerpendicular),
+    			new Vector(translationVector.getX() - xPerpendicular, translationVector.getY() - yPerpendicular),
+    			new Vector(translationVector.getX() - xPerpendicular, translationVector.getY() + yPerpendicular),
+    			new Vector(translationVector.getX() + xPerpendicular, translationVector.getY() + yPerpendicular)
     			));
     	
     	double maxMagnitude = 0;
@@ -75,7 +78,7 @@ public class SwerveDrive extends Subsystem {
     	module.stream().forEach(m -> m.setVector(moduleVector.get(m.moduleNumber)));
     }    
     
-    protected List<SwerveModule_Digital> getModuleList() {
+    protected List<SwerveModule> getModuleList() {
     	return module;
     }
 }

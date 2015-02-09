@@ -6,7 +6,6 @@ import org.usfirst.frc.team1218.subsystem.elevator.Elevator;
 import org.usfirst.frc.team1218.subsystem.escalator.C_SeekPosition;
 import org.usfirst.frc.team1218.subsystem.escalator.Escalator;
 import org.usfirst.frc.team1218.subsystem.hooks.C_DeployHooks;
-import org.usfirst.frc.team1218.subsystem.swerve.C_IndexModules;
 import org.usfirst.frc.team1218.subsystem.swerve.C_ToggleStableMode;
 import org.usfirst.frc.team1218.subsystem.swerve.C_ZeroRobotHeading;
 import org.usfirst.frc.team1218.subsystem.swerve.C_GoToHeading;
@@ -66,7 +65,7 @@ public class OI {
         toggleStableMode.whenPressed(new C_ToggleStableMode());
         
         indexModules = new JoystickButton(driver, RobotMap.BUTTON_INDEX_MODULES);
-        indexModules.whenPressed(new C_IndexModules());
+        //TODO write this commands
         
         //Operator
         operator = new Joystick(RobotMap.OPERATOR_JOYSTICK);

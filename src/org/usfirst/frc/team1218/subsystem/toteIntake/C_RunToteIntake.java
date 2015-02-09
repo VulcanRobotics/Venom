@@ -14,10 +14,10 @@ public class C_RunToteIntake extends Command {
     }
     
     protected void initialize() {
-    	Robot.toteIntake.setIntakePower(Robot.toteIntake.TOTE_INTAKE_POWER);
     }
     
     protected void execute() {
+    	Robot.toteIntake.setIntakePower(Robot.toteIntake.TOTE_INTAKE_POWER);
     }
     
     protected boolean isFinished() {

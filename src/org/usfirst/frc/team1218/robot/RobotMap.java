@@ -10,9 +10,9 @@ public class RobotMap {
 	//Swerve Drive
 	public static final int[] SM_DRIVE_MOTOR = {10, 12, 14, 16};
 	public static final int[] SM_TURN_MOTOR = {11, 13, 15, 17};
-	public static final int[] SM_ANGLE_ENCODER_A = {0, 3, 6, 10};
-	public static final int[] SM_ANGLE_ENCODER_B = {1, 4, 7, 11};
-	public static final int[] SM_ANGLE_ENCODER_I = {2, 5, 8, 12};
+	public static final int[] SM_ANGLE_ENCODER_X = {0, 3, 6, 9};
+	public static final int[] SM_ANGLE_ENCODER_A = {1, 4, 7, 10};
+	public static final int[] SM_ANGLE_ENCODER_B = {2, 5, 8, 11};
 	
 	//Elevator
 	public static final int ELEVATOR_LIFT_MASTER = 30;
