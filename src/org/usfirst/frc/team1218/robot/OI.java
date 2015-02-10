@@ -27,7 +27,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
  */
 public class OI {	
     //Driver
-	public static Joystick driver;
+	public static LazyStick driver;
 	public static Button resetGyro;
 	public static Button maintainHeading;
 	public static Button toggleStableMode;
@@ -57,7 +57,7 @@ public class OI {
 	
 	public OI() {
     	//Driver
-    	driver = new Joystick(RobotMap.DRIVER_JOYSTICK);
+    	driver = new LazyStick(RobotMap.DRIVER_JOYSTICK);
     	
         resetGyro = new JoystickButton(driver, RobotMap.BUTTON_RESET_GYRO);
         resetGyro.whenPressed(new C_ZeroRobotHeading());
