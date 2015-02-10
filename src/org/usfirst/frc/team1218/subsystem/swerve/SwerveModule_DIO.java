@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.PIDController;
 /**
  * @author afiol-mahon
  */
-public class SwerveModule_Digital extends SwerveModule {
+public class SwerveModule_DIO extends SwerveModule {
 	
 	public AngleEncoder angleEncoder;
 	private final PIDController anglePIDController;
@@ -18,7 +18,7 @@ public class SwerveModule_Digital extends SwerveModule {
 	private static final double ANGLE_CONTROLLER_I = 0.0;
 	private static final double ANGLE_CONTROLLER_D = 0.0;
 	
-	public SwerveModule_Digital(int moduleNumber) {
+	public SwerveModule_DIO(int moduleNumber) {
 		super(moduleNumber);
 		this.angleEncoder = new AngleEncoder(moduleNumber);
 		//Initialize PID
@@ -29,7 +29,7 @@ public class SwerveModule_Digital extends SwerveModule {
 				angleEncoder,
 				angleController);
 		this.anglePIDController.setInputRange(0.0, 360.0);
-		this.anglePIDController.setOutputRange(-MAX_ANGLE_CONTROLLER_POWER, MAX_ANGLE_CONTROLLER_POWER);;
+		this.anglePIDController.setOutputRange(-MAX_ANGLE_CONTROLLER_POWER, MAX_ANGLE_CONTROLLER_POWER);
 		this.anglePIDController.setContinuous();
 		//Begin Module
 		this.angleEncoder.reset();
@@ -39,6 +39,11 @@ public class SwerveModule_Digital extends SwerveModule {
 	@Override
 	public double getEncoderAngle() {
 		return angleEncoder.pidGet();
+	}
+	
+	@Override
+	public int getEncoderIndexCount() {
+		return angleEncoder.getFPGAIndex();
 	}
 	
 	@Override
@@ -53,12 +58,12 @@ public class SwerveModule_Digital extends SwerveModule {
 					RobotMap.SM_ANGLE_ENCODER_B[moduleNumber],
 					RobotMap.SM_ANGLE_ENCODER_X[moduleNumber]
 					);
+			this.setDistancePerPulse(ENCODER_CLICK_TO_DEGREE);
 		}
 		
 		@Override
 		public double pidGet() {
 			double angle = get();
-			angle *= ENCODER_CLICK_TO_DEGREE;//TODO Try removing this and using getDistance()
 			angle += MODULE_ANGLE_OFFSET[moduleNumber];
 			angle = Angle.get360Angle(angle);
 			return angle;

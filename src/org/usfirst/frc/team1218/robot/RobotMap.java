@@ -39,7 +39,8 @@ public class RobotMap {
 	public static final int BUTTON_RESET_GYRO = OI.ButtonType.B;
 	public static final int BUTTON_MAINTAIN_HEADING = OI.ButtonType.L1;
 	public static final int BUTTON_TOGGLE_STABLE_MODE = OI.ButtonType.RIGHT_THUMB;
-	public static final int BUTTON_INDEX_MODULES = OI.ButtonType.A;
+	public static final int BUTTON_INDEX_SWERVE = OI.ButtonType.A;
+
 	
 	//Operator Control Mapping---------------------------------------------
 	public static final int OPERATOR_JOYSTICK = 1;
@@ -53,6 +54,7 @@ public class RobotMap {
 	public static final int BUTTON_ELEVATOR_STEP_POSITION = 5;
 	public static final int BUTTON_ELEVATOR_MANUAL_RAISE = 9;
 	public static final int BUTTON_ELEVATOR_MANUAL_LOWER = 11;
+	public static final int BUTTON_ELEVATOR_ZERO_POSITION = -1;//TODO Assign button
 	//Tote Intake
 	public static final int BUTTON_ELEVATOR_RUN_TOTE_INTAKE = 3;
 	//Escalator Controls

@@ -30,7 +30,7 @@ public class C_EscalatorDefault extends Command {
     }
 
     protected void end() {
-    	Robot.escalator.setDarts(0.0);
+    	Robot.escalator.setDartPower(0.0);
 		Robot.escalator.disableDarts();
     }
     
@@ -43,9 +43,9 @@ public class C_EscalatorDefault extends Command {
      */
     private void joystickEscalatorControl(double pow) {
     	if (Math.abs(pow) > 0.1) {
-    		Robot.escalator.setDarts(pow);
+    		Robot.escalator.setDartPower(pow);
     	} else {
-    		Robot.escalator.setDarts(0.0);
+    		Robot.escalator.setDartPower(0.0);
     	}
     }
     

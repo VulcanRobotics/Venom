@@ -7,15 +7,15 @@ import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
 import edu.wpi.first.wpilibj.CANTalon.StatusFrameRate;
 import edu.wpi.first.wpilibj.buttons.Trigger;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * @author afiol-mahon
+ * @deprecated
  */
 public class SwerveModule_Embedded extends SwerveModule {
 		
-	private double ANGLE_CONTROLLER_P = 0.1;
-	private double ANGLE_CONTROLLER_I = 0.1;
+	private double ANGLE_CONTROLLER_P = 0.8;
+	private double ANGLE_CONTROLLER_I = 0.002;
 	private double ANGLE_CONTROLLER_D = 0.0;
 	private int QUAD_ENCODER_UPDATE_FRAME_RATE = 3;
 	
@@ -29,6 +29,7 @@ public class SwerveModule_Embedded extends SwerveModule {
 		this.angleController.changeControlMode(ControlMode.Position);
 		this.angleController.setPID(ANGLE_CONTROLLER_P, ANGLE_CONTROLLER_I, ANGLE_CONTROLLER_D);
 		this.angleController.setStatusFrameRateMs(StatusFrameRate.QuadEncoder, QUAD_ENCODER_UPDATE_FRAME_RATE);
+		this.angleController.reverseSensor(false);
 		indexTrigger = new IndexTrigger();
 		indexTrigger.whenActive(new IndexModule());
 	}
@@ -41,7 +42,7 @@ public class SwerveModule_Embedded extends SwerveModule {
 		angle = Angle.get360Angle(angle);
 		angle *= ENCODER_DEGREE_TO_CLICK;
 		
-		double error = angle - getEncoderAngle();
+		double error = angle - encoderClickPosition;
 		double maxInput = ENCODER_CLICKS_PER_REVOLUTION;
 		double minInput = 0;
 		//Continuous Code from WPI Library PIDController Class
@@ -76,16 +77,15 @@ public class SwerveModule_Embedded extends SwerveModule {
 	@Override
 	public void syncDashboard() {
 		super.syncDashboard();
-		SmartDashboard.putNumber("SM_" + moduleNumber + "_Angle_Controller_PID_Error", angleController.getClosedLoopError());
-		SmartDashboard.putNumber("SM_" + moduleNumber + "_Angle_Controller_Output_Voltage", angleController.getOutputVoltage());
-		SmartDashboard.putNumber("SM_" + moduleNumber + "_Index_Count", angleController.getNumberOfQuadIdxRises());
-		SmartDashboard.putNumber("SM_" + moduleNumber + "_Click_Position_Internal", angleController.getPosition());
-		SmartDashboard.putNumber("SM_" + moduleNumber + "_Click_Position_True", encoderClickPosition);
-		SmartDashboard.putNumber("SM_" + moduleNumber + "_Click_Setpoint", angleController.getSetpoint());
-		SmartDashboard.putNumber("SM_" + moduleNumber + "_Angle_Controller_P_Value", angleController.getP());
-		SmartDashboard.putNumber("SM_" + moduleNumber + "_Angle_Controller_I_Value", angleController.getI());
-		SmartDashboard.putNumber("SM_" + moduleNumber + "_Angle_Controller_D_Value", angleController.getD());
-		angleController.setPID(ANGLE_CONTROLLER_P, ANGLE_CONTROLLER_I, ANGLE_CONTROLLER_D);//XXX find better place for this periodic task
+		//SmartDashboard.putNumber("SM_" + moduleNumber + "_Angle_Controller_Output_Voltage", angleController.getOutputVoltage());
+		//SmartDashboard.putNumber("SM_" + moduleNumber + "_Index_Edges_Counted", angleController.getNumberOfQuadIdxRises());
+		//SmartDashboard.putNumber("SM_" + moduleNumber + "_Angle_Controller_PID_Error", angleController.getClosedLoopError());
+		//SmartDashboard.putNumber("SM_" + moduleNumber + "_Encoder_Click_Position_Relative", angleController.getPosition());
+		//SmartDashboard.putNumber("SM_" + moduleNumber + "_Encoder_Click_Position_True", encoderClickPosition);
+		//SmartDashboard.putNumber("SM_" + moduleNumber + "_Click_Setpoint", angleController.getSetpoint());
+		//SmartDashboard.putNumber("SM_" + moduleNumber + "_Angle_Controller_P_Value", angleController.getP());
+		//SmartDashboard.putNumber("SM_" + moduleNumber + "_Angle_Controller_I_Value", angleController.getI());
+		//SmartDashboard.putNumber("SM_" + moduleNumber + "_Angle_Controller_D_Value", angleController.getD());
 	}
 	
 	class IndexTrigger extends Trigger {
@@ -99,9 +99,9 @@ public class SwerveModule_Embedded extends SwerveModule {
 		
 		@Override
 		protected void initialize() {
-			encoderClickPosition = MODULE_ANGLE_OFFSET[moduleNumber] * ENCODER_DEGREE_TO_CLICK;
-			//FIXME try adding if this doesn't work initially
-			//this.angleController.setPosition(0);
+			encoderClickPosition = -1.0 * (MODULE_ANGLE_OFFSET[moduleNumber] * ENCODER_DEGREE_TO_CLICK);
+			//try adding if this doesn't work initially
+			//angleController.setPosition(0);
 			System.out.println("SM_" + moduleNumber + ": Reset");
 		}
 		
@@ -117,5 +117,10 @@ public class SwerveModule_Embedded extends SwerveModule {
 		protected void end() {}
 		@Override
 		protected void interrupted() {}
+	}
+
+	@Override
+	public int getEncoderIndexCount() {
+		return angleController.getNumberOfQuadIdxRises();
 	}
 }

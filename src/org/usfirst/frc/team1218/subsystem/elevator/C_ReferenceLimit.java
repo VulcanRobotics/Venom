@@ -5,33 +5,31 @@ import org.usfirst.frc.team1218.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- *@author afiol-mahon
+ *
  */
-public class C_SetElevatorSetpoint extends Command {
-	
-	private final int position;
-	
-    public C_SetElevatorSetpoint(int position) {
+public class C_ReferenceLimit extends Command {
+
+    public C_ReferenceLimit() {
         requires(Robot.elevator);
-        this.position = position;
     }
-    
-    
+
     protected void initialize() {
-    	Robot.elevator.setPosition(position);
     }
 
     protected void execute() {
+    	Robot.elevator.setPower(Elevator.ELEVATOR_REFERENCING_POWER);//TODO Ensure correct Direction for going to reference
     }
 
     protected boolean isFinished() {
-        return true;
+        return Robot.elevator.atReference();
     }
 
     protected void end() {
-    	System.out.println("Elevator position set to" + position);
+    	Robot.elevator.zeroPosition();
+    	Robot.elevator.setPosition(0);
     }
 
     protected void interrupted() {
+    	end();
     }
 }

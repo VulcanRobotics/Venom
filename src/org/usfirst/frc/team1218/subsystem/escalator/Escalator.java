@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1218.subsystem.escalator;
 
+import org.usfirst.frc.team1218.robot.Robot;
 import org.usfirst.frc.team1218.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.CANTalon;
@@ -14,22 +15,22 @@ public class Escalator extends Subsystem {
 	protected final CANTalon dartL;
 	protected final CANTalon dartR;
 	
-	protected final DartSafety dartSafety;
-	
-	private static final double DART_P = 1.0;
+	private static final double DART_P = 4.0;
 	private static final double DART_I = 0.0;
 	private static final double DART_D = 0.0;
 	
-	private static final double DART_FAILSAFE_DISTANCE = 70;
-	private static final double DART_REALIGN_DISTANCE = 50;
+	protected static final double DART_FAILSAFE_DISTANCE = 70;
+	protected static final double DART_REALIGN_DISTANCE = 50;
 	protected static final double DART_REALIGN_POWER = 0.2;
 	
-	private static final int DART_SOFT_LIMIT_FORWARD = 1024; //TODO Tune Dart soft limits
+	private static final int DART_SOFT_LIMIT_FORWARD = 1024;
 	private static final int DART_SOFT_LIMIT_REVERSE = 0;
 	
 	public static final int ESCALATOR_HIGH_POSITION = 600;
 	public static final int ESCALATOR_MIDDLE_POSITION = 500;
 	public static final int ESCALATOR_LOW_POSITION = 400;
+	
+	public static DartSafety dartSafety;
 	
 	public Escalator() {
 		dartL = new CANTalon(RobotMap.ESCALATOR_LEFT_DART);
@@ -37,7 +38,7 @@ public class Escalator extends Subsystem {
 		dartR = new CANTalon(RobotMap.ESCALATOR_RIGHT_DART);
 		initDart(dartR);
 
-		dartSafety = new DartSafety(dartL, dartR, DART_FAILSAFE_DISTANCE, DART_REALIGN_DISTANCE);
+		dartSafety = new DartSafety();
 		
 		System.out.println("Escalator Initialized");
 	}
@@ -46,13 +47,18 @@ public class Escalator extends Subsystem {
        setDefaultCommand(new C_EscalatorDefault());
     }
     
-    /**
-     * Set position of escalator
-     * @param set value from 0-1023 if position, -1.0 to 1.0 if power.
-     */
-    public void setDarts(double set) {
-    	dartL.set(set);
-    	dartR.set(set);
+    public void setDartPosition(double setpoint) {
+    	dartL.changeControlMode(CANTalon.ControlMode.Position);
+    	dartR.changeControlMode(CANTalon.ControlMode.Position);
+    	dartL.set(setpoint);
+    	dartR.set(setpoint);
+    }
+    
+    public void setDartPower(double power) {
+    	dartL.changeControlMode(CANTalon.ControlMode.PercentVbus);
+    	dartR.changeControlMode(CANTalon.ControlMode.PercentVbus);
+    	dartL.set(power);
+    	dartR.set(power);
     }
     
     /**
@@ -80,6 +86,13 @@ public class Escalator extends Subsystem {
     	dartL.set(dartL.get());
     	dartR.changeControlMode(CANTalon.ControlMode.Position);
     	dartR.set(dartR.get());
+    }
+    
+    /**
+     * @return Difference between current dart positions
+     */
+    protected double getDartPositionDifference() {
+    	return Math.abs(Robot.escalator.dartL.getAnalogInPosition() - Robot.escalator.dartR.getAnalogInPosition());
     }
     
     protected void disableDarts() {

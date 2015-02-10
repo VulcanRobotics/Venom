@@ -6,6 +6,7 @@ import org.usfirst.frc.team1218.subsystem.swerve.math.Angle;
 import org.usfirst.frc.team1218.subsystem.swerve.math.Vector;
 
 import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.CANTalon.ControlMode;
 import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -25,7 +26,19 @@ public abstract class SwerveModule {
 	private boolean stableMode = false;
 	
 	private final CANTalon driveWheelController;
-	private static final double DRIVE_POWER_SCALE = 0.7;
+	private static final double DRIVE_POWER_SCALE = 1.0;
+	private static final double DRIVE_WHEEL_RADIUS = 1.5; //inches
+	private static final double DRIVE_WHEEL_CIRCUMFERENCE = (Math.PI * Math.pow(DRIVE_WHEEL_RADIUS, 2)); //inches
+	private static final double DRIVE_WHEEL_FEET_PER_ROTATION = 12 / DRIVE_WHEEL_CIRCUMFERENCE;//feet
+	private static final double DRIVE_ENCODER_TO_WHEEL_ROTATION_RATIO = 6 / 5; //Gearing Ratio
+	private static final double DRIVE_ENCODER_CLICKS = 500; //Clicks in 1 encoder rotation
+	private static final double DRIVE_ENCODER_CLICKS_PER_REV = DRIVE_ENCODER_CLICKS * DRIVE_ENCODER_TO_WHEEL_ROTATION_RATIO; //Encoder Clicks Per 1 Wheel Revolution
+	private static final double DRIVE_WHEEL_FEET_TO_CLICK_RATIO = DRIVE_WHEEL_FEET_PER_ROTATION * DRIVE_ENCODER_CLICKS_PER_REV;//converts Feet/Second to encoder clicks
+	private static final double DRIVE_WHEEL_VELOCITY_P = 0.1;
+	private static final double DRIVE_WHEEL_VELOCITY_I = 0.0;
+	private static final double DRIVE_WHEEL_VELOCITY_D = 0.0;
+	private static final double MAX_SPEED = 15; //feet per second
+
 	
 	protected final CANTalon angleController;
 	protected static final double MAX_ANGLE_CONTROLLER_POWER = 0.7;
@@ -48,72 +61,24 @@ public abstract class SwerveModule {
 		this.driveWheelController.enableLimitSwitch(false, false);
 		this.driveWheelController.enableForwardSoftLimit(false);
 		this.driveWheelController.enableReverseSoftLimit(false);
+		this.driveWheelController.setPID(DRIVE_WHEEL_VELOCITY_P, DRIVE_WHEEL_VELOCITY_I, DRIVE_WHEEL_VELOCITY_D);
 		this.angleController = new CANTalon(RobotMap.SM_TURN_MOTOR[moduleNumber]);
 		this.angleController.enableLimitSwitch(false, false);
 	}
-	
-	/**
-	 * @return true if the module is currently operating in stable mode.
-	 */
-	public boolean getStableMode() {
-		return stableMode;
-	}
-	
-	/**
-	 * Update the swerve module wheel power and angle.
-	 * @param angle Desired module angle
-	 * @param power Desired power for module drive motor
-	 */
-	public void setValues(double angle, double power) {
-		if (Math.abs(power) > 0.1) writeRobotCentricAngle(angle); //Prevents Module from setting wheels to zero when joystick is released
-		setPower(power);
-	}
-	
-	/**
-	 * Directly Write the magnitude and power of a given angle to the module.
-	 * Makes it very straightforward to write any calculated vector to the module.
-	 * @param vector
-	 */
-	public void setVector(Vector vector) {
-		setValues(vector.getAngle(), vector.getMagnitude());
-	}
-	
-	public double getVelocity() { //TODO write
-		return 0;
-	}
-	
-	public double getDistance() { //TODO write
-		return 0;
-	}
-	
+
 	/**
 	 * Get the value of the encoder currently used on the angle
 	 * @returns degree position of encoder
 	 */
 	public abstract double getEncoderAngle();
-	
+
+	public abstract int getEncoderIndexCount();
+
 	/**
-	 * Method that controls final stage of setting a properly offset angle
-	 * to the swerve drive.
-	 * The purpose of this is to allow the swerveModule to handle as much of
-	 * the uniform calculations that happen in both modules as possible
-	 * so that both SwerveModule Classes are as small as possible
-	 * so they just have to define the last part of the angle write
-	 * @param angle Desired wheel angle. Can be any value
+	 * @return true if the module is currently operating in stable mode.
 	 */
-	public abstract void setPIDAngle(double angle);
-	
-	/**
-	 * Writes a power to the wheel that corresponds with module settings.
-	 * @param power
-	 */
-	public void setPower(double power) {
-		if (Math.abs(power) > 1){
-			System.out.println("Illegal power " + power + " written to module: " + moduleNumber);
-		} else {
-			power *= (invertModule) ? -1.0 : 1.0;
-			this.driveWheelController.set(DRIVE_POWER_SCALE * power); //Applies module specific motor preferences
-		}
+	public boolean isStableMode() {
+		return stableMode;
 	}
 	
 	/**
@@ -136,24 +101,84 @@ public abstract class SwerveModule {
 	}
 	
 	/**
-	 * Update the dashboard with current module information.
+	 * Method that controls final stage of setting a properly offset angle
+	 * to the swerve drive.
+	 * The purpose of this is to allow the swerveModule to handle as much of
+	 * the uniform calculations that happen in both modules as possible
+	 * so that both SwerveModule Classes are as small as possible
+	 * so they just have to define the last part of the angle write
+	 * @param angle Desired wheel angle. Can be any value
 	 */
-	public void syncDashboard() {//TODO fix driver station value keys
-		SmartDashboard.putNumber("SM_" + moduleNumber + "_WheelPower", driveWheelController.get());
-		SmartDashboard.putNumber("SM_" + moduleNumber + "_EncoderAngle", getEncoderAngle());
-		SmartDashboard.putNumber("SM_" + moduleNumber + "_RobotCentricAngle", robotCentricSetpointAngle);
+	public abstract void setPIDAngle(double angle);
+	
+	/**
+	 * Writes a power to the wheel that corresponds with module settings.
+	 * @param power
+	 */
+	public void setPower(double power) {
+		if (Math.abs(power) > 1) {
+			System.out.println("Illegal power " + power + " written to module: " + moduleNumber);
+		} else {
+			power *= (invertModule) ? -1.0 : 1.0;
+			this.driveWheelController.changeControlMode(ControlMode.PercentVbus);
+			this.driveWheelController.set(DRIVE_POWER_SCALE * power); //Applies module specific motor preferences
+		}
 	}
 	
 	/**
 	 * Set the wheels to any angle that is relative to the robot's front.
 	 * @param angle
 	 */
-	public void writeRobotCentricAngle(double angle) {
+	public void setRobotAngle(double angle) {
 		if(Angle.diffBetweenAngles(angle, this.robotCentricSetpointAngle) > 90) invertModule = !invertModule;
 		this.robotCentricSetpointAngle = angle;
 		angle += (invertModule) ? 180 : 0;
 		angle = 360 - angle;
 		angle = Angle.get360Angle(angle);
 		setPIDAngle(angle);
+	}
+	
+	/**
+	 * Update the swerve module wheel power and angle.
+	 * @param angle Desired module angle
+	 * @param power Desired power for module drive motor
+	 */
+	public void setValues(double angle, double power) {
+		if (Math.abs(power) > 0.1) setRobotAngle(angle); //Prevents Module from setting wheels to zero when joystick is released
+		setPower(power);
+	}
+
+	/**
+	 * Directly Write the magnitude and power of a given angle to the module.
+	 * Makes it very straightforward to write any calculated vector to the module.
+	 * @param vector
+	 */
+	public void setVector(Vector vector) {
+		setValues(vector.getAngle(), vector.getMagnitude());
+	}
+	
+	/**
+	 * write a speed that should be maintained to the controller
+	 * @param speed ft/s
+	 */
+	public void setWheelSpeed(double speed) {
+		speed *= DRIVE_WHEEL_FEET_TO_CLICK_RATIO;
+		
+		if (Math.abs(speed) > MAX_SPEED){
+			System.out.println("Illegal speed " + speed + " written to module: " + moduleNumber);
+		} else {
+			speed *= (invertModule) ? -1.0 : 1.0;
+			this.driveWheelController.changeControlMode(ControlMode.Speed);
+			this.driveWheelController.set(speed * 10); //Multiply by 10 because PID controller takes Units per decisecond
+		}
+	}
+	
+	/**
+	 * Update the dashboard with current module information.
+	 */
+	public void syncDashboard() {
+		SmartDashboard.putNumber("SM_" + moduleNumber + "_WheelPower", driveWheelController.get());
+		SmartDashboard.putNumber("SM_" + moduleNumber + "_EncoderAngle", getEncoderAngle());
+		SmartDashboard.putNumber("SM_" + moduleNumber + "_RobotCentricAngle", robotCentricSetpointAngle);
 	}
 }
