@@ -28,6 +28,8 @@ public class SwerveDrive extends Subsystem {
 	private static final double X_PERPENDICULAR_CONSTANT = 0.546;
 	private static final double Y_PERPENDICULAR_CONSTANT = 0.837;
 	
+	private TipSaftey tipSaftey;
+	
     public SwerveDrive() {
     	module = new ArrayList<SwerveModule>(Arrays.asList(
     				new SwerveModule_Embedded(0),
@@ -37,6 +39,7 @@ public class SwerveDrive extends Subsystem {
     			));	
 		navSerialPort = new SerialPort(57600, SerialPort.Port.kMXP);
 		navModule = new IMUAdvanced(navSerialPort);
+		tipSaftey = new TipSaftey();
         System.out.println("Swerve System Initialized");
     }
     
