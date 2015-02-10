@@ -2,6 +2,7 @@
 package org.usfirst.frc.team1218.robot;
 
 import org.usfirst.frc.team1218.subsystem.elevator.Elevator;
+import org.usfirst.frc.team1218.subsystem.escalator.DartSafety;
 import org.usfirst.frc.team1218.subsystem.escalator.Escalator;
 import org.usfirst.frc.team1218.subsystem.hooks.Hooks;
 import org.usfirst.frc.team1218.subsystem.swerve.SwerveDrive;
@@ -24,6 +25,7 @@ public class Robot extends IterativeRobot {
 	
 	public static SwerveDrive swerveSystem;
 	public static Escalator escalator;
+	public static DartSafety dartSafety;
 	public static Elevator elevator;
 	public static Hooks hooks;
 	public static ToteIntake toteIntake;
@@ -38,6 +40,7 @@ public class Robot extends IterativeRobot {
     public void robotInit() {
     	swerveSystem = new SwerveDrive();
     	escalator = new Escalator();
+    	dartSafety = new DartSafety();
     	elevator = new Elevator();
     	hooks = new Hooks();
     	toteIntake = new ToteIntake();

@@ -10,7 +10,7 @@ public class Angle {
 	 * @return angle from 0 to 360
 	 */
 	public static double get360Angle(double angle) {
-		if ((angle >= 0.0) && (angle <= 360.0)) {
+		if ((angle < 0.0) | (angle > 360.0)) {
 			if (angle < 0.0) angle = 360.0 - Math.abs(angle % 360); //forces angle to be a positive value.
 			angle = angle % 360.0; //forces angle to be less than 360
 		}

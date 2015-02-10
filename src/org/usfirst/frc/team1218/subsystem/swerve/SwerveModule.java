@@ -25,7 +25,7 @@ public abstract class SwerveModule {
 	private boolean stableMode = false;
 	
 	private final CANTalon driveWheelController;
-	private static final double DRIVE_POWER_SCALE = 0.7;
+	private static final double DRIVE_POWER_SCALE = 1.0;
 	
 	protected final CANTalon angleController;
 	protected static final double MAX_ANGLE_CONTROLLER_POWER = 0.7;

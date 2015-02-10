@@ -15,8 +15,6 @@ public class C_EscalatorDefault extends Command {
     }
 
     protected void initialize() {
-    	Robot.escalator.dartManualMode();
-    	Robot.escalator.enableDarts();
     }
 
     protected void execute() {
@@ -30,10 +28,9 @@ public class C_EscalatorDefault extends Command {
     }
 
     protected void end() {
-    	Robot.escalator.setDarts(0.0);
+    	Robot.escalator.setDartPower(0.0);
     	Robot.escalator.setIntake(0.0);
 		Robot.escalator.openGrabber(false);
-		Robot.escalator.disableDarts();
     }
     
     protected void interrupted() {
@@ -45,9 +42,9 @@ public class C_EscalatorDefault extends Command {
      */
     private void joystickEscalatorControl(double pow) {
     	if (Math.abs(pow) > 0.1) {
-    		Robot.escalator.setDarts(pow);
+    		Robot.escalator.setDartPower(pow);
     	} else {
-    		Robot.escalator.setDarts(0.0);
+    		Robot.escalator.setDartPower(0.0);
     	}
     }
     

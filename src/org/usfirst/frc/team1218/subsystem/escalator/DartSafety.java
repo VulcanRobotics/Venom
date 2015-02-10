@@ -2,7 +2,7 @@ package org.usfirst.frc.team1218.subsystem.escalator;
 
 import org.usfirst.frc.team1218.robot.Robot;
 
-import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.CANTalon.ControlMode;
 import edu.wpi.first.wpilibj.buttons.Trigger;
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -11,42 +11,34 @@ import edu.wpi.first.wpilibj.command.Command;
  * @author afiolmahon
  */
 public class DartSafety {
-	
-	private final CANTalon dartL;
-	private final CANTalon dartR;
-	private final double killDistance;
-	private final double realignDistance;
 	private final DartKillWatch dartKillWatch;
 	private final DartRealignWatch dartRealignWatch;
+	
 	/**
 	 * @param dartL Left Dart
 	 * @param dartR Right Dart
 	 * @param Tolerance Allowable Position Difference before safety kicks in
 	 */
-	public DartSafety(CANTalon dartL, CANTalon dartR, double killDistance, double realignDistance) {
-		this.dartL = dartL;
-		this.dartR = dartR;
-		this.killDistance = killDistance;
-		this.realignDistance = realignDistance;
-		
+	public DartSafety() {
 		dartKillWatch = new DartKillWatch();
 		dartKillWatch.whileActive(new DartKill());
 		
 		dartRealignWatch = new DartRealignWatch();
 		dartRealignWatch.whileActive(new DartRealign());
+		System.out.println("Dart Safety Initialized");
 	}
 	
 	private class DartRealignWatch extends Trigger {
 		@Override
 		public boolean get() {
-			return Math.abs(dartL.getAnalogInPosition() - dartR.getAnalogInPosition()) > realignDistance;
+			return Robot.escalator.getDartPositionDifference() > Escalator.DART_REALIGN_DISTANCE;
 		}
 	}
 	
 	private class DartKillWatch extends Trigger {
 		@Override
 		public boolean get() {
-			return Math.abs(dartL.getAnalogInPosition() - dartR.getAnalogInPosition()) > killDistance;
+			return Robot.escalator.getDartPositionDifference() > Escalator.DART_FAILSAFE_DISTANCE;
 		}
 		
 	}	
@@ -59,28 +51,31 @@ public class DartSafety {
 		
 		@Override
 		protected void initialize() {
-			Robot.escalator.dartManualMode();
+			Robot.escalator.dartL.changeControlMode(ControlMode.PercentVbus);
+			Robot.escalator.dartR.changeControlMode(ControlMode.PercentVbus);
 		}
-
+		 
 		@Override
 		protected void execute() {
-			if(dartL.getAnalogInPosition() > dartR.getAnalogInPosition()) {
-				dartL.set(-Escalator.DART_REALIGN_POWER);
-				dartR.set(Escalator.DART_REALIGN_POWER);
+			if(Robot.escalator.dartL.getAnalogInPosition() > Robot.escalator.dartR.getAnalogInPosition()) {
+				Robot.escalator.dartL.set(-Escalator.DART_REALIGN_POWER);
+				Robot.escalator.dartR.set(Escalator.DART_REALIGN_POWER);
 			} else {
-				dartL.set(Escalator.DART_REALIGN_POWER);
-				dartR.set(-Escalator.DART_REALIGN_POWER);
+				Robot.escalator.dartL.set(Escalator.DART_REALIGN_POWER);
+				Robot.escalator.dartR.set(-Escalator.DART_REALIGN_POWER);
 			}
 		}
 
 		@Override
 		protected boolean isFinished() {
-			return Math.abs(dartL.getAnalogInPosition() - dartR.getAnalogInPosition()) < realignDistance;
+			return Robot.escalator.getDartPositionDifference() < Escalator.DART_REALIGN_DISTANCE;
 		}
 
 		@Override
 		protected void end() {
 			System.out.println("Darts have been realigned to each other");
+			Robot.escalator.dartL.set(0.0);
+			Robot.escalator.dartR.set(0.0);
 		}
 
 		@Override
@@ -91,28 +86,25 @@ public class DartSafety {
 		
 		@Override
 		protected void initialize() {
-			dartL.disableControl();
-			dartR.disableControl();
+			Robot.escalator.disableDarts();
 		}
-
+		
 		@Override
 		protected void execute() {
 			System.out.println("WARNING: Darts have drifted out of specified tolerance range. Disabling...");
-			dartL.disableControl();
-			dartR.disableControl();
+			Robot.escalator.disableDarts();
 		}
-
+		
 		@Override
 		protected boolean isFinished() {
-			return true;
+			return false;
 		}
-
+		
 		@Override
 		protected void end() {
-			dartL.disableControl();
-			dartR.disableControl();
+			Robot.escalator.disableDarts();
 		}
-
+		
 		@Override
 		protected void interrupted() {
 			end();

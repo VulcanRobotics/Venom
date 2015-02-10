@@ -30,10 +30,10 @@ public class SwerveDrive extends Subsystem {
 	
     public SwerveDrive() {
     	module = new ArrayList<SwerveModule>(Arrays.asList(
-    				new SwerveModule_Embedded(0),
-    				new SwerveModule_Embedded(1),
-    				new SwerveModule_Embedded(2),
-    				new SwerveModule_Embedded(3)
+    				new SwerveModule_Digital(0),
+    				new SwerveModule_Digital(1),
+    				new SwerveModule_Digital(2),
+    				new SwerveModule_Digital(3)
     			));	
 		navSerialPort = new SerialPort(57600, SerialPort.Port.kMXP);
 		navModule = new IMUAdvanced(navSerialPort);
