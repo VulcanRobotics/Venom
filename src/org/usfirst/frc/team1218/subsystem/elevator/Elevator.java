@@ -12,8 +12,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *@author afiol-mahon
  */
 public class Elevator extends Subsystem {
-    
-	//private final DigitalInput toteDetector; //Triggers if tote is inside robot able to be manipulated by elevator
 	
 	private final CANTalon liftMaster;
 	private final CANTalon liftSlave;
@@ -22,13 +20,13 @@ public class Elevator extends Subsystem {
 	private static final double ELEVATOR_I = 0.0;
 	private static final double ELEVATOR_D = 0.0;
 	
-	//TODO give better names
 	public static final int ELEVATOR_DROP_POSITION = 200; 
-	public static final int ELEVATOR_CAPTURE_POSITION = 250; //Minimum height needed to get tote in brushes
-	public static final int ELEVATOR_CLEARNCE_POSITION = 650;
-	public static final int ELEVATOR_RAISE_POSITION = 700;
 	public static final int ELEVATOR_STEP_POSITION = 500;
-	public static final int ELEVATOR_DEFAULT_POSITION = 500;
+	public static final int ELEVATOR_RAISE_POSITION = 700;
+	public static final int ELEVATOR_DEFAULT_POSITION = ELEVATOR_RAISE_POSITION;
+	
+	public static final double ELEVATOR_POSITIONING_POWER = 1.0;
+	public static final double ELEVATOR_REFERENCING_POWER = 0.5;
 	
     public void initDefaultCommand() {}
     
@@ -39,23 +37,15 @@ public class Elevator extends Subsystem {
     	liftMaster.ConfigFwdLimitSwitchNormallyOpen(false);
     	liftMaster.ConfigRevLimitSwitchNormallyOpen(false);
     	liftMaster.setPID(ELEVATOR_P, ELEVATOR_I, ELEVATOR_D);
-    	liftMaster.setFeedbackDevice(FeedbackDevice.AnalogPot);
+    	liftMaster.setFeedbackDevice(FeedbackDevice.QuadEncoder);
+    	liftMaster.setSafetyEnabled(true);
+    	liftMaster.setExpiration(0.1);
     	
     	liftSlave = new CANTalon(RobotMap.ELEVATOR_LIFT_SLAVE);
     	liftSlave.enableBrakeMode(true);
     	liftSlave.changeControlMode(CANTalon.ControlMode.Follower);
     	liftSlave.reverseOutput(true);
     	liftSlave.set(liftMaster.getDeviceID());
-       	this.enablePID(true);
-    	this.setElevator(ELEVATOR_DEFAULT_POSITION);
-    }
-    
-    /**
-     * Set position of elevator
-     * @param setpoint value from 0-1023 or -1 to 1
-     */
-    public void setElevator(double setpoint) {
-    	liftMaster.set(setpoint);
     }
     
     /**
@@ -66,19 +56,25 @@ public class Elevator extends Subsystem {
     }
     
     
-    /**
-     * enable or disable the PIDController
-     * @param enabled true for Position PID controll, false for manual control
-     */
-   	public void enablePID(boolean enabled) {
-   		if (enabled) {
-   			liftMaster.changeControlMode(ControlMode.Position);
-   		} else {
-   			liftMaster.changeControlMode(ControlMode.PercentVbus);
-   		}
-   	}
+    public void setPosition(double position) {
+    	liftMaster.changeControlMode(ControlMode.Position);
+    	liftMaster.set(position);
+    }
     
+    public void setPower(double power) {
+    	liftMaster.changeControlMode(ControlMode.PercentVbus);
+    	liftMaster.set(power);
+    }
+        
     public void syncDashboard() {
     	SmartDashboard.putNumber("Elevator_Position", getPosition());
+    }
+    
+    public boolean atReference() {
+    	return liftMaster.isRevLimitSwitchClosed();
+    }
+    
+    public void zeroPosition() {
+    	liftMaster.setPosition(0);
     }
 }

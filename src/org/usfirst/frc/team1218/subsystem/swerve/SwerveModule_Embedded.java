@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.command.Command;
 
 /**
  * @author afiol-mahon
+ * @deprecated
  */
 public class SwerveModule_Embedded extends SwerveModule {
 		
@@ -99,7 +100,7 @@ public class SwerveModule_Embedded extends SwerveModule {
 		@Override
 		protected void initialize() {
 			encoderClickPosition = -1.0 * (MODULE_ANGLE_OFFSET[moduleNumber] * ENCODER_DEGREE_TO_CLICK);
-			//FIXME try adding if this doesn't work initially
+			//try adding if this doesn't work initially
 			//angleController.setPosition(0);
 			System.out.println("SM_" + moduleNumber + ": Reset");
 		}
@@ -116,5 +117,10 @@ public class SwerveModule_Embedded extends SwerveModule {
 		protected void end() {}
 		@Override
 		protected void interrupted() {}
+	}
+
+	@Override
+	public int getEncoderIndexCount() {
+		return angleController.getNumberOfQuadIdxRises();
 	}
 }

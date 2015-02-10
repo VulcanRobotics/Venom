@@ -11,9 +11,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *@author afiol-mahon
  */
 public class Escalator extends Subsystem {
-    
-    // Put methods for controlling this subsystem
-    // here. Call these from Commands.
 	//XXX private final Solenoid clamp;
 	
 	private final CANTalon intakeL;
@@ -30,7 +27,7 @@ public class Escalator extends Subsystem {
 	protected static final double DART_REALIGN_DISTANCE = 50;
 	protected static final double DART_REALIGN_POWER = 0.2;
 	
-	private static final int DART_SOFT_LIMIT_FORWARD = 1024; //TODO Tune Dart soft limits
+	private static final int DART_SOFT_LIMIT_FORWARD = 1024;
 	private static final int DART_SOFT_LIMIT_REVERSE = 0;
 	
 	public static final int ESCALATOR_HIGH_POSITION = 600;
@@ -58,7 +55,7 @@ public class Escalator extends Subsystem {
      * Open Bin Grabber
      * @param opened true for open grabber
      */
-    public void openGrabber(boolean opened) {//TODO verify that true is open clamps
+    public void openGrabber(boolean opened) {
     	//XXX clamp.set(opened);
     }
     

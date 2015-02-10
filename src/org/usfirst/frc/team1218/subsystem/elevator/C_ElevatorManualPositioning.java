@@ -16,12 +16,10 @@ public class C_ElevatorManualPositioning extends Command {
     	this.power = power;
     }
     
-    protected void initialize() {
-    	Robot.elevator.enablePID(false);
-    	Robot.elevator.setElevator(power);
-    }
+    protected void initialize() {}
     
     protected void execute() {
+    	Robot.elevator.setPower(power);
     }
     
     protected boolean isFinished() {
@@ -30,8 +28,7 @@ public class C_ElevatorManualPositioning extends Command {
     }
     
     protected void end() {
-    	Robot.elevator.enablePID(true);
-    	Robot.elevator.setElevator(Robot.elevator.getPosition());
+    	Robot.elevator.setPosition(Robot.elevator.getPosition());
     }
     
     protected void interrupted() {

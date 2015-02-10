@@ -1,11 +1,13 @@
 package org.usfirst.frc.team1218.robot;
 
 import org.usfirst.frc.team1218.subsystem.elevator.C_ElevatorManualPositioning;
+import org.usfirst.frc.team1218.subsystem.elevator.C_ReferenceLimit;
 import org.usfirst.frc.team1218.subsystem.elevator.C_SetElevatorSetpoint;
 import org.usfirst.frc.team1218.subsystem.elevator.Elevator;
 import org.usfirst.frc.team1218.subsystem.escalator.C_SeekPosition;
 import org.usfirst.frc.team1218.subsystem.escalator.Escalator;
 import org.usfirst.frc.team1218.subsystem.hooks.C_DeployHooks;
+import org.usfirst.frc.team1218.subsystem.swerve.C_Index;
 import org.usfirst.frc.team1218.subsystem.swerve.C_ToggleStableMode;
 import org.usfirst.frc.team1218.subsystem.swerve.C_ZeroRobotHeading;
 import org.usfirst.frc.team1218.subsystem.swerve.C_GoToHeading;
@@ -28,7 +30,7 @@ public class OI {
 	public static Button resetGyro;
 	public static Button maintainHeading;
 	public static Button toggleStableMode;
-	public static Button indexModules;
+	public static Button indexSwerve;
 	
 	//Operator
 	public static Joystick operator;
@@ -42,6 +44,7 @@ public class OI {
 	public static Button elevatorToStepPosition;
 	public static Button elevatorManualLower;
 	public static Button elevatorManualRaise;
+	public static Button elevatorZeroPosition;
 	//Tote Intake
 	public static Button elevatorRunToteIntake;
 	//Escalator
@@ -64,8 +67,8 @@ public class OI {
         toggleStableMode = new JoystickButton(driver, RobotMap.BUTTON_TOGGLE_STABLE_MODE);
         toggleStableMode.whenPressed(new C_ToggleStableMode());
         
-        indexModules = new JoystickButton(driver, RobotMap.BUTTON_INDEX_MODULES);
-        //TODO write this commands
+        indexSwerve = new JoystickButton(driver, RobotMap.BUTTON_INDEX_SWERVE);
+        indexSwerve.whileHeld(new C_Index());
         
         //Operator
         operator = new Joystick(RobotMap.OPERATOR_JOYSTICK);
@@ -88,10 +91,13 @@ public class OI {
         elevatorToStepPosition.whenPressed(new C_SetElevatorSetpoint(Elevator.ELEVATOR_STEP_POSITION));
         
         elevatorManualRaise = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_MANUAL_RAISE);
-        elevatorManualRaise.whileHeld(new C_ElevatorManualPositioning(1.0));
+        elevatorManualRaise.whileHeld(new C_ElevatorManualPositioning(Elevator.ELEVATOR_POSITIONING_POWER));
         
         elevatorManualLower = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_MANUAL_LOWER);
-        elevatorManualLower.whileHeld(new C_ElevatorManualPositioning(-1.0));
+        elevatorManualLower.whileHeld(new C_ElevatorManualPositioning(-Elevator.ELEVATOR_POSITIONING_POWER));
+        
+        elevatorZeroPosition = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_ZERO_POSITION);
+        elevatorZeroPosition.whenPressed(new C_ReferenceLimit());
         
         //Tote Intake
         elevatorRunToteIntake = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_RUN_TOTE_INTAKE);
