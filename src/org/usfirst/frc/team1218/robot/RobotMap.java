@@ -17,17 +17,18 @@ public class RobotMap {
 	//Elevator
 	public static final int ELEVATOR_LIFT_MASTER = 30;
 	public static final int ELEVATOR_LIFT_SLAVE = 31;
-	public static final int ELEVATOR_INTAKE_L = 32;
-	public static final int ELEVATOR_INTAKE_R = 33;
+	
+	public static final int TOTE_INTAKE_L = 32;
+	public static final int TOTE_INTAKE_R = 33;
 	
 	public static final int TOTE_DETECTOR = 1; //DIO
 	
 	//Escalator
 	public static final int ESCALATOR_LEFT_DART = 20;
 	public static final int ESCALATOR_RIGHT_DART = 21;
-	public static final int ESCALATOR_INTAKE_L = 22;
-	public static final int ESCALATOR_INTAKE_R = 23;
-	public static final int ESCALATOR_INTAKE_SOLENOID = 0;
+	public static final int BIN_INTAKE_L = 22;
+	public static final int BIN_INTAKE_R = 23;
+	public static final int BIN_INTAKE_SOLENOID = 0;
 	
 	//Hooks
 	public static final int HOOK_DEPLOY_SOLENOID = 1;
@@ -45,14 +46,14 @@ public class RobotMap {
 	
 	//Hooks Controls
 	public static final int BUTTON_LOWER_HOOKS = 7;
-	public static final int BUTTON_RAISE_HOOKS = 9;
+	public static final int BUTTON_RAISE_HOOKS = 0;//TODO Assign
 	//Elevator Controls
 	public static final int BUTTON_ELEVATOR_DROP_STACK = 4;
 	public static final int BUTTON_ELEVATOR_RAISE_STACK = 6;
 	public static final int BUTTON_ELEVATOR_STEP_POSITION = 5;
 	public static final int BUTTON_ELEVATOR_MANUAL_RAISE = 9;
 	public static final int BUTTON_ELEVATOR_MANUAL_LOWER = 11;
-	public static final int BUTTON_ELEVATOR_ZERO_POSITION = -1;//TODO Assign button
+	public static final int BUTTON_ELEVATOR_ZERO_POSITION = 0;//TODO Assign button
 	//Tote Intake
 	public static final int BUTTON_ELEVATOR_RUN_TOTE_INTAKE = 3;
 	//Escalator Controls

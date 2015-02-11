@@ -1,5 +1,8 @@
 package org.usfirst.frc.team1218.subsystem.hooks;
 
+import org.usfirst.frc.team1218.robot.RobotMap;
+
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -7,23 +10,23 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *@author afiol-mahon
  */
 public class Hooks extends Subsystem {
-    //XXX private final Solenoid hookDeploy;
+    private final Solenoid hookDeploy;
     
     public void initDefaultCommand() {
         setDefaultCommand(new C_HooksDefault());
     }
     
     public Hooks() {
-    	//hookDeploy = new Solenoid(RobotMap.HOOK_DEPLOY_SOLENOID);
+    	hookDeploy = new Solenoid(RobotMap.HOOK_DEPLOY_SOLENOID);
     	System.out.println("Hooks Initialized");
     }
     
     public void deployHooks(boolean state) {
-    	//hookDeploy.set(state);
+    	hookDeploy.set(state);
     }
     
 	public void syncDashboard() {
-		SmartDashboard.putBoolean("Hooks_Deployed", false); //hookDeploy.get());
+		SmartDashboard.putBoolean("Hooks_Deployed", hookDeploy.get());
 	}
 }
 

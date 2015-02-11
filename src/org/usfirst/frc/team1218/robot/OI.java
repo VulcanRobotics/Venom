@@ -68,7 +68,7 @@ public class OI {
         toggleStableMode.whenPressed(new C_ToggleStableMode());
         
         indexSwerve = new JoystickButton(driver, RobotMap.BUTTON_INDEX_SWERVE);
-        indexSwerve.whileHeld(new C_Index());
+        indexSwerve.whenPressed(new C_Index());
         
         //Operator
         operator = new Joystick(RobotMap.OPERATOR_JOYSTICK);

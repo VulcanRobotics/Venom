@@ -19,13 +19,13 @@ public class Elevator extends Subsystem {
 	private static final double ELEVATOR_P = 0.01;
 	private static final double ELEVATOR_I = 0.0;
 	private static final double ELEVATOR_D = 0.0;
-	
+	 
 	public static final int ELEVATOR_DROP_POSITION = 200; 
 	public static final int ELEVATOR_STEP_POSITION = 500;
 	public static final int ELEVATOR_RAISE_POSITION = 700;
 	public static final int ELEVATOR_DEFAULT_POSITION = ELEVATOR_RAISE_POSITION;
 	
-	public static final double ELEVATOR_POSITIONING_POWER = 1.0;
+	public static final double ELEVATOR_POSITIONING_POWER = 0.5;
 	public static final double ELEVATOR_REFERENCING_POWER = 0.5;
 	
     public void initDefaultCommand() {}
@@ -55,7 +55,6 @@ public class Elevator extends Subsystem {
 	   return liftMaster.getPosition();
     }
     
-    
     public void setPosition(double position) {
     	liftMaster.changeControlMode(ControlMode.Position);
     	liftMaster.set(position);
@@ -68,6 +67,8 @@ public class Elevator extends Subsystem {
         
     public void syncDashboard() {
     	SmartDashboard.putNumber("Elevator_Position", getPosition());
+    	SmartDashboard.putBoolean("Elevator_Upper_Limit", liftMaster.isFwdLimitSwitchClosed());
+    	SmartDashboard.putBoolean("Elevator_Lower_Limit", liftMaster.isRevLimitSwitchClosed());
     }
     
     public boolean atReference() {

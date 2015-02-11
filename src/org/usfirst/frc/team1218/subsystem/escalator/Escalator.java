@@ -4,6 +4,7 @@ import org.usfirst.frc.team1218.robot.Robot;
 import org.usfirst.frc.team1218.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -11,10 +12,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *@author afiol-mahon
  */
 public class Escalator extends Subsystem {
-	//XXX private final Solenoid clamp;
+	private final Solenoid clamp;
 	
-	private final CANTalon intakeL;
-	private final CANTalon intakeR;
+	private final CANTalon binIntakeL;
+	private final CANTalon binIntakeR;
 	
 	protected final CANTalon dartL;
 	protected final CANTalon dartR;
@@ -39,11 +40,9 @@ public class Escalator extends Subsystem {
 		initDart(dartL);
 		dartR = new CANTalon(RobotMap.ESCALATOR_RIGHT_DART);
 		initDart(dartR);
-		intakeL = new CANTalon(RobotMap.ELEVATOR_INTAKE_L);
-		initIntakeWheel(intakeL);
-		intakeR = new CANTalon(RobotMap.ELEVATOR_INTAKE_R);
-		initIntakeWheel(intakeR);
-		//XXX clamp = new Solenoid(RobotMap.ESCALATOR_INTAKE_SOLENOID);
+		binIntakeL = new CANTalon(RobotMap.BIN_INTAKE_L);
+		binIntakeR = new CANTalon(RobotMap.BIN_INTAKE_R);
+		clamp = new Solenoid(RobotMap.BIN_INTAKE_SOLENOID);
 		System.out.println("Escalator Initialized");
 	}
 	
@@ -56,15 +55,15 @@ public class Escalator extends Subsystem {
      * @param opened true for open grabber
      */
     public void openGrabber(boolean opened) {
-    	//XXX clamp.set(opened);
+    	clamp.set(opened);
     }
     
     /**
      * @param power Positive value for intake, negative value for output
      */
     public void setIntake(double power) {
-    	intakeL.set(power);
-    	intakeR.set(-power);
+    	binIntakeL.set(-power);
+    	binIntakeR.set(-power);
     }
     
     public void setDartPosition(double setpoint) {
@@ -95,17 +94,6 @@ public class Escalator extends Subsystem {
     	dartController.setPID(DART_P, DART_I, DART_D);
     	dartController.setFeedbackDevice(CANTalon.FeedbackDevice.AnalogPot);
     }
-    
-    private static void initIntakeWheel(CANTalon intakeWheelController) {
-		intakeWheelController.enableBrakeMode(false);
-		intakeWheelController.setExpiration(1000);
-		intakeWheelController.setSafetyEnabled(true);
-		int pollRate = 1000;
-		intakeWheelController.setStatusFrameRateMs(CANTalon.StatusFrameRate.AnalogTempVbat, pollRate);
-		intakeWheelController.setStatusFrameRateMs(CANTalon.StatusFrameRate.Feedback, pollRate);
-		intakeWheelController.setStatusFrameRateMs(CANTalon.StatusFrameRate.General, pollRate);
-		intakeWheelController.setStatusFrameRateMs(CANTalon.StatusFrameRate.QuadEncoder, pollRate);
-	}
     
     protected void dartPositionMode() {
     	dartL.changeControlMode(CANTalon.ControlMode.Position);
@@ -142,8 +130,8 @@ public class Escalator extends Subsystem {
     	SmartDashboard.putBoolean("Escalator_Right_Dart_Manual_Control", (dartR.getControlMode() == CANTalon.ControlMode.PercentVbus));
     	SmartDashboard.putBoolean("Escalator_Left_Dart_Position_Control", (dartL.getControlMode() == CANTalon.ControlMode.Position));
     	SmartDashboard.putBoolean("Escalator_Right_Dart_Position_Control", (dartR.getControlMode() == CANTalon.ControlMode.Position));
-    	//XXX SmartDashboard.putBoolean("Escalator_Clamps_Open", clamp.get());
-    	SmartDashboard.putNumber("Escalator_Intake_Power", intakeL.get());
+    	SmartDashboard.putBoolean("Escalator_Clamps_Open", clamp.get());
+    	SmartDashboard.putNumber("Escalator_Intake_Power", binIntakeL.get());
     	
     	SmartDashboard.putNumber("Escalator_Left_Dart_P_Value", dartL.getP());
     	SmartDashboard.putNumber("Escalator_Right_Dart_P_Value", dartR.getP());

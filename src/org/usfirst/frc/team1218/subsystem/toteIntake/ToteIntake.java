@@ -26,8 +26,8 @@ public class ToteIntake extends Subsystem {
      * @param power positive value for intake and negative value for output
      */
     public ToteIntake() {
-    	intakeL = new CANTalon(RobotMap.ELEVATOR_INTAKE_L);
-    	intakeR = new CANTalon(RobotMap.ELEVATOR_INTAKE_R);
+    	intakeL = new CANTalon(RobotMap.TOTE_INTAKE_L);
+    	intakeR = new CANTalon(RobotMap.TOTE_INTAKE_R);
     }
     
     public void setIntakePower(double power) {

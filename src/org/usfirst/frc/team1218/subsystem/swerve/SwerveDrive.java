@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SwerveDrive extends Subsystem {
     
-    protected List<SwerveModule> module;
+    protected List<SwerveModule_DIO> module;
     
     private final SerialPort navSerialPort;
     protected final IMUAdvanced navModule;
@@ -29,7 +29,7 @@ public class SwerveDrive extends Subsystem {
 	private static final double Y_PERPENDICULAR_CONSTANT = 0.837;
 	
     public SwerveDrive() {
-    	module = new ArrayList<SwerveModule>(Arrays.asList(
+    	module = new ArrayList<SwerveModule_DIO>(Arrays.asList(
     				new SwerveModule_DIO(0),
     				new SwerveModule_DIO(1),
     				new SwerveModule_DIO(2),
@@ -78,7 +78,7 @@ public class SwerveDrive extends Subsystem {
     	module.stream().forEach(m -> m.setVector(moduleVector.get(m.moduleNumber)));
     }    
     
-    protected List<SwerveModule> getModuleList() {
+    protected List<SwerveModule_DIO> getModuleList() {
     	return module;
     }
 }

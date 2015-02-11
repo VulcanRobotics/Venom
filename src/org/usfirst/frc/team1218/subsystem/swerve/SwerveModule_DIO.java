@@ -3,6 +3,7 @@ package org.usfirst.frc.team1218.subsystem.swerve;
 import org.usfirst.frc.team1218.robot.RobotMap;
 import org.usfirst.frc.team1218.subsystem.swerve.math.Angle;
 
+import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDController;
 
@@ -11,8 +12,8 @@ import edu.wpi.first.wpilibj.PIDController;
  */
 public class SwerveModule_DIO extends SwerveModule {
 	
-	public AngleEncoder angleEncoder;
-	private final PIDController anglePIDController;
+	protected AngleEncoder angleEncoder;
+	protected final PIDController anglePIDController;
 	
 	private static final double ANGLE_CONTROLLER_P = -0.01;
 	private static final double ANGLE_CONTROLLER_I = 0.0;
@@ -43,7 +44,7 @@ public class SwerveModule_DIO extends SwerveModule {
 	
 	@Override
 	public int getEncoderIndexCount() {
-		return angleEncoder.getFPGAIndex();
+		return angleEncoder.getIndexCount();
 	}
 	
 	@Override
@@ -53,20 +54,26 @@ public class SwerveModule_DIO extends SwerveModule {
 	
 	public class AngleEncoder extends Encoder {
 		
+		private Counter indexCounter;
+		
 		public AngleEncoder(int moduleNumber) {
 			super(RobotMap.SM_ANGLE_ENCODER_A[moduleNumber],
 					RobotMap.SM_ANGLE_ENCODER_B[moduleNumber],
 					RobotMap.SM_ANGLE_ENCODER_X[moduleNumber]
 					);
-			this.setDistancePerPulse(ENCODER_CLICK_TO_DEGREE);
+			indexCounter = new Counter(this.m_indexSource);
 		}
 		
 		@Override
 		public double pidGet() {
-			double angle = get();
+			double angle = get() * ENCODER_CLICK_TO_DEGREE;
 			angle += MODULE_ANGLE_OFFSET[moduleNumber];
 			angle = Angle.get360Angle(angle);
 			return angle;
+		}
+		
+		public int getIndexCount() {
+			return indexCounter.get();
 		}
 	}
 }

@@ -26,9 +26,9 @@ public abstract class SwerveModule {
 	private boolean stableMode = false;
 	
 	private final CANTalon driveWheelController;
-	private static final double DRIVE_POWER_SCALE = 1.0;
+	private static final double DRIVE_POWER_SCALE = 0.5;
 	private static final double DRIVE_WHEEL_RADIUS = 1.5; //inches
-	private static final double DRIVE_WHEEL_CIRCUMFERENCE = (Math.PI * Math.pow(DRIVE_WHEEL_RADIUS, 2)); //inches
+	private static final double DRIVE_WHEEL_CIRCUMFERENCE = (2 * Math.PI * DRIVE_WHEEL_RADIUS); //inches
 	private static final double DRIVE_WHEEL_FEET_PER_ROTATION = 12 / DRIVE_WHEEL_CIRCUMFERENCE;//feet
 	private static final double DRIVE_ENCODER_TO_WHEEL_ROTATION_RATIO = 6 / 5; //Gearing Ratio
 	private static final double DRIVE_ENCODER_CLICKS = 500; //Clicks in 1 encoder rotation
@@ -180,5 +180,6 @@ public abstract class SwerveModule {
 		SmartDashboard.putNumber("SM_" + moduleNumber + "_WheelPower", driveWheelController.get());
 		SmartDashboard.putNumber("SM_" + moduleNumber + "_EncoderAngle", getEncoderAngle());
 		SmartDashboard.putNumber("SM_" + moduleNumber + "_RobotCentricAngle", robotCentricSetpointAngle);
+		SmartDashboard.putNumber("SM_" + moduleNumber + ": Index Count", getEncoderIndexCount());
 	}
 }
