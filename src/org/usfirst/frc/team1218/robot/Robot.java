@@ -2,8 +2,8 @@
 package org.usfirst.frc.team1218.robot;
 
 import org.usfirst.frc.team1218.subsystem.elevator.Elevator;
-import org.usfirst.frc.team1218.subsystem.escalator.DartSafety;
-import org.usfirst.frc.team1218.subsystem.escalator.Escalator;
+import org.usfirst.frc.team1218.subsystem.fourBar.DartSafety;
+import org.usfirst.frc.team1218.subsystem.fourBar.FourBar;
 import org.usfirst.frc.team1218.subsystem.hooks.Hooks;
 import org.usfirst.frc.team1218.subsystem.swerve.SwerveDrive;
 import org.usfirst.frc.team1218.subsystem.toteIntake.ToteIntake;
@@ -24,7 +24,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 public class Robot extends IterativeRobot {
 	
 	public static SwerveDrive swerveSystem;
-	public static Escalator escalator;
+	public static FourBar fourBar;
 	public static DartSafety dartSafety;
 	public static Elevator elevator;
 	public static Hooks hooks;
@@ -39,7 +39,7 @@ public class Robot extends IterativeRobot {
      */
     public void robotInit() {
     	swerveSystem = new SwerveDrive();
-    	escalator = new Escalator();
+    	fourBar = new FourBar();
     	dartSafety = new DartSafety();
     	elevator = new Elevator();
     	hooks = new Hooks();
@@ -86,7 +86,7 @@ public class Robot extends IterativeRobot {
     	Scheduler.getInstance().run();
     	Robot.swerveSystem.syncDashboard();
     	Robot.elevator.syncDashboard();
-    	Robot.escalator.syncDashboard();
+    	Robot.fourBar.syncDashboard();
     	Robot.hooks.syncDashboard();
     	Robot.toteIntake.syncDashboard();
     }

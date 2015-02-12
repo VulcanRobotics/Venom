@@ -1,16 +1,15 @@
 package org.usfirst.frc.team1218.robot;
 
-import org.usfirst.frc.team1218.subsystem.elevator.C_ElevatorManualPositioning;
+import org.usfirst.frc.team1218.subsystem.elevator.C_ManualControl;
 import org.usfirst.frc.team1218.subsystem.elevator.C_ReferenceLimit;
 import org.usfirst.frc.team1218.subsystem.elevator.C_SetElevatorSetpoint;
 import org.usfirst.frc.team1218.subsystem.elevator.Elevator;
-import org.usfirst.frc.team1218.subsystem.escalator.C_SeekPosition;
-import org.usfirst.frc.team1218.subsystem.escalator.Escalator;
-import org.usfirst.frc.team1218.subsystem.hooks.C_DeployHooks;
+import org.usfirst.frc.team1218.subsystem.fourBar.C_SeekPosition;
+import org.usfirst.frc.team1218.subsystem.fourBar.FourBar;
+import org.usfirst.frc.team1218.subsystem.swerve.C_MaintainHeading;
 import org.usfirst.frc.team1218.subsystem.swerve.C_Index;
 import org.usfirst.frc.team1218.subsystem.swerve.C_ToggleStableMode;
 import org.usfirst.frc.team1218.subsystem.swerve.C_ZeroRobotHeading;
-import org.usfirst.frc.team1218.subsystem.swerve.C_GoToHeading;
 import org.usfirst.frc.team1218.subsystem.swerve.math.Vector;
 import org.usfirst.frc.team1218.subsystem.toteIntake.C_RunToteIntake;
 
@@ -31,13 +30,11 @@ public class OI {
 	public static Button maintainHeading;
 	public static Button toggleStableMode;
 	public static Button indexSwerve;
+	public static Button robotCentricToggle;
 	
 	//Operator
 	public static Joystick operator;
 	
-	//Hooks
-	public static Button lowerHooks;
-	public static Button raiseHooks;
 	//Elevator
 	public static Button elevatorDropStack;
 	public static Button elevatorRaiseStack;
@@ -47,12 +44,12 @@ public class OI {
 	public static Button elevatorZeroPosition;
 	//Tote Intake
 	public static Button elevatorRunToteIntake;
-	//Escalator
-	public static Button escalatorRunBinIntake;
-	public static Button escalatorOpenGrabber;
-	public static Button escalatorHighPosition;
-	public static Button escalatorMiddlePosition;
-	public static Button escalatorLowPosition;
+	//Four Bar
+	public static Button fourBarRunBinIntake;
+	public static Button fourBarOpenGrabber;
+	public static Button fourBarHighPosition;
+	public static Button fourBarMiddlePosition;
+	public static Button fourBarLowPosition;
 	
 	public OI() {
     	//Driver
@@ -62,7 +59,7 @@ public class OI {
         resetGyro.whenPressed(new C_ZeroRobotHeading());
         
         maintainHeading = new JoystickButton(driver, RobotMap.BUTTON_MAINTAIN_HEADING);
-        maintainHeading.whileHeld(new C_GoToHeading());
+        maintainHeading.whileHeld(new C_MaintainHeading());
         
         toggleStableMode = new JoystickButton(driver, RobotMap.BUTTON_TOGGLE_STABLE_MODE);
         toggleStableMode.whenPressed(new C_ToggleStableMode());
@@ -70,16 +67,11 @@ public class OI {
         indexSwerve = new JoystickButton(driver, RobotMap.BUTTON_INDEX_SWERVE);
         indexSwerve.whenPressed(new C_Index());
         
+        robotCentricToggle = new JoystickButton(driver, RobotMap.BUTTON_ROBOT_CENTRIC_TOGGLE);
+        
         //Operator
         operator = new Joystick(RobotMap.OPERATOR_JOYSTICK);
         
-        //Hooks
-        lowerHooks = new JoystickButton(operator, RobotMap.BUTTON_LOWER_HOOKS);
-        lowerHooks.whenPressed(new C_DeployHooks(true));
-        
-        raiseHooks = new JoystickButton(operator, RobotMap.BUTTON_RAISE_HOOKS);
-        raiseHooks.whenPressed(new C_DeployHooks(false));
-        	
         //Elevator
         elevatorDropStack = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_DROP_STACK);
         elevatorDropStack.whenPressed(new C_SetElevatorSetpoint(Elevator.ELEVATOR_DROP_POSITION));
@@ -91,10 +83,10 @@ public class OI {
         elevatorToStepPosition.whenPressed(new C_SetElevatorSetpoint(Elevator.ELEVATOR_STEP_POSITION));
         
         elevatorManualRaise = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_MANUAL_RAISE);
-        elevatorManualRaise.whileHeld(new C_ElevatorManualPositioning(Elevator.ELEVATOR_POSITIONING_POWER));
+        elevatorManualRaise.whileHeld(new C_ManualControl(Elevator.ELEVATOR_MANUAL_POSITIONING_POWER));
         
         elevatorManualLower = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_MANUAL_LOWER);
-        elevatorManualLower.whileHeld(new C_ElevatorManualPositioning(-Elevator.ELEVATOR_POSITIONING_POWER));
+        elevatorManualLower.whileHeld(new C_ManualControl(-Elevator.ELEVATOR_MANUAL_POSITIONING_POWER));
         
         elevatorZeroPosition = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_ZERO_POSITION);
         elevatorZeroPosition.whenPressed(new C_ReferenceLimit());
@@ -103,19 +95,19 @@ public class OI {
         elevatorRunToteIntake = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_RUN_TOTE_INTAKE);
         elevatorRunToteIntake.whileHeld(new C_RunToteIntake());
         
-        //Escalator
-        escalatorRunBinIntake = new JoystickButton(operator, RobotMap.BUTTON_ESCALATOR_RUN_BIN_INTAKE);
+        //Four Bar
+        fourBarRunBinIntake = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_RUN_BIN_INTAKE);
         
-        escalatorOpenGrabber = new JoystickButton(operator, RobotMap.BUTTON_ESCALATOR_OPEN_GRABBER);
+        fourBarOpenGrabber = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_OPEN_GRABBER);
         
-        escalatorHighPosition = new JoystickButton(operator, RobotMap.BUTTON_ESCALATOR_HIGH_POSITION);
-        escalatorHighPosition.whileHeld(new C_SeekPosition(Escalator.ESCALATOR_HIGH_POSITION));
+        fourBarHighPosition = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_HIGH_POSITION);
+        fourBarHighPosition.whileHeld(new C_SeekPosition(FourBar.FOUR_BAR_HIGH_POSITION));
         	
-        escalatorMiddlePosition = new JoystickButton(operator, RobotMap.BUTTON_ESCALATOR_MIDDLE_POSITION);
-        escalatorMiddlePosition.whileHeld(new C_SeekPosition(Escalator.ESCALATOR_MIDDLE_POSITION));
+        fourBarMiddlePosition = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_MIDDLE_POSITION);
+        fourBarMiddlePosition.whileHeld(new C_SeekPosition(FourBar.FOUR_BAR_MIDDLE_POSITION));
         	
-        escalatorLowPosition = new JoystickButton(operator, RobotMap.BUTTON_ESCALATOR_LOW_POSITION);
-        escalatorLowPosition.whileHeld(new C_SeekPosition(Escalator.ESCALATOR_LOW_POSITION));
+        fourBarLowPosition = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_LOW_POSITION);
+        fourBarLowPosition.whileHeld(new C_SeekPosition(FourBar.FOUR_BAR_LOW_POSITION));
     }
     
     public static Vector getDriverLeftJoystickVector() {
@@ -134,8 +126,8 @@ public class OI {
         return -driver.getRawAxis(Axis.RIGHT_Y);
     }
     
-    public static double getEscalatorControlAxis() {
-		return operator.getRawAxis(RobotMap.AXIS_ESCALATOR_CONTROL);
+    public static double getFourBarControlAxis() {
+		return operator.getRawAxis(RobotMap.AXIS_FOUR_BAR_CONTROL);
     }
 	
 	public static class Axis {

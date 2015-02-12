@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SwerveDrive extends Subsystem {
     
-    protected List<SwerveModule_DIO> module;
+    protected List<SwerveModule> module;
     
     private final SerialPort navSerialPort;
     protected final IMUAdvanced navModule;
@@ -29,11 +29,11 @@ public class SwerveDrive extends Subsystem {
 	private static final double Y_PERPENDICULAR_CONSTANT = 0.837;
 	
     public SwerveDrive() {
-    	module = new ArrayList<SwerveModule_DIO>(Arrays.asList(
-    				new SwerveModule_DIO(0),
-    				new SwerveModule_DIO(1),
-    				new SwerveModule_DIO(2),
-    				new SwerveModule_DIO(3)
+    	module = new ArrayList<SwerveModule>(Arrays.asList(
+    				new SwerveModule(0),
+    				new SwerveModule(1),
+    				new SwerveModule(2),
+    				new SwerveModule(3)
     			));	
 		navSerialPort = new SerialPort(57600, SerialPort.Port.kMXP);
 		navModule = new IMUAdvanced(navSerialPort);
@@ -45,8 +45,8 @@ public class SwerveDrive extends Subsystem {
     }
     
     public void syncDashboard() {
+    	SmartDashboard.putNumber("SwerveDrive: Robot_Heading", Angle.get360Angle(navModule.getYaw()));
     	module.stream().forEach(m -> m.syncDashboard());
-    	SmartDashboard.putNumber("RobotHeading", Angle.get360Angle(navModule.getYaw()));
 	}
     
     /**
@@ -73,12 +73,12 @@ public class SwerveDrive extends Subsystem {
     	for (int i = 0; i < 4; i++) maxMagnitude = (moduleVector.get(i).getMagnitude() > maxMagnitude) ? moduleVector.get(i).getMagnitude() : maxMagnitude;
     	
     	double scaleFactor = ((maxMagnitude > 1.0) ? 1.0 / maxMagnitude : 1.0);
-    	    	
+    	
     	moduleVector.stream().forEach(v -> v.scaleMagnitude(scaleFactor));    	
-    	module.stream().forEach(m -> m.setVector(moduleVector.get(m.moduleNumber)));
+    	module.stream().forEach(m -> m.setDriveVector(moduleVector.get(m.moduleNumber)));
     }    
     
-    protected List<SwerveModule_DIO> getModuleList() {
+    protected List<SwerveModule> getModuleList() {
     	return module;
     }
 }

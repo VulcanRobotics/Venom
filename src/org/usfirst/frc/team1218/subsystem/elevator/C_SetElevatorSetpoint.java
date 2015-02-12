@@ -29,7 +29,7 @@ public class C_SetElevatorSetpoint extends Command {
     }
 
     protected void end() {
-    	System.out.println("Elevator position set to" + position);
+    	System.out.println("Elevator position set to " + position);
     }
 
     protected void interrupted() {

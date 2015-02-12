@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1218.subsystem.escalator;
+package org.usfirst.frc.team1218.subsystem.fourBar;
 
 import org.usfirst.frc.team1218.robot.Robot;
 
@@ -12,13 +12,13 @@ public class C_SeekPosition extends Command {
 	private double setpoint;
 	
     public C_SeekPosition(double setpoint) {
-        requires(Robot.escalator);
+        requires(Robot.fourBar);
         this.setpoint = setpoint;
     }
     
     protected void initialize() {
-    	Robot.escalator.enableDarts();
-    	Robot.escalator.setDartPosition(setpoint);
+    	Robot.fourBar.enableDarts();
+    	Robot.fourBar.setDartPosition(setpoint);
     	System.out.println("[Escalator]: Seeking Position...");
     }
     
@@ -31,7 +31,7 @@ public class C_SeekPosition extends Command {
     }
 
     protected void end() {
-    	Robot.escalator.setDartPower(0.0);
+    	Robot.fourBar.setDartPower(0.0);
     }
 
     protected void interrupted() {

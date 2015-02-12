@@ -21,21 +21,21 @@ public class C_Index extends Command {
 
     protected void initialize() {
     	for (int i = 0; i < 4; i++) {
-    		SwerveModule_DIO module = Robot.swerveSystem.getModuleList().get(i);
+    		SwerveModule module = Robot.swerveSystem.getModuleList().get(i);
     		module.anglePIDController.disable();
-    		invertTravelDirection[i] = (Angle.diffBetweenAngles(module.getEncoderAngle(), 0) < 180 ? true : false); //Takes the shortest route to the last known index position
+    		invertTravelDirection[i] = (Angle.diffBetweenAngles(module.getEncoderAngle(), -SwerveModule.MODULE_ANGLE_OFFSET[module.moduleNumber]) < 180 ? true : false); //Takes the shortest route to the last known index position
     		indexCount[i] = module.getEncoderIndexCount();
-
+    		System.out.println("SM_" + module.moduleNumber + ": Distance to Index: " + Angle.diffBetweenAngles(module.getEncoderAngle(), -SwerveModule.MODULE_ANGLE_OFFSET[module.moduleNumber]));
     	}
     }
 
     protected void execute() {
     	for (int i = 0; i < 4; i++) {
-    		SwerveModule_DIO module = Robot.swerveSystem.getModuleList().get(i);
+    		SwerveModule module = Robot.swerveSystem.getModuleList().get(i);
     		if(indexCount[i] == module.getEncoderIndexCount()) {
         		module.angleController.set((invertTravelDirection[i]) ? 0.3 : -0.3); //Travels shortest distance to last known index position
     		} else {//TODO ensure it is shortest distance to index
-    			module.angleController.set(0.0);
+    			module.anglePIDController.setSetpoint(0.0);
     			module.anglePIDController.enable();
     			indexed[i] = true;
     		}

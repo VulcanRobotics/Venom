@@ -16,19 +16,23 @@ public class Elevator extends Subsystem {
 	private final CANTalon liftMaster;
 	private final CANTalon liftSlave;
 	
-	private static final double ELEVATOR_P = 0.01;
-	private static final double ELEVATOR_I = 0.0;
+	private boolean liftHasReferenced = false;
+	
+	private static final double ELEVATOR_P = 0.1;
+	private static final double ELEVATOR_I = 0.0001;
 	private static final double ELEVATOR_D = 0.0;
 	 
-	public static final int ELEVATOR_DROP_POSITION = 200; 
-	public static final int ELEVATOR_STEP_POSITION = 500;
-	public static final int ELEVATOR_RAISE_POSITION = 700;
-	public static final int ELEVATOR_DEFAULT_POSITION = ELEVATOR_RAISE_POSITION;
+	public static final int ELEVATOR_DROP_POSITION = 0; 
+	public static final int ELEVATOR_STEP_POSITION = 2232;
+	public static final int ELEVATOR_RAISE_POSITION = 5087;
+	public static final int ELEVATOR_DEFAULT_POSITION = ELEVATOR_STEP_POSITION;
 	
-	public static final double ELEVATOR_POSITIONING_POWER = 0.5;
-	public static final double ELEVATOR_REFERENCING_POWER = 0.5;
+	public static final double ELEVATOR_MANUAL_POSITIONING_POWER = 0.5;
+	public static final double ELEVATOR_REFERENCING_POWER = 0.3;
 	
-    public void initDefaultCommand() {}
+    public void initDefaultCommand() {
+    	
+    }
     
     public Elevator() {
     	liftMaster = new CANTalon(RobotMap.ELEVATOR_LIFT_MASTER);
@@ -38,13 +42,9 @@ public class Elevator extends Subsystem {
     	liftMaster.ConfigRevLimitSwitchNormallyOpen(false);
     	liftMaster.setPID(ELEVATOR_P, ELEVATOR_I, ELEVATOR_D);
     	liftMaster.setFeedbackDevice(FeedbackDevice.QuadEncoder);
-    	liftMaster.setSafetyEnabled(true);
-    	liftMaster.setExpiration(0.1);
-    	
     	liftSlave = new CANTalon(RobotMap.ELEVATOR_LIFT_SLAVE);
     	liftSlave.enableBrakeMode(true);
     	liftSlave.changeControlMode(CANTalon.ControlMode.Follower);
-    	liftSlave.reverseOutput(true);
     	liftSlave.set(liftMaster.getDeviceID());
     }
     
@@ -56,8 +56,14 @@ public class Elevator extends Subsystem {
     }
     
     public void setPosition(double position) {
-    	liftMaster.changeControlMode(ControlMode.Position);
-    	liftMaster.set(position);
+    	if(liftHasReferenced) {
+    		liftMaster.changeControlMode(ControlMode.Position);
+        	liftMaster.set(position);
+    	} else {
+    		System.out.println("Cannot PID Elevator: Must Reference Limit First");
+    		liftMaster.changeControlMode(ControlMode.PercentVbus);
+    		liftMaster.set(0.0);
+    	}
     }
     
     public void setPower(double power) {
@@ -69,13 +75,15 @@ public class Elevator extends Subsystem {
     	SmartDashboard.putNumber("Elevator_Position", getPosition());
     	SmartDashboard.putBoolean("Elevator_Upper_Limit", liftMaster.isFwdLimitSwitchClosed());
     	SmartDashboard.putBoolean("Elevator_Lower_Limit", liftMaster.isRevLimitSwitchClosed());
+    	SmartDashboard.putNumber("Elevator_Position_Error", liftMaster.getClosedLoopError());
     }
     
     public boolean atReference() {
-    	return liftMaster.isRevLimitSwitchClosed();
+    	return !liftMaster.isRevLimitSwitchClosed();
     }
     
     public void zeroPosition() {
     	liftMaster.setPosition(0);
+    	liftHasReferenced = true;
     }
 }

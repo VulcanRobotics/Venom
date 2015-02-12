@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1218.subsystem.escalator;
+package org.usfirst.frc.team1218.subsystem.fourBar;
 
 import org.usfirst.frc.team1218.robot.OI;
 import org.usfirst.frc.team1218.robot.Robot;
@@ -8,17 +8,17 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *@author afiol-mahon
  */
-public class C_EscalatorDefault extends Command {
+public class C_FourBarDefault extends Command {
 
-    public C_EscalatorDefault() {
-        requires(Robot.escalator);
+    public C_FourBarDefault() {
+        requires(Robot.fourBar);
     }
 
     protected void initialize() {
     }
 
     protected void execute() {
-    	joystickEscalatorControl(OI.getEscalatorControlAxis());
+    	joystickEscalatorControl(OI.getFourBarControlAxis());
     	setBinIntakeByButton();
     	setGrabberByButton();
     }
@@ -28,9 +28,9 @@ public class C_EscalatorDefault extends Command {
     }
 
     protected void end() {
-    	Robot.escalator.setDartPower(0.0);
-    	Robot.escalator.setIntake(0.0);
-		Robot.escalator.openGrabber(false);
+    	Robot.fourBar.setDartPower(0.0);
+    	Robot.fourBar.setIntake(0.0);
+		Robot.fourBar.openGrabber(false);
     }
     
     protected void interrupted() {
@@ -42,9 +42,9 @@ public class C_EscalatorDefault extends Command {
      */
     private void joystickEscalatorControl(double pow) {
     	if (Math.abs(pow) > 0.1) {
-    		Robot.escalator.setDartPower(pow);
+    		Robot.fourBar.setDartPower(pow);
     	} else {
-    		Robot.escalator.setDartPower(0.0);
+    		Robot.fourBar.setDartPower(0.0);
     	}
     }
     
@@ -52,10 +52,10 @@ public class C_EscalatorDefault extends Command {
      * Method binds button to intake control
      */
     private void setBinIntakeByButton() {
-    	if (OI.escalatorRunBinIntake.get()) {
-    		Robot.escalator.setIntake(1.0);
+    	if (OI.fourBarRunBinIntake.get()) {
+    		Robot.fourBar.setIntake(1.0);
     	} else {
-        	Robot.escalator.setIntake(0.0);
+        	Robot.fourBar.setIntake(0.0);
     	}
     }
     
@@ -63,6 +63,6 @@ public class C_EscalatorDefault extends Command {
      * Method binds button to grabber control
      */
     private void setGrabberByButton() {
-    	Robot.escalator.openGrabber(OI.escalatorOpenGrabber.get());
+    	Robot.fourBar.openGrabber(OI.fourBarOpenGrabber.get());
     }
 }

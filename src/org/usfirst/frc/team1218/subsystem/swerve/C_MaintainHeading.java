@@ -13,11 +13,13 @@ import edu.wpi.first.wpilibj.command.Command;
  * @author afiol-mahon
  *
  */
-public class C_GoToHeading extends Command implements PIDOutput, PIDSource{//FIXME Tune PID
+public class C_MaintainHeading extends Command implements PIDOutput, PIDSource{//FIXME Tune PID
 
-	PIDController headingController;
+	private PIDController headingController;
 	
-	public C_GoToHeading() {
+	private double heading;
+	
+	public C_MaintainHeading() {
 		requires(Robot.swerveSystem);
 	}
 	
@@ -36,11 +38,12 @@ public class C_GoToHeading extends Command implements PIDOutput, PIDSource{//FIX
 		headingController.setOutputRange(-1.0, 1.0);
 		headingController.setInputRange(0, 360);
 		headingController.enable();
+		heading = Robot.swerveSystem.navModule.getYaw();
 	}
 
 	@Override
 	protected void execute() {
-		headingController.setSetpoint(0);
+		headingController.setSetpoint(heading);
 	}
 
 	@Override

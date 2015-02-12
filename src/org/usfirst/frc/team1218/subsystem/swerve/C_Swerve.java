@@ -11,7 +11,10 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class C_Swerve extends Command {
-
+	
+	private boolean robotCentric;
+	private boolean lastButtonRobotCentricState = false;
+	
 	public C_Swerve() {
 		requires(Robot.swerveSystem);
 	}
@@ -22,13 +25,18 @@ public class C_Swerve extends Command {
 
 	@Override
 	protected void execute() {
+		if(OI.robotCentricToggle.get() && !lastButtonRobotCentricState) {
+			robotCentric = !robotCentric;
+		}
+		lastButtonRobotCentricState = OI.robotCentricToggle.get();
+		
 		Robot.swerveSystem.swerveDrive(
 				OI.getDriverLeftJoystickVector(),
 				Math.pow(OI.getDriverRightX(), 3),
-				Robot.swerveSystem.navModule.getYaw()
+				(!robotCentric) ? Robot.swerveSystem.navModule.getYaw() : 0
 				);
 	}
-
+	
 	@Override
 	protected boolean isFinished() {
 		return false;
