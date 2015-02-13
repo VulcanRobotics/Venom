@@ -62,7 +62,7 @@ public class FourBar extends Subsystem {
      * @param power Positive value for intake, negative value for output
      */
     public void setIntake(double power) {
-    	binIntakeL.set(-power);
+    	binIntakeL.set(power);
     	binIntakeR.set(-power);
     }
     

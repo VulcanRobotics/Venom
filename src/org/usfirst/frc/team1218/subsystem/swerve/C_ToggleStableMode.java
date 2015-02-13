@@ -10,11 +10,11 @@ import edu.wpi.first.wpilibj.command.Command;
 public class C_ToggleStableMode extends Command {
 	
     public C_ToggleStableMode() {
-        requires(Robot.swerveSystem);
+        requires(Robot.swerveDrive);
     }
     
     protected void initialize() {
-    	Robot.swerveSystem.module.stream().forEach(
+    	Robot.swerveDrive.module.stream().forEach(
     		m -> m.setStableMode(!m.isStableMode())
     	);
     }

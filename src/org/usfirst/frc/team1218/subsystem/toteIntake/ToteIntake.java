@@ -15,7 +15,7 @@ public class ToteIntake extends Subsystem {
 	private final CANTalon intakeL;
 	private final CANTalon intakeR;
 	
-	protected final double TOTE_INTAKE_POWER = 0.5;
+	protected final double TOTE_INTAKE_POWER = 0.8;
 	
     public void initDefaultCommand() {
         
@@ -31,8 +31,8 @@ public class ToteIntake extends Subsystem {
     }
     
     public void setIntakePower(double power) {
-    	intakeL.set(power);
-    	intakeR.set(-power);
+    	intakeL.set(-power);
+    	intakeR.set(power);
     }
 
 	public void syncDashboard() {

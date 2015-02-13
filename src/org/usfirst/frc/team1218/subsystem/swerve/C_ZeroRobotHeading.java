@@ -16,11 +16,11 @@ import edu.wpi.first.wpilibj.command.Command;
 public class C_ZeroRobotHeading extends Command {
     
     public C_ZeroRobotHeading() {
-        requires(Robot.swerveSystem);
+        requires(Robot.swerveDrive);
     }
     
     protected void initialize() {
-        Robot.swerveSystem.navModule.zeroYaw();
+        Robot.swerveDrive.navModule.zeroYaw();
     }
     
     protected void execute() {

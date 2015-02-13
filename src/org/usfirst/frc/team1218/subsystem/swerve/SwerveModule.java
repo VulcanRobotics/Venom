@@ -5,9 +5,10 @@ import org.usfirst.frc.team1218.subsystem.swerve.math.Angle;
 import org.usfirst.frc.team1218.subsystem.swerve.math.Vector;
 
 import edu.wpi.first.wpilibj.CANTalon;
-import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.CANTalon.ControlMode;
 import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
+import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -24,7 +25,7 @@ public class SwerveModule {
 	private boolean invertModule = false;
 	private boolean stableMode = false;
 	
-	private final CANTalon driveWheelController;
+	protected final CANTalon driveWheelController;
 	//Drive Wheel Controller Constants
 	private static final double DRIVE_WHEEL_RADIUS = 1.5; //inches
 	private static final double DRIVE_WHEEL_CIRCUMFERENCE = (2 * Math.PI * DRIVE_WHEEL_RADIUS); //inches
@@ -51,16 +52,27 @@ public class SwerveModule {
 	protected final CANTalon angleController;
 	//Angle Controller Constants
 	protected static final double MAX_ANGLE_CONTROLLER_POWER = 0.7;
-	protected static final double[] MODULE_ANGLE_OFFSET = {-2.0, 133.0, -15.0, -145.0};
+	
+	protected static final double[] ALPHA_MODULE_ANGLE_OFFSET = {3.0, 167.0, -80.0, 104.0};
+	protected static final double[] BETA_MODULE_ANGLE_OFFSET = {-2.0, 133.0, -15.0, -145.0};
+	protected double[] moduleAngleOffset = ALPHA_MODULE_ANGLE_OFFSET;
+	
 	protected static final double ENCODER_CLICKS_PER_REVOLUTION = 500.0;
 	protected static final double ENCODER_CLICK_TO_DEGREE = 360.0 / ENCODER_CLICKS_PER_REVOLUTION; //Degrees over Number of Clicks
 	protected static final double ENCODER_DEGREE_TO_CLICK = ENCODER_CLICKS_PER_REVOLUTION / 360.0;
 	
-	private static final double STABLE_MODE_RAMP_RATE = 0;
-	private static final double NORMAL_MODE_RAMP_RATE = 0;
+	private static final double STABLE_MODE_RAMP_RATE = 0.0;
+	private static final double NORMAL_MODE_RAMP_RATE = 0.0;
 	
 	public SwerveModule(int moduleNumber) {
 		this.moduleNumber = moduleNumber;
+		if (Preferences.getInstance().getBoolean("isBeta", false)) {
+			this.moduleAngleOffset = BETA_MODULE_ANGLE_OFFSET;
+			System.out.println("Beta Swerve Profile Detected");
+		} else {
+			this.moduleAngleOffset = ALPHA_MODULE_ANGLE_OFFSET;
+			System.out.println("Alpha Swerve Profile Detected");
+		}
 		this.driveWheelController = new CANTalon(RobotMap.SM_DRIVE_MOTOR[moduleNumber]);
 		this.driveWheelController.setFeedbackDevice(FeedbackDevice.QuadEncoder);
 		this.driveWheelController.enableBrakeMode(false);
@@ -70,7 +82,7 @@ public class SwerveModule {
 		this.driveWheelController.setPID(DRIVE_WHEEL_VELOCITY_P, DRIVE_WHEEL_VELOCITY_I, DRIVE_WHEEL_VELOCITY_D);
 		this.angleController = new CANTalon(RobotMap.SM_TURN_MOTOR[moduleNumber]);
 		this.angleController.enableLimitSwitch(false, false);
-		this.angleEncoder = new AngleEncoder(moduleNumber);
+		this.angleEncoder = new AngleEncoder(moduleNumber, moduleAngleOffset);
 		this.anglePIDController = new PIDController(
 			ANGLE_CONTROLLER_P,
 			ANGLE_CONTROLLER_I,
@@ -90,7 +102,7 @@ public class SwerveModule {
 	 * @returns degree position of encoder
 	 */
 	public double getEncoderAngle() {
-		return angleEncoder.pidGet();
+		return angleEncoder.getAngle(moduleAngleOffset[moduleNumber]);
 	}
 
 	public int getEncoderIndexCount() {
@@ -195,8 +207,7 @@ public class SwerveModule {
 	 */
 	public void setWheelSpeed(double speed) {
 		speed *= DRIVE_WHEEL_FEET_TO_CLICK_RATIO;
-		
-		if (Math.abs(speed) > MAX_VELOCITY){
+		if (Math.abs(speed) > MAX_VELOCITY) {
 			System.out.println("Illegal speed " + speed + "(ft/s) written to module: " + moduleNumber);
 		} else {
 			speed *= (invertModule) ? -1.0 : 1.0;

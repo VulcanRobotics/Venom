@@ -20,7 +20,7 @@ public class C_MaintainHeading extends Command implements PIDOutput, PIDSource{/
 	private double heading;
 	
 	public C_MaintainHeading() {
-		requires(Robot.swerveSystem);
+		requires(Robot.swerveDrive);
 	}
 	
 	private static final double HEADING_CONTROLLER_P = 0.03;
@@ -38,7 +38,7 @@ public class C_MaintainHeading extends Command implements PIDOutput, PIDSource{/
 		headingController.setOutputRange(-1.0, 1.0);
 		headingController.setInputRange(0, 360);
 		headingController.enable();
-		heading = Robot.swerveSystem.navModule.getYaw();
+		heading = Robot.swerveDrive.navModule.getYaw();
 	}
 
 	@Override
@@ -63,15 +63,15 @@ public class C_MaintainHeading extends Command implements PIDOutput, PIDSource{/
 	
 	@Override
 	public void pidWrite(double output) {
-		Robot.swerveSystem.swerveDrive(
+		Robot.swerveDrive.swerveDrive(
 				OI.getDriverLeftJoystickVector(),
 				output,
-				Robot.swerveSystem.navModule.getYaw()
+				Robot.swerveDrive.navModule.getYaw()
 				);
 	}
 
 	@Override
 	public double pidGet() {
-		return Robot.swerveSystem.navModule.getYaw();
+		return Robot.swerveDrive.navModule.getYaw();
 	}
 }

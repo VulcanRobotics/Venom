@@ -27,7 +27,7 @@ public class Elevator extends Subsystem {
 	public static final int ELEVATOR_RAISE_POSITION = 5087;
 	public static final int ELEVATOR_DEFAULT_POSITION = ELEVATOR_STEP_POSITION;
 	
-	public static final double ELEVATOR_MANUAL_POSITIONING_POWER = 0.5;
+	public static final double ELEVATOR_MANUAL_POSITIONING_POWER = 1.0;
 	public static final double ELEVATOR_REFERENCING_POWER = 0.3;
 	
     public void initDefaultCommand() {

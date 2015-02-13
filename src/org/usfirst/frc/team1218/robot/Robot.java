@@ -9,9 +9,11 @@ import org.usfirst.frc.team1218.subsystem.swerve.SwerveDrive;
 import org.usfirst.frc.team1218.subsystem.toteIntake.ToteIntake;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -23,7 +25,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
  */
 public class Robot extends IterativeRobot {
 	
-	public static SwerveDrive swerveSystem;
+	public static SwerveDrive swerveDrive;
 	public static FourBar fourBar;
 	public static DartSafety dartSafety;
 	public static Elevator elevator;
@@ -38,7 +40,7 @@ public class Robot extends IterativeRobot {
      * used for any initialization code.
      */
     public void robotInit() {
-    	swerveSystem = new SwerveDrive();
+    	swerveDrive = new SwerveDrive();
     	fourBar = new FourBar();
     	dartSafety = new DartSafety();
     	elevator = new Elevator();
@@ -84,11 +86,12 @@ public class Robot extends IterativeRobot {
      */
     public void teleopPeriodic() {
     	Scheduler.getInstance().run();
-    	Robot.swerveSystem.syncDashboard();
+    	Robot.swerveDrive.syncDashboard();
     	Robot.elevator.syncDashboard();
     	Robot.fourBar.syncDashboard();
     	Robot.hooks.syncDashboard();
     	Robot.toteIntake.syncDashboard();
+    	SmartDashboard.putBoolean("isBeta", Preferences.getInstance().getBoolean("isBeta", false));
     }
     
     /**

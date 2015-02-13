@@ -16,7 +16,7 @@ public class C_Swerve extends Command {
 	private boolean lastButtonRobotCentricState = false;
 	
 	public C_Swerve() {
-		requires(Robot.swerveSystem);
+		requires(Robot.swerveDrive);
 	}
 	
 	@Override
@@ -30,10 +30,10 @@ public class C_Swerve extends Command {
 		}
 		lastButtonRobotCentricState = OI.robotCentricToggle.get();
 		
-		Robot.swerveSystem.swerveDrive(
+		Robot.swerveDrive.swerveDrive(
 				OI.getDriverLeftJoystickVector(),
 				Math.pow(OI.getDriverRightX(), 3),
-				(!robotCentric) ? Robot.swerveSystem.navModule.getYaw() : 0
+				(!robotCentric) ? Robot.swerveDrive.navModule.getYaw() : 0
 				);
 	}
 	
