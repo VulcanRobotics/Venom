@@ -36,7 +36,7 @@ public class SwerveModule {
 	private static final double DRIVE_WHEEL_FEET_TO_CLICK_RATIO = DRIVE_WHEEL_FEET_PER_ROTATION * DRIVE_ENCODER_CLICKS_PER_REV;//converts Feet/Second to encoder clicks
 	//PID
 	private static final double DRIVE_WHEEL_VELOCITY_P = 0.1;
-	private static final double DRIVE_WHEEL_VELOCITY_I = 0.0;
+	private static final double DRIVE_WHEEL_VELOCITY_I = 0.001;
 	private static final double DRIVE_WHEEL_VELOCITY_D = 0.0;
 	//Limits
 	private static final double MAX_VELOCITY = 15; //feet per second
@@ -82,7 +82,7 @@ public class SwerveModule {
 		this.driveWheelController.setPID(DRIVE_WHEEL_VELOCITY_P, DRIVE_WHEEL_VELOCITY_I, DRIVE_WHEEL_VELOCITY_D);
 		this.angleController = new CANTalon(RobotMap.SM_TURN_MOTOR[moduleNumber]);
 		this.angleController.enableLimitSwitch(false, false);
-		this.angleEncoder = new AngleEncoder(moduleNumber, moduleAngleOffset);
+		this.angleEncoder = new AngleEncoder(moduleNumber, moduleAngleOffset[moduleNumber]);
 		this.anglePIDController = new PIDController(
 			ANGLE_CONTROLLER_P,
 			ANGLE_CONTROLLER_I,
@@ -102,7 +102,7 @@ public class SwerveModule {
 	 * @returns degree position of encoder
 	 */
 	public double getEncoderAngle() {
-		return angleEncoder.getAngle(moduleAngleOffset[moduleNumber]);
+		return angleEncoder.pidGet();
 	}
 
 	public int getEncoderIndexCount() {

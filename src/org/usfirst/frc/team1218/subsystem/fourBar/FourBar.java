@@ -67,10 +67,14 @@ public class FourBar extends Subsystem {
     }
     
     public void setDartPosition(double setpoint) {
-    	dartL.changeControlMode(CANTalon.ControlMode.Position);
-    	dartR.changeControlMode(CANTalon.ControlMode.Position);
-    	dartL.set(setpoint);
-    	dartR.set(setpoint);
+    	if (Robot.dartSafety.dartKilled) {
+    		System.out.println("WARNING: CANNOT POSITION 4 BAR AFTER DARTS KILLED. REBOOT REQUIRED");
+    	} else {
+    		dartL.changeControlMode(CANTalon.ControlMode.Position);
+        	dartR.changeControlMode(CANTalon.ControlMode.Position);
+        	dartL.set(setpoint);
+        	dartR.set(setpoint);
+    	}
     }
     
     public void setDartPower(double power) {

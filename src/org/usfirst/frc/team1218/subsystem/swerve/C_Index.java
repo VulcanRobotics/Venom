@@ -10,9 +10,9 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class C_Index extends Command {
 
-	private boolean[] indexed = new boolean[4];
-	private boolean[] invertTravelDirection = new boolean[4];
-	private int[] indexCount = new int[4];
+	private boolean indexed[] = {false, false, false, false};
+	private boolean invertTravelDirection[] = {false, false, false, false};
+	private int indexCount[] = {0, 0, 0, 0};
 	
 	
     public C_Index() {
@@ -23,22 +23,21 @@ public class C_Index extends Command {
     	for (int i = 0; i < 4; i++) {
     		SwerveModule module = Robot.swerveDrive.getModuleList().get(i);
     		module.anglePIDController.disable();
-    		invertTravelDirection[i] = (Angle.diffBetweenAngles(module.getEncoderAngle(), -module.moduleAngleOffset[module.moduleNumber])) < 180 ? true : false ; //Takes the shortest route to the last known index position
+    		invertTravelDirection[i] = (Angle.diffBetweenAngles(module.getEncoderAngle(), -module.moduleAngleOffset[module.moduleNumber]) < 180 ? true : false); //Takes the shortest route to the last known index position
     		indexCount[i] = module.getEncoderIndexCount();
     		System.out.println("SM_" + module.moduleNumber + ": Distance to Index: " + Angle.diffBetweenAngles(module.getEncoderAngle(), -module.moduleAngleOffset[module.moduleNumber]));
-    		module.driveWheelController.set(0.0);
     	}
     }
 
     protected void execute() {
     	for (int i = 0; i < 4; i++) {
     		SwerveModule module = Robot.swerveDrive.getModuleList().get(i);
-    		if (indexCount[i] != module.getEncoderIndexCount()) {
+    		if(indexCount[i] == module.getEncoderIndexCount()) {
+        		module.angleController.set((invertTravelDirection[i]) ? 0.3 : -0.3); //Travels shortest distance to last known index position
+    		} else {//TODO ensure it is shortest distance to index
     			module.anglePIDController.setSetpoint(0.0);
     			module.anglePIDController.enable();
     			indexed[i] = true;
-    		} else {
-        		module.angleController.set((invertTravelDirection[i]) ? 0.3 : -0.3); //Travels shortest distance to last known index position
     		}
     	}
     }
@@ -52,7 +51,7 @@ public class C_Index extends Command {
     		m.anglePIDController.enable();
     		m.setRobotAngle(0);
     	});
-    	System.out.println("Indexing ended...");
+    	System.out.println("Swerve Drive Indexed");
     }
 
     protected void interrupted() {

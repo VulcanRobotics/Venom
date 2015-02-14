@@ -15,7 +15,7 @@ public class DartSafety {
 	private final DartLimitWatch dartLimitWatch;
 	private final DartRealignWatch dartRealignWatch;
 	
-	private boolean dartKilled = false;
+	public boolean dartKilled = false;
 	
 	/**
 	 * @param dartL Left Dart
@@ -74,6 +74,7 @@ public class DartSafety {
 		 
 		@Override
 		protected void execute() {
+			System.out.println("DART SAFETY: REALIGNING");
 			if(Robot.fourBar.dartL.getAnalogInPosition() > Robot.fourBar.dartR.getAnalogInPosition()) {
 				Robot.fourBar.dartL.set(-FourBar.DART_REALIGN_POWER);
 				Robot.fourBar.dartR.set(FourBar.DART_REALIGN_POWER);

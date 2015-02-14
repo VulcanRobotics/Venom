@@ -12,16 +12,18 @@ import edu.wpi.first.wpilibj.Encoder;
 public class AngleEncoder extends Encoder {
 	
 	private Counter indexCounter;
+	private double moduleAngleOffset;
 	
-	public AngleEncoder(int moduleNumber, double[] moduleAngleOffset) {
+	public AngleEncoder(int moduleNumber, double moduleAngleOffset) {
 		super(RobotMap.SM_ANGLE_ENCODER_A[moduleNumber],
 				RobotMap.SM_ANGLE_ENCODER_B[moduleNumber],
 				RobotMap.SM_ANGLE_ENCODER_X[moduleNumber]
 				);
+		this.moduleAngleOffset = moduleAngleOffset;
 		indexCounter = new Counter(this.m_indexSource);
 	}
 	
-	public double getAngle(double moduleAngleOffset) {
+	public double pidGet() {
 		double angle = get() * SwerveModule.ENCODER_CLICK_TO_DEGREE;
 		angle += moduleAngleOffset;
 		angle = Angle.get360Angle(angle);
