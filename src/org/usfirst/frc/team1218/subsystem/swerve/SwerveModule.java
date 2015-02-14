@@ -53,7 +53,7 @@ public class SwerveModule {
 	//Angle Controller Constants
 	protected static final double MAX_ANGLE_CONTROLLER_POWER = 0.7;
 	
-	protected static final double[] ALPHA_MODULE_ANGLE_OFFSET = {3.0, 167.0, -80.0, 104.0};
+	protected static final double[] ALPHA_MODULE_ANGLE_OFFSET = {6.0, 161.0, -66.5, 128.0};
 	protected static final double[] BETA_MODULE_ANGLE_OFFSET = {-2.0, 133.0, -15.0, -145.0};
 	protected double[] moduleAngleOffset = ALPHA_MODULE_ANGLE_OFFSET;
 	
