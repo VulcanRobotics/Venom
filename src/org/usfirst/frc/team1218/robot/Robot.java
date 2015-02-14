@@ -55,8 +55,9 @@ public class Robot extends IterativeRobot {
 	
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
+		syncDashboard();
 	}
-
+	
     public void autonomousInit() {
         if (autonomousCommand != null) autonomousCommand.start();
     }
@@ -86,12 +87,7 @@ public class Robot extends IterativeRobot {
      */
     public void teleopPeriodic() {
     	Scheduler.getInstance().run();
-    	Robot.swerveDrive.syncDashboard();
-    	Robot.elevator.syncDashboard();
-    	Robot.fourBar.syncDashboard();
-    	Robot.hooks.syncDashboard();
-    	Robot.toteIntake.syncDashboard();
-    	SmartDashboard.putBoolean("isBeta", Preferences.getInstance().getBoolean("isBeta", false));
+    	syncDashboard();
     }
     
     /**
@@ -99,5 +95,14 @@ public class Robot extends IterativeRobot {
      */
     public void testPeriodic() {
         LiveWindow.run();
+    }
+    
+    public void syncDashboard() {
+    	Robot.swerveDrive.syncDashboard();
+    	Robot.elevator.syncDashboard();
+    	Robot.fourBar.syncDashboard();
+    	Robot.hooks.syncDashboard();
+    	Robot.toteIntake.syncDashboard();
+    	SmartDashboard.putBoolean("isBeta", Preferences.getInstance().getBoolean("isBeta", false));
     }
 }

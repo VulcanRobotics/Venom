@@ -20,8 +20,8 @@ public class FourBar extends Subsystem {
 	protected final CANTalon dartL;
 	protected final CANTalon dartR;
 	
-	private static final double DART_P = 4.0;
-	private static final double DART_I = 0.0;
+	private static final double DART_P = 1.0;
+	private static final double DART_I = 0.00001;
 	private static final double DART_D = 0.0;
 	
 	protected static final double DART_FAILSAFE_DISTANCE = 70;
@@ -31,9 +31,9 @@ public class FourBar extends Subsystem {
 	private static final int DART_SOFT_LIMIT_FORWARD = 1024;
 	private static final int DART_SOFT_LIMIT_REVERSE = 0;
 	
-	public static final int FOUR_BAR_HIGH_POSITION = 600;
+	public static final int FOUR_BAR_HIGH_POSITION = 800;
 	public static final int FOUR_BAR_MIDDLE_POSITION = 500;
-	public static final int FOUR_BAR_LOW_POSITION = 400;
+	public static final int FOUR_BAR_LOW_POSITION = 200;
 	
 	public FourBar() {
 		dartL = new CANTalon(RobotMap.FOUR_BAR_LEFT_DART);

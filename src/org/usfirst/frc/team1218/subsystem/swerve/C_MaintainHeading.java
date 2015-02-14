@@ -14,10 +14,8 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class C_MaintainHeading extends Command implements PIDOutput, PIDSource{//FIXME Tune PID
-
-	private PIDController headingController;
 	
-	private double heading;
+	private PIDController headingController;
 	
 	public C_MaintainHeading() {
 		requires(Robot.swerveDrive);
@@ -36,14 +34,15 @@ public class C_MaintainHeading extends Command implements PIDOutput, PIDSource{/
 				this,
 				this);
 		headingController.setOutputRange(-1.0, 1.0);
-		headingController.setInputRange(0, 360);
+		headingController.setInputRange(-180, 180);
+		headingController.setContinuous();
 		headingController.enable();
-		heading = Robot.swerveDrive.navModule.getYaw();
+		headingController.setSetpoint(Robot.swerveDrive.navModule.getYaw());
+		System.out.println("Maintaining Heading of " + headingController.getSetpoint());
 	}
 
 	@Override
 	protected void execute() {
-		headingController.setSetpoint(heading);
 	}
 
 	@Override
