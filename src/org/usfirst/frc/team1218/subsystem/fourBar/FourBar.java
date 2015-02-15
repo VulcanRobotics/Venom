@@ -119,8 +119,14 @@ public class FourBar extends Subsystem {
     }
     
     protected void enableDarts() {
-    	dartL.enableControl();
-    	dartR.enableControl();
+    	if (Robot.dartSafety.dartKillWatch.get()) {
+    		dartL.enableControl();
+        	dartR.enableControl();
+    	}
+    	else
+    	{
+    		disableDarts();
+    	}
     }
     
     public void syncDashboard() {

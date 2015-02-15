@@ -8,10 +8,10 @@ import org.usfirst.frc.team1218.subsystem.fourBar.C_SeekPosition;
 import org.usfirst.frc.team1218.subsystem.fourBar.FourBar;
 import org.usfirst.frc.team1218.subsystem.swerve.C_MaintainHeading;
 import org.usfirst.frc.team1218.subsystem.swerve.C_Index;
-import org.usfirst.frc.team1218.subsystem.swerve.C_ToggleStableMode;
 import org.usfirst.frc.team1218.subsystem.swerve.C_ZeroRobotHeading;
 import org.usfirst.frc.team1218.subsystem.swerve.math.Vector;
 import org.usfirst.frc.team1218.subsystem.toteIntake.C_RunToteIntake;
+import org.usfirst.frc.team1218.subsystem.toteIntake.ToteIntake;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -28,7 +28,6 @@ public class OI {
 	public static Joystick driver;
 	public static Button resetGyro;
 	public static Button maintainHeading;
-	public static Button toggleStableMode;
 	public static Button indexSwerve;
 	public static Button robotCentricToggle;
 	
@@ -44,11 +43,11 @@ public class OI {
 	public static Button elevatorZeroPosition;
 	//Tote Intake
 	public static Button elevatorRunToteIntake;
+	public static Button elevatorReverseToteIntake;
 	//Four Bar
 	public static Button fourBarRunBinIntake;
 	public static Button fourBarOpenGrabber;
 	public static Button fourBarHighPosition;
-	public static Button fourBarMiddlePosition;
 	public static Button fourBarLowPosition;
 	
 	public OI() {
@@ -60,9 +59,6 @@ public class OI {
         
         maintainHeading = new JoystickButton(driver, RobotMap.BUTTON_MAINTAIN_HEADING);
         maintainHeading.whileHeld(new C_MaintainHeading());
-        
-        toggleStableMode = new JoystickButton(driver, RobotMap.BUTTON_TOGGLE_STABLE_MODE);
-        toggleStableMode.whenPressed(new C_ToggleStableMode());
         
         indexSwerve = new JoystickButton(driver, RobotMap.BUTTON_INDEX_SWERVE);
         indexSwerve.whenPressed(new C_Index());
@@ -93,7 +89,10 @@ public class OI {
         
         //Tote Intake
         elevatorRunToteIntake = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_RUN_TOTE_INTAKE);
-        elevatorRunToteIntake.whileHeld(new C_RunToteIntake());
+        elevatorRunToteIntake.whileHeld(new C_RunToteIntake(ToteIntake.TOTE_INTAKE_POWER));
+        
+        elevatorReverseToteIntake = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_REVERSE_TOTE_INTAKE);
+        elevatorReverseToteIntake.whileHeld(new C_RunToteIntake(-ToteIntake.TOTE_INTAKE_POWER));
         
         //Four Bar
         fourBarRunBinIntake = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_RUN_BIN_INTAKE);
@@ -102,9 +101,6 @@ public class OI {
         
         fourBarHighPosition = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_HIGH_POSITION);
         fourBarHighPosition.whileHeld(new C_SeekPosition(FourBar.FOUR_BAR_HIGH_POSITION));
-        	
-        fourBarMiddlePosition = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_MIDDLE_POSITION);
-        fourBarMiddlePosition.whileHeld(new C_SeekPosition(FourBar.FOUR_BAR_MIDDLE_POSITION));
         	
         fourBarLowPosition = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_LOW_POSITION);
         fourBarLowPosition.whileHeld(new C_SeekPosition(FourBar.FOUR_BAR_LOW_POSITION));

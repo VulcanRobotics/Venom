@@ -30,7 +30,7 @@ public class C_Swerve extends Command {
 		}
 		lastButtonRobotCentricState = OI.robotCentricToggle.get();
 		
-		Robot.swerveDrive.swerveDrive(
+		Robot.swerveDrive.powerDrive(
 				OI.getDriverLeftJoystickVector(),
 				Math.pow(OI.getDriverRightX(), 3),
 				(!robotCentric) ? Robot.swerveDrive.navModule.getYaw() : 0

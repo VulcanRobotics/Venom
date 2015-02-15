@@ -1,36 +1,53 @@
 package org.usfirst.frc.team1218.subsystem.swerve;
 
+import org.usfirst.frc.team1218.robot.OI;
+import org.usfirst.frc.team1218.robot.Robot;
+
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
+ * 
+ * @author afiol-mahon
  *
  */
 public class C_VelocitySwerve extends Command {
+	
+	private boolean robotCentric;
+	private boolean lastButtonRobotCentricState = false;
+	
+	public C_VelocitySwerve() {
+		requires(Robot.swerveDrive);
+	}
+	
+	@Override
+	protected void initialize() {
+	}
 
-    public C_VelocitySwerve() {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
-    }
+	@Override
+	protected void execute() {
+		if(OI.robotCentricToggle.get() && !lastButtonRobotCentricState) {
+			robotCentric = !robotCentric;
+		}
+		lastButtonRobotCentricState = OI.robotCentricToggle.get();
+		
+		Robot.swerveDrive.velocityDrive(
+				OI.getDriverLeftJoystickVector(),
+				Math.pow(OI.getDriverRightX(), 3),
+				(!robotCentric) ? Robot.swerveDrive.navModule.getYaw() : 0
+				);
+	}
+	
+	@Override
+	protected boolean isFinished() {
+		return false;
+	}
 
-    // Called just before this Command runs the first time
-    protected void initialize() {
-    }
+	@Override
+	protected void end() {
+	}
 
-    // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
-    }
+	@Override
+	protected void interrupted() {
+	}
 
-    // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
-        return false;
-    }
-
-    // Called once after isFinished returns true
-    protected void end() {
-    }
-
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted() {
-    }
 }

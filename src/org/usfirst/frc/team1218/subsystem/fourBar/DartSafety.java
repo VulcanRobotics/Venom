@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.command.Command;
  * @author afiolmahon
  */
 public class DartSafety {
-	private final DartKillWatch dartKillWatch;
+	protected final DartKillWatch dartKillWatch;
 	private final DartLimitWatch dartLimitWatch;
 	private final DartRealignWatch dartRealignWatch;
 	
@@ -34,7 +34,7 @@ public class DartSafety {
 		System.out.println("Dart Safety Initialized");
 	}
 	
-	private class DartKillWatch extends Trigger {
+	public class DartKillWatch extends Trigger {
 		@Override
 		public boolean get() {
 			return Robot.fourBar.getDartPositionDifference() > FourBar.DART_FAILSAFE_DISTANCE;

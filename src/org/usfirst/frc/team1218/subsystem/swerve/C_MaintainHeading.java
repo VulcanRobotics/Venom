@@ -62,7 +62,7 @@ public class C_MaintainHeading extends Command implements PIDOutput, PIDSource{/
 	
 	@Override
 	public void pidWrite(double output) {
-		Robot.swerveDrive.swerveDrive(
+		Robot.swerveDrive.powerDrive(
 				OI.getDriverLeftJoystickVector(),
 				output,
 				Robot.swerveDrive.navModule.getYaw()

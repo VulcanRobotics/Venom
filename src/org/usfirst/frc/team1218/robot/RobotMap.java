@@ -35,7 +35,6 @@ public class RobotMap {
 	public static final int DRIVER_JOYSTICK = 0;
 	public static final int BUTTON_RESET_GYRO = OI.ButtonType.B;
 	public static final int BUTTON_MAINTAIN_HEADING = OI.ButtonType.L1;
-	public static final int BUTTON_TOGGLE_STABLE_MODE = OI.ButtonType.RIGHT_THUMB;
 	public static final int BUTTON_INDEX_SWERVE = OI.ButtonType.A;
 	public static final int BUTTON_ROBOT_CENTRIC_TOGGLE = OI.ButtonType.LEFT_THUMB;
 	
@@ -50,11 +49,11 @@ public class RobotMap {
 	public static final int BUTTON_ELEVATOR_ZERO_POSITION = 7;
 	//Tote Intake Controls
 	public static final int BUTTON_ELEVATOR_RUN_TOTE_INTAKE = 5;
+	public static final int BUTTON_ELEVATOR_REVERSE_TOTE_INTAKE = 3;
 	//Four Bar Controls
 	public static final int AXIS_FOUR_BAR_CONTROL = 1;
 	public static final int BUTTON_FOUR_BAR_RUN_BIN_INTAKE = 2;
 	public static final int BUTTON_FOUR_BAR_OPEN_GRABBER = 1;
 	public static final int BUTTON_FOUR_BAR_HIGH_POSITION = 6;
-	public static final int BUTTON_FOUR_BAR_MIDDLE_POSITION = 4;
-	public static final int BUTTON_FOUR_BAR_LOW_POSITION = 3;
+	public static final int BUTTON_FOUR_BAR_LOW_POSITION = 4;
 }

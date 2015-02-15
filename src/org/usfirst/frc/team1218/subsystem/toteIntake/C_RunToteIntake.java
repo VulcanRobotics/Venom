@@ -9,15 +9,18 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class C_RunToteIntake extends Command {
 	
-    public C_RunToteIntake() {
+	private double power;
+	
+    public C_RunToteIntake(double power) {
     	requires(Robot.toteIntake);
+    	this.power = power;
     }
     
     protected void initialize() {
     }
     
     protected void execute() {
-    	Robot.toteIntake.setIntakePower(Robot.toteIntake.TOTE_INTAKE_POWER);
+    	Robot.toteIntake.setIntakePower(power);
     }
     
     protected boolean isFinished() {

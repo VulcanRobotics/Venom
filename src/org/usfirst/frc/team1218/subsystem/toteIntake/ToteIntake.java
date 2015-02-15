@@ -15,7 +15,7 @@ public class ToteIntake extends Subsystem {
 	private final CANTalon intakeL;
 	private final CANTalon intakeR;
 	
-	protected final double TOTE_INTAKE_POWER = 0.8;
+	public final static double TOTE_INTAKE_POWER = 0.8;
 	
     public void initDefaultCommand() {
         
