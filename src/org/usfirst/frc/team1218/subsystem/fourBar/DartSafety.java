@@ -2,7 +2,6 @@ package org.usfirst.frc.team1218.subsystem.fourBar;
 
 import org.usfirst.frc.team1218.robot.Robot;
 
-import edu.wpi.first.wpilibj.CANTalon.ControlMode;
 import edu.wpi.first.wpilibj.buttons.Trigger;
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -11,11 +10,12 @@ import edu.wpi.first.wpilibj.command.Command;
  * @author afiolmahon
  */
 public class DartSafety {
-	protected final DartKillWatch dartKillWatch;
-	private final DartLimitWatch dartLimitWatch;
+	private final DartKillWatch dartKillWatch;
 	private final DartRealignWatch dartRealignWatch;
 	
-	public boolean dartKilled = false;
+	private boolean dartKillFlag = false;
+	
+	
 	
 	/**
 	 * @param dartL Left Dart
@@ -26,15 +26,18 @@ public class DartSafety {
 		dartKillWatch = new DartKillWatch();
 		dartKillWatch.whileActive(new DartKill());
 		
-		dartLimitWatch = new DartLimitWatch();
-		dartLimitWatch.whileActive(new DartLimit());
-		
 		dartRealignWatch = new DartRealignWatch();
 		dartRealignWatch.whileActive(new DartRealign());
 		System.out.println("Dart Safety Initialized");
 	}
 	
-	public class DartKillWatch extends Trigger {
+	public boolean dartKilled() {
+		boolean killed = dartKillFlag | dartKillWatch.get();
+		if (killed) System.out.println("DARTS KILLED... RESTART ROBOT CODE AND CHECK FOR HARDWARE/SOFTWARE FAULT...");
+		return killed;
+	}
+	
+	private class DartKillWatch extends Trigger {
 		@Override
 		public boolean get() {
 			return Robot.fourBar.getDartPositionDifference() > FourBar.DART_FAILSAFE_DISTANCE;
@@ -42,34 +45,22 @@ public class DartSafety {
 		
 	}
 	
-	private class DartLimitWatch extends Trigger {
-		
-		@Override
-		public boolean get() {
-			return Robot.fourBar.dartL.isFwdLimitSwitchClosed() 
-					| Robot.fourBar.dartR.isFwdLimitSwitchClosed() 
-					| Robot.fourBar.dartL.isRevLimitSwitchClosed()
-					| Robot.fourBar.dartR.isRevLimitSwitchClosed();
-		}
-	}
-	
 	private class DartRealignWatch extends Trigger {
 		@Override
 		public boolean get() {
-			return (Robot.fourBar.getDartPositionDifference() > FourBar.DART_REALIGN_DISTANCE) && (!dartKilled);
+			return (Robot.fourBar.getDartPositionDifference() > FourBar.DART_REALIGN_DISTANCE) && (!dartKilled());
 		}
 	}
 	
 	private class DartRealign extends Command {
 
-		DartRealign() {
+		public DartRealign() {
 			requires(Robot.fourBar);
 		}
 		
 		@Override
 		protected void initialize() {
-			Robot.fourBar.dartL.changeControlMode(ControlMode.PercentVbus);
-			Robot.fourBar.dartR.changeControlMode(ControlMode.PercentVbus);
+			Robot.fourBar.dartEnablePID(false);
 		}
 		 
 		@Override
@@ -86,7 +77,7 @@ public class DartSafety {
 
 		@Override
 		protected boolean isFinished() {
-			return (Robot.fourBar.getDartPositionDifference() < FourBar.DART_REALIGN_DISTANCE) | dartKilled;
+			return (Robot.fourBar.getDartPositionDifference() < FourBar.DART_REALIGN_DISTANCE) | dartKilled();
 		}
 
 		@Override
@@ -102,10 +93,14 @@ public class DartSafety {
 	
 	private class DartKill extends Command {
 		
+		public DartKill() {
+			requires(Robot.fourBar);
+		}
+		
 		@Override
 		protected void initialize() {
 			Robot.fourBar.disableDarts();
-			dartKilled = true;
+			dartKillFlag = true;
 		}
 		
 		@Override
@@ -122,37 +117,6 @@ public class DartSafety {
 		@Override
 		protected void end() {
 			Robot.fourBar.disableDarts();
-		}
-		
-		@Override
-		protected void interrupted() {
-			end();
-		}
-		
-	}
-	
-	private class DartLimit extends Command {
-		
-		@Override
-		protected void initialize() {
-			
-		}
-		
-		@Override
-		protected void execute() {
-			
-		}
-		
-		@Override
-		protected boolean isFinished() {
-			// TODO Auto-generated method stub
-			return false;
-		}
-		
-		@Override
-		protected void end() {
-			// TODO Auto-generated method stub
-			
 		}
 		
 		@Override
