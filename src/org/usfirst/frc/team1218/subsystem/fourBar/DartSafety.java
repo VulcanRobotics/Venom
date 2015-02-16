@@ -32,8 +32,7 @@ public class DartSafety {
 	}
 	
 	public boolean dartKilled() {
-		boolean killed = dartKillFlag | dartKillWatch.get();
-		if (killed) System.out.println("DARTS KILLED... RESTART ROBOT CODE AND CHECK FOR HARDWARE/SOFTWARE FAULT...");
+		boolean killed = dartKillFlag || dartKillWatch.get();
 		return killed;
 	}
 	
@@ -60,31 +59,31 @@ public class DartSafety {
 		
 		@Override
 		protected void initialize() {
+			System.out.println("DART SAFETY: REALIGNING");
 			Robot.fourBar.dartEnablePID(false);
 		}
 		 
 		@Override
 		protected void execute() {
-			System.out.println("DART SAFETY: REALIGNING");
-			if(Robot.fourBar.dartL.getAnalogInPosition() > Robot.fourBar.dartR.getAnalogInPosition()) {
-				Robot.fourBar.dartL.set(-FourBar.DART_REALIGN_POWER);
-				Robot.fourBar.dartR.set(FourBar.DART_REALIGN_POWER);
+			if(Robot.fourBar.dartLeftPotentiometer.get() > Robot.fourBar.dartRightPotentiometer.get()) {
+				Robot.fourBar.dartLeft.set(-FourBar.DART_REALIGN_POWER);
+				Robot.fourBar.dartRight.set(FourBar.DART_REALIGN_POWER);
 			} else {
-				Robot.fourBar.dartL.set(FourBar.DART_REALIGN_POWER);
-				Robot.fourBar.dartR.set(-FourBar.DART_REALIGN_POWER);
+				Robot.fourBar.dartLeft.set(FourBar.DART_REALIGN_POWER);
+				Robot.fourBar.dartRight.set(-FourBar.DART_REALIGN_POWER);
 			}
 		}
 
 		@Override
 		protected boolean isFinished() {
-			return (Robot.fourBar.getDartPositionDifference() < FourBar.DART_REALIGN_DISTANCE) | dartKilled();
+			return (Robot.fourBar.getDartPositionDifference() < FourBar.DART_REALIGN_DISTANCE) || dartKilled();
 		}
 
 		@Override
 		protected void end() {
 			System.out.println("Darts have been realigned to each other");
-			Robot.fourBar.dartL.set(0.0);
-			Robot.fourBar.dartR.set(0.0);
+			Robot.fourBar.dartLeft.set(0.0);
+			Robot.fourBar.dartRight.set(0.0);
 		}
 
 		@Override
@@ -99,13 +98,13 @@ public class DartSafety {
 		
 		@Override
 		protected void initialize() {
+			System.out.println("WARNING: Darts have drifted out of specified tolerance range. Disabling...");
 			Robot.fourBar.disableDarts();
 			dartKillFlag = true;
 		}
 		
 		@Override
 		protected void execute() {
-			System.out.println("WARNING: Darts have drifted out of specified tolerance range. Disabling...");
 			Robot.fourBar.disableDarts();
 		}
 		

@@ -31,8 +31,8 @@ public class ToteIntake extends Subsystem {
     }
     
     public void setIntakePower(double power) {
-    	intakeL.set(-power);
-    	intakeR.set(power);
+    	intakeL.set(power);
+    	intakeR.set(-power);
     }
 
 	public void syncDashboard() {
