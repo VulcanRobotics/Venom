@@ -96,7 +96,7 @@ public class SwerveModule {
 		return anglePIDController.isEnable();
 	}
 	
-	public void zeroDrive() {
+	public void resetDistanceDriven() {
 		driveWheelController.setPosition(0);
 	}
 	

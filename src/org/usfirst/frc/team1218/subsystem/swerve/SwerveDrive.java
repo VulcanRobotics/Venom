@@ -31,8 +31,8 @@ public class SwerveDrive extends Subsystem implements PIDOutput{
 	private static final double X_PERPENDICULAR_CONSTANT = 0.546;
 	private static final double Y_PERPENDICULAR_CONSTANT = 0.837;
 	
-	protected static final double[] ALPHA_MODULE_ANGLE_OFFSET = {6.0, 161.0, -66.5, 128.0};
-	protected static final double[] BETA_MODULE_ANGLE_OFFSET = {-2.0, 133.0, -15.0, -145.0};
+	private static final double[] ALPHA_MODULE_ANGLE_OFFSET = {6.0, 161.0, -66.5, 128.0};
+	private static final double[] BETA_MODULE_ANGLE_OFFSET = {-2.0, 133.0, -15.0, -145.0};
 	
 	
 	private PIDController headingController;
@@ -138,11 +138,11 @@ public class SwerveDrive extends Subsystem implements PIDOutput{
     	System.out.println("[Swerve Drive]: Heading Controller Disabled");
     }
     
-    void zeroDriveEncoders(){
-    	module.forEach(m -> m.zeroDrive());
+    protected void resetDistanceDriven(){
+    	module.forEach(m -> m.resetDistanceDriven());
     }
     
-    public double getAverageDistance() {
+    public double getAverageDistanceDriven() {
     	double totalDistance = 0;
     	for (int i = 0; i < 4; i++) {
     		totalDistance += Math.abs(module.get(i).getDistance());
@@ -155,6 +155,12 @@ public class SwerveDrive extends Subsystem implements PIDOutput{
     	module.stream().forEach(m -> m.setAngleAndPower(moduleVectors.get(m.moduleNumber)));
     }
     
+    /**
+     * @Depricated
+     * @param translationVector
+     * @param rotation
+     * @param fieldCentricCompensator
+     */
     public void velocityDrive(Vector translationVector, double rotation, double fieldCentricCompensator) {
     	List<Vector> moduleVectors = swerveVectorCalculator(translationVector, rotation, fieldCentricCompensator);
     	module.stream().forEach(m -> m.setAngleAndVelocity(moduleVectors.get(m.moduleNumber)));
@@ -165,7 +171,14 @@ public class SwerveDrive extends Subsystem implements PIDOutput{
     }
     
     protected void setModuleAngles(double angle0, double angle1, double angle2, double angle3) {
-    	//TODO finish
+    	module.get(0).setAngle(angle0);
+    	module.get(1).setAngle(angle1);
+    	module.get(2).setAngle(angle2);
+    	module.get(3).setAngle(angle3);
+    }
+    
+    protected void setModuleAngles(double angle) {
+    	module.stream().forEach(m -> m.setAngle(angle));
     }
     
     protected List<SwerveModule> getModuleList() {

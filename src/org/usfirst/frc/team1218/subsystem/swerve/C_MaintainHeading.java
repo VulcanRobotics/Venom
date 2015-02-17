@@ -5,9 +5,7 @@ import org.usfirst.frc.team1218.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- * 
  * @author afiol-mahon
- *
  */
 public class C_MaintainHeading extends Command {
 	

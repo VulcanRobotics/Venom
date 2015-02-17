@@ -15,9 +15,7 @@ public class C_ModuleGoToAngle extends Command{
 	
 	@Override
 	protected void initialize() {
-		Robot.swerveDrive.module.stream().forEach(m -> {
-			m.setAngle(angle);
-		});
+		Robot.swerveDrive.setModuleAngles(angle);
 	}
 	
 	@Override

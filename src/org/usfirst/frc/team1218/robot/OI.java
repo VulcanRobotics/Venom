@@ -116,7 +116,7 @@ public class OI {
     
         //test
         testButton = new JoystickButton(driver, ButtonType.X);
-        testButton.whenPressed(new C_AutoDrive(new Vector(5, 0), 0));
+        testButton.whenPressed(new C_AutoDrive(5, 0));
 	}
     
     public static Vector getDriverLeftJoystickVector() {
