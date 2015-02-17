@@ -1,6 +1,9 @@
 package org.usfirst.frc.team1218.robot;
 
+import org.usfirst.frc.team1218.subsystem.elevator.C_GoToBottom;
+import org.usfirst.frc.team1218.subsystem.elevator.C_GoToClearance;
 import org.usfirst.frc.team1218.subsystem.elevator.C_ManualControl;
+import org.usfirst.frc.team1218.subsystem.elevator.C_PickupTote;
 import org.usfirst.frc.team1218.subsystem.elevator.C_ReferenceLimit;
 import org.usfirst.frc.team1218.subsystem.elevator.C_SetElevatorSetpoint;
 import org.usfirst.frc.team1218.subsystem.elevator.Elevator;
@@ -116,7 +119,9 @@ public class OI {
     
         //test
         testButton = new JoystickButton(driver, ButtonType.X);
-        testButton.whenPressed(new C_AutoDrive(new Vector(5, 0), 0));
+        testButton.whenPressed(new C_PickupTote());
+        //testButton.whenPressed(new C_GoToClearance());
+        //testButton.whenPressed(new C_AutoDrive(new Vector(5, 0), 0));
 	}
     
     public static Vector getDriverLeftJoystickVector() {

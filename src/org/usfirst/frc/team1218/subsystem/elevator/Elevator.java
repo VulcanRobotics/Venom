@@ -65,7 +65,15 @@ public class Elevator extends Subsystem {
     	liftMaster.changeControlMode(ControlMode.PercentVbus);
     	liftMaster.set(power);
     }
-        
+     
+   protected boolean getTopLimit() {
+    	return liftMaster.getFaultForLim() == 1;
+    }
+    
+    protected boolean getBottomLimit() {
+    	return liftMaster.getFaultRevLim() == 1;
+    }
+    
     public void syncDashboard() {
     	SmartDashboard.putNumber("Elevator_Position", getPosition());
     	SmartDashboard.putBoolean("Elevator_Upper_Limit", liftMaster.isFwdLimitSwitchClosed());
