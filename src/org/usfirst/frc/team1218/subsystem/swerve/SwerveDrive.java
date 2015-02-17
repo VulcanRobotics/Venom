@@ -83,6 +83,14 @@ public class SwerveDrive extends Subsystem {
     	return moduleVector;
     }
     
+    public boolean isAnglePIDOnTarget() {
+    	return (module.get(0).isAngleCorrect()
+    			&& module.get(1).isAngleCorrect()
+    			&& module.get(2).isAngleCorrect()
+    			&& module.get(3).isAngleCorrect()
+    			);
+    }
+    
     public void powerDrive(Vector translationVector, double rotation, double fieldCentricCompensator) {
     	List<Vector> moduleVectors = swerveVectorCalculator(translationVector, rotation, fieldCentricCompensator);
     	module.stream().forEach(m -> m.setAngleAndPower(moduleVectors.get(m.moduleNumber)));

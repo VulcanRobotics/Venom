@@ -23,7 +23,7 @@ public class SwerveModule {
 	//Module Runtime Settings
 	private boolean invertModule = false;
 	
-	protected final CANTalon driveWheelController;
+	private final CANTalon driveWheelController;
 	//Drive Wheel Controller Constants
 	private static final double DRIVE_WHEEL_RADIUS = 1.5; //inches
 	private static final double DRIVE_WHEEL_CIRCUMFERENCE = (2.0 * Math.PI * DRIVE_WHEEL_RADIUS) / 12.0; //feet
@@ -40,25 +40,27 @@ public class SwerveModule {
 	private static final double MAX_VELOCITY = 8.0; //feet per second
 	private static final double DRIVE_POWER_SCALE = 0.5;
 	
-	protected AngleEncoder angleEncoder;
-	protected final PIDController anglePIDController;
-	protected double moduleAngleOffset;
+	private AngleEncoder angleEncoder;
+	private final PIDController anglePIDController;
+	private double moduleIndexOffset;
 
 	private static final double ANGLE_CONTROLLER_P = -0.01;
 	private static final double ANGLE_CONTROLLER_I = 0.0;
 	private static final double ANGLE_CONTROLLER_D = 0.0;
 	
-	protected final CANTalon angleController;
+	private final CANTalon angleController;
 	//Angle Controller Constants
 	protected static final double MAX_ANGLE_CONTROLLER_POWER = 0.7;
 	
 	protected static final double ENCODER_CLICKS_PER_REVOLUTION = 500.0;
 	protected static final double ENCODER_CLICK_TO_DEGREE = 360.0 / ENCODER_CLICKS_PER_REVOLUTION; //Degrees over Number of Clicks
 	protected static final double ENCODER_DEGREE_TO_CLICK = ENCODER_CLICKS_PER_REVOLUTION / 360.0;
+
+	private static final double ANGLE_CONTROLLER_DEGREE_TOLERANCE = 0;
 	
 	public SwerveModule(int moduleNumber, double moduleAngleOffset) {
 		this.moduleNumber = moduleNumber;
-		this.moduleAngleOffset = moduleAngleOffset;
+		this.moduleIndexOffset = moduleAngleOffset;
 		this.driveWheelController = new CANTalon(RobotMap.SM_DRIVE_MOTOR[moduleNumber]);
 		this.initializeDriveWheelController();
 		this.angleController = new CANTalon(RobotMap.SM_TURN_MOTOR[moduleNumber]);
@@ -73,6 +75,8 @@ public class SwerveModule {
 		this.anglePIDController.setInputRange(0.0, 360.0);
 		this.anglePIDController.setOutputRange(-MAX_ANGLE_CONTROLLER_POWER, MAX_ANGLE_CONTROLLER_POWER);
 		this.anglePIDController.setContinuous();
+		this.anglePIDController.setAbsoluteTolerance(ANGLE_CONTROLLER_DEGREE_TOLERANCE);
+		this.anglePIDController.onTarget();
 		//Begin Module
 		this.angleEncoder.reset();
 		this.anglePIDController.enable();
@@ -85,6 +89,27 @@ public class SwerveModule {
 		this.driveWheelController.enableForwardSoftLimit(false);
 		this.driveWheelController.enableReverseSoftLimit(false);
 		this.driveWheelController.setPID(DRIVE_WHEEL_VELOCITY_P, DRIVE_WHEEL_VELOCITY_I, DRIVE_WHEEL_VELOCITY_D);
+	}
+	
+	public boolean isAnglePIDEnabled() {
+		return anglePIDController.isEnable();
+	}
+	
+	public void enableAnglePID(boolean enabled) {
+		if (enabled) {
+			anglePIDController.enable();
+		} else {
+			anglePIDController.disable();
+		}
+		
+	}
+	
+	boolean isAngleCorrect() {
+		return anglePIDController.onTarget();
+	}
+	
+	public double getModuleIndexOffset() {
+		return moduleIndexOffset;
 	}
 	
 	/**
@@ -110,6 +135,18 @@ public class SwerveModule {
 		angle = 360 - angle;
 		angle = Angle.get360Angle(angle);
 		this.anglePIDController.setSetpoint(angle);
+	}
+	
+	public void setAngleIndexingMode(boolean enabled) {
+		if (enabled) {
+			enableAnglePID(false);
+			boolean invertTravelDirection = (Angle.diffBetweenAngles(getEncoderAngle(), -getModuleIndexOffset()) < 180 ? true : false);
+    		angleController.set((invertTravelDirection) ? -0.8 : 0.8);
+    		
+		} else {
+			enableAnglePID(true);
+			setAngle(0.0);
+		}
 	}
 	
 	/**
