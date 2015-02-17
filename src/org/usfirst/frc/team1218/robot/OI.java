@@ -7,6 +7,7 @@ import org.usfirst.frc.team1218.subsystem.elevator.Elevator;
 import org.usfirst.frc.team1218.subsystem.fourBar.C_SeekPosition;
 import org.usfirst.frc.team1218.subsystem.fourBar.FourBar;
 import org.usfirst.frc.team1218.subsystem.hooks.C_DeployHooks;
+import org.usfirst.frc.team1218.subsystem.swerve.C_AutoDrive;
 import org.usfirst.frc.team1218.subsystem.swerve.C_MaintainHeading;
 import org.usfirst.frc.team1218.subsystem.swerve.C_Index;
 import org.usfirst.frc.team1218.subsystem.swerve.C_ZeroRobotHeading;
@@ -51,6 +52,9 @@ public class OI {
 	public static Button fourBarOpenGrabber;
 	public static Button fourBarHighPosition;
 	public static Button fourBarLowPosition;
+	
+	//test
+	public static Button testButton;
 	
 	public OI() {
     	//Driver
@@ -109,7 +113,11 @@ public class OI {
         	
         fourBarLowPosition = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_LOW_POSITION);
         fourBarLowPosition.whileHeld(new C_SeekPosition(FourBar.FOUR_BAR_LOW_POSITION));
-    }
+    
+        //test
+        testButton = new JoystickButton(driver, ButtonType.X);
+        testButton.whenPressed(new C_AutoDrive(5, 0));
+	}
     
     public static Vector getDriverLeftJoystickVector() {
     	return new Vector(driver.getRawAxis(Axis.LEFT_X), -driver.getRawAxis(Axis.LEFT_Y));

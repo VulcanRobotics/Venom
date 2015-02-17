@@ -9,6 +9,8 @@ import org.usfirst.frc.team1218.subsystem.swerve.math.Vector;
 
 import com.kauailabs.nav6.frc.IMUAdvanced;
 
+import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -19,18 +21,28 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * @author afiolmahon
  */
 
-public class SwerveDrive extends Subsystem {
+public class SwerveDrive extends Subsystem implements PIDOutput{
     
     protected List<SwerveModule> module;
     
     private final SerialPort navSerialPort;
-    protected final IMUAdvanced navModule;
+    private final IMUAdvanced navModule;
     
 	private static final double X_PERPENDICULAR_CONSTANT = 0.546;
 	private static final double Y_PERPENDICULAR_CONSTANT = 0.837;
 	
-	protected static final double[] ALPHA_MODULE_ANGLE_OFFSET = {6.0, 161.0, -66.5, 128.0};
-	protected static final double[] BETA_MODULE_ANGLE_OFFSET = {-2.0, 133.0, -15.0, -145.0};
+	private static final double[] ALPHA_MODULE_ANGLE_OFFSET = {6.0, 161.0, -66.5, 128.0};
+	private static final double[] BETA_MODULE_ANGLE_OFFSET = {-2.0, 133.0, -15.0, -145.0};
+	
+	
+	private PIDController headingController;
+	
+	private boolean headingControllerEnabled;
+	private double headingControllerOutput;
+
+	private static final double HEADING_CONTROLLER_P = 0.03;
+	private static final double HEADING_CONTROLLER_I = 0.0;
+	private static final double HEADING_CONTROLLER_D = 0.0;
 	
     public SwerveDrive() {
     	boolean isBeta = Preferences.getInstance().getBoolean("isBeta", false);
@@ -42,6 +54,17 @@ public class SwerveDrive extends Subsystem {
     				));	
 		navSerialPort = new SerialPort(57600, SerialPort.Port.kMXP);
 		navModule = new IMUAdvanced(navSerialPort);
+		
+		headingController = new PIDController(
+				HEADING_CONTROLLER_P,
+				HEADING_CONTROLLER_I,
+				HEADING_CONTROLLER_D,
+				navModule,
+				this);
+		headingController.setOutputRange(-1.0, 1.0);
+		headingController.setInputRange(-180, 180);
+		headingController.setContinuous();
+		
         System.out.println("Swerve System Initialized");
     }
     
@@ -61,8 +84,15 @@ public class SwerveDrive extends Subsystem {
      * @param fieldCentricCompensator a gyroscope output that can let the robot drive field-centric, pass 0 if robot centric drive is desired.
      */
     public List<Vector> swerveVectorCalculator(Vector translationVector, double rotation, double fieldCentricCompensator) {
-    	double xPerpendicular = rotation * X_PERPENDICULAR_CONSTANT;
-    	double yPerpendicular = rotation * Y_PERPENDICULAR_CONSTANT;
+    	double xPerpendicular = X_PERPENDICULAR_CONSTANT;
+    	double yPerpendicular = Y_PERPENDICULAR_CONSTANT;
+    	if (headingControllerEnabled) {
+    		xPerpendicular *= this.headingControllerOutput;
+        	yPerpendicular *= this.headingControllerOutput;	
+    	} else {
+    		xPerpendicular *= rotation;
+        	yPerpendicular *= rotation;	
+    	}
     	
     	translationVector.pushAngle(-fieldCentricCompensator);
     	
@@ -91,17 +121,75 @@ public class SwerveDrive extends Subsystem {
     			);
     }
     
+    public float getHeading() {
+    	return navModule.getYaw();
+    }
+    
+    protected void enableHeadingController(double heading) {
+    	headingController.enable();
+    	headingController.setSetpoint(heading);
+    	headingControllerEnabled = true;
+    	System.out.println("[Swerve Drive]: Heading Controller Enabled with setpoint " + heading + " degrees");
+    }
+    
+    protected void disableHeadingController() {
+    	headingControllerEnabled = false;
+    	headingController.disable();
+    	System.out.println("[Swerve Drive]: Heading Controller Disabled");
+    }
+    
+    protected void resetDistanceDriven(){
+    	module.forEach(m -> m.resetDistanceDriven());
+    }
+    
+    public double getAverageDistanceDriven() {
+    	double totalDistance = 0;
+    	for (int i = 0; i < 4; i++) {
+    		totalDistance += Math.abs(module.get(i).getDistance());
+    	}
+    	return totalDistance/4;
+    }
+    
     public void powerDrive(Vector translationVector, double rotation, double fieldCentricCompensator) {
     	List<Vector> moduleVectors = swerveVectorCalculator(translationVector, rotation, fieldCentricCompensator);
     	module.stream().forEach(m -> m.setAngleAndPower(moduleVectors.get(m.moduleNumber)));
     }
     
+    /**
+     * @Depricated
+     * @param translationVector
+     * @param rotation
+     * @param fieldCentricCompensator
+     */
     public void velocityDrive(Vector translationVector, double rotation, double fieldCentricCompensator) {
     	List<Vector> moduleVectors = swerveVectorCalculator(translationVector, rotation, fieldCentricCompensator);
     	module.stream().forEach(m -> m.setAngleAndVelocity(moduleVectors.get(m.moduleNumber)));
     }
     
+    public void zeroHeading() {
+    	navModule.zeroYaw();
+    }
+    
+    protected void setModuleAngles(double angle0, double angle1, double angle2, double angle3) {
+    	module.get(0).setAngle(angle0);
+    	module.get(1).setAngle(angle1);
+    	module.get(2).setAngle(angle2);
+    	module.get(3).setAngle(angle3);
+    }
+    
+    protected void setModuleAngles(double angle) {
+    	module.stream().forEach(m -> m.setAngle(angle));
+    }
+    
     protected List<SwerveModule> getModuleList() {
     	return module;
     }
+    
+    /**
+     * @param rotationMagnitude rotationPower to write to PIDController
+     */
+    @Override
+	public void pidWrite(double rotationMagnitude) {
+		headingControllerOutput = rotationMagnitude;
+	}
 }

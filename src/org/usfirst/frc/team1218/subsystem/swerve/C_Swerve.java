@@ -33,7 +33,7 @@ public class C_Swerve extends Command {
 		Robot.swerveDrive.powerDrive(
 				OI.getDriverLeftJoystickVector(),
 				Math.pow(OI.getDriverRightX(), 3),
-				(!robotCentric) ? Robot.swerveDrive.navModule.getYaw() : 0
+				(!robotCentric) ? Robot.swerveDrive.getHeading() : 0
 				);
 	}
 	

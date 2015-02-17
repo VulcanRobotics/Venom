@@ -20,7 +20,7 @@ public class C_ZeroRobotHeading extends Command {
     }
     
     protected void initialize() {
-        Robot.swerveDrive.navModule.zeroYaw();
+        Robot.swerveDrive.zeroHeading();
     }
     
     protected void execute() {
