@@ -6,6 +6,7 @@ import org.usfirst.frc.team1218.subsystem.elevator.C_SetElevatorSetpoint;
 import org.usfirst.frc.team1218.subsystem.elevator.Elevator;
 import org.usfirst.frc.team1218.subsystem.fourBar.C_SeekPosition;
 import org.usfirst.frc.team1218.subsystem.fourBar.FourBar;
+import org.usfirst.frc.team1218.subsystem.hooks.C_DeployHooks;
 import org.usfirst.frc.team1218.subsystem.swerve.C_MaintainHeading;
 import org.usfirst.frc.team1218.subsystem.swerve.C_Index;
 import org.usfirst.frc.team1218.subsystem.swerve.C_ZeroRobotHeading;
@@ -30,6 +31,7 @@ public class OI {
 	public static Button maintainHeading;
 	public static Button indexSwerve;
 	public static Button robotCentricToggle;
+	public static Button deployHooks;
 	
 	//Operator
 	public static Joystick operator;
@@ -64,6 +66,9 @@ public class OI {
         indexSwerve.whenPressed(new C_Index());
         
         robotCentricToggle = new JoystickButton(driver, RobotMap.BUTTON_ROBOT_CENTRIC_TOGGLE);
+        
+        deployHooks = new JoystickButton(driver, RobotMap.BUTTON_DEPLOY_HOOKS);
+        deployHooks.whileHeld(new C_DeployHooks());
         
         //Operator
         operator = new Joystick(RobotMap.OPERATOR_JOYSTICK);

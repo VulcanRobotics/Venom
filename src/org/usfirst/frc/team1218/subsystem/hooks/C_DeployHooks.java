@@ -9,25 +9,27 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class C_DeployHooks extends Command {
 
-    public C_DeployHooks(boolean state) {
+    public C_DeployHooks() {
         requires(Robot.hooks);
-        Robot.hooks.deployHooks(state);
-    	System.out.println("Hooks Deployed: " + state);
+    	System.out.println("Hooks Deployed");
     }
 
     protected void initialize() {
+        Robot.hooks.deployHooks(true);
     }
 
     protected void execute() {
     }
 
     protected boolean isFinished() {
-        return true;
+        return false;
     }
 
     protected void end() {
+    	Robot.hooks.deployHooks(false);
     }
 
     protected void interrupted() {
+    	end();
     }
 }

@@ -25,6 +25,10 @@ public class Hooks extends Subsystem {
     	hookDeploy.set(state);
     }
     
+    public boolean isDeployed() {
+    	return hookDeploy.get();
+    }
+    
 	public void syncDashboard() {
 		SmartDashboard.putBoolean("Hooks_Deployed", hookDeploy.get());
 	}
