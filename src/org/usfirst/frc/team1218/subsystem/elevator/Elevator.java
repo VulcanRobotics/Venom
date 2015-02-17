@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Elevator extends Subsystem {
 	
 	private final CANTalon liftMaster;
-	private final CANTalon liftSlave;
 	
 	private boolean liftHasReferenced = false;
 	
@@ -42,10 +41,6 @@ public class Elevator extends Subsystem {
     	liftMaster.ConfigRevLimitSwitchNormallyOpen(false);
     	liftMaster.setPID(ELEVATOR_P, ELEVATOR_I, ELEVATOR_D);
     	liftMaster.setFeedbackDevice(FeedbackDevice.QuadEncoder);
-    	liftSlave = new CANTalon(RobotMap.ELEVATOR_LIFT_SLAVE);
-    	liftSlave.enableBrakeMode(true);
-    	liftSlave.changeControlMode(CANTalon.ControlMode.Follower);
-    	liftSlave.set(liftMaster.getDeviceID());
     }
     
     /**
