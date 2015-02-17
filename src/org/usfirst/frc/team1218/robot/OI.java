@@ -1,5 +1,7 @@
 package org.usfirst.frc.team1218.robot;
 
+import org.usfirst.frc.team1218.subsystem.binIntake.C_SetBinIntake;
+import org.usfirst.frc.team1218.subsystem.binIntake.C_SetClaw;
 import org.usfirst.frc.team1218.subsystem.elevator.C_GoToBottom;
 import org.usfirst.frc.team1218.subsystem.elevator.C_GoToClearance;
 import org.usfirst.frc.team1218.subsystem.elevator.C_ManualControl;
@@ -108,8 +110,12 @@ public class OI {
         
         //Four Bar
         fourBarRunBinIntake = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_RUN_BIN_INTAKE);
+        fourBarRunBinIntake.whenPressed(new C_SetBinIntake(Robot.binIntake.INTAKE_POWER));
+        fourBarRunBinIntake.whenInactive(new C_SetBinIntake(0));
         
         fourBarOpenGrabber = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_OPEN_GRABBER);
+        fourBarRunBinIntake.whenPressed(new C_SetClaw(true));
+        fourBarRunBinIntake.whenInactive(new C_SetClaw(false));
         
         fourBarHighPosition = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_HIGH_POSITION);
         fourBarHighPosition.whileHeld(new C_SeekPosition(FourBar.FOUR_BAR_HIGH_POSITION));

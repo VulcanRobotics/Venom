@@ -19,8 +19,6 @@ public class C_FourBarDefault extends Command {
 
     protected void execute() {
     	joystickEscalatorControl(OI.getFourBarControlAxis());
-    	setBinIntakeByButton();
-    	setGrabberByButton();
     }
 
     protected boolean isFinished() {
@@ -29,8 +27,6 @@ public class C_FourBarDefault extends Command {
 
     protected void end() {
     	Robot.fourBar.setDartPower(0.0);
-    	Robot.fourBar.setIntake(0.0);
-		Robot.fourBar.openGrabber(false);
     }
     
     protected void interrupted() {
@@ -46,23 +42,5 @@ public class C_FourBarDefault extends Command {
     	} else {
     		Robot.fourBar.setDartPower(0.0);
     	}
-    }
-    
-    /**
-     * Method binds button to intake control
-     */
-    private void setBinIntakeByButton() {
-    	if (OI.fourBarRunBinIntake.get()) {
-    		Robot.fourBar.setIntake(1.0);
-    	} else {
-        	Robot.fourBar.setIntake(0.0);
-    	}
-    }
-    
-    /**
-     * Method binds button to grabber control
-     */
-    private void setGrabberByButton() {
-    	Robot.fourBar.openGrabber(OI.fourBarOpenGrabber.get());
     }
 }

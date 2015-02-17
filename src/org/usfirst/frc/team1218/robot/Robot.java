@@ -1,6 +1,7 @@
 
 package org.usfirst.frc.team1218.robot;
 
+import org.usfirst.frc.team1218.subsystem.binIntake.BinIntake;
 import org.usfirst.frc.team1218.subsystem.elevator.Elevator;
 import org.usfirst.frc.team1218.subsystem.fourBar.DartSafety;
 import org.usfirst.frc.team1218.subsystem.fourBar.FourBar;
@@ -31,6 +32,7 @@ public class Robot extends IterativeRobot {
 	public static Elevator elevator;
 	public static Hooks hooks;
 	public static ToteIntake toteIntake;
+	public static BinIntake binIntake;
 	public static OI oi;
 	
     Command autonomousCommand;
@@ -46,6 +48,7 @@ public class Robot extends IterativeRobot {
     	elevator = new Elevator();
     	hooks = new Hooks();
     	toteIntake = new ToteIntake();
+    	binIntake = new BinIntake();
 		oi = new OI();
 		
         //instantiate the command used for the autonomous period
@@ -103,6 +106,7 @@ public class Robot extends IterativeRobot {
     	Robot.fourBar.syncDashboard();
     	Robot.hooks.syncDashboard();
     	Robot.toteIntake.syncDashboard();
+    	Robot.binIntake.syncDashboard();
     	SmartDashboard.putBoolean("isBeta", Preferences.getInstance().getBoolean("isBeta", false));
     }
 }
