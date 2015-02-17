@@ -138,6 +138,18 @@ public class SwerveDrive extends Subsystem implements PIDOutput{
     	System.out.println("[Swerve Drive]: Heading Controller Disabled");
     }
     
+    void zeroDriveEncoders(){
+    	module.forEach(m -> m.zeroDrive());
+    }
+    
+    public double getAverageDistance() {
+    	double totalDistance = 0;
+    	for (int i = 0; i < 4; i++) {
+    		totalDistance += Math.abs(module.get(i).getDistance());
+    	}
+    	return totalDistance/4;
+    }
+    
     public void powerDrive(Vector translationVector, double rotation, double fieldCentricCompensator) {
     	List<Vector> moduleVectors = swerveVectorCalculator(translationVector, rotation, fieldCentricCompensator);
     	module.stream().forEach(m -> m.setAngleAndPower(moduleVectors.get(m.moduleNumber)));

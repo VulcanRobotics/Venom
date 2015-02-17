@@ -88,11 +88,16 @@ public class SwerveModule {
 		this.driveWheelController.enableLimitSwitch(false, false);
 		this.driveWheelController.enableForwardSoftLimit(false);
 		this.driveWheelController.enableReverseSoftLimit(false);
+		this.driveWheelController.setPosition(0);
 		this.driveWheelController.setPID(DRIVE_WHEEL_VELOCITY_P, DRIVE_WHEEL_VELOCITY_I, DRIVE_WHEEL_VELOCITY_D);
 	}
 	
 	public boolean isAnglePIDEnabled() {
 		return anglePIDController.isEnable();
+	}
+	
+	public void zeroDrive() {
+		driveWheelController.setPosition(0);
 	}
 	
 	public void enableAnglePID(boolean enabled) {
@@ -122,6 +127,10 @@ public class SwerveModule {
 
 	public int getEncoderIndexCount() {
 		return angleEncoder.getIndexCount();
+	}
+	
+	public double getDistance() {
+		return driveWheelController.getPosition() * DRIVE_ENCODER_CLICK_TO_FOOT;
 	}
 	
 	/**

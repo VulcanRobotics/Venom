@@ -24,6 +24,7 @@ public class C_Index extends Command {
     		indexCount[m.moduleNumber] = m.getEncoderIndexCount();
     		System.out.println("SM_" + m.moduleNumber + ": Distance to Index: " + Angle.diffBetweenAngles(m.getEncoderAngle(), -m.getModuleIndexOffset()));
     		m.setAngle(0.0);
+    		m.setAngleIndexingMode(true);
     	});
     }
 
