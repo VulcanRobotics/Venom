@@ -33,6 +33,7 @@ public class DartSafety {
 	
 	public boolean dartKilled() {
 		boolean killed = dartKillFlag || dartKillWatch.get();
+		if (killed) Robot.fourBar.disableDarts();
 		return killed;
 	}
 	
@@ -61,6 +62,7 @@ public class DartSafety {
 		protected void initialize() {
 			System.out.println("DART SAFETY: REALIGNING");
 			Robot.fourBar.dartEnablePID(false);
+			Robot.fourBar.dartSlavePositionController.disable();
 		}
 		 
 		@Override
@@ -84,6 +86,7 @@ public class DartSafety {
 			System.out.println("Darts have been realigned to each other");
 			Robot.fourBar.dartLeft.set(0.0);
 			Robot.fourBar.dartRight.set(0.0);
+			Robot.fourBar.dartSlavePositionController.enable();
 		}
 
 		@Override
@@ -99,7 +102,6 @@ public class DartSafety {
 		@Override
 		protected void initialize() {
 			System.out.println("WARNING: Darts have drifted out of specified tolerance range. Disabling...");
-			Robot.fourBar.disableDarts();
 			dartKillFlag = true;
 		}
 		
