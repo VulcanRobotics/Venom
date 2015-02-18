@@ -17,7 +17,6 @@ public class C_SetClaw extends Command {
     }
 
     protected void initialize() {
-    	System.out.println("Four bar claw open:" + shouldOpen);
     	Robot.binIntake.setClamp(shouldOpen);
     }
 
@@ -29,7 +28,7 @@ public class C_SetClaw extends Command {
     }
 
     protected void end() {
-    	Robot.binIntake.setClamp(shouldOpen);
+    	System.out.println("Four bar claw open:" + shouldOpen);
     }
     
     protected void interrupted() {
