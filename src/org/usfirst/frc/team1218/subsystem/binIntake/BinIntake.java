@@ -31,7 +31,7 @@ private final Solenoid clamp;
     }
     
     public void setClamp(boolean shouldOpen) {
-    	clamp.set(true);
+    	clamp.set(shouldOpen);
     }
     
     public void setBinIntake(double power) {
