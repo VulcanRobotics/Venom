@@ -218,7 +218,7 @@ public class SwerveModule {
 	 * Update the dashboard with current module information.
 	 */
 	public void syncDashboard() {
-		String prefix = "SwerveModule [" + moduleNumber + "]: ";
+		String prefix = "SM_"+ moduleNumber + "_";
 		SmartDashboard.putNumber(prefix + "WheelPower", driveWheelController.get());
 		SmartDashboard.putNumber(prefix + "EncoderAngle", getEncoderAngle());
 		SmartDashboard.putNumber(prefix + "RobotCentricAngle", robotCentricSetpointAngle);
