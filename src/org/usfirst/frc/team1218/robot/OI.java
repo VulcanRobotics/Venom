@@ -1,5 +1,8 @@
 package org.usfirst.frc.team1218.robot;
 
+import org.usfirst.frc.team1218.subsystem.binIntake.BinIntake;
+import org.usfirst.frc.team1218.subsystem.binIntake.C_SetBinIntake;
+import org.usfirst.frc.team1218.subsystem.binIntake.C_SetClaw;
 import org.usfirst.frc.team1218.subsystem.elevator.C_ManualControl;
 import org.usfirst.frc.team1218.subsystem.elevator.C_ReferenceLimit;
 import org.usfirst.frc.team1218.subsystem.elevator.C_SetElevatorSetpoint;
@@ -7,7 +10,6 @@ import org.usfirst.frc.team1218.subsystem.elevator.Elevator;
 import org.usfirst.frc.team1218.subsystem.fourBar.C_SeekPosition;
 import org.usfirst.frc.team1218.subsystem.fourBar.FourBar;
 import org.usfirst.frc.team1218.subsystem.hooks.C_DeployHooks;
-import org.usfirst.frc.team1218.subsystem.swerve.C_AutoDrive;
 import org.usfirst.frc.team1218.subsystem.swerve.C_MaintainHeading;
 import org.usfirst.frc.team1218.subsystem.swerve.C_Index;
 import org.usfirst.frc.team1218.subsystem.swerve.C_ZeroRobotHeading;
@@ -48,13 +50,11 @@ public class OI {
 	public static Button elevatorRunToteIntake;
 	public static Button elevatorReverseToteIntake;
 	//Four Bar
-	public static Button fourBarRunBinIntake;
-	public static Button fourBarOpenGrabber;
 	public static Button fourBarHighPosition;
 	public static Button fourBarLowPosition;
-	
-	//test
-	public static Button testButton;
+	//Bin Intake
+	public static Button runBinIntake;
+	public static Button openBinGrabber;
 	
 	public OI() {
     	//Driver
@@ -104,19 +104,20 @@ public class OI {
         elevatorReverseToteIntake.whileHeld(new C_RunToteIntake(-ToteIntake.TOTE_INTAKE_POWER));
         
         //Four Bar
-        fourBarRunBinIntake = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_RUN_BIN_INTAKE);
-        
-        fourBarOpenGrabber = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_OPEN_GRABBER);
-        
         fourBarHighPosition = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_HIGH_POSITION);
         fourBarHighPosition.whileHeld(new C_SeekPosition(FourBar.FOUR_BAR_HIGH_POSITION));
         	
         fourBarLowPosition = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_LOW_POSITION);
         fourBarLowPosition.whileHeld(new C_SeekPosition(FourBar.FOUR_BAR_LOW_POSITION));
-    
-        //test
-        testButton = new JoystickButton(driver, ButtonType.X);
-        testButton.whenPressed(new C_AutoDrive(5, 0));
+        
+        //Bin Intake
+        runBinIntake = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_RUN_BIN_INTAKE);
+        runBinIntake.whenPressed(new C_SetBinIntake(BinIntake.INTAKE_POWER));
+        runBinIntake.whenInactive(new C_SetBinIntake(0));
+        
+        openBinGrabber = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_OPEN_GRABBER);
+        openBinGrabber.whenPressed(new C_SetClaw(true));
+        openBinGrabber.whenInactive(new C_SetClaw(false));
 	}
     
     public static Vector getDriverLeftJoystickVector() {

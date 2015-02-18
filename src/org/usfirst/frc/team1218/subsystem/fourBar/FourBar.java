@@ -4,10 +4,8 @@ import org.usfirst.frc.team1218.robot.Robot;
 import org.usfirst.frc.team1218.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
-import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDSource;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -15,10 +13,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *@author afiol-mahon
  */
 public class FourBar extends Subsystem implements PIDSource{
-	private final Solenoid clamp;
-	
-	private final CANTalon binIntakeLeft;
-	private final CANTalon binIntakeRight;
 	
 	protected final DartController dartLeft;
 	protected final AnalogPotentiometer dartLeftPotentiometer;
@@ -64,31 +58,11 @@ public class FourBar extends Subsystem implements PIDSource{
 		dartSlavePositionController.setAbsoluteTolerance(DART_ON_TARGET_SLAVE_DISTANCE);
 		dartSlavePositionController.setSetpoint(0.0);
 		
-		binIntakeLeft = new CANTalon(RobotMap.BIN_INTAKE_L);
-		binIntakeRight = new CANTalon(RobotMap.BIN_INTAKE_R);
-		
-		clamp = new Solenoid(RobotMap.BIN_INTAKE_SOLENOID);
 		System.out.println("Four Bar Initialized");
 	}
 	
     public void initDefaultCommand() {
        setDefaultCommand(new C_FourBarDefault());
-    }
-    
-    /**
-     * Open Bin Grabber
-     * @param opened true for open grabber
-     */
-    public void openGrabber(boolean opened) {
-    	clamp.set(opened);
-    }
-    
-    /**
-     * @param power Positive value for intake, negative value for output
-     */
-    public void setIntake(double power) {
-    	binIntakeLeft.set(power);
-    	binIntakeRight.set(-power);
     }
     
     public void setDartPosition(double setpoint) {
@@ -166,9 +140,7 @@ public class FourBar extends Subsystem implements PIDSource{
     	SmartDashboard.putBoolean("FourBar_Left_Dart_Rev_Limit", dartLeft.isRevLimitSwitchClosed());
     	SmartDashboard.putBoolean("FourBar_Right_Dart_Rev_Limit", dartRight.isRevLimitSwitchClosed());
     	
-    	SmartDashboard.putBoolean("FourBar_Clamps_Open", clamp.get());
     	
-    	SmartDashboard.putNumber("FourBar_Intake_Power", binIntakeLeft.get());
     }
 
     /**
