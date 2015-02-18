@@ -37,9 +37,11 @@ public class SwerveDrive extends Subsystem implements PIDOutput{
 	
 	private PIDController headingController;
 	
+	private boolean fieldCentricDriveMode = false;
+	
 	private boolean headingControllerEnabled;
 	private double headingControllerOutput;
-
+	
 	private static final double HEADING_CONTROLLER_P = 0.03;
 	private static final double HEADING_CONTROLLER_I = 0.0;
 	private static final double HEADING_CONTROLLER_D = 0.0;
@@ -77,13 +79,21 @@ public class SwerveDrive extends Subsystem implements PIDOutput{
     	module.stream().forEach(m -> m.syncDashboard());
 	}
     
+    public boolean isFieldCentricDriveMode() {
+    	return fieldCentricDriveMode;
+    }
+    
+    public void setFieldCentricDriveMode(boolean enabled) {
+    	fieldCentricDriveMode = enabled;
+    }
+    
     /**
      * Creates angle and power for all swerve modules
      * @param translationVector vector with magnitude <= 1
      * @param rotation a value from 1 to -1 representing the amount of rotation to add to the robot angle
      * @param fieldCentricCompensator a gyroscope output that can let the robot drive field-centric, pass 0 if robot centric drive is desired.
      */
-    public List<Vector> swerveVectorCalculator(Vector translationVector, double rotation, double fieldCentricCompensator) {
+    public List<Vector> swerveVectorCalculator(Vector translationVector, double rotation) {
     	double xPerpendicular = X_PERPENDICULAR_CONSTANT;
     	double yPerpendicular = Y_PERPENDICULAR_CONSTANT;
     	if (headingControllerEnabled) {
@@ -94,7 +104,9 @@ public class SwerveDrive extends Subsystem implements PIDOutput{
         	yPerpendicular *= rotation;	
     	}
     	
-    	translationVector.pushAngle(-fieldCentricCompensator);
+    	if (isFieldCentricDriveMode()) {
+        	translationVector.pushAngle(-getHeading());
+    	}
     	
     	List<Vector> moduleVector = new ArrayList<Vector>(Arrays.asList(
     			new Vector(translationVector.getX() + xPerpendicular, translationVector.getY() - yPerpendicular),
@@ -150,8 +162,8 @@ public class SwerveDrive extends Subsystem implements PIDOutput{
     	return totalDistance / 4;
     }
     
-    public void powerDrive(Vector translationVector, double rotation, double fieldCentricCompensator) {
-    	List<Vector> moduleVectors = swerveVectorCalculator(translationVector, rotation, fieldCentricCompensator);
+    public void powerDrive(Vector translationVector, double rotation) {
+    	List<Vector> moduleVectors = swerveVectorCalculator(translationVector, rotation);
     	module.stream().forEach(m -> m.setAngleAndPower(moduleVectors.get(m.moduleNumber)));
     }
     
@@ -161,8 +173,8 @@ public class SwerveDrive extends Subsystem implements PIDOutput{
      * @param rotation
      * @param fieldCentricCompensator
      */
-    public void velocityDrive(Vector translationVector, double rotation, double fieldCentricCompensator) {
-    	List<Vector> moduleVectors = swerveVectorCalculator(translationVector, rotation, fieldCentricCompensator);
+    public void velocityDrive(Vector translationVector, double rotation) {
+    	List<Vector> moduleVectors = swerveVectorCalculator(translationVector, rotation);
     	module.stream().forEach(m -> m.setAngleAndVelocity(moduleVectors.get(m.moduleNumber)));
     }
     

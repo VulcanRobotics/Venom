@@ -9,9 +9,7 @@ import org.usfirst.frc.team1218.subsystem.toteIntake.C_AutorunToteIntake;
 import org.usfirst.frc.team1218.subsystem.toteIntake.ToteIntake;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-/**
- *
- */
+
 public class C_PickupTote extends CommandGroup {
     
     public  C_PickupTote() {

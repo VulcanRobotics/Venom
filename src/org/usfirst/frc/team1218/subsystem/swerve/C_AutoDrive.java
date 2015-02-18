@@ -46,7 +46,7 @@ public class C_AutoDrive extends Command implements PIDSource, PIDOutput {
     	Vector power = new Vector(1, 1);
     	power.setAngle(direction);
     	power.setMagnitude(magnitude);
-    	Robot.swerveDrive.powerDrive(power, 0, 0);
+    	Robot.swerveDrive.powerDrive(power, 0);
     }
 
     protected void execute() {
