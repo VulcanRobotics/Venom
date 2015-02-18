@@ -130,7 +130,7 @@ public class SwerveModule {
 	}
 	
 	public double getDistance() {
-		return driveWheelController.getPosition() * DRIVE_ENCODER_CLICK_TO_FOOT;
+		return (driveWheelController.getPosition() / 4) * DRIVE_ENCODER_CLICK_TO_FOOT;
 	}
 	
 	/**

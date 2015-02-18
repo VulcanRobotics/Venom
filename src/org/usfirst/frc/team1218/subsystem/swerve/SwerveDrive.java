@@ -147,7 +147,7 @@ public class SwerveDrive extends Subsystem implements PIDOutput{
     	for (int i = 0; i < 4; i++) {
     		totalDistance += Math.abs(module.get(i).getDistance());
     	}
-    	return totalDistance/4;
+    	return totalDistance / 4;
     }
     
     public void powerDrive(Vector translationVector, double rotation, double fieldCentricCompensator) {

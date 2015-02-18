@@ -10,8 +10,9 @@ import org.usfirst.frc.team1218.subsystem.elevator.Elevator;
 import org.usfirst.frc.team1218.subsystem.fourBar.C_SeekPosition;
 import org.usfirst.frc.team1218.subsystem.fourBar.FourBar;
 import org.usfirst.frc.team1218.subsystem.hooks.C_DeployHooks;
-import org.usfirst.frc.team1218.subsystem.swerve.C_MaintainHeading;
+import org.usfirst.frc.team1218.subsystem.swerve.C_AutoDrive;
 import org.usfirst.frc.team1218.subsystem.swerve.C_Index;
+import org.usfirst.frc.team1218.subsystem.swerve.C_MaintainHeading;
 import org.usfirst.frc.team1218.subsystem.swerve.C_ZeroRobotHeading;
 import org.usfirst.frc.team1218.subsystem.swerve.math.Vector;
 import org.usfirst.frc.team1218.subsystem.toteIntake.C_RunToteIntake;
@@ -55,6 +56,8 @@ public class OI {
 	//Bin Intake
 	public static Button runBinIntake;
 	public static Button openBinGrabber;
+	
+	public static Button test;
 	
 	public OI() {
     	//Driver
@@ -118,6 +121,9 @@ public class OI {
         openBinGrabber = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_OPEN_GRABBER);
         openBinGrabber.whenPressed(new C_SetClaw(true));
         openBinGrabber.whenInactive(new C_SetClaw(false));
+        
+        test = new JoystickButton(driver, OI.ButtonType.X);
+        test.whenPressed(new C_AutoDrive(5, 0));
 	}
     
     public static Vector getDriverLeftJoystickVector() {
