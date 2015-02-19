@@ -37,7 +37,7 @@ public class SwerveDrive extends Subsystem implements PIDOutput{
 	
 	private PIDController headingController;
 	
-	private boolean fieldCentricDriveMode = false;
+	private boolean fieldCentricDriveMode = true;
 	
 	private boolean headingControllerEnabled;
 	private double headingControllerOutput;
