@@ -157,7 +157,7 @@ public class SwerveDrive extends Subsystem implements PIDOutput{
     public double getAverageDistanceDriven() {
     	double totalDistance = 0;
     	for (int i = 0; i < 4; i++) {
-    		totalDistance += Math.abs(module.get(i).getDistance());
+    		totalDistance += Math.abs(module.get(i).getAbsoluteDistanceDriven());
     	}
     	return totalDistance / 4;
     }
@@ -168,7 +168,7 @@ public class SwerveDrive extends Subsystem implements PIDOutput{
     }
     
     /**
-     * @Depricated
+     * @deprecated
      * @param translationVector
      * @param rotation
      * @param fieldCentricCompensator

@@ -24,7 +24,7 @@ public class AngleEncoder extends Encoder {
 	}
 	
 	public double pidGet() {
-		double angle = get() * SwerveModule.ENCODER_CLICK_TO_DEGREE;
+		double angle = get() * SwerveModule.ANGLE_CONTROLLER_ENCODER_CLICK_TO_DEGREE;
 		angle += moduleAngleOffset;
 		angle = Angle.get360Angle(angle);
 		return angle;

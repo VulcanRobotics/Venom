@@ -11,52 +11,45 @@ import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- * Swerve Class that handles all module logic except for the angle writing itself
+ * Swerve Class that handles all module specific logic
  * @author afiol-mahon
  */
 public class SwerveModule {
 	
-	protected final int moduleNumber; //Used to retrieve module specific offsets and modifiers
+	protected final int moduleNumber;
+	private final double moduleIndexOffset;
 	
-	protected double robotCentricSetpointAngle = 0; //Angle relative to front of robot
-	
-	//Module Runtime Settings
 	private boolean invertModule = false;
+	private double robotCentricSetpointAngle = 0;
 	
 	private final CANTalon driveWheelController;
-	//Drive Wheel Controller Constants
-	private static final double DRIVE_WHEEL_RADIUS = 1.5; //inches
-	private static final double DRIVE_WHEEL_CIRCUMFERENCE = (2.0 * Math.PI * DRIVE_WHEEL_RADIUS) / 12.0; //feet
-	private static final double DRIVE_ENCODER_CLICKS_PER_REV = 500.0 * (6.0 / 5.0); //Encoder Clicks * Gearing Ratio
-	private static final double DRIVE_ENCODER_CLICK_TO_FOOT = DRIVE_WHEEL_CIRCUMFERENCE / DRIVE_ENCODER_CLICKS_PER_REV;
-	private static final double DRIVE_ENCODER_FOOT_TO_CLICK = DRIVE_ENCODER_CLICKS_PER_REV / DRIVE_WHEEL_CIRCUMFERENCE;
-	
-	//PID
-	private static final double DRIVE_WHEEL_VELOCITY_P = 0.05;
-	private static final double DRIVE_WHEEL_VELOCITY_I = 0.0;
-	private static final double DRIVE_WHEEL_VELOCITY_D = 0.0;
-	
-	//Limits
-	private static final double MAX_VELOCITY = 8.0; //feet per second
-	private static final double DRIVE_POWER_SCALE = 0.5;
-	
-	private AngleEncoder angleEncoder;
-	private final PIDController anglePIDController;
-	private double moduleIndexOffset;
-
-	private static final double ANGLE_CONTROLLER_P = -0.01;
-	private static final double ANGLE_CONTROLLER_I = 0.0;
-	private static final double ANGLE_CONTROLLER_D = 0.0;
-	
 	private final CANTalon angleController;
-	//Angle Controller Constants
-	protected static final double MAX_ANGLE_CONTROLLER_POWER = 0.7;
+	private final AngleEncoder angleEncoder;
+	private final PIDController anglePIDController;
 	
-	protected static final double ENCODER_CLICKS_PER_REVOLUTION = 500.0;
-	protected static final double ENCODER_CLICK_TO_DEGREE = 360.0 / ENCODER_CLICKS_PER_REVOLUTION; //Degrees over Number of Clicks
-	protected static final double ENCODER_DEGREE_TO_CLICK = ENCODER_CLICKS_PER_REVOLUTION / 360.0;
+	protected static final double DRIVE_WHEEL_RADIUS = 1.5; //inches
+	protected static final double DRIVE_WHEEL_CIRCUMFERENCE = (2.0 * Math.PI * DRIVE_WHEEL_RADIUS) / 12.0; //feet
+	protected static final double DRIVE_WHEEL_ENCODER_CLICKS_PER_REV = 500.0 * (6.0 / 5.0); //Encoder Clicks * Gearing Ratio
+	protected static final double DRIVE_WHEEL_ENCODER_CLICK_TO_FOOT = DRIVE_WHEEL_CIRCUMFERENCE / DRIVE_WHEEL_ENCODER_CLICKS_PER_REV;
+	protected static final double DRIVE_WHEEL_ENCODER_FOOT_TO_CLICK = DRIVE_WHEEL_ENCODER_CLICKS_PER_REV / DRIVE_WHEEL_CIRCUMFERENCE;
+	
+	protected static final double DRIVE_WHEEL_VELOCITY_P = 0.05;
+	protected static final double DRIVE_WHEEL_VELOCITY_I = 0.0;
+	protected static final double DRIVE_WHEEL_VELOCITY_D = 0.0;
+	
+	protected static final double DRIVE_WHEEL_MAX_VELOCITY = 8.0; //feet per second
+	protected static final double DRIVE_WHEEL_POWER_SCALE = 0.5;
 
-	private static final double ANGLE_CONTROLLER_DEGREE_TOLERANCE = 0;
+	protected static final double ANGLE_CONTROLLER_P = -0.01;
+	protected static final double ANGLE_CONTROLLER_I = 0.0;
+	protected static final double ANGLE_CONTROLLER_D = 0.0;
+	
+	protected static final double ANGLE_CONTROLLER_ENCODER_CLICKS_PER_REVOLUTION = 500.0;
+	protected static final double ANGLE_CONTROLLER_ENCODER_CLICK_TO_DEGREE = 360.0 / ANGLE_CONTROLLER_ENCODER_CLICKS_PER_REVOLUTION; //Degrees over Number of Clicks
+	protected static final double ANGLE_CONTROLLER_ENCODER_DEGREE_TO_CLICK = ANGLE_CONTROLLER_ENCODER_CLICKS_PER_REVOLUTION / 360.0;
+	
+	protected static final double ANGLE_CONTROLLER_MAX_POWER = 0.7;
+	protected static final double ANGLE_CONTROLLER_DEGREE_TOLERANCE = 0;
 	
 	public SwerveModule(int moduleNumber, double moduleAngleOffset) {
 		this.moduleNumber = moduleNumber;
@@ -73,7 +66,7 @@ public class SwerveModule {
 			angleEncoder,
 			angleController);
 		this.anglePIDController.setInputRange(0.0, 360.0);
-		this.anglePIDController.setOutputRange(-MAX_ANGLE_CONTROLLER_POWER, MAX_ANGLE_CONTROLLER_POWER);
+		this.anglePIDController.setOutputRange(-ANGLE_CONTROLLER_MAX_POWER, ANGLE_CONTROLLER_MAX_POWER);
 		this.anglePIDController.setContinuous();
 		this.anglePIDController.setAbsoluteTolerance(ANGLE_CONTROLLER_DEGREE_TOLERANCE);
 		this.anglePIDController.onTarget();
@@ -129,8 +122,8 @@ public class SwerveModule {
 		return angleEncoder.getIndexCount();
 	}
 	
-	public double getDistance() {
-		return (driveWheelController.getPosition() / 4) * DRIVE_ENCODER_CLICK_TO_FOOT;
+	public double getAbsoluteDistanceDriven() {
+		return Math.abs((driveWheelController.getPosition() / 4) * DRIVE_WHEEL_ENCODER_CLICK_TO_FOOT);
 	}
 	
 	/**
@@ -168,10 +161,14 @@ public class SwerveModule {
 		setWheelPower(power);
 	}
 	
+	/**
+	 * @param angle
+	 * @param percentSpeed
+	 */
 	public void setAngleAndVelocity(double angle, double percentSpeed) {
 		if (Math.abs(percentSpeed) > 0.1) {
 			setAngle(angle);
-			setWheelVelocity(percentSpeed * MAX_VELOCITY);
+			setWheelVelocity(percentSpeed * DRIVE_WHEEL_MAX_VELOCITY);
 		} else {
 			setWheelPower(0.0);
 		}
@@ -180,7 +177,7 @@ public class SwerveModule {
 	public void setAngleAndPower(Vector vector) {
 		setAngleAndPower(vector.getAngle(), vector.getMagnitude());
 	}
-	
+
 	public void setAngleAndVelocity(Vector vector) {
 		setAngleAndVelocity(vector.getAngle(), vector.getMagnitude());
 	}
@@ -195,7 +192,7 @@ public class SwerveModule {
 		} else {
 			power *= (invertModule) ? -1.0 : 1.0;
 			this.driveWheelController.changeControlMode(ControlMode.PercentVbus);
-			this.driveWheelController.set(DRIVE_POWER_SCALE * power); //Applies module specific motor preferences
+			this.driveWheelController.set(DRIVE_WHEEL_POWER_SCALE * power); //Applies module specific motor preferences
 		}
 	}
 	
@@ -204,10 +201,10 @@ public class SwerveModule {
 	 * @param speed ft/s
 	 */
 	public void setWheelVelocity(double speed) {
-		if (Math.abs(speed) > MAX_VELOCITY) {
+		if (Math.abs(speed) > DRIVE_WHEEL_MAX_VELOCITY) {
 			System.out.println("Illegal speed " + speed + "(ft/s) written to module: " + moduleNumber);
 		} else {
-			speed *= DRIVE_ENCODER_FOOT_TO_CLICK;
+			speed *= DRIVE_WHEEL_ENCODER_FOOT_TO_CLICK;
 			speed *= (invertModule) ? -1.0 : 1.0;
 			this.driveWheelController.changeControlMode(ControlMode.Speed);
 			this.driveWheelController.set(speed * 10); //Multiply by 10 because PID controller takes Units per decisecond
@@ -223,6 +220,6 @@ public class SwerveModule {
 		SmartDashboard.putNumber(prefix + "EncoderAngle", getEncoderAngle());
 		SmartDashboard.putNumber(prefix + "RobotCentricAngle", robotCentricSetpointAngle);
 		SmartDashboard.putNumber(prefix + "IndexCount", getEncoderIndexCount());
-		SmartDashboard.putNumber(prefix + "DistanceDriven", driveWheelController.getPosition() * DRIVE_ENCODER_CLICK_TO_FOOT);
+		SmartDashboard.putNumber(prefix + "DistanceDriven", getAbsoluteDistanceDriven());
 	}
 }

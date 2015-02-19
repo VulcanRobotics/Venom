@@ -7,6 +7,7 @@ import org.usfirst.frc.team1218.subsystem.swerve.math.Vector;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
+ * While engaged only forward and backward movement is possible. Goal is to make backing off of stacks easy.
  *@author afiol-mahon
  */
 public class C_LockDrive extends Command {

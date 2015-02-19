@@ -6,7 +6,6 @@ package org.usfirst.frc.team1218.subsystem.swerve.math;
 public class Angle {
 	
 	/**
-	 * 
 	 * @return angle from 0 to 360
 	 */
 	public static double get360Angle(double angle) {
