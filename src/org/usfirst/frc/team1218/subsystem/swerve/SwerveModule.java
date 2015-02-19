@@ -222,7 +222,7 @@ public class SwerveModule {
 		String prefix = "SM_"+ moduleNumber + "_";
 		SmartDashboard.putNumber(prefix + "WheelPower", driveWheelController.get());
 		SmartDashboard.putNumber(prefix + "EncoderAngle", getEncoderAngle());
-		SmartDashboard.putNumber(prefix + "RobotCentricAngle", robotCentricSetpointAngle);
+		SmartDashboard.putNumber(prefix + "RobotCentricAngle", Angle.get360Angle(robotCentricSetpointAngle));
 		SmartDashboard.putNumber(prefix + "IndexCount", getEncoderIndexCount());
 		SmartDashboard.putNumber(prefix + "DistanceDriven", getAbsoluteDistanceDriven());
 	}
