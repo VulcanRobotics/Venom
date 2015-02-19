@@ -1,17 +1,16 @@
-package org.usfirst.frc.team1218.subsystem.elevator;
+package org.usfirst.frc.team1218.auton;
 
-import org.usfirst.frc.team1218.auton.C_Wait;
 import org.usfirst.frc.team1218.subsystem.binIntake.BinIntake;
 import org.usfirst.frc.team1218.subsystem.binIntake.C_SetBinIntake;
 import org.usfirst.frc.team1218.subsystem.binIntake.C_SetClaw;
+import org.usfirst.frc.team1218.subsystem.elevator.C_GoToBottom;
+import org.usfirst.frc.team1218.subsystem.elevator.C_GoToTop;
 import org.usfirst.frc.team1218.subsystem.swerve.C_AutoDrive;
 import org.usfirst.frc.team1218.subsystem.toteIntake.C_AutorunToteIntake;
 import org.usfirst.frc.team1218.subsystem.toteIntake.ToteIntake;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-/**
- *
- */
+
 public class C_PickupTote extends CommandGroup {
     
     public  C_PickupTote() {

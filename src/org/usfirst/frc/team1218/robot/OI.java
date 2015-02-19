@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1218.robot;
 
+import org.usfirst.frc.team1218.subsystem.autonHooks.C_DeployHooks;
 import org.usfirst.frc.team1218.subsystem.binIntake.BinIntake;
 import org.usfirst.frc.team1218.subsystem.binIntake.C_SetBinIntake;
 import org.usfirst.frc.team1218.subsystem.binIntake.C_SetClaw;
@@ -9,10 +10,11 @@ import org.usfirst.frc.team1218.subsystem.elevator.C_SetElevatorSetpoint;
 import org.usfirst.frc.team1218.subsystem.elevator.Elevator;
 import org.usfirst.frc.team1218.subsystem.fourBar.C_SeekPosition;
 import org.usfirst.frc.team1218.subsystem.fourBar.FourBar;
-import org.usfirst.frc.team1218.subsystem.hooks.C_DeployHooks;
 import org.usfirst.frc.team1218.subsystem.swerve.C_AutoDrive;
 import org.usfirst.frc.team1218.subsystem.swerve.C_Index;
+import org.usfirst.frc.team1218.subsystem.swerve.C_LockDrive;
 import org.usfirst.frc.team1218.subsystem.swerve.C_MaintainHeading;
+import org.usfirst.frc.team1218.subsystem.swerve.C_ToggleFieldCentricDrive;
 import org.usfirst.frc.team1218.subsystem.swerve.C_ZeroRobotHeading;
 import org.usfirst.frc.team1218.subsystem.swerve.math.Vector;
 import org.usfirst.frc.team1218.subsystem.toteIntake.C_RunToteIntake;
@@ -34,8 +36,9 @@ public class OI {
 	public static Button resetGyro;
 	public static Button maintainHeading;
 	public static Button indexSwerve;
-	public static Button robotCentricToggle;
+	public static Button fieldCentricToggle;
 	public static Button deployHooks;
+	public static Button lockDrive;
 	
 	//Operator
 	public static Joystick operator;
@@ -72,7 +75,11 @@ public class OI {
         indexSwerve = new JoystickButton(driver, RobotMap.BUTTON_INDEX_SWERVE);
         indexSwerve.whenPressed(new C_Index());
         
-        robotCentricToggle = new JoystickButton(driver, RobotMap.BUTTON_ROBOT_CENTRIC_TOGGLE);
+        fieldCentricToggle = new JoystickButton(driver, RobotMap.BUTTON_FIELD_CENTRIC_TOGGLE);
+        fieldCentricToggle.whenPressed(new C_ToggleFieldCentricDrive());
+        
+        lockDrive = new JoystickButton(driver, RobotMap.BUTTON_LOCK_DRIVE);
+        lockDrive.whileHeld(new C_LockDrive());
         
         deployHooks = new JoystickButton(driver, RobotMap.BUTTON_DEPLOY_HOOKS);
         deployHooks.whileHeld(new C_DeployHooks());

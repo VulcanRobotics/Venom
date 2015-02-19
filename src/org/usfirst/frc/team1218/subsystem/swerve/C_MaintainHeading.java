@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1218.subsystem.swerve;
 
+import org.usfirst.frc.team1218.robot.OI;
 import org.usfirst.frc.team1218.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -21,6 +22,9 @@ public class C_MaintainHeading extends Command {
 
 	@Override
 	protected void execute() {
+		Robot.swerveDrive.powerDrive(
+				OI.getDriverLeftJoystickVector(),
+				Math.pow(OI.getDriverRightX(), 3));
 	}
 
 	@Override

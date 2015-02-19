@@ -1,11 +1,11 @@
 
 package org.usfirst.frc.team1218.robot;
 
+import org.usfirst.frc.team1218.subsystem.autonHooks.Hooks;
 import org.usfirst.frc.team1218.subsystem.binIntake.BinIntake;
 import org.usfirst.frc.team1218.subsystem.elevator.Elevator;
 import org.usfirst.frc.team1218.subsystem.fourBar.DartSafety;
 import org.usfirst.frc.team1218.subsystem.fourBar.FourBar;
-import org.usfirst.frc.team1218.subsystem.hooks.Hooks;
 import org.usfirst.frc.team1218.subsystem.swerve.SwerveDrive;
 import org.usfirst.frc.team1218.subsystem.toteIntake.ToteIntake;
 

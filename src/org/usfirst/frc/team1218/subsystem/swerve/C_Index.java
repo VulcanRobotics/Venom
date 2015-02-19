@@ -23,7 +23,6 @@ public class C_Index extends Command {
     		indexed[m.moduleNumber] = false;
     		indexCount[m.moduleNumber] = m.getEncoderIndexCount();
     		System.out.println("SM_" + m.moduleNumber + ": Distance to Index: " + Angle.diffBetweenAngles(m.getEncoderAngle(), -m.getModuleIndexOffset()));
-    		m.setAngle(0.0);
     		m.setAngleIndexingMode(true);
     	});
     }
@@ -31,9 +30,7 @@ public class C_Index extends Command {
     protected void execute() {
     	for (int i = 0; i < 4; i++) {
     		SwerveModule module = Robot.swerveDrive.getModuleList().get(i);
-    		if (indexCount[i] == module.getEncoderIndexCount()) {
-    			//Travels shortest distance to last known index position
-    		} else {
+    		if (indexCount[i] != module.getEncoderIndexCount()) {
     			module.setAngleIndexingMode(false);
     			indexed[i] = true;
     		}

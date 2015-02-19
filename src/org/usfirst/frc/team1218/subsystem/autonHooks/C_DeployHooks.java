@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1218.subsystem.hooks;
+package org.usfirst.frc.team1218.subsystem.autonHooks;
 
 import org.usfirst.frc.team1218.robot.Robot;
 
