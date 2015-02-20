@@ -49,7 +49,7 @@ public class SwerveModule {
 	protected static final double ANGLE_CONTROLLER_ENCODER_DEGREE_TO_CLICK = ANGLE_CONTROLLER_ENCODER_CLICKS_PER_REVOLUTION / 360.0;
 	
 	protected static final double ANGLE_CONTROLLER_MAX_POWER = 0.7;
-	protected static final double ANGLE_CONTROLLER_DEGREE_TOLERANCE = 0;
+	protected static final double ANGLE_CONTROLLER_DEGREE_TOLERANCE = 3;
 	
 	public SwerveModule(int moduleNumber, double moduleAngleOffset) {
 		this.moduleNumber = moduleNumber;

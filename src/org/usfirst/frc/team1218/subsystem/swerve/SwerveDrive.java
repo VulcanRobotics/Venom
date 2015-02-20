@@ -32,7 +32,7 @@ public class SwerveDrive extends Subsystem implements PIDOutput{
 	private static final double Y_PERPENDICULAR_CONSTANT = 0.837;
 	
 	private static final double[] ALPHA_MODULE_ANGLE_OFFSET = {6.0, 161.0, -66.5, 128.0};
-	private static final double[] BETA_MODULE_ANGLE_OFFSET = {-2.0, 133.0, -15.0, -145.0};
+	private static final double[] BETA_MODULE_ANGLE_OFFSET = {-6.0, 136.0, -18.0, -145.0};
 	
 	
 	private PIDController headingController;
@@ -42,8 +42,8 @@ public class SwerveDrive extends Subsystem implements PIDOutput{
 	private boolean headingControllerEnabled;
 	private double headingControllerOutput;
 	
-	private static final double HEADING_CONTROLLER_P = 0.03;
-	private static final double HEADING_CONTROLLER_I = 0.0;
+	private static final double HEADING_CONTROLLER_P = 0.01;
+	private static final double HEADING_CONTROLLER_I = 0.0001;
 	private static final double HEADING_CONTROLLER_D = 0.0;
 	
     public SwerveDrive() {

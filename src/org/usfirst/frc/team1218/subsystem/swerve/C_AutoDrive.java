@@ -17,8 +17,8 @@ public class C_AutoDrive extends Command implements PIDSource, PIDOutput {
 	PIDController distanceController;
 	double direction;
 	
-	double P = 1.0;
-	double I = 0;
+	double P = 1.2;
+	double I = 0.0001;
 	double D = 0;
 	
     public C_AutoDrive(double distance, double direction) {
@@ -33,7 +33,7 @@ public class C_AutoDrive extends Command implements PIDSource, PIDOutput {
     	setTimeout(10);
     	Robot.swerveDrive.resetDistanceDriven();
     	distanceController.enable();
-    	Robot.swerveDrive.enableHeadingController(Robot.swerveDrive.getHeading());
+    	//XXX Robot.swerveDrive.enableHeadingController(Robot.swerveDrive.getHeading());
     }
     
     public double pidGet() {
@@ -58,7 +58,7 @@ public class C_AutoDrive extends Command implements PIDSource, PIDOutput {
 
     protected void end() {
     	distanceController.disable();
-    	Robot.swerveDrive.disableHeadingController();
+    	//XXX Robot.swerveDrive.disableHeadingController();
     	System.out.println("autodrive ended");
     }
 

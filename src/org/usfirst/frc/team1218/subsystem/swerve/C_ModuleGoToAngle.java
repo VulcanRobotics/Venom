@@ -15,6 +15,7 @@ public class C_ModuleGoToAngle extends Command{
 	
 	@Override
 	protected void initialize() {
+		this.setTimeout(1);
 		Robot.swerveDrive.setModuleAngles(angle);
 	}
 	
@@ -24,7 +25,7 @@ public class C_ModuleGoToAngle extends Command{
 	
 	@Override
 	protected boolean isFinished() {
-		return Robot.swerveDrive.isAnglePIDOnTarget();
+		return Robot.swerveDrive.isAnglePIDOnTarget() || this.isTimedOut();
 	}
 	
 	@Override
