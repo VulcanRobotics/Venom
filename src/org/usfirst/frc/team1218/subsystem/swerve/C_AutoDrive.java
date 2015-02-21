@@ -44,7 +44,6 @@ public class C_AutoDrive extends Command implements PIDSource, PIDOutput {
     }
     
     public void pidWrite(double magnitude) {
-    	System.out.println("magnitude: " + magnitude);
     	Vector power = new Vector(1, 1);
     	power.setAngle(direction);
     	power.setMagnitude(magnitude);
