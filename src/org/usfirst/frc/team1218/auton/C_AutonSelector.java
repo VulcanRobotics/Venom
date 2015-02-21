@@ -1,28 +1,28 @@
 package org.usfirst.frc.team1218.auton;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- *@author lcook
+ *@author afiol-mahon
  */
-public class C_Wait extends Command {
-	double waitTime;
-    public C_Wait(double waitTime) {
-    	this.waitTime = waitTime;
-    }
-
+public class C_AutonSelector extends Command {
+	
+	private int auton;
+	
     protected void initialize() {
-    	setTimeout(waitTime);
+    	auton = (int) SmartDashboard.getNumber("Auton_Select", 0);
     }
 
     protected void execute() {
     }
 
     protected boolean isFinished() {
-        return isTimedOut();
+        return true;
     }
 
     protected void end() {
+    	System.out.println("Auton " + auton + " selected.");
     }
 
     protected void interrupted() {

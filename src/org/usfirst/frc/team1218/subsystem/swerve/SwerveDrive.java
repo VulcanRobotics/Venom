@@ -32,8 +32,7 @@ public class SwerveDrive extends Subsystem implements PIDOutput{
 	private static final double Y_PERPENDICULAR_CONSTANT = 0.837;
 	
 	private static final double[] ALPHA_MODULE_ANGLE_OFFSET = {6.0, 161.0, -66.5, 128.0};
-	private static final double[] BETA_MODULE_ANGLE_OFFSET = {-6.0, 136.0, -18.0, -145.0};
-	
+	private static final double[] BETA_MODULE_ANGLE_OFFSET = {-7.76, 154.08, -19.0, -133.28};	
 	
 	private PIDController headingController;
 	
@@ -43,7 +42,7 @@ public class SwerveDrive extends Subsystem implements PIDOutput{
 	private double headingControllerOutput;
 	
 	private static final double HEADING_CONTROLLER_P = 0.01;
-	private static final double HEADING_CONTROLLER_I = 0.0001;
+	private static final double HEADING_CONTROLLER_I = 0.0;
 	private static final double HEADING_CONTROLLER_D = 0.0;
 	
     public SwerveDrive() {
@@ -56,7 +55,8 @@ public class SwerveDrive extends Subsystem implements PIDOutput{
     				));	
 		navSerialPort = new SerialPort(57600, SerialPort.Port.kMXP);
 		navModule = new IMUAdvanced(navSerialPort);
-		
+		navModule.zeroYaw();
+
 		headingController = new PIDController(
 				HEADING_CONTROLLER_P,
 				HEADING_CONTROLLER_I,
@@ -77,7 +77,7 @@ public class SwerveDrive extends Subsystem implements PIDOutput{
     public void syncDashboard() {
     	SmartDashboard.putNumber("SwerveDrive: Robot_Heading", Angle.get360Angle(navModule.getYaw()));
     	module.stream().forEach(m -> m.syncDashboard());
-	}
+    }
     
     public boolean isFieldCentricDriveMode() {
     	return fieldCentricDriveMode;
@@ -121,7 +121,10 @@ public class SwerveDrive extends Subsystem implements PIDOutput{
     	
     	double scaleFactor = ((maxMagnitude > 1.0) ? 1.0 / maxMagnitude : 1.0);
     	
-    	moduleVector.stream().forEach(v -> v.scaleMagnitude(scaleFactor));
+    	moduleVector.stream().forEach(v -> {
+    		v.scaleMagnitude(scaleFactor);
+    		if (v.getMagnitude() > 1.0) v.setMagnitude(1.0);
+    	});
     	return moduleVector;
     }
     

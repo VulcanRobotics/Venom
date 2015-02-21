@@ -18,7 +18,7 @@ public class C_ReferenceLimit extends Command {
 
     protected void execute() {
     	System.out.println("Seeking Elevator Bottom Limit");
-    	Robot.elevator.setPower(-Elevator.ELEVATOR_REFERENCING_POWER);//TODO Ensure correct Direction for going to reference
+    	Robot.elevator.setPower(-Elevator.ELEVATOR_REFERENCING_POWER);
     }
 
     protected boolean isFinished() {

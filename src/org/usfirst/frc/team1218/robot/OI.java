@@ -123,7 +123,7 @@ public class OI {
         //Bin Intake
         runBinIntake = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_RUN_BIN_INTAKE);
         runBinIntake.whenPressed(new C_SetBinIntake(BinIntake.INTAKE_POWER));
-        runBinIntake.whenInactive(new C_SetBinIntake(0));
+        runBinIntake.whenInactive(new C_SetBinIntake(0.1));
         
         openBinGrabber = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_OPEN_GRABBER);
         openBinGrabber.whenPressed(new C_SetClaw(true));

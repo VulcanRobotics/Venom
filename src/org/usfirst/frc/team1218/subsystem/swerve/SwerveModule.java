@@ -161,8 +161,13 @@ public class SwerveModule {
 	 * @param power Desired power for module drive motor
 	 */
 	public void setAngleAndPower(double angle, double power) {
-		if (Math.abs(power) > 0.1) setAngle(angle); //Prevents Module from setting wheels to zero when joystick is released
-		setWheelPower(power);
+		if (Math.abs(power) > 0.1) {
+			setAngle(angle); //Prevents Module from setting wheels to zero when joystick is released
+			setWheelPower(power);
+		} else {
+			setWheelPower(0.0);
+		}
+
 	}
 	
 	/**

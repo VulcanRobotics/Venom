@@ -22,7 +22,6 @@ private final Solenoid clamp;
 	public BinIntake() {
 		binIntakeLeft = new CANTalon(RobotMap.BIN_INTAKE_L);
 		binIntakeRight = new CANTalon(RobotMap.BIN_INTAKE_R);
-		
 		clamp = new Solenoid(RobotMap.BIN_INTAKE_SOLENOID);
 	}
 	
@@ -41,7 +40,8 @@ private final Solenoid clamp;
     
     public void syncDashboard() {
     	SmartDashboard.putBoolean("FourBar_Clamps_Open", clamp.get());
-    	
+    	SmartDashboard.putNumber("FourBar_binIntakeLeft_Amperage", binIntakeLeft.getOutputCurrent());
+    	SmartDashboard.putNumber("FourBar_binIntakeRight_Amperage", binIntakeRight.getOutputCurrent());
     	SmartDashboard.putNumber("FourBar_Intake_Power", binIntakeLeft.get());
     }
 }

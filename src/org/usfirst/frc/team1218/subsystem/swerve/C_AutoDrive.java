@@ -6,6 +6,7 @@ import org.usfirst.frc.team1218.subsystem.swerve.math.Vector;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
@@ -32,8 +33,9 @@ public class C_AutoDrive extends Command implements PIDSource, PIDOutput {
     protected void initialize() {
     	setTimeout(10);
     	Robot.swerveDrive.resetDistanceDriven();
+    	Timer.delay(0.3);
     	distanceController.enable();
-    	//XXX Robot.swerveDrive.enableHeadingController(Robot.swerveDrive.getHeading());
+    	Robot.swerveDrive.enableHeadingController(Robot.swerveDrive.getHeading());
     }
     
     public double pidGet() {
@@ -58,7 +60,7 @@ public class C_AutoDrive extends Command implements PIDSource, PIDOutput {
 
     protected void end() {
     	distanceController.disable();
-    	//XXX Robot.swerveDrive.disableHeadingController();
+    	Robot.swerveDrive.disableHeadingController();
     	System.out.println("autodrive ended");
     }
 
