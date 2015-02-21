@@ -17,9 +17,12 @@ public class RobotMap {
 	
 	//Elevator
 	public static final int ELEVATOR_LIFT_MASTER = 30;
+	public static final int ELEVATOR_LIFT_MASTER_PDP_SLOT = 15;
 	
 	public static final int TOTE_INTAKE_L = 32;
 	public static final int TOTE_INTAKE_R = 33;
+	
+	public static final int TOTE_DETECTOR = 12; //DIO
 	
 	//Four Bar
 	public static final int FOUR_BAR_LEFT_DART = 20;

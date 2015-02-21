@@ -5,6 +5,7 @@ import org.usfirst.frc.team1218.robot.RobotMap;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.ControlMode;
 import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -14,6 +15,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Elevator extends Subsystem {
 	
 	private final CANTalon liftMaster;
+	
+	private final DigitalInput toteDetector;
 	
 	private boolean liftHasReferenced = false;
 	
@@ -29,11 +32,15 @@ public class Elevator extends Subsystem {
 	public static final double ELEVATOR_MANUAL_POSITIONING_POWER = 1.0;
 	public static final double ELEVATOR_REFERENCING_POWER = 0.3;
 	
+	private ElevatorSaftey elevatorSaftey;
+	
     public void initDefaultCommand() {
     	
     }
     
     public Elevator() {
+    	toteDetector = new DigitalInput(RobotMap.TOTE_DETECTOR);
+    	
     	liftMaster = new CANTalon(RobotMap.ELEVATOR_LIFT_MASTER);
     	liftMaster.enableBrakeMode(true);
     	liftMaster.enableLimitSwitch(true, true);
@@ -41,6 +48,8 @@ public class Elevator extends Subsystem {
     	liftMaster.ConfigRevLimitSwitchNormallyOpen(false);
     	liftMaster.setPID(ELEVATOR_P, ELEVATOR_I, ELEVATOR_D);
     	liftMaster.setFeedbackDevice(FeedbackDevice.QuadEncoder);
+    	
+    	elevatorSaftey = new ElevatorSaftey();
     }
     
     /**
@@ -48,6 +57,10 @@ public class Elevator extends Subsystem {
      */
     public double getPosition() {
 	   return liftMaster.getPosition();
+    }
+    
+    public boolean getHasTote () {
+    	return toteDetector.get();
     }
     
     public void setPosition(double position) {
@@ -59,6 +72,10 @@ public class Elevator extends Subsystem {
     		liftMaster.changeControlMode(ControlMode.PercentVbus);
     		liftMaster.set(0.0);
     	}
+    }
+    
+    public double getCurrentSpeed () {
+    	return liftMaster.get();
     }
     
     public void setPower(double power) {
