@@ -35,7 +35,7 @@ public class Elevator extends Subsystem {
 	private ElevatorSaftey elevatorSaftey;
 	
     public void initDefaultCommand() {
-    	
+    	setDefaultCommand(new C_ElevatorDefault());
     }
     
     public Elevator() {
