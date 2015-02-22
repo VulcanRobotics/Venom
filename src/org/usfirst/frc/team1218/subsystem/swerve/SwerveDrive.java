@@ -77,6 +77,8 @@ public class SwerveDrive extends Subsystem implements PIDOutput{
     public void syncDashboard() {
     	SmartDashboard.putNumber("SwerveDrive: Robot_Heading", Angle.get360Angle(navModule.getYaw()));
     	module.stream().forEach(m -> m.syncDashboard());
+    	SmartDashboard.putBoolean("SwerveDrive: HeadingControllerEnabled", headingControllerEnabled);
+    	SmartDashboard.putBoolean("SwerveDrive: FieldCentricDrive", isFieldCentricDriveMode());
     }
     
     public boolean isFieldCentricDriveMode() {

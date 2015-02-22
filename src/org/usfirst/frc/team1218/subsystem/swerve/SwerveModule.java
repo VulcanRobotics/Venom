@@ -117,6 +117,14 @@ public class SwerveModule {
 	public double getEncoderAngle() {
 		return angleEncoder.pidGet();
 	}
+	
+	/**
+	 * Current module angle from encoder with respect to front of robot
+	 * @return Current robotCentricAngle
+	 */
+	public double getModuleAngle() {
+		return 0.0; //TODO need to calculate angle
+	}
 
 	public int getEncoderIndexCount() {
 		return angleEncoder.getIndexCount();
@@ -227,7 +235,8 @@ public class SwerveModule {
 		String prefix = "SM_"+ moduleNumber + "_";
 		SmartDashboard.putNumber(prefix + "WheelPower", driveWheelController.get());
 		SmartDashboard.putNumber(prefix + "EncoderAngle", getEncoderAngle());
-		SmartDashboard.putNumber(prefix + "RobotCentricAngle", Angle.get360Angle(robotCentricSetpointAngle));
+		SmartDashboard.putNumber(prefix + "RobotCentricSetpointAngle", Angle.get360Angle(robotCentricSetpointAngle));
+		SmartDashboard.putNumber(prefix + "RobotCentricCurrentAngle", getModuleAngle());
 		SmartDashboard.putNumber(prefix + "IndexCount", getEncoderIndexCount());
 		SmartDashboard.putNumber(prefix + "DistanceDriven", getAbsoluteDistanceDriven());
 	}
