@@ -63,7 +63,7 @@ public class Elevator extends Subsystem {
     
     public void setPower(double power) {
     	liftMaster.changeControlMode(ControlMode.PercentVbus);
-    	liftMaster.set(power);
+    	liftMaster.set(-power);
     }
      
    protected boolean getTopLimit() {
