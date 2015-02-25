@@ -123,7 +123,11 @@ public class SwerveModule {
 	 * @return Current robotCentricAngle
 	 */
 	public double getModuleAngle() {
-		return 0.0; //TODO need to calculate angle
+		double angle = getEncoderAngle();
+		angle += invertModule ? 180 : 0;
+		angle = 360 - angle;
+		angle = Angle.get360Angle(angle);
+		return angle;
 	}
 
 	public int getEncoderIndexCount() {
