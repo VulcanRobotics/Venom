@@ -40,8 +40,8 @@ public class SwerveModule {
 	protected static final double DRIVE_WHEEL_MAX_VELOCITY = 8.0; //feet per second
 	protected static final double DRIVE_WHEEL_POWER_SCALE = 0.5;
 
-	protected static final double ANGLE_CONTROLLER_P = -0.01;
-	protected static final double ANGLE_CONTROLLER_I = 0.0;
+	protected static final double ANGLE_CONTROLLER_P = -0.02;
+	protected static final double ANGLE_CONTROLLER_I = -0.0005;
 	protected static final double ANGLE_CONTROLLER_D = 0.0;
 	
 	protected static final double ANGLE_CONTROLLER_ENCODER_CLICKS_PER_REVOLUTION = 500.0;
