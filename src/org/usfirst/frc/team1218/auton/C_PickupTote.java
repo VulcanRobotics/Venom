@@ -16,6 +16,7 @@ public class C_PickupTote extends CommandGroup {
     
     public  C_PickupTote() {
     	addSequential(new C_GoToTop());
+    	addSequential(new C_SeekPosition(0.2));
     	addParallel(new C_AutoDrive(5, 0));
     	addSequential(new C_AutorunToteIntake(ToteIntake.TOTE_INTAKE_POWER));
     	addSequential(new C_SetBinIntake(BinIntake.INTAKE_POWER));

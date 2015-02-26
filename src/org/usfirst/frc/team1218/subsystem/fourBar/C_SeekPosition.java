@@ -26,7 +26,7 @@ public class C_SeekPosition extends Command {
     
     protected boolean isFinished() {
         //Relies on OI Button to end command when released
-    	return false;
+    	return Robot.fourBar.isOnTarget();
     }
 
     protected void end() {
