@@ -1,6 +1,6 @@
 package org.usfirst.frc.team1218.robot;
 
-import org.usfirst.frc.team1218.auton.C_MovementTest;
+import org.usfirst.frc.team1218.auton.C_PickupTote;
 import org.usfirst.frc.team1218.subsystem.autonHooks.C_DeployHooks;
 import org.usfirst.frc.team1218.subsystem.binIntake.BinIntake;
 import org.usfirst.frc.team1218.subsystem.binIntake.C_SetBinIntake;
@@ -130,7 +130,7 @@ public class OI {
         openBinGrabber.whenInactive(new C_SetClaw(false));
         
         test = new JoystickButton(driver, OI.ButtonType.X);
-        test.whenPressed(new C_MovementTest());
+        test.whenPressed(new C_PickupTote());
 	}
     
     public static Vector getDriverLeftJoystickVector() {

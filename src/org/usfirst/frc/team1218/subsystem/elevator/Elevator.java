@@ -67,11 +67,11 @@ public class Elevator extends Subsystem {
     }
      
    protected boolean getTopLimit() {
-    	return liftMaster.isFwdLimitSwitchClosed();
+    	return !liftMaster.isFwdLimitSwitchClosed();
     }
     
     protected boolean getBottomLimit() {
-    	return liftMaster.isRevLimitSwitchClosed();
+    	return !liftMaster.isRevLimitSwitchClosed();
     }
     
     public void syncDashboard() {
