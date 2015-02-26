@@ -15,6 +15,7 @@ public class RobotMap {
 	public static final int[] SM_ANGLE_ENCODER_A = {1, 4, 7, 10};
 	public static final int[] SM_ANGLE_ENCODER_B = {2, 5, 8, 11};
 	
+	public static final int SWERVE_BREAKBEAM = 13; //DIO
 	//Elevator
 	public static final int ELEVATOR_LIFT_MASTER = 30;
 	public static final int ELEVATOR_LIFT_MASTER_PDP_SLOT = 15;

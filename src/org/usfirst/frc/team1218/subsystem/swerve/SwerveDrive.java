@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.usfirst.frc.team1218.robot.RobotMap;
 import org.usfirst.frc.team1218.subsystem.swerve.math.Angle;
 import org.usfirst.frc.team1218.subsystem.swerve.math.Vector;
 
 import com.kauailabs.nav6.frc.IMUAdvanced;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.Preferences;
@@ -23,6 +25,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SwerveDrive extends Subsystem implements PIDOutput{
     
+	private DigitalInput breakbeam; //TODO: more descriptive name
+	
     protected List<SwerveModule> module;
     
     private final SerialPort navSerialPort;
@@ -67,7 +71,13 @@ public class SwerveDrive extends Subsystem implements PIDOutput{
 		headingController.setInputRange(-180, 180);
 		headingController.setContinuous();
 		
+		
+		breakbeam = new DigitalInput(RobotMap.SWERVE_BREAKBEAM);
         System.out.println("Swerve System Initialized");
+    }
+    
+    public boolean getBreakbeam() {
+    	return !breakbeam.get();
     }
     
     public void initDefaultCommand() {

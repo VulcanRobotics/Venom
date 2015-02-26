@@ -27,7 +27,10 @@ public class ElevatorSaftey {
 	public class C_ElevatorReverse extends Command {
 
 	    public C_ElevatorReverse() {
-	    	requires(Robot.elevator);
+	    	if (Robot.elevator != null) {
+	    		requires(Robot.elevator);
+	    	}
+	    	
 	    }
 
 	    protected void initialize() {

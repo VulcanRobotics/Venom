@@ -29,8 +29,8 @@ public class Elevator extends Subsystem {
 	public static final int ELEVATOR_RAISE_POSITION = 5087;
 	public static final int ELEVATOR_DEFAULT_POSITION = ELEVATOR_STEP_POSITION;
 	
-	public static final double ELEVATOR_MANUAL_POSITIONING_POWER = 1.0;
-	public static final double ELEVATOR_REFERENCING_POWER = 0.3;
+	public static final double ELEVATOR_MANUAL_POSITIONING_POWER = 0.2;
+	public static final double ELEVATOR_REFERENCING_POWER = 1.0;
 	
 	private ElevatorSaftey elevatorSaftey;
 	
@@ -60,7 +60,8 @@ public class Elevator extends Subsystem {
     }
     
     public boolean getHasTote () {
-    	return toteDetector.get();
+    	System.out.println("has tote: " + !toteDetector.get());
+    	return !toteDetector.get();
     }
     
     public void setPosition(double position) {
@@ -84,11 +85,12 @@ public class Elevator extends Subsystem {
     }
      
    protected boolean getTopLimit() {
-    	return liftMaster.isFwdLimitSwitchClosed();
+	   System.out.println("top limit: " + !liftMaster.isFwdLimitSwitchClosed());
+    	return !liftMaster.isFwdLimitSwitchClosed();
     }
     
     protected boolean getBottomLimit() {
-    	return liftMaster.isRevLimitSwitchClosed();
+    	return !liftMaster.isRevLimitSwitchClosed();
     }
     
     public void syncDashboard() {
