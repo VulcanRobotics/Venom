@@ -38,6 +38,11 @@ private final Solenoid clamp;
     	binIntakeRight.set(-power);
     }
     
+    public void runLeft(double power) {
+    	binIntakeLeft.set(power);
+    	binIntakeRight.set(power);
+    }
+    
     public void syncDashboard() {
     	SmartDashboard.putBoolean("FourBar_Clamps_Open", clamp.get());
     	SmartDashboard.putNumber("FourBar_binIntakeLeft_Amperage", binIntakeLeft.getOutputCurrent());

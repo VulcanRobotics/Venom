@@ -41,7 +41,7 @@ public class SwerveDrive extends Subsystem implements PIDOutput{
 	private boolean headingControllerEnabled;
 	private double headingControllerOutput;
 	
-	private static final double HEADING_CONTROLLER_P = 0.01;
+	private static final double HEADING_CONTROLLER_P = 0.02;
 	private static final double HEADING_CONTROLLER_I = 0.0;
 	private static final double HEADING_CONTROLLER_D = 0.0;
 	
@@ -66,6 +66,7 @@ public class SwerveDrive extends Subsystem implements PIDOutput{
 		headingController.setOutputRange(-1.0, 1.0);
 		headingController.setInputRange(-180, 180);
 		headingController.setContinuous();
+		headingController.setAbsoluteTolerance(10);
 		
         System.out.println("Swerve System Initialized");
     }
@@ -79,6 +80,10 @@ public class SwerveDrive extends Subsystem implements PIDOutput{
     	module.stream().forEach(m -> m.syncDashboard());
     	SmartDashboard.putBoolean("SwerveDrive: HeadingControllerEnabled", headingControllerEnabled);
     	SmartDashboard.putBoolean("SwerveDrive: FieldCentricDrive", isFieldCentricDriveMode());
+    }
+    
+    public boolean isHeadingOnTarget() {
+    	return headingController.onTarget();
     }
     
     public boolean isFieldCentricDriveMode() {

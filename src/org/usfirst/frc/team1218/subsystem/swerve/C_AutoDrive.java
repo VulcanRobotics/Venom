@@ -54,7 +54,7 @@ public class C_AutoDrive extends Command implements PIDSource, PIDOutput {
     }
 
     protected boolean isFinished() {
-        return (distanceController.getError() < 0.25) || isTimedOut();
+        return (Math.abs(distanceController.getError()) < 0.25) || isTimedOut();
     }
 
     protected void end() {

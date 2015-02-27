@@ -53,6 +53,8 @@ public class RobotMap {
 	public static final int BUTTON_ELEVATOR_MANUAL_RAISE = 9;
 	public static final int BUTTON_ELEVATOR_MANUAL_LOWER = 11;
 	public static final int BUTTON_ELEVATOR_ZERO_POSITION = 7;
+	
+	public static final int ELEVATOR_TOTE_DETECTOR = 12; //DIO
 	//Tote Intake Controls
 	public static final int BUTTON_ELEVATOR_RUN_TOTE_INTAKE = 5;
 	public static final int BUTTON_ELEVATOR_REVERSE_TOTE_INTAKE = 3;

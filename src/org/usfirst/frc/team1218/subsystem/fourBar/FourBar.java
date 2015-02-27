@@ -24,7 +24,7 @@ public class FourBar extends Subsystem implements PIDSource{
 	protected final PIDController dartSlavePositionController;
 	
 	
-	private static final double DART_MASTER_P = 1.0;
+	private static final double DART_MASTER_P = 2.0;
 	private static final double DART_MASTER_I = 0.00001;
 	private static final double DART_MASTER_D = 0.0;
 	
@@ -32,7 +32,7 @@ public class FourBar extends Subsystem implements PIDSource{
 	private static final double DART_SLAVE_I = 0.0;
 	private static final double DART_SLAVE_D = 0.0;
 	
-	protected static final double DART_ON_TARGET_MASTER_DISTANCE = 0.02;
+	protected static final double DART_ON_TARGET_MASTER_DISTANCE = 0.06;
 	protected static final double DART_ON_TARGET_SLAVE_DISTANCE = 0.01;
 	protected static final double DART_FAILSAFE_DISTANCE = 0.1;
 	protected static final double DART_REALIGN_DISTANCE = 0.05;
@@ -63,6 +63,10 @@ public class FourBar extends Subsystem implements PIDSource{
 	
     public void initDefaultCommand() {
        setDefaultCommand(new C_FourBarDefault());
+    }
+    
+    public boolean isOnTarget() {
+    	return dartMasterPositionController.onTarget();
     }
     
     public void setDartPosition(double setpoint) {

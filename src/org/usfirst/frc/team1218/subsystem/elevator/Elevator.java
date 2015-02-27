@@ -5,6 +5,7 @@ import org.usfirst.frc.team1218.robot.RobotMap;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.ControlMode;
 import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -12,6 +13,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *@author afiol-mahon
  */
 public class Elevator extends Subsystem {
+	
+	private DigitalInput toteDetector;
 	
 	private final CANTalon liftMaster;
 	
@@ -41,6 +44,8 @@ public class Elevator extends Subsystem {
     	liftMaster.ConfigRevLimitSwitchNormallyOpen(false);
     	liftMaster.setPID(ELEVATOR_P, ELEVATOR_I, ELEVATOR_D);
     	liftMaster.setFeedbackDevice(FeedbackDevice.QuadEncoder);
+    	
+    	toteDetector = new DigitalInput(RobotMap.ELEVATOR_TOTE_DETECTOR);
     }
     
     /**
@@ -66,6 +71,10 @@ public class Elevator extends Subsystem {
     	liftMaster.set(power);
     }
      
+    public boolean getHasTote() {
+    	return toteDetector.get();
+    }
+    
    protected boolean getTopLimit() {
     	return !liftMaster.isFwdLimitSwitchClosed();
     }
