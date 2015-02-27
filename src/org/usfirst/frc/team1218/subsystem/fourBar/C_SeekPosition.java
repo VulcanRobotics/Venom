@@ -30,10 +30,12 @@ public class C_SeekPosition extends Command {
     }
 
     protected void end() {
+    	System.out.println("dart done pidding to setpoint, error: " + Robot.fourBar.dartMasterPositionController.getError());
     	Robot.fourBar.dartEnablePID(false);
     }
 
     protected void interrupted() {
+    	System.out.println("darts seeking position interrupted"); 
     	end();
     }
 }

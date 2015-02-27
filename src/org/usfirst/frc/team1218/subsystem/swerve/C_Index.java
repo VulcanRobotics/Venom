@@ -24,6 +24,7 @@ public class C_Index extends Command {
     		indexCount[m.moduleNumber] = m.getEncoderIndexCount();
     		System.out.println("SM_" + m.moduleNumber + ": Distance to Index: " + Angle.diffBetweenAngles(m.getEncoderAngle(), -m.getModuleIndexOffset()));
     		m.setAngleIndexingMode(true);
+    		setTimeout(1.5);
     	});
     }
 
@@ -38,7 +39,7 @@ public class C_Index extends Command {
     }
 
     protected boolean isFinished() {
-        return indexed[0] && indexed[1] && indexed[2] && indexed[3];
+        return (indexed[0] && indexed[1] && indexed[2] && indexed[3]) || isTimedOut();
     }
 
     protected void end() {

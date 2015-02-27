@@ -1,7 +1,6 @@
 package org.usfirst.frc.team1218.robot;
 
 import org.usfirst.frc.team1218.auton.C_PickupTote;
-import org.usfirst.frc.team1218.auton.C_StepAuton;
 import org.usfirst.frc.team1218.subsystem.autonHooks.C_DeployHooks;
 import org.usfirst.frc.team1218.subsystem.binIntake.BinIntake;
 import org.usfirst.frc.team1218.subsystem.binIntake.C_SetBinIntake;
@@ -10,9 +9,9 @@ import org.usfirst.frc.team1218.subsystem.elevator.C_ManualControl;
 import org.usfirst.frc.team1218.subsystem.elevator.C_ReferenceLimit;
 import org.usfirst.frc.team1218.subsystem.elevator.C_SetElevatorSetpoint;
 import org.usfirst.frc.team1218.subsystem.elevator.Elevator;
+import org.usfirst.frc.team1218.subsystem.fourBar.C_GoToPosition;
 import org.usfirst.frc.team1218.subsystem.fourBar.C_SeekPosition;
 import org.usfirst.frc.team1218.subsystem.fourBar.FourBar;
-import org.usfirst.frc.team1218.subsystem.swerve.C_GoToHeading;
 import org.usfirst.frc.team1218.subsystem.swerve.C_Index;
 import org.usfirst.frc.team1218.subsystem.swerve.C_LockDrive;
 import org.usfirst.frc.team1218.subsystem.swerve.C_MaintainHeading;
@@ -63,6 +62,7 @@ public class OI {
 	public static Button openBinGrabber;
 	
 	public static Button test;
+	public static Button test2;
 	
 	public OI() {
     	//Driver
@@ -133,7 +133,12 @@ public class OI {
         openBinGrabber.whenInactive(new C_SetClaw(false));
         
         test = new JoystickButton(driver, OI.ButtonType.X);
+        test2 = new JoystickButton(driver, OI.ButtonType.Y);
+        //test.whenPressed(new C_AutoDrive(9, 0));
         test.whenPressed(new C_PickupTote());
+        test2.whenPressed(new C_GoToPosition(0.8));
+        //test2.whenPressed(new C_SeekPosition(0.8));
+        //test2.whenPressed(new C_AutoDrive(5, 0, 0.5)); 
         //test.whenReleased(new C_StepAuton());
         //test.whenPressed(new C_GoToHeading(90));
 	}

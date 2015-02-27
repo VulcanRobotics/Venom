@@ -25,7 +25,7 @@ public class FourBar extends Subsystem implements PIDSource{
 	
 	
 	private static final double DART_MASTER_P = 2.0;
-	private static final double DART_MASTER_I = 0.00001;
+	private static final double DART_MASTER_I = 0.0001;
 	private static final double DART_MASTER_D = 0.0;
 	
 	private static final double DART_SLAVE_P = -40.0;

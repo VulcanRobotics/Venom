@@ -39,8 +39,8 @@ private final Solenoid clamp;
     }
     
     public void runLeft(double power) {
-    	binIntakeLeft.set(power);
-    	binIntakeRight.set(power);
+    	binIntakeLeft.set(-power);
+    	binIntakeRight.set(-power);
     }
     
     public void syncDashboard() {

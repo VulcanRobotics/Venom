@@ -22,20 +22,20 @@ public class C_AutoDrive extends Command implements PIDSource, PIDOutput {
 	double I = 0.0001;
 	double D = 0;
 	
-    public C_AutoDrive(double distance, double direction) {
+    public C_AutoDrive(double distance, double direction, double maxSpeed) {
     	requires(Robot.swerveDrive);
     	distanceController = new PIDController(P, I, D, this, this);
     	distanceController.setSetpoint(distance);
-    	distanceController.setOutputRange(-0.6, 0.6);
+    	distanceController.setOutputRange(-maxSpeed, maxSpeed);
     	this.direction = direction;
     }
     
     protected void initialize() {
     	setTimeout(10);
     	Robot.swerveDrive.resetDistanceDriven();
-    	Timer.delay(0.3);
+    	Timer.delay(0.1);
     	distanceController.enable();
-    	Robot.swerveDrive.enableHeadingController(Robot.swerveDrive.getHeading());
+    	Robot.swerveDrive.enableHeadingController(0);
     }
     
     public double pidGet() {
