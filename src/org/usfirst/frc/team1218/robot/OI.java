@@ -1,8 +1,5 @@
 package org.usfirst.frc.team1218.robot;
 
-import org.usfirst.frc.team1218.auton.C_MovementTest;
-import org.usfirst.frc.team1218.auton.C_TwoToteAuton;
-import org.usfirst.frc.team1218.subsystem.autonHooks.C_DeployHooks;
 import org.usfirst.frc.team1218.subsystem.binIntake.BinIntake;
 import org.usfirst.frc.team1218.subsystem.binIntake.C_SetBinIntake;
 import org.usfirst.frc.team1218.subsystem.binIntake.C_SetClaw;
@@ -61,9 +58,6 @@ public class OI {
 	public static Button runBinIntake;
 	public static Button openBinGrabber;
 	
-	public static Button test;
-	public static Button test2;
-	
 	public OI() {
     	//Driver
     	driver = new Joystick(RobotMap.DRIVER_JOYSTICK);
@@ -82,10 +76,6 @@ public class OI {
         
         lockDrive = new JoystickButton(driver, RobotMap.BUTTON_LOCK_DRIVE);
         lockDrive.whileHeld(new C_LockDrive());
-        
-        deployHooks = new JoystickButton(driver, RobotMap.BUTTON_DEPLOY_HOOKS);
-        deployHooks.whenPressed(new C_DeployHooks());
-        deployHooks.whenInactive(new C_DeployHooks(false));
         
         //Operator
         operator = new Joystick(RobotMap.OPERATOR_JOYSTICK);
@@ -131,11 +121,6 @@ public class OI {
         openBinGrabber = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_OPEN_GRABBER);
         openBinGrabber.whenPressed(new C_SetClaw(true));
         openBinGrabber.whenInactive(new C_SetClaw(false));
-        
-        test = new JoystickButton(driver, OI.ButtonType.X);
-        test2 = new JoystickButton(driver, OI.ButtonType.Y);
-        test.whenPressed(new C_TwoToteAuton());
-        test2.whenPressed(new C_MovementTest());
 	}
     
     public static Vector getDriverLeftJoystickVector() {
@@ -176,6 +161,10 @@ public class OI {
 		 public final static int R1 = 6;
 		 public final static int LEFT_THUMB = 9;
 		 public final static int RIGHT_THUMB = 10;
+	}
+
+	public static double getTurboPower() {
+		return driver.getRawAxis(RobotMap.TRIGGER_TURBO_DRIVE);
 	}
 }
 

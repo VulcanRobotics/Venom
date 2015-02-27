@@ -41,9 +41,7 @@ public class RobotMap {
 	public static final int BUTTON_INDEX_SWERVE = OI.ButtonType.A;
 	public static final int BUTTON_FIELD_CENTRIC_TOGGLE = OI.ButtonType.LEFT_THUMB;
 	public static final int BUTTON_LOCK_DRIVE = OI.ButtonType.R1;
-	
-	public static final int BUTTON_DEPLOY_HOOKS = OI.ButtonType.Y;
-	
+	public static final int TRIGGER_TURBO_DRIVE = OI.Axis.TRIGGER_L;
 	//Operator Control Mapping---------------------------------------------
 	public static final int OPERATOR_JOYSTICK = 1;
 	//Elevator Controls
