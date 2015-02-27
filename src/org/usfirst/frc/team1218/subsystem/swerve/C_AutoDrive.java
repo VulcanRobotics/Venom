@@ -18,7 +18,7 @@ public class C_AutoDrive extends Command implements PIDSource, PIDOutput {
 	PIDController distanceController;
 	double direction;
 	
-	double P = 1.2;
+	double P = 1.5;//1.2;
 	double I = 0.0001;
 	double D = 0;
 	
