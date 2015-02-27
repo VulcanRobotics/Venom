@@ -24,7 +24,7 @@ public class FourBar extends Subsystem implements PIDSource{
 	protected final PIDController dartSlavePositionController;
 	
 	
-	private static final double DART_MASTER_P = 2.0;
+	private static final double DART_MASTER_P = 1.0;
 	private static final double DART_MASTER_I = 0.0001;
 	private static final double DART_MASTER_D = 0.0;
 	
@@ -49,6 +49,7 @@ public class FourBar extends Subsystem implements PIDSource{
 		dartLeftPotentiometer = new AnalogPotentiometer(RobotMap.LEFT_DART_POTENTIOMETER);
 		dartMasterPositionController = new PIDController(DART_MASTER_P, DART_MASTER_I, DART_MASTER_D, dartLeftPotentiometer, dartLeft);
 		dartMasterPositionController.setAbsoluteTolerance(DART_ON_TARGET_MASTER_DISTANCE);
+		dartMasterPositionController.setOutputRange(-0.5, 0.5);
 		
 		dartRight = new DartController(RobotMap.FOUR_BAR_RIGHT_DART);
 		dartRightPotentiometer = new AnalogPotentiometer(RobotMap.RIGHT_DART_POTENTIOMETER);
