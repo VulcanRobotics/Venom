@@ -33,7 +33,7 @@ public class Elevator extends Subsystem {
 	public static final double ELEVATOR_REFERENCING_POWER = 0.3;
 	
     public void initDefaultCommand() {
-    	
+    	setDefaultCommand(new C_ElevatorDefault());
     }
     
     public Elevator() {
