@@ -22,9 +22,9 @@ public class C_Index extends Command {
     	Robot.swerveDrive.module.stream().forEach(m -> {
     		indexed[m.moduleNumber] = false;
     		indexCount[m.moduleNumber] = m.getEncoderIndexCount();
-    		System.out.println("SM_" + m.moduleNumber + ": Distance to Index: " + Angle.diffBetweenAngles(m.getEncoderAngle(), -m.getModuleIndexOffset()));
-    		m.setAngleIndexingMode(true);
-    		setTimeout(1.5);
+    		m.enableAnglePID(false);
+			boolean invertTravelDirection = (Angle.diffBetweenAngles(m.getEncoderAngle(), -m.getModuleIndexOffset()) < 180 ? true : false);
+    		m.setPowerToAngleMotor((invertTravelDirection) ? -0.8 : 0.8);
     	});
     }
 
@@ -32,7 +32,7 @@ public class C_Index extends Command {
     	for (int i = 0; i < 4; i++) {
     		SwerveModule module = Robot.swerveDrive.getModuleList().get(i);
     		if (indexCount[i] != module.getEncoderIndexCount()) {
-    			module.setAngleIndexingMode(false);
+    		    module.enableAnglePID(true);
     			indexed[i] = true;
     		}
     	}
@@ -43,10 +43,15 @@ public class C_Index extends Command {
     }
 
     protected void end() {
+    	Robot.swerveDrive.module.stream().forEach(m -> m.enableAnglePID(true));
     	System.out.println("Swerve Drive Indexed");
     }
 
     protected void interrupted() {
     	end();
+    }
+    
+    protected void moduleEnablePID() {
+    	
     }
 }
