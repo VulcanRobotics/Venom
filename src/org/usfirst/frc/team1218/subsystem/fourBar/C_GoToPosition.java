@@ -12,12 +12,12 @@ public class C_GoToPosition extends CommandGroup {
     
     public  C_GoToPosition(double setpoint) {
     	int i = 0;
-        while (!Robot.fourBar.dartMasterPositionController.onTarget() && i<4) {
+        while (!Robot.fourBar.dartMasterPositionController.onTarget() && i<6) {
         	i++;
         	System.out.println("about to seek position");
         	addSequential(new C_SeekPosition(setpoint));
         	System.out.println("one position seek completer");
-        	Timer.delay(0.1);
+        	Timer.delay(0.25);
         }
     }
 }

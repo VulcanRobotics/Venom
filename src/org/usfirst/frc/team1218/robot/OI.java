@@ -1,12 +1,12 @@
 package org.usfirst.frc.team1218.robot;
 
+import org.usfirst.frc.team1218.auton.C_TwoToteAuton;
 import org.usfirst.frc.team1218.subsystem.binIntake.BinIntake;
 import org.usfirst.frc.team1218.subsystem.binIntake.C_SetBinIntake;
 import org.usfirst.frc.team1218.subsystem.binIntake.C_SetClaw;
 import org.usfirst.frc.team1218.subsystem.elevator.C_ManualControl;
-import org.usfirst.frc.team1218.subsystem.elevator.C_ReferenceLimit;
-import org.usfirst.frc.team1218.subsystem.elevator.C_SetElevatorSetpoint;
 import org.usfirst.frc.team1218.subsystem.elevator.Elevator;
+import org.usfirst.frc.team1218.subsystem.fourBar.C_GoToPosition;
 import org.usfirst.frc.team1218.subsystem.fourBar.C_SeekPosition;
 import org.usfirst.frc.team1218.subsystem.fourBar.FourBar;
 import org.usfirst.frc.team1218.subsystem.swerve.C_Index;
@@ -35,7 +35,6 @@ public class OI {
 	public static Button maintainHeading;
 	public static Button indexSwerve;
 	public static Button fieldCentricToggle;
-	public static Button deployHooks;
 	public static Button lockDrive;
 	
 	//Operator
@@ -62,6 +61,9 @@ public class OI {
 	public static Button runBinIntake;
 	public static Button openBinGrabber;
 	
+	public static Button test;
+	public static Button test2;
+	
 	public OI() {
     	//Driver
     	driver = new Joystick(RobotMap.DRIVER_JOYSTICK);
@@ -80,28 +82,15 @@ public class OI {
         
         lockDrive = new JoystickButton(driver, RobotMap.BUTTON_LOCK_DRIVE);
         lockDrive.whileHeld(new C_LockDrive());
-        
+                
         //Operator
         operator = new Joystick(RobotMap.OPERATOR_JOYSTICK);
-        
-        //Elevator
-       // elevatorDropStack = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_DROP_STACK);
-       // elevatorDropStack.whenPressed(new C_SetElevatorSetpoint(Elevator.ELEVATOR_DROP_POSITION));
-        	
-       // elevatorRaiseStack = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_RAISE_STACK);
-        //elevatorRaiseStack.whenPressed(new C_SetElevatorSetpoint(Elevator.ELEVATOR_RAISE_POSITION));
-        	
-      //  elevatorToStepPosition = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_STEP_POSITION);
-       // elevatorToStepPosition.whenPressed(new C_SetElevatorSetpoint(Elevator.ELEVATOR_STEP_POSITION));
-        
+                
         elevatorManualRaise = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_MANUAL_RAISE);
         elevatorManualRaise.whileHeld(new C_ManualControl(Elevator.ELEVATOR_MANUAL_POSITIONING_POWER));
         
         elevatorManualLower = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_MANUAL_LOWER);
         elevatorManualLower.whileHeld(new C_ManualControl(-Elevator.ELEVATOR_MANUAL_POSITIONING_POWER));
-        
-        //elevatorZeroPosition = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_ZERO_POSITION);
-        //elevatorZeroPosition.whenPressed(new C_ReferenceLimit());
         
         //Tote Intake
         elevatorRunToteIntake = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_RUN_TOTE_INTAKE);
@@ -131,6 +120,11 @@ public class OI {
         openBinGrabber = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_OPEN_GRABBER);
         openBinGrabber.whenPressed(new C_SetClaw(true));
         openBinGrabber.whenInactive(new C_SetClaw(false));
+        
+        test = new JoystickButton(driver, OI.ButtonType.X);
+        test2 = new JoystickButton(driver, OI.ButtonType.Y);
+        test.whenPressed(new C_TwoToteAuton());
+        test2.whenPressed(new C_GoToPosition(0.6));
 	}
     
     public static Vector getDriverLeftJoystickVector() {
