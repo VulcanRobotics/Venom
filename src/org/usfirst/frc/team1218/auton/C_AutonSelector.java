@@ -1,5 +1,9 @@
 package org.usfirst.frc.team1218.auton;
 
+import java.util.HashMap;
+
+import org.usfirst.frc.team1218.subsystem.swerve.C_Index;
+
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -8,10 +12,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class C_AutonSelector extends Command {
 	
-	private int auton;
+	private String auton;
+	private Command command;
 	
     protected void initialize() {
-    	auton = (int) SmartDashboard.getNumber("Auton_Select", 0);
+    	auton = SmartDashboard.getString("","No Auton");
+    	command = COMMANDS.getOrDefault(auton, new C_Index());
+    	command.start();
     }
 
     protected void execute() {
@@ -26,5 +33,11 @@ public class C_AutonSelector extends Command {
     }
 
     protected void interrupted() {
+    }
+    
+    protected static HashMap<String, Command> COMMANDS = new HashMap<String, Command>();
+    static {
+    	COMMANDS.put("No Auton", new C_Index());
+    	COMMANDS.put("TwoToteAuton", new C_TwoToteAuton());
     }
 }
