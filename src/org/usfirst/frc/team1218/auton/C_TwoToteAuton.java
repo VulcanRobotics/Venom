@@ -53,10 +53,6 @@ public class C_TwoToteAuton extends CommandGroup {
     	
     	//drive to auto zone
     	addSequential(new C_Index());
-=======
-    	addSequential(new C_Index());
-    	
->>>>>>> 254fb1c8f55cd263e4b8d311275f48d8ab65fa0a
     	addSequential(new C_AutoDrive(6, 90, 1.0));
     	
     }
