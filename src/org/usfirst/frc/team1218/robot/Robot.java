@@ -1,7 +1,7 @@
 
 package org.usfirst.frc.team1218.robot;
 
-import org.usfirst.frc.team1218.auton.C_TwoToteAuton;
+import org.usfirst.frc.team1218.auton.C_AutonSelector;
 import org.usfirst.frc.team1218.subsystem.autonHooks.Hooks;
 import org.usfirst.frc.team1218.subsystem.binIntake.BinIntake;
 import org.usfirst.frc.team1218.subsystem.elevator.Elevator;
@@ -53,7 +53,7 @@ public class Robot extends IterativeRobot {
 		oi = new OI();
 		
         //instantiate the command used for the autonomous period
-        autonomousCommand = new C_TwoToteAuton();
+        autonomousCommand = new C_AutonSelector();
         System.out.println("Robot Initialized");
     }
 	
