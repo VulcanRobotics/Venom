@@ -98,6 +98,7 @@ public class SwerveModule {
 	public void enableAnglePID(boolean enabled) {
 		if (enabled) {
 			anglePIDController.enable();
+			setAngle(0.0);
 		} else {
 			anglePIDController.disable();
 		}
@@ -157,18 +158,6 @@ public class SwerveModule {
 		this.anglePIDController.setSetpoint(angle);
 	}
 	
-	public void setAngleIndexingMode(boolean enabled) {
-		if (enabled) {
-			enableAnglePID(false);
-			boolean invertTravelDirection = (Angle.diffBetweenAngles(getEncoderAngle(), -getModuleIndexOffset()) < 180 ? true : false);
-    		angleController.set((invertTravelDirection) ? -0.8 : 0.8);
-    		
-		} else {
-			enableAnglePID(true);
-			setAngle(0.0);
-		}
-	}
-	
 	/**
 	 * Update the swerve module wheel power and angle.
 	 * @param angle Desired module angle
@@ -203,6 +192,10 @@ public class SwerveModule {
 
 	public void setAngleAndVelocity(Vector vector) {
 		setAngleAndVelocity(vector.getAngle(), vector.getMagnitude());
+	}
+	
+	public void setPowerToAngleMotor(double power) {
+		angleController.set(power);
 	}
 	
 	/**
