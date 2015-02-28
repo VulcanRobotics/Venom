@@ -17,6 +17,7 @@ public class ToteIntake extends Subsystem {
 	
 	public final static double TOTE_INTAKE_POWER = 0.8;
 	public final static double TOTE_INTAKE_POWER_GENTLE = 0.4;
+
     public void initDefaultCommand() {
         
     }

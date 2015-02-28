@@ -21,18 +21,22 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class C_TwoToteAuton extends CommandGroup {
     
     public  C_TwoToteAuton() {
-    	
+    	System.out.println("Two Tote Auton Selected");
     	//get ready - index set heading , prep for bin pickup, turn on intake, pre position darts
     	addSequential(new C_ZeroRobotHeading());
     	addSequential(new C_Index());
     	addParallel(new C_SeekPosition(0.2));
     	addSequential(new C_GoToTop());
     	
+    	addSequential(new C_Index());
+    	
     	//pickup first bin/tote combo
+
     	addSequential(new C_AutorunToteIntake(ToteIntake.TOTE_INTAKE_POWER_GENTLE));
     	addSequential(new C_SetBinIntake(BinIntake.INTAKE_POWER));
     	Timer.delay(0.5);
     	addParallel(new C_SeekPosition(FourBar.FOUR_BAR_HIGH_POSITION));
+
     	addSequential(new C_WaitForTote(20));
     	addSequential(new C_GoToBottom());
     	addSequential(new C_GoToTop());
@@ -42,13 +46,17 @@ public class C_TwoToteAuton extends CommandGroup {
     	addSequential(new C_WaitForTote(20));
     	addSequential(new C_GoToBottom());
     	addSequential(new C_GoToTop());
-    	
+
     	//stop intakes
     	addSequential(new C_AutorunToteIntake(0.0));
     	addSequential(new C_SetBinIntake(0.0));  
     	
     	//drive to auto zone
     	addSequential(new C_Index());
+=======
+    	addSequential(new C_Index());
+    	
+>>>>>>> 254fb1c8f55cd263e4b8d311275f48d8ab65fa0a
     	addSequential(new C_AutoDrive(6, 90, 1.0));
     	
     }
