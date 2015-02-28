@@ -29,7 +29,7 @@ public class C_TwoToteAuton extends CommandGroup {
     	addSequential(new C_GoToTop());
     	
     	//pickup first bin/tote combo
-    	addSequential(new C_AutorunToteIntake(ToteIntake.TOTE_INTAKE_POWER));
+    	addSequential(new C_AutorunToteIntake(ToteIntake.TOTE_INTAKE_POWER_GENTLE));
     	addSequential(new C_SetBinIntake(BinIntake.INTAKE_POWER));
     	Timer.delay(0.5);
     	addParallel(new C_SeekPosition(FourBar.FOUR_BAR_HIGH_POSITION));
