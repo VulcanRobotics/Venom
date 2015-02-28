@@ -30,7 +30,7 @@ public class RobotMap {
 	
 	public static final int LEFT_DART_POTENTIOMETER = 0;
 	public static final int RIGHT_DART_POTENTIOMETER = 1;
-	
+
 	//Hooks
 	public static final int HOOK_DEPLOY_SOLENOID = 1;
 	
@@ -45,12 +45,12 @@ public class RobotMap {
 	//Operator Control Mapping---------------------------------------------
 	public static final int OPERATOR_JOYSTICK = 1;
 	//Elevator Controls
-	public static final int BUTTON_ELEVATOR_DROP_STACK = 12;
-	public static final int BUTTON_ELEVATOR_RAISE_STACK = 8;
-	public static final int BUTTON_ELEVATOR_STEP_POSITION = 10;
+	//public static final int BUTTON_ELEVATOR_DROP_STACK = 12;
+	//public static final int BUTTON_ELEVATOR_RAISE_STACK = 8;
+	//public static final int BUTTON_ELEVATOR_STEP_POSITION = 10;
 	public static final int BUTTON_ELEVATOR_MANUAL_RAISE = 9;
 	public static final int BUTTON_ELEVATOR_MANUAL_LOWER = 11;
-	public static final int BUTTON_ELEVATOR_ZERO_POSITION = 7;
+	//public static final int BUTTON_ELEVATOR_ZERO_POSITION = 7;
 	
 	public static final int ELEVATOR_TOTE_DETECTOR = 12; //DIO
 	//Tote Intake Controls
@@ -62,4 +62,7 @@ public class RobotMap {
 	public static final int BUTTON_FOUR_BAR_OPEN_GRABBER = 1;
 	public static final int BUTTON_FOUR_BAR_HIGH_POSITION = 6;
 	public static final int BUTTON_FOUR_BAR_LOW_POSITION = 4;
+	
+	public static final int BUTTON_FOUR_BAR_GET_BIN_FROM_STEP_POSITION = 7;
+	public static final int BUTTON_FOUR_BAR_GET_NOODLE_POSITION = 8;
 }

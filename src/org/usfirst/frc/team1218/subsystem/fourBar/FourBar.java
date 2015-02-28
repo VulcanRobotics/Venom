@@ -43,6 +43,9 @@ public class FourBar extends Subsystem implements PIDSource{
 	
 	public static final double FOUR_BAR_HIGH_POSITION = 0.7;
 	public static final double FOUR_BAR_LOW_POSITION = 0.2;
+	public static final double FOUR_BAR_GET_BIN_FROM_STEP_POSITION = 0.35; //TODO: find this
+	public static final double FOUR_BAR_GET_NOODLE_POSITION = .42; //TODO: find this
+	
 	
 	public FourBar() {
 		dartLeft = new DartController(RobotMap.FOUR_BAR_LEFT_DART);

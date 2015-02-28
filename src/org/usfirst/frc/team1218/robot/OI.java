@@ -54,6 +54,10 @@ public class OI {
 	//Four Bar
 	public static Button fourBarHighPosition;
 	public static Button fourBarLowPosition;
+	
+	public static Button fourBarGetBinFromStepPosition;
+	public static Button fourBarGetNoodlePosition;
+	
 	//Bin Intake
 	public static Button runBinIntake;
 	public static Button openBinGrabber;
@@ -81,14 +85,14 @@ public class OI {
         operator = new Joystick(RobotMap.OPERATOR_JOYSTICK);
         
         //Elevator
-        elevatorDropStack = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_DROP_STACK);
-        elevatorDropStack.whenPressed(new C_SetElevatorSetpoint(Elevator.ELEVATOR_DROP_POSITION));
+       // elevatorDropStack = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_DROP_STACK);
+       // elevatorDropStack.whenPressed(new C_SetElevatorSetpoint(Elevator.ELEVATOR_DROP_POSITION));
         	
-        elevatorRaiseStack = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_RAISE_STACK);
-        elevatorRaiseStack.whenPressed(new C_SetElevatorSetpoint(Elevator.ELEVATOR_RAISE_POSITION));
+       // elevatorRaiseStack = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_RAISE_STACK);
+        //elevatorRaiseStack.whenPressed(new C_SetElevatorSetpoint(Elevator.ELEVATOR_RAISE_POSITION));
         	
-        elevatorToStepPosition = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_STEP_POSITION);
-        elevatorToStepPosition.whenPressed(new C_SetElevatorSetpoint(Elevator.ELEVATOR_STEP_POSITION));
+      //  elevatorToStepPosition = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_STEP_POSITION);
+       // elevatorToStepPosition.whenPressed(new C_SetElevatorSetpoint(Elevator.ELEVATOR_STEP_POSITION));
         
         elevatorManualRaise = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_MANUAL_RAISE);
         elevatorManualRaise.whileHeld(new C_ManualControl(Elevator.ELEVATOR_MANUAL_POSITIONING_POWER));
@@ -96,8 +100,8 @@ public class OI {
         elevatorManualLower = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_MANUAL_LOWER);
         elevatorManualLower.whileHeld(new C_ManualControl(-Elevator.ELEVATOR_MANUAL_POSITIONING_POWER));
         
-        elevatorZeroPosition = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_ZERO_POSITION);
-        elevatorZeroPosition.whenPressed(new C_ReferenceLimit());
+        //elevatorZeroPosition = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_ZERO_POSITION);
+        //elevatorZeroPosition.whenPressed(new C_ReferenceLimit());
         
         //Tote Intake
         elevatorRunToteIntake = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_RUN_TOTE_INTAKE);
@@ -112,6 +116,12 @@ public class OI {
         	
         fourBarLowPosition = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_LOW_POSITION);
         fourBarLowPosition.whileHeld(new C_SeekPosition(FourBar.FOUR_BAR_LOW_POSITION));
+        
+        fourBarGetBinFromStepPosition = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_GET_BIN_FROM_STEP_POSITION);
+        fourBarGetBinFromStepPosition.whileHeld(new C_SeekPosition(FourBar.FOUR_BAR_GET_BIN_FROM_STEP_POSITION));
+        
+        fourBarGetNoodlePosition = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_GET_NOODLE_POSITION);
+        fourBarGetNoodlePosition.whileHeld(new C_SeekPosition(FourBar.FOUR_BAR_GET_NOODLE_POSITION));
         
         //Bin Intake
         runBinIntake = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_RUN_BIN_INTAKE);
