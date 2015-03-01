@@ -1,7 +1,11 @@
 
 package org.usfirst.frc.team1218.robot;
 
-import org.usfirst.frc.team1218.auton.C_AutonSelector;
+import org.usfirst.frc.team1218.auton.C_JustDrive;
+import org.usfirst.frc.team1218.auton.C_OneToteAuton;
+import org.usfirst.frc.team1218.auton.C_StepAuton;
+import org.usfirst.frc.team1218.auton.C_TwoToteAuton;
+import org.usfirst.frc.team1218.auton.C_ZeroAuton;
 import org.usfirst.frc.team1218.subsystem.autonHooks.Hooks;
 import org.usfirst.frc.team1218.subsystem.binIntake.BinIntake;
 import org.usfirst.frc.team1218.subsystem.elevator.Elevator;
@@ -35,6 +39,10 @@ public class Robot extends IterativeRobot {
 	public static ToteIntake toteIntake;
 	public static BinIntake binIntake;
 	public static OI oi;
+	private static String autonName;
+
+	
+	public Command robotAuton;
 	
     Command autonomousCommand;
     
@@ -50,19 +58,41 @@ public class Robot extends IterativeRobot {
     	hooks = new Hooks();
     	toteIntake = new ToteIntake();
     	binIntake = new BinIntake();
-		oi = new OI();
-		
+		oi = new OI();		
         //instantiate the command used for the autonomous period
-        autonomousCommand = new C_AutonSelector();
         System.out.println("Robot Initialized");
     }
 	
 	public void disabledPeriodic() {
+		autonName = SmartDashboard.getString("Auton_Select", "Not Set");
+		SmartDashboard.putString("Current_Auton_Selector", autonName);
 		Scheduler.getInstance().run();
 		syncDashboard();
 	}
 	
     public void autonomousInit() {
+    	autonName = SmartDashboard.getString("Auton_Select", "Not Set");
+		SmartDashboard.putString("Current_Auton_Selector", autonName);
+    	System.out.println("Auton " + autonName + " selected.");
+    	switch (autonName) {
+    		default:
+    			autonomousCommand = new C_ZeroAuton();
+    		case "No Auton":
+    			autonomousCommand = new C_ZeroAuton();
+    			break;
+    		case "TwoToteAuton":
+    			autonomousCommand = new C_TwoToteAuton();
+    			break;
+    		case "OneToteAuton":
+    			autonomousCommand = new C_OneToteAuton();
+    			break;
+    		case "StepAuton":
+    			autonomousCommand = new C_StepAuton();
+    			break;
+    		case "JustDrive":
+    			autonomousCommand = new C_JustDrive();
+    			break;
+    	}
         if (autonomousCommand != null) autonomousCommand.start();
     }
 

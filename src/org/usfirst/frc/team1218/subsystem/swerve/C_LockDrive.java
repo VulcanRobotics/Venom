@@ -14,11 +14,11 @@ public class C_LockDrive extends Command {
 	
 	public C_LockDrive() {
 		requires(Robot.swerveDrive);
+		Robot.swerveDrive.setFieldCentricDriveMode(false);
 	}
 	
 	@Override
 	protected void initialize() {
-		Robot.swerveDrive.enableHeadingController(Robot.swerveDrive.getHeading());
 	}
 	
 	@Override
@@ -35,7 +35,7 @@ public class C_LockDrive extends Command {
 
 	@Override
 	protected void end() {
-		Robot.swerveDrive.disableHeadingController();
+		Robot.swerveDrive.setFieldCentricDriveMode(true);
 	}
 
 	@Override

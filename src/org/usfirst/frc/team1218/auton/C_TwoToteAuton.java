@@ -2,8 +2,6 @@ package org.usfirst.frc.team1218.auton;
 
 import org.usfirst.frc.team1218.subsystem.binIntake.BinIntake;
 import org.usfirst.frc.team1218.subsystem.binIntake.C_SetBinIntake;
-import org.usfirst.frc.team1218.subsystem.binIntake.C_SetClaw;
-import org.usfirst.frc.team1218.subsystem.binIntake.C_SetRollLeft;
 import org.usfirst.frc.team1218.subsystem.elevator.C_GoToBottom;
 import org.usfirst.frc.team1218.subsystem.elevator.C_GoToTop;
 import org.usfirst.frc.team1218.subsystem.elevator.C_WaitForTote;
@@ -27,13 +25,13 @@ public class C_TwoToteAuton extends CommandGroup {
     	addSequential(new C_Index());
     	addParallel(new C_SeekPosition(0.2));
     	addSequential(new C_GoToTop());
-    	
-    	addSequential(new C_Index());
+    
     	
     	//pickup first bin/tote combo
 
     	addSequential(new C_AutorunToteIntake(ToteIntake.TOTE_INTAKE_POWER_GENTLE));
     	addSequential(new C_SetBinIntake(BinIntake.INTAKE_POWER));
+    	addParallel(new C_AutoDrive(1.5, 0, 0.7));
     	Timer.delay(0.5);
     	addParallel(new C_SeekPosition(FourBar.FOUR_BAR_HIGH_POSITION));
 
@@ -53,7 +51,7 @@ public class C_TwoToteAuton extends CommandGroup {
     	
     	//drive to auto zone
     	addSequential(new C_Index());
-    	addSequential(new C_AutoDrive(6, 90, 1.0));
+    	addSequential(new C_AutoDrive(8, 90, 1.0));
     	
     }
     

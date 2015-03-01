@@ -88,6 +88,7 @@ public class Elevator extends Subsystem {
     	SmartDashboard.putBoolean("Elevator_Upper_Limit", liftMaster.isFwdLimitSwitchClosed());
     	SmartDashboard.putBoolean("Elevator_Lower_Limit", liftMaster.isRevLimitSwitchClosed());
     	SmartDashboard.putNumber("Elevator_Position_Error", liftMaster.getClosedLoopError());
+    	SmartDashboard.putBoolean("Elevator_Has_Tote", getHasTote());
     }
     
     public boolean atReference() {

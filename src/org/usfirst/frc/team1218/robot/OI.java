@@ -1,12 +1,11 @@
 package org.usfirst.frc.team1218.robot;
 
-import org.usfirst.frc.team1218.auton.C_TwoToteAuton;
 import org.usfirst.frc.team1218.subsystem.binIntake.BinIntake;
 import org.usfirst.frc.team1218.subsystem.binIntake.C_SetBinIntake;
 import org.usfirst.frc.team1218.subsystem.binIntake.C_SetClaw;
 import org.usfirst.frc.team1218.subsystem.elevator.C_ManualControl;
 import org.usfirst.frc.team1218.subsystem.elevator.Elevator;
-import org.usfirst.frc.team1218.subsystem.fourBar.C_GoToPosition;
+import org.usfirst.frc.team1218.subsystem.fourBar.C_FourBarDefault;
 import org.usfirst.frc.team1218.subsystem.fourBar.C_SeekPosition;
 import org.usfirst.frc.team1218.subsystem.fourBar.FourBar;
 import org.usfirst.frc.team1218.subsystem.swerve.C_Index;
@@ -121,10 +120,9 @@ public class OI {
         openBinGrabber.whenPressed(new C_SetClaw(true));
         openBinGrabber.whenInactive(new C_SetClaw(false));
         
-        test = new JoystickButton(driver, OI.ButtonType.X);
         test2 = new JoystickButton(driver, OI.ButtonType.Y);
-        test.whenPressed(new C_TwoToteAuton());
-        test2.whenPressed(new C_GoToPosition(0.6));
+        test2.whenPressed(new C_SeekPosition(0.6));
+        test2.whenReleased(new C_FourBarDefault());
 	}
     
     public static Vector getDriverLeftJoystickVector() {

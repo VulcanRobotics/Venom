@@ -25,7 +25,7 @@ public class C_AutoDrive extends Command implements PIDSource, PIDOutput {
     public C_AutoDrive(double distance, double direction, double maxSpeed) {
     	requires(Robot.swerveDrive);
     	distanceController = new PIDController(P, I, D, this, this);
-    	distanceController.setSetpoint(distance);
+    	distanceController.setSetpoint(Math.abs(distance));//XXX Reimplement better
     	distanceController.setOutputRange(-maxSpeed, maxSpeed);
     	this.direction = direction;
     }
