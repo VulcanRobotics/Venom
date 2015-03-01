@@ -22,6 +22,8 @@ public class C_AutoDrive extends Command implements PIDSource, PIDOutput {
 	double I = 0.0001;
 	double D = 0;
 	
+	boolean[] moduleToUseInDistanceCalculation = {true, true, true, true};
+	
     public C_AutoDrive(double distance, double direction, double maxSpeed) {
     	requires(Robot.swerveDrive);
     	distanceController = new PIDController(P, I, D, this, this);
@@ -29,6 +31,21 @@ public class C_AutoDrive extends Command implements PIDSource, PIDOutput {
     	distanceController.setOutputRange(-maxSpeed, maxSpeed);
     	this.direction = direction;
     }
+    
+    public C_AutoDrive(double distance, double direction, double maxSpeed,
+    		boolean measureSM0, boolean measureSM1, boolean measureSM2, boolean measureSM3) {
+    	requires(Robot.swerveDrive);
+    	this.distanceController = new PIDController(P, I, D, this, this);
+    	this.distanceController.setSetpoint(Math.abs(distance));//XXX Reimplement better
+    	this.distanceController.setOutputRange(-maxSpeed, maxSpeed);
+    	this.direction = direction;
+    	this.moduleToUseInDistanceCalculation[0] = measureSM0;
+    	this.moduleToUseInDistanceCalculation[1] = measureSM1;
+    	this.moduleToUseInDistanceCalculation[2] = measureSM2;
+    	this.moduleToUseInDistanceCalculation[3] = measureSM3;
+    }
+    
+    
     
     protected void initialize() {
     	setTimeout(10);
@@ -39,8 +56,11 @@ public class C_AutoDrive extends Command implements PIDSource, PIDOutput {
     }
     
     public double pidGet() {
-    	System.out.println("average distance:" + Robot.swerveDrive.getAverageDistanceDriven());
-    	return Robot.swerveDrive.getAverageDistanceDriven();
+    	return Robot.swerveDrive.getAverageDistanceDriven(
+    			moduleToUseInDistanceCalculation[0],
+    			moduleToUseInDistanceCalculation[1],
+    			moduleToUseInDistanceCalculation[2],
+    			moduleToUseInDistanceCalculation[3]);
     }
     
     public void pidWrite(double magnitude) {

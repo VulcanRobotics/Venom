@@ -164,12 +164,26 @@ public class SwerveDrive extends Subsystem implements PIDOutput{
     	module.forEach(m -> m.resetDistanceDriven());
     }
     
-    public double getAverageDistanceDriven() {
+    public double getAverageDistanceDriven(boolean SM0, boolean SM1, boolean SM2, boolean SM3) {
+    	int numberToAverage = 0;
     	double totalDistance = 0;
-    	for (int i = 0; i < 4; i++) {
-    		totalDistance += Math.abs(module.get(i).getAbsoluteDistanceDriven());
+    	if (SM0) {
+    		numberToAverage++;
+        	totalDistance += Math.abs(module.get(0).getAbsoluteDistanceDriven());
     	}
-    	return totalDistance / 4;
+    	if (SM1) {
+    		numberToAverage++;
+        	totalDistance += Math.abs(module.get(1).getAbsoluteDistanceDriven());
+    	}
+    	if (SM2) {
+    		numberToAverage++;
+        	totalDistance += Math.abs(module.get(2).getAbsoluteDistanceDriven());
+    	}
+    	if (SM3) {
+    		numberToAverage++;
+        	totalDistance += Math.abs(module.get(3).getAbsoluteDistanceDriven());
+    	}
+    	return totalDistance / numberToAverage;
     }
     
     public void powerDrive(Vector translationVector, double rotation) {
