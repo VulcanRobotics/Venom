@@ -21,6 +21,9 @@ public class RobotMap {
 	public static final int TOTE_INTAKE_L = 32;
 	public static final int TOTE_INTAKE_R = 33;
 	
+	public static final int TOTE_POSSESSION_INDICATOR = 0;
+	public static final int ELEVATOR_TOTE_DETECTOR = 12; //DIO
+	
 	//Four Bar
 	public static final int FOUR_BAR_LEFT_DART = 20;
 	public static final int FOUR_BAR_RIGHT_DART = 21;
@@ -52,7 +55,6 @@ public class RobotMap {
 	public static final int BUTTON_ELEVATOR_MANUAL_LOWER = 11;
 	//public static final int BUTTON_ELEVATOR_ZERO_POSITION = 7;
 	
-	public static final int ELEVATOR_TOTE_DETECTOR = 12; //DIO
 	//Tote Intake Controls
 	public static final int BUTTON_ELEVATOR_RUN_TOTE_INTAKE = 5;
 	public static final int BUTTON_ELEVATOR_REVERSE_TOTE_INTAKE = 3;
