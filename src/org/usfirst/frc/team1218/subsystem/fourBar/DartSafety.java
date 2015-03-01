@@ -102,17 +102,17 @@ public class DartSafety {
 		@Override
 		protected void initialize() {
 			System.out.println("WARNING: Darts have drifted out of specified tolerance range. Disabling...");
+			Robot.fourBar.disableDarts();
 			dartKillFlag = true;
 		}
 		
 		@Override
 		protected void execute() {
-			Robot.fourBar.disableDarts();
 		}
 		
 		@Override
 		protected boolean isFinished() {
-			return false;
+			return true;
 		}
 		
 		@Override
@@ -125,5 +125,13 @@ public class DartSafety {
 			end();
 		}
 		
+	}
+
+	public void reevaluateDartSafety() {
+		if ( Robot.fourBar.getDartPositionDifference() < FourBar.DART_FAILSAFE_DISTANCE) {
+			this.dartKillFlag = false;
+			Robot.fourBar.enableDarts();
+			System.out.println("Dart Kill has been lifted");
+		}
 	}
 }

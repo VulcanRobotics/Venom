@@ -6,6 +6,7 @@ import org.usfirst.frc.team1218.subsystem.binIntake.C_SetClaw;
 import org.usfirst.frc.team1218.subsystem.elevator.C_ManualControl;
 import org.usfirst.frc.team1218.subsystem.elevator.Elevator;
 import org.usfirst.frc.team1218.subsystem.fourBar.C_FourBarDefault;
+import org.usfirst.frc.team1218.subsystem.fourBar.C_ReevaluateDartSafety;
 import org.usfirst.frc.team1218.subsystem.fourBar.C_SeekPosition;
 import org.usfirst.frc.team1218.subsystem.fourBar.FourBar;
 import org.usfirst.frc.team1218.subsystem.swerve.C_Index;
@@ -20,6 +21,8 @@ import org.usfirst.frc.team1218.subsystem.toteIntake.ToteIntake;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.buttons.Trigger;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -55,6 +58,8 @@ public class OI {
 	
 	public static Button fourBarGetBinFromStepPosition;
 	public static Button fourBarGetNoodlePosition;
+	
+	public static ButtonReevaluateDartSafety reevaluateDartSafety;
 	
 	//Bin Intake
 	public static Button runBinIntake;
@@ -110,6 +115,9 @@ public class OI {
         
         fourBarGetNoodlePosition = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_GET_NOODLE_POSITION);
         fourBarGetNoodlePosition.whileHeld(new C_SeekPosition(FourBar.FOUR_BAR_GET_NOODLE_POSITION));
+        
+        reevaluateDartSafety = new ButtonReevaluateDartSafety();
+        reevaluateDartSafety.whenActive(new C_ReevaluateDartSafety());
         
         //Bin Intake
         runBinIntake = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_RUN_BIN_INTAKE);
@@ -167,6 +175,14 @@ public class OI {
 
 	public static double getTurboPower() {
 		return driver.getRawAxis(RobotMap.TRIGGER_TURBO_DRIVE);
+	}
+	
+	public class ButtonReevaluateDartSafety extends Trigger {
+
+		@Override
+		public boolean get() {
+			return SmartDashboard.getBoolean("Reevaluate_Dart_Safety", false);
+		}
 	}
 }
 

@@ -108,17 +108,13 @@ public class FourBar extends Subsystem implements PIDSource{
     }
     
     protected void disableDarts() {
-    	dartEnablePID(false);
     	dartLeft.disableControl();
     	dartRight.disableControl();
-    	dartMasterPositionController.disable();
-    	dartSlavePositionController.disable();
     }
     
     protected void enableDarts() {
     	if (!Robot.dartSafety.dartKilled()) {
     		dartLeft.enableControl();
-    		
         	dartRight.enableControl();
         	dartSlavePositionController.enable();
         	dartSlavePositionController.setSetpoint(0.0);
