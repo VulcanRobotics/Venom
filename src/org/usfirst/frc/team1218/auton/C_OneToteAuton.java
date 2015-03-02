@@ -24,7 +24,7 @@ public class C_OneToteAuton extends CommandGroup {
         //intake tote
         addParallel(new C_AutoDrive(3, 0, 0.8));
         addSequential(new C_AutorunToteIntake(ToteIntake.TOTE_INTAKE_POWER));
-        addSequential(new C_WaitForTote(5));
+        addSequential(new C_WaitForTote(5), 5);
         addSequential(new C_GoToBottom());
         addSequential(new C_GoToTop());
         
@@ -32,6 +32,6 @@ public class C_OneToteAuton extends CommandGroup {
         addSequential(new C_AutorunToteIntake(0.0));
         
         //drive to autozone
-        addSequential(new C_AutoDrive(11, 90, 1));
+        addSequential(new C_AutoDrive(10, 90, 1));
     }
 }

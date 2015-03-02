@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.ControlMode;
 import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -15,6 +16,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Elevator extends Subsystem {
 	
 	private DigitalInput toteDetector;
+	private DigitalOutput toteIndicator;
 	
 	private final CANTalon liftMaster;
 	
@@ -46,6 +48,7 @@ public class Elevator extends Subsystem {
     	liftMaster.setFeedbackDevice(FeedbackDevice.QuadEncoder);
     	
     	toteDetector = new DigitalInput(RobotMap.ELEVATOR_TOTE_DETECTOR);
+    	toteIndicator = new DigitalOutput(RobotMap.ELEVATOR_TOTE_INDICATOR);
     }
     
     /**
@@ -89,6 +92,7 @@ public class Elevator extends Subsystem {
     	SmartDashboard.putBoolean("Elevator_Lower_Limit", liftMaster.isRevLimitSwitchClosed());
     	SmartDashboard.putNumber("Elevator_Position_Error", liftMaster.getClosedLoopError());
     	SmartDashboard.putBoolean("Elevator_Has_Tote", getHasTote());
+    	toteIndicator.set(getHasTote());
     }
     
     public boolean atReference() {
