@@ -51,7 +51,7 @@ public class FourBar extends Subsystem implements PIDSource{
 		dartMasterPositionController.setOutputRange(-0.5, 0.5);
 		
 		dartRight = new DartController(RobotMap.FOUR_BAR_RIGHT_DART, RobotMap.RIGHT_DART_POTENTIOMETER);
-		dartSlavePositionController = new PIDController(DART_SLAVE_P, DART_SLAVE_I, DART_SLAVE_D, dartRight, dartRight);
+		dartSlavePositionController = new PIDController(DART_SLAVE_P, DART_SLAVE_I, DART_SLAVE_D, this, dartRight);
 		dartSlavePositionController.setOutputRange(-DART_MAX_OUTPUT_POWER, DART_MAX_OUTPUT_POWER);
 		dartSlavePositionController.enable();
 		dartSlavePositionController.setAbsoluteTolerance(DART_ON_TARGET_SLAVE_DISTANCE);
