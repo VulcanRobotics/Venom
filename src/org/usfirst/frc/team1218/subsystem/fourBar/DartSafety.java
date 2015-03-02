@@ -48,7 +48,7 @@ public class DartSafety {
 	private class DartRealignWatch extends Trigger {
 		@Override
 		public boolean get() {
-			return (Robot.fourBar.getDartPositionDifference() > FourBar.DART_REALIGN_DISTANCE) && (!dartKilled());
+			return false;
 		}
 	}
 	
@@ -67,7 +67,7 @@ public class DartSafety {
 		 
 		@Override
 		protected void execute() {
-			if(Robot.fourBar.dartLeftPotentiometer.get() > Robot.fourBar.dartRightPotentiometer.get()) {
+			if(Robot.fourBar.dartLeft.getPosition() > Robot.fourBar.dartRight.getPosition()) {
 				Robot.fourBar.dartLeft.set(-FourBar.DART_REALIGN_POWER);
 				Robot.fourBar.dartRight.set(FourBar.DART_REALIGN_POWER);
 			} else {
