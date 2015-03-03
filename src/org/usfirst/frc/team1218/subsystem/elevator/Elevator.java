@@ -22,6 +22,8 @@ public class Elevator extends Subsystem {
 	
 	private boolean liftHasReferenced = false;
 	
+	ElevatorSafety elevatorSafety;
+	
 	private static final double ELEVATOR_P = 0.1;
 	private static final double ELEVATOR_I = 0.0001;
 	private static final double ELEVATOR_D = 0.0;
@@ -44,11 +46,14 @@ public class Elevator extends Subsystem {
     	liftMaster.enableLimitSwitch(true, true);
     	liftMaster.ConfigFwdLimitSwitchNormallyOpen(false);
     	liftMaster.ConfigRevLimitSwitchNormallyOpen(false);
-    	liftMaster.setPID(ELEVATOR_P, ELEVATOR_I, ELEVATOR_D);
-    	liftMaster.setFeedbackDevice(FeedbackDevice.QuadEncoder);
+    	liftMaster.changeControlMode(ControlMode.PercentVbus);
+    	//liftMaster.setPID(ELEVATOR_P, ELEVATOR_I, ELEVATOR_D);
+    	//liftMaster.setFeedbackDevice(FeedbackDevice.QuadEncoder);
     	
     	toteDetector = new DigitalInput(RobotMap.ELEVATOR_TOTE_DETECTOR);
     	toteIndicator = new DigitalOutput(RobotMap.ELEVATOR_TOTE_INDICATOR);
+    	
+    	elevatorSafety = new ElevatorSafety();
     }
     
     /**
@@ -74,6 +79,10 @@ public class Elevator extends Subsystem {
     	liftMaster.set(power);
     }
      
+    public double getPower() {
+    	return liftMaster.get();
+    }
+    
     public boolean getHasTote() {
     	return toteDetector.get();
     }
@@ -86,13 +95,28 @@ public class Elevator extends Subsystem {
     	return !liftMaster.isRevLimitSwitchClosed();
     }
     
+    public double getCurrent() {
+    	return liftMaster.getOutputCurrent();
+    }
+    
     public void syncDashboard() {
     	SmartDashboard.putNumber("Elevator_Position", getPosition());
     	SmartDashboard.putBoolean("Elevator_Upper_Limit", liftMaster.isFwdLimitSwitchClosed());
     	SmartDashboard.putBoolean("Elevator_Lower_Limit", liftMaster.isRevLimitSwitchClosed());
     	SmartDashboard.putNumber("Elevator_Position_Error", liftMaster.getClosedLoopError());
     	SmartDashboard.putBoolean("Elevator_Has_Tote", getHasTote());
+    	
+    	SmartDashboard.putNumber("Elevator_Current", liftMaster.getOutputCurrent());
+    	
+    	checkForZero();
+    	
     	toteIndicator.set(getHasTote());
+    }
+    
+    public void checkForZero() {
+    	if (getBottomLimit()) {
+    		zeroPosition();
+    	}
     }
     
     public boolean atReference() {

@@ -3,6 +3,7 @@ package org.usfirst.frc.team1218.robot;
 import org.usfirst.frc.team1218.subsystem.binIntake.BinIntake;
 import org.usfirst.frc.team1218.subsystem.binIntake.C_SetBinIntake;
 import org.usfirst.frc.team1218.subsystem.binIntake.C_SetClaw;
+import org.usfirst.frc.team1218.subsystem.elevator.C_AutoStack;
 import org.usfirst.frc.team1218.subsystem.elevator.C_ManualControl;
 import org.usfirst.frc.team1218.subsystem.elevator.Elevator;
 import org.usfirst.frc.team1218.subsystem.fourBar.C_FourBarDefault;
@@ -46,6 +47,8 @@ public class OI {
 	public static Button elevatorManualLower;
 	public static Button elevatorManualRaise;
 	public static Button elevatorZeroPosition;
+	public static Button elevatorAutomatic;
+	
 	//Tote Intake
 	public static Button elevatorRunToteIntake;
 	public static Button elevatorReverseToteIntake;
@@ -85,11 +88,15 @@ public class OI {
         //Operator
         operator = new Joystick(RobotMap.OPERATOR_JOYSTICK);
                 
+        //elevator
         elevatorManualRaise = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_MANUAL_RAISE);
         elevatorManualRaise.whileHeld(new C_ManualControl(Elevator.ELEVATOR_MANUAL_POSITIONING_POWER));
         
         elevatorManualLower = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_MANUAL_LOWER);
         elevatorManualLower.whileHeld(new C_ManualControl(-Elevator.ELEVATOR_MANUAL_POSITIONING_POWER));
+        
+        elevatorAutomatic = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_AUTOMATIC);
+        elevatorAutomatic.whileHeld(new C_AutoStack());;
         
         //Tote Intake
         elevatorRunToteIntake = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_RUN_TOTE_INTAKE);
@@ -114,7 +121,7 @@ public class OI {
         //Bin Intake
         runBinIntake = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_RUN_BIN_INTAKE);
         runBinIntake.whenPressed(new C_SetBinIntake(BinIntake.INTAKE_POWER));
-        runBinIntake.whenInactive(new C_SetBinIntake(0.1));
+        runBinIntake.whenInactive(new C_SetBinIntake(BinIntake.CONTINOUS_HOLD_POWER));
         
         openBinGrabber = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_OPEN_GRABBER);
         openBinGrabber.whenPressed(new C_SetClaw(true));

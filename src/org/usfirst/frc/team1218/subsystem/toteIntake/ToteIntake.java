@@ -17,7 +17,8 @@ public class ToteIntake extends Subsystem {
 	
 	public final static double TOTE_INTAKE_POWER = 0.8;
 	public final static double TOTE_INTAKE_POWER_GENTLE = 0.4;
-
+	
+	public final static double HAS_TOTE_CURRENT_THRESHOLD = 5; //TODO: find this
     public void initDefaultCommand() {
         
     }
@@ -35,10 +36,19 @@ public class ToteIntake extends Subsystem {
     	intakeL.set(power);
     	intakeR.set(-power);
     }
+    
+    public boolean hasTote() {
+    	return getAverageCurrent() > HAS_TOTE_CURRENT_THRESHOLD;
+    }
 
+    public double getAverageCurrent() {
+    	return (intakeL.getOutputCurrent() + intakeR.getOutputCurrent())/2;
+    }
+    
 	public void syncDashboard() {
 		SmartDashboard.putNumber("Tote_Intake_Power", intakeL.get());
+		SmartDashboard.putNumber("Tote_Intake_Right_Power", intakeL.getOutputCurrent());
+		SmartDashboard.putNumber("Tote_Intake_Left_Power", intakeL.getOutputCurrent());
 	}
-    
 }
 
