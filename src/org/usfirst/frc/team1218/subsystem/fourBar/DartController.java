@@ -5,14 +5,17 @@ import org.usfirst.frc.team1218.robot.Robot;
 
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.CANTalon.ControlMode;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 
 public class DartController implements PIDSource, PIDOutput{
 	
-	private static final double TOP_SOFT_LIMIT = 0.89;
-	private static final double BOTTOM_SOFT_LIMIT = 0.05;
+	double lastOverCurrentTime = -100;
+	
+	static final double TOP_SOFT_LIMIT = 0.89;
+	static final double BOTTOM_SOFT_LIMIT = 0.05;
 	
 	private static final double MAX_AMPERAGE = 20.0;
 	
@@ -20,6 +23,10 @@ public class DartController implements PIDSource, PIDOutput{
 	
 	private final CANTalon talon;
 	private final AnalogPotentiometer potentiometer;
+	
+	final static double OVER_CURRENT_TIMEOUT = 5;
+	
+	public static double SLOWDOWN_DISTANCE = 0.2;
 	
 	public DartController(int deviceNumber, int potentiometerPort) {
 		enabled = true;
@@ -66,11 +73,15 @@ public class DartController implements PIDSource, PIDOutput{
 	}
 	
 	public void setPower(double power) {
-		if (safetyCheck(power) && !Robot.fourBar.isAlignmentSafe()) {
+		if (safetyCheck(power) && Robot.fourBar.isAlignmentSafe() && !Robot.fourBar.isCoolingDown() ) {
 			talon.set(power);
 		} else {
 			talon.set(0);
 		}
+	}
+	
+	public boolean isCoolingDown() {
+		return Timer.getFPGATimestamp() - lastOverCurrentTime < OVER_CURRENT_TIMEOUT || isOverCurrent();
 	}
 	
 	public boolean safetyCheck(double power) {
@@ -86,9 +97,14 @@ public class DartController implements PIDSource, PIDOutput{
 				System.out.println("Dart Safety Check Failed: Top Soft Limit Hit and power " + power + " was written to dart.");
 				return false;
 			}
-			
-			if (!Robot.fourBar.isCurrentSafe()) {
+			if(Robot.fourBar.isCoolingDown()) {
 				talon.set(0);
+				System.out.println("darts went over current limit, cooling off...");
+				return false;
+			}
+			if (Robot.fourBar.isOverCurrent()) {
+				talon.set(0);
+				lastOverCurrentTime = Timer.getFPGATimestamp();
 				System.out.println("Dart Safety Check Failed: Maximum Amperage Exceeded.");
 				return false;
 			}
