@@ -18,7 +18,8 @@ private final Solenoid clamp;
 	private final CANTalon binIntakeRight;
 	
 	public static final double INTAKE_POWER = 1.0;
-
+	public static final double CONTINOUS_HOLD_POWER = 0.1;
+	
 	public BinIntake() {
 		binIntakeLeft = new CANTalon(RobotMap.BIN_INTAKE_L);
 		binIntakeRight = new CANTalon(RobotMap.BIN_INTAKE_R);

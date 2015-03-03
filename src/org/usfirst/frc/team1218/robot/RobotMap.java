@@ -48,6 +48,7 @@ public class RobotMap {
 	//Elevator
 	public static final int BUTTON_ELEVATOR_MANUAL_RAISE = 9;
 	public static final int BUTTON_ELEVATOR_MANUAL_LOWER = 11;
+	public static final int BUTTON_ELEVATOR_AUTOMATIC = 12;
 	
 	//Tote Intake
 	public static final int BUTTON_ELEVATOR_RUN_TOTE_INTAKE = 5;

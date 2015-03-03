@@ -18,7 +18,16 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class C_TwoToteAuton extends CommandGroup {
     
+	final double startTime;
+	
+	double currentTime() {
+		return Timer.getFPGATimestamp() - startTime;
+	}
+	
     public  C_TwoToteAuton() {
+    	
+    	startTime = Timer.getFPGATimestamp();
+    	
     	System.out.println("Two Tote Auton Selected");
     	//get ready - index set heading , prep for bin pickup, turn on intake, pre position darts
     	addSequential(new C_ZeroRobotHeading());
@@ -52,6 +61,8 @@ public class C_TwoToteAuton extends CommandGroup {
     	//drive to auto zone
     	addSequential(new C_Index());
     	addSequential(new C_AutoDrive(8, 90, 1.0));
+    	
+    	System.out.println("done 2 tote auton. Total completion time: " + currentTime());
     	
     }
     
