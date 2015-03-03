@@ -1,46 +1,54 @@
 package org.usfirst.frc.team1218.subsystem.fourBar;
 
 
+import org.usfirst.frc.team1218.robot.Robot;
+
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.CANTalon.ControlMode;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 
-public class DartController extends CANTalon implements PIDSource, PIDOutput{
+public class DartController implements PIDSource, PIDOutput{
 	
-	final double BOTTOM_SOFT_LIMIT = 0.3;
-	final double TOP_SOFT_LIMIT = 0.7;
+	private static final double TOP_SOFT_LIMIT = 0.7;
+	private static final double BOTTOM_SOFT_LIMIT = 0.3;
 	
-	final double MAX_AMPERAGE = 1;
+	private static final double MAX_AMPERAGE = 1;
 	
 	private boolean enabled;
 	
-	protected final AnalogPotentiometer potentiometer;
+	private final CANTalon talon;
+	private final AnalogPotentiometer potentiometer;
 	
 	public DartController(int deviceNumber, int potentiometerPort) {
-		super(deviceNumber);
-		
 		enabled = true;
-		
+		talon = new CANTalon(deviceNumber);
 		potentiometer = new AnalogPotentiometer(potentiometerPort);
-		
-		changeControlMode(ControlMode.PercentVbus);
-    	enableLimitSwitch(true, true);
-    	ConfigFwdLimitSwitchNormallyOpen(false);
-    	ConfigRevLimitSwitchNormallyOpen(false);
-    	enableBrakeMode(true);
+		talon.changeControlMode(ControlMode.PercentVbus);
+		talon.enableLimitSwitch(true, true);
+		talon.ConfigFwdLimitSwitchNormallyOpen(false);
+		talon.ConfigRevLimitSwitchNormallyOpen(false);
+		talon.enableBrakeMode(true);
+		talon.setSafetyEnabled(true);
+		talon.setExpiration(0.2); //TODO verify
+	}
+	
+	public void enable() {
+		if (!Robot.fourBar.isFourBarAlignmentSafe()) {
+			enabled = true;
+		} else {
+			System.out.println("Cannot enable dart: DartSafety has been triggered...");
+		}
 	}
 	
 	public void disable() {
 		enabled = false;
+		talon.set(0.0);
 	}
 	
 	public boolean isEnabled() {
 		return enabled;
-	}
-	
-	public double get() {
-		return getPosition();
 	}
 	
 	public double getPosition() {
@@ -48,58 +56,56 @@ public class DartController extends CANTalon implements PIDSource, PIDOutput{
 	}
 	
 	public double getPower () {
-		return super.get();
-	}
-	
-	public void set(double speed) {
-		setPower(speed);
+		return talon.get();
 	}
 	
 	public double getCurrent() {
-		return super.getOutputCurrent();
+		return talon.getOutputCurrent();//TODO Verify that will work, I believe the talon firmware may not support this method yet.
 	}
 	
 	public void setPower(double power) {
-		if (safetyCheck(power)) {
-			super.set(power);
-		}
-		else{
-			super.set(0);
+		if (safetyCheck(power) && !Robot.fourBar.isFourBarAlignmentSafe()) {
+			talon.set(power);
+		} else {
+			talon.set(0);
 		}
 	}
 	
-	boolean safetyCheck(){
-		return safetyCheck(super.get());
-	}
-	
-	boolean safetyCheck(double power) {
+	public boolean safetyCheck(double power) {
 		if (enabled) {
-			if (getPosition() < BOTTOM_SOFT_LIMIT && power<= 0) { //if below bottom soft limit and going down
-				super.set(0);
-				System.out.println("bottom soft limit hit" + power);
+			if (getPosition() < BOTTOM_SOFT_LIMIT && power <= 0) { //if below bottom soft limit and going down
+				talon.set(0);
+				System.out.println("Dart Safety Check Failed: Bottom Soft Limit Hit and power " + power + " was written to dart.");
 				return false;
 			}
+			
 			if (getPosition() > TOP_SOFT_LIMIT && power >= 0) { //if above top soft limit and going up
-				super.set(0);
-				System.out.println("soft top limit hit" + power);
+				talon.set(0);
+				System.out.println("Dart Safety Check Failed: Top Soft Limit Hit and power " + power + " was written to dart.");
 				return false;
 			}
-			if (super.getOutputCurrent() > MAX_AMPERAGE) {
-				super.set(0);
-				System.out.println("diabled becaus over max amperage");
+			
+			if (getCurrent() > MAX_AMPERAGE) {
+				talon.set(0);
+				System.out.println("Dart Safety Check Failed: Maximum Amperage Exceeded.");
 				return false;
-			}
-			else {
+			} else {
 				return true;
 			}
-		}
-		else {
-			super.set(0);
+		} else {
+			talon.set(0);
+			System.out.println("Dart Safety Check Failed: Dart is disabled.");
 			return false;
 		}
-		
-		
-	}	
+	}
+	
+	public boolean isFwdLimitSwitchClosed() {
+		return talon.isFwdLimitSwitchClosed();
+	}
+	
+	public boolean isRevLimitSwitchClosed() {
+		return talon.isRevLimitSwitchClosed();
+	}
 	
 	public double pidGet() {
 		return getPosition();

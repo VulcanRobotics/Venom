@@ -17,12 +17,12 @@ public class C_SeekPosition extends Command {
     }
     
     protected void initialize() {
+    	Robot.fourBar.dartEnablePID(true);
     	Robot.fourBar.setDartPosition(setpoint);
     	System.out.println("[Escalator]: Seeking Position: " + setpoint);
     }
     
-    protected void execute() {
-    }
+    protected void execute() {}
     
     protected boolean isFinished() {
         //Can rely on OI Button to end command when released
@@ -30,12 +30,10 @@ public class C_SeekPosition extends Command {
     }
 
     protected void end() {
-    	System.out.println("dart done pidding to setpoint, error: " + Robot.fourBar.dartMasterPositionController.getError());
     	Robot.fourBar.dartEnablePID(false);
     }
 
     protected void interrupted() {
-    	System.out.println("darts seeking position interrupted"); 
     	end();
     }
 }

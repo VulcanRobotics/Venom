@@ -33,7 +33,7 @@ public class C_TwoToteAuton extends CommandGroup {
     	addSequential(new C_SetBinIntake(BinIntake.INTAKE_POWER));
     	addParallel(new C_AutoDrive(1.5, 0, 0.7));
     	Timer.delay(0.5);
-    	addParallel(new C_SeekPosition(FourBar.FOUR_BAR_HIGH_POSITION));
+    	addParallel(new C_SeekPosition(FourBar.PID_HIGH_POSITION));
 
     	addSequential(new C_WaitForTote(20));
     	addSequential(new C_GoToBottom());

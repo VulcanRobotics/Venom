@@ -15,10 +15,16 @@ public class C_FourBarDefault extends Command {
     }
 
     protected void initialize() {
+    	Robot.fourBar.dartEnablePID(false);
     }
 
     protected void execute() {
-    	joystickEscalatorControl(OI.getFourBarControlAxis());
+    	double power = OI.getFourBarControlAxis();
+    	if (Math.abs(power) > 0.1) {
+    		Robot.fourBar.setDartPower(power);
+    	} else {
+    		Robot.fourBar.setDartPower(0.0);
+    	}
     }
 
     protected boolean isFinished() {
@@ -31,16 +37,5 @@ public class C_FourBarDefault extends Command {
     
     protected void interrupted() {
     	end();
-    }
-    
-    /**
-     * Method binds a joystick axis to escalator motor
-     */
-    private void joystickEscalatorControl(double pow) {
-    	if (Math.abs(pow) > 0.1) {
-    		Robot.fourBar.setDartPower(pow);
-    	} else {
-    		Robot.fourBar.setDartPower(0.0);
-    	}
     }
 }
