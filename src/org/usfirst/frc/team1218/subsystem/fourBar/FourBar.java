@@ -13,25 +13,20 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class FourBar extends Subsystem implements PIDOutput{
 	
-	protected final DartController dartLeft;
-	protected final DartController dartRight;
-
-	protected final PIDController positionController;
-
-	public boolean isFourBarAlignmentSafe() {
-		return Robot.fourBar.getDartPositionDifference() > FourBar.DART_FAILSAFE_DISTANCE;
-	}
+	private final DartController dartLeft;
+	private final DartController dartRight;
+	private final PIDController positionController;
 	
 	private static final double POSITION_CONTROLLER_P = 1.0;
 	private static final double POSITION_CONTROLLER_I = 0.0001;
 	private static final double POSITION_CONTROLLER_D = 0.0;
-	
+	private static final double POSITION_CONTROLLER_MAX_OUTPUT = 0.5;
+
 	private static final double DART_POSITION_SYNC_P = 0.3; //TODO tune
 	
-	protected static final double DART_ON_TARGET_MASTER_DISTANCE = 0.06;
-	protected static final double DART_FAILSAFE_DISTANCE = 0.1;
+	private static final double DART_ON_TARGET_DISTANCE = 0.06;
+	private static final double DART_FAILSAFE_DISTANCE = 0.1;
 	
-	protected static final double DART_MAX_POWER = 0.5; //TODO USE
 	
 	public static final double PID_HIGH_POSITION = 0.7; //TODO change to something usefulss
 	public static final double PID_LOW_POSITION = 0.2; //TODO change to something useful
@@ -47,14 +42,18 @@ public class FourBar extends Subsystem implements PIDOutput{
 				POSITION_CONTROLLER_D,
 				dartLeft,
 				this);
-		positionController.setAbsoluteTolerance(DART_ON_TARGET_MASTER_DISTANCE);
-		positionController.setOutputRange(-DART_MAX_POWER, DART_MAX_POWER);
+		positionController.setAbsoluteTolerance(DART_ON_TARGET_DISTANCE);
+		positionController.setOutputRange(-POSITION_CONTROLLER_MAX_OUTPUT, POSITION_CONTROLLER_MAX_OUTPUT);
 		System.out.println("Four Bar Initialized");
 	}
 	
     public void initDefaultCommand() {
        setDefaultCommand(new C_FourBarDefault());
     }
+    
+	public boolean isFourBarAlignmentSafe() {
+		return Robot.fourBar.getDartPositionDifference() > FourBar.DART_FAILSAFE_DISTANCE;
+	}
     
     public boolean isOnTarget() {
     	return positionController.onTarget();
@@ -65,10 +64,10 @@ public class FourBar extends Subsystem implements PIDOutput{
     }
     
     public void setDartPower(double power) {
-    	double direction = (dartLeft.getPosition() > dartRight.getPosition()) ? -1.0 : 1.0;
-    	double proportionalGain = getDartPositionDifference() * DART_POSITION_SYNC_P * direction;
-    	dartLeft.setPower(power + proportionalGain);
-		dartRight.setPower(power - proportionalGain);
+    	double leftPowerGain = (dartRight.getPosition() - dartLeft.getPosition()) * DART_POSITION_SYNC_P;
+    	double rightPowerGain =  (dartLeft.getPosition() - dartRight.getPosition()) * DART_POSITION_SYNC_P;
+    	dartLeft.setPower(power + leftPowerGain);
+		dartRight.setPower(power + rightPowerGain);
     }
     
     protected void dartEnablePID(boolean enabled) {
@@ -80,7 +79,7 @@ public class FourBar extends Subsystem implements PIDOutput{
     }
     
     protected double getDartPositionDifference() {
-    	return Math.abs(Robot.fourBar.dartLeft.getPosition() - Robot.fourBar.dartRight.getPosition());
+    	return Math.abs(dartLeft.getPosition() - dartRight.getPosition());
     }
     
     protected void disableDarts() {
