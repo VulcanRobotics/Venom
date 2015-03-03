@@ -9,7 +9,6 @@ import org.usfirst.frc.team1218.auton.C_ZeroAuton;
 import org.usfirst.frc.team1218.subsystem.autonHooks.Hooks;
 import org.usfirst.frc.team1218.subsystem.binIntake.BinIntake;
 import org.usfirst.frc.team1218.subsystem.elevator.Elevator;
-import org.usfirst.frc.team1218.subsystem.fourBar.DartSafety;
 import org.usfirst.frc.team1218.subsystem.fourBar.FourBar;
 import org.usfirst.frc.team1218.subsystem.swerve.SwerveDrive;
 import org.usfirst.frc.team1218.subsystem.toteIntake.ToteIntake;
@@ -33,7 +32,6 @@ public class Robot extends IterativeRobot {
 	
 	public static SwerveDrive swerveDrive;
 	public static FourBar fourBar;
-	public static DartSafety dartSafety;
 	public static Elevator elevator;
 	public static Hooks hooks;
 	public static ToteIntake toteIntake;
@@ -53,13 +51,11 @@ public class Robot extends IterativeRobot {
     public void robotInit() {
     	swerveDrive = new SwerveDrive();
     	fourBar = new FourBar();
-    	dartSafety = new DartSafety();
     	elevator = new Elevator();
     	hooks = new Hooks();
     	toteIntake = new ToteIntake();
     	binIntake = new BinIntake();
 		oi = new OI();		
-        //instantiate the command used for the autonomous period
         System.out.println("Robot Initialized");
     }
 	

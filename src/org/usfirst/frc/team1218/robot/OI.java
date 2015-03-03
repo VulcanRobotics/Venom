@@ -5,7 +5,6 @@ import org.usfirst.frc.team1218.subsystem.binIntake.C_SetBinIntake;
 import org.usfirst.frc.team1218.subsystem.binIntake.C_SetClaw;
 import org.usfirst.frc.team1218.subsystem.elevator.C_ManualControl;
 import org.usfirst.frc.team1218.subsystem.elevator.Elevator;
-import org.usfirst.frc.team1218.subsystem.fourBar.C_FourBarDefault;
 import org.usfirst.frc.team1218.subsystem.fourBar.C_SeekPosition;
 import org.usfirst.frc.team1218.subsystem.fourBar.FourBar;
 import org.usfirst.frc.team1218.subsystem.swerve.C_Index;
@@ -52,16 +51,11 @@ public class OI {
 	//Four Bar
 	public static Button fourBarHighPosition;
 	public static Button fourBarLowPosition;
-	
 	public static Button fourBarGetBinFromStepPosition;
 	public static Button fourBarGetNoodlePosition;
-	
 	//Bin Intake
 	public static Button runBinIntake;
 	public static Button openBinGrabber;
-	
-	public static Button test;
-	public static Button test2;
 	
 	public OI() {
     	//Driver
@@ -100,16 +94,16 @@ public class OI {
         
         //Four Bar
         fourBarHighPosition = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_HIGH_POSITION);
-        fourBarHighPosition.whileHeld(new C_SeekPosition(FourBar.FOUR_BAR_HIGH_POSITION));
+        fourBarHighPosition.whileHeld(new C_SeekPosition(FourBar.PID_HIGH_POSITION));
         	
         fourBarLowPosition = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_LOW_POSITION);
-        fourBarLowPosition.whileHeld(new C_SeekPosition(FourBar.FOUR_BAR_LOW_POSITION));
+        fourBarLowPosition.whileHeld(new C_SeekPosition(FourBar.PID_LOW_POSITION));
         
         fourBarGetBinFromStepPosition = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_GET_BIN_FROM_STEP_POSITION);
-        fourBarGetBinFromStepPosition.whileHeld(new C_SeekPosition(FourBar.FOUR_BAR_GET_BIN_FROM_STEP_POSITION));
+        fourBarGetBinFromStepPosition.whileHeld(new C_SeekPosition(FourBar.PID_GET_BIN_FROM_STEP_POSITION));
         
         fourBarGetNoodlePosition = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_GET_NOODLE_POSITION);
-        fourBarGetNoodlePosition.whileHeld(new C_SeekPosition(FourBar.FOUR_BAR_GET_NOODLE_POSITION));
+        fourBarGetNoodlePosition.whileHeld(new C_SeekPosition(FourBar.PID_GET_NOODLE_POSITION));
         
         //Bin Intake
         runBinIntake = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_RUN_BIN_INTAKE);
@@ -119,10 +113,6 @@ public class OI {
         openBinGrabber = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_OPEN_GRABBER);
         openBinGrabber.whenPressed(new C_SetClaw(true));
         openBinGrabber.whenInactive(new C_SetClaw(false));
-        
-        test2 = new JoystickButton(driver, OI.ButtonType.Y);
-        test2.whenPressed(new C_SeekPosition(0.6));
-        test2.whenReleased(new C_FourBarDefault());
 	}
     
     public static Vector getDriverLeftJoystickVector() {
