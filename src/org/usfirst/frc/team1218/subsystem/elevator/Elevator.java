@@ -16,7 +16,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Elevator extends Subsystem {
 	
 	private DigitalInput toteDetector;
-	private DigitalOutput totePossessionIndicator;
+
+	private DigitalOutput toteIndicator;
 	
 	private final CANTalon liftMaster;
 	
@@ -48,7 +49,7 @@ public class Elevator extends Subsystem {
     	liftMaster.setFeedbackDevice(FeedbackDevice.QuadEncoder);
     	
     	toteDetector = new DigitalInput(RobotMap.ELEVATOR_TOTE_DETECTOR);
-    	totePossessionIndicator = new DigitalOutput(RobotMap.TOTE_POSSESSION_INDICATOR);
+    	toteIndicator = new DigitalOutput(RobotMap.ELEVATOR_TOTE_INDICATOR);
     }
     
     /**
@@ -92,7 +93,7 @@ public class Elevator extends Subsystem {
     	SmartDashboard.putBoolean("Elevator_Lower_Limit", liftMaster.isRevLimitSwitchClosed());
     	SmartDashboard.putNumber("Elevator_Position_Error", liftMaster.getClosedLoopError());
     	SmartDashboard.putBoolean("Elevator_Has_Tote", getHasTote());
-    	totePossessionIndicator.set(getHasTote());
+    	toteIndicator.set(getHasTote());
     }
     
     public boolean atReference() {

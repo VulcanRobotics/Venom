@@ -20,9 +20,9 @@ public class RobotMap {
 	
 	public static final int TOTE_INTAKE_L = 32;
 	public static final int TOTE_INTAKE_R = 33;
-	
-	public static final int TOTE_POSSESSION_INDICATOR = 0;
+
 	public static final int ELEVATOR_TOTE_DETECTOR = 12; //DIO
+	public static final int ELEVATOR_TOTE_INDICATOR = 13;
 	
 	//Four Bar
 	public static final int FOUR_BAR_LEFT_DART = 20;

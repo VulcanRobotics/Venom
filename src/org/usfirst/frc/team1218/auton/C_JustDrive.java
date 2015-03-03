@@ -14,6 +14,6 @@ public class C_JustDrive extends CommandGroup {
     public  C_JustDrive() {
         addSequential(new C_ZeroRobotHeading());
         addSequential(new C_Index());
-        addSequential(new C_AutoDrive(8, 180, 1.0));
+        addSequential(new C_AutoDrive(10, 90, 1.0));
     }
 }
