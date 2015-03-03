@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
+import edu.wpi.first.wpilibj.Timer;
 
 public class DartController extends CANTalon implements PIDSource, PIDOutput{
 	
@@ -12,6 +13,9 @@ public class DartController extends CANTalon implements PIDSource, PIDOutput{
 	final double TOP_SOFT_LIMIT = 0.7;
 	
 	final double MAX_AMPERAGE = 1;
+	final double OVERAMPERAGE_COOLDOWN_TIME = 5;
+	
+	double lastOverampTime = -100; //too long ago to worry about
 	
 	private boolean enabled;
 	
@@ -84,9 +88,15 @@ public class DartController extends CANTalon implements PIDSource, PIDOutput{
 				System.out.println("soft top limit hit" + power);
 				return false;
 			}
-			if (super.getOutputCurrent() > MAX_AMPERAGE) {
+			if (timeSinceAmpFault() < OVERAMPERAGE_COOLDOWN_TIME) {
+				System.out.println("cooling off from overamp fault");
 				super.set(0);
-				System.out.println("diabled becaus over max amperage");
+				return false;
+			}
+			if (super.getOutputCurrent() > MAX_AMPERAGE ) {
+				super.set(0);
+				lastOverampTime = Timer.getFPGATimestamp();
+				System.out.println("diabled because over max amperage");
 				return false;
 			}
 			else {
@@ -100,6 +110,10 @@ public class DartController extends CANTalon implements PIDSource, PIDOutput{
 		
 		
 	}	
+	
+	double timeSinceAmpFault() {
+		return Timer.getFPGATimestamp() - lastOverampTime;
+	}
 	
 	public double pidGet() {
 		return getPosition();
