@@ -14,6 +14,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class FourBar extends Subsystem implements PIDOutput, PIDSource{
 	
+	double lastOverCurrentTime = -100;
+	
 	private final DartController dartLeft;
 	private final DartController dartRight;
 	private final PIDController positionController;
