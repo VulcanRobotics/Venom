@@ -2,35 +2,38 @@ package org.usfirst.frc.team1218.subsystem.elevator;
 
 import org.usfirst.frc.team1218.robot.Robot;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *@author afiol-mahon
  */
-public class C_ReferenceLimit extends Command {
+public class C_ElevatorCooldown extends Command {
 
-    public C_ReferenceLimit() {
+	private final double timeout;
+	
+    public C_ElevatorCooldown(double timeout) {
         requires(Robot.elevator);
+        this.timeout = timeout;
     }
 
     protected void initialize() {
+    	Robot.elevator.setPower(0.0);
+    	Timer.delay(timeout);
     }
 
     protected void execute() {
-    	System.out.println("Seeking Elevator Bottom Limit");
-    	Robot.elevator.setPower(-Elevator.ELEVATOR_REFERENCING_POWER);
     }
 
     protected boolean isFinished() {
-        return Robot.elevator.atReference();
+        return true;
     }
 
     protected void end() {
-    	Robot.elevator.zeroPosition();
-    	Robot.elevator.setPosition(0);
+    	System.out.println("Elevator Cooldown complete.");
     }
-
+    
     protected void interrupted() {
-    	end();
+    	
     }
 }

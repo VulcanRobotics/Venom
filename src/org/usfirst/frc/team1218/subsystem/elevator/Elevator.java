@@ -14,62 +14,49 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Elevator extends Subsystem {
 	
-	private DigitalInput toteDetector;
-
-	private DigitalOutput toteIndicator;
+	private final CANTalon elevatorController;	
+	private final DigitalInput toteDetector;
+	private final DigitalOutput toteIndicator;
 	
-	private final CANTalon liftMaster;
-	
-	private boolean liftHasReferenced = false;
-	
-	ElevatorSafety elevatorSafety;
+	private final double ELEVATOR_OVERAMP_COOLDOWN_TIME = 1.25;
+	private final double ELEVATOR_MAX_CURRENT = 20;
 	
 	public static final double ELEVATOR_MANUAL_POSITIONING_POWER = 1.0;
-	public static final double ELEVATOR_REFERENCING_POWER = 0.3;
 	
     public void initDefaultCommand() {
     	setDefaultCommand(new C_ElevatorDefault());
     }
     
     public Elevator() {
-    	liftMaster = new CANTalon(RobotMap.ELEVATOR_LIFT_MASTER);
-    	liftMaster.enableBrakeMode(true);
-    	liftMaster.enableLimitSwitch(true, true);
-    	liftMaster.ConfigFwdLimitSwitchNormallyOpen(false);
-    	liftMaster.ConfigRevLimitSwitchNormallyOpen(false);
-    	liftMaster.changeControlMode(ControlMode.PercentVbus);
+    	elevatorController = new CANTalon(RobotMap.ELEVATOR_LIFT_MASTER, 300);
+    	elevatorController.enableBrakeMode(true);
+    	elevatorController.enableLimitSwitch(true, true);
+    	elevatorController.ConfigFwdLimitSwitchNormallyOpen(false);
+    	elevatorController.ConfigRevLimitSwitchNormallyOpen(false);
+    	elevatorController.changeControlMode(ControlMode.PercentVbus);
     	
     	toteDetector = new DigitalInput(RobotMap.ELEVATOR_TOTE_DETECTOR);
     	toteIndicator = new DigitalOutput(RobotMap.ELEVATOR_TOTE_INDICATOR);
-    	
-    	elevatorSafety = new ElevatorSafety();
     }
     
-    /**
-     * @return Current position of tote elevator
-     */
     public double getPosition() {
-	   return liftMaster.getPosition();
+	   return elevatorController.getPosition();
     }
     
-    public void setPosition(double position) {
-    	if(liftHasReferenced) {
-    		liftMaster.changeControlMode(ControlMode.Position);
-        	liftMaster.set(position);
-    	} else {
-    		System.out.println("Cannot PID Elevator: Must Reference Limit First");
-    		liftMaster.changeControlMode(ControlMode.PercentVbus);
-    		liftMaster.set(0.0);
-    	}
+    public boolean isCurrentSafe() {
+    	return this.getCurrent() < ELEVATOR_MAX_CURRENT;
     }
     
     public void setPower(double power) {
-    	liftMaster.changeControlMode(ControlMode.PercentVbus);
-    	liftMaster.set(power);
+    	if (isCurrentSafe()) {
+        	elevatorController.set(power);
+    	} else {
+    		new C_ElevatorCooldown(ELEVATOR_OVERAMP_COOLDOWN_TIME).start();
+    	}
     }
      
     public double getPower() {
-    	return liftMaster.get();
+    	return elevatorController.get();
     }
     
     public boolean getHasTote() {
@@ -77,43 +64,24 @@ public class Elevator extends Subsystem {
     }
     
    protected boolean getTopLimit() {
-    	return !liftMaster.isFwdLimitSwitchClosed();
+    	return !elevatorController.isFwdLimitSwitchClosed();
     }
     
     protected boolean getBottomLimit() {
-    	return !liftMaster.isRevLimitSwitchClosed();
+    	return !elevatorController.isRevLimitSwitchClosed();
     }
     
     public double getCurrent() {
-    	return liftMaster.getOutputCurrent();
+    	return elevatorController.getOutputCurrent();
     }
     
     public void syncDashboard() {
     	SmartDashboard.putNumber("Elevator_Position", getPosition());
-    	SmartDashboard.putBoolean("Elevator_Upper_Limit", liftMaster.isFwdLimitSwitchClosed());
-    	SmartDashboard.putBoolean("Elevator_Lower_Limit", liftMaster.isRevLimitSwitchClosed());
-    	SmartDashboard.putNumber("Elevator_Position_Error", liftMaster.getClosedLoopError());
+    	SmartDashboard.putBoolean("Elevator_Upper_Limit", elevatorController.isFwdLimitSwitchClosed());
+    	SmartDashboard.putBoolean("Elevator_Lower_Limit", elevatorController.isRevLimitSwitchClosed());
+    	SmartDashboard.putNumber("Elevator_Position_Error", elevatorController.getClosedLoopError());
     	SmartDashboard.putBoolean("Elevator_Has_Tote", getHasTote());
-    	
-    	SmartDashboard.putNumber("Elevator_Current", liftMaster.getOutputCurrent());
-    	
-    	checkForZero();
-    	
+    	SmartDashboard.putNumber("Elevator_Current", elevatorController.getOutputCurrent());
     	toteIndicator.set(getHasTote());
-    }
-    
-    public void checkForZero() {
-    	if (getBottomLimit()) {
-    		zeroPosition();
-    	}
-    }
-    
-    public boolean atReference() {
-    	return !liftMaster.isRevLimitSwitchClosed();
-    }
-    
-    public void zeroPosition() {
-    	liftMaster.setPosition(0);
-    	liftHasReferenced = true;
     }
 }

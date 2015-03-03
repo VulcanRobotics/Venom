@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj.command.Command;
 public class C_ElevatorDefault extends Command {
 	
 	
-	
     public C_ElevatorDefault() {
         requires(Robot.elevator);
     }
