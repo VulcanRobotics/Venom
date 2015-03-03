@@ -11,10 +11,10 @@ import edu.wpi.first.wpilibj.PIDSource;
 
 public class DartController implements PIDSource, PIDOutput{
 	
-	private static final double TOP_SOFT_LIMIT = 0.7;
-	private static final double BOTTOM_SOFT_LIMIT = 0.3;
+	private static final double TOP_SOFT_LIMIT = 0.89;
+	private static final double BOTTOM_SOFT_LIMIT = 0.05;
 	
-	private static final double MAX_AMPERAGE = 1;
+	private static final double MAX_AMPERAGE = 20.0;
 	
 	private boolean enabled;
 	
@@ -23,19 +23,17 @@ public class DartController implements PIDSource, PIDOutput{
 	
 	public DartController(int deviceNumber, int potentiometerPort) {
 		enabled = true;
-		talon = new CANTalon(deviceNumber);
+		talon = new CANTalon(deviceNumber, 300);
 		potentiometer = new AnalogPotentiometer(potentiometerPort);
 		talon.changeControlMode(ControlMode.PercentVbus);
 		talon.enableLimitSwitch(true, true);
 		talon.ConfigFwdLimitSwitchNormallyOpen(false);
 		talon.ConfigRevLimitSwitchNormallyOpen(false);
 		talon.enableBrakeMode(true);
-		talon.setSafetyEnabled(true);
-		talon.setExpiration(0.2); //TODO verify
 	}
 	
 	public void enable() {
-		if (!Robot.fourBar.isFourBarAlignmentSafe()) {
+		if (!Robot.fourBar.isAlignmentSafe()) {
 			enabled = true;
 		} else {
 			System.out.println("Cannot enable dart: DartSafety has been triggered...");
@@ -60,11 +58,15 @@ public class DartController implements PIDSource, PIDOutput{
 	}
 	
 	public double getCurrent() {
-		return talon.getOutputCurrent();//TODO Verify that will work, I believe the talon firmware may not support this method yet.
+		return talon.getOutputCurrent();
+	}
+	
+	public boolean isOverCurrent() {
+		return getCurrent() > MAX_AMPERAGE;
 	}
 	
 	public void setPower(double power) {
-		if (safetyCheck(power) && !Robot.fourBar.isFourBarAlignmentSafe()) {
+		if (safetyCheck(power) && !Robot.fourBar.isAlignmentSafe()) {
 			talon.set(power);
 		} else {
 			talon.set(0);
@@ -85,13 +87,14 @@ public class DartController implements PIDSource, PIDOutput{
 				return false;
 			}
 			
-			if (getCurrent() > MAX_AMPERAGE) {
+			if (!Robot.fourBar.isCurrentSafe()) {
 				talon.set(0);
 				System.out.println("Dart Safety Check Failed: Maximum Amperage Exceeded.");
 				return false;
-			} else {
-				return true;
 			}
+			
+			return true;
+		
 		} else {
 			talon.set(0);
 			System.out.println("Dart Safety Check Failed: Dart is disabled.");

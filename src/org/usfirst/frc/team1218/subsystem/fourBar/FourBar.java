@@ -51,8 +51,12 @@ public class FourBar extends Subsystem implements PIDOutput{
        setDefaultCommand(new C_FourBarDefault());
     }
     
-	public boolean isFourBarAlignmentSafe() {
+	public boolean isAlignmentSafe() {
 		return Robot.fourBar.getDartPositionDifference() > FourBar.DART_FAILSAFE_DISTANCE;
+	}
+	
+	public boolean isCurrentSafe() {
+		return !dartLeft.isOverCurrent() && !dartRight.isOverCurrent();
 	}
     
     public boolean isOnTarget() {
@@ -65,9 +69,9 @@ public class FourBar extends Subsystem implements PIDOutput{
     
     public void setDartPower(double power) {
     	double leftPowerGain = (dartRight.getPosition() - dartLeft.getPosition()) * DART_POSITION_SYNC_P;
-    	double rightPowerGain =  (dartLeft.getPosition() - dartRight.getPosition()) * DART_POSITION_SYNC_P;
+        double rightPowerGain =  (dartLeft.getPosition() - dartRight.getPosition()) * DART_POSITION_SYNC_P;
     	dartLeft.setPower(power + leftPowerGain);
-		dartRight.setPower(power + rightPowerGain);
+    	dartRight.setPower(power + rightPowerGain);
     }
     
     protected void dartEnablePID(boolean enabled) {
@@ -95,7 +99,7 @@ public class FourBar extends Subsystem implements PIDOutput{
     }
     
     public void syncDashboard() {
-    	SmartDashboard.putBoolean("FourBar_isDartKilled", isFourBarAlignmentSafe());
+    	SmartDashboard.putBoolean("FourBar_isDartKilled", isAlignmentSafe());
     	
     	SmartDashboard.putNumber("FourBar_Dart_PID_Controller_Setpoint", positionController.getSetpoint());
     	SmartDashboard.putBoolean("FourBar_Dart_PID_Enabled", positionController.isEnable());
