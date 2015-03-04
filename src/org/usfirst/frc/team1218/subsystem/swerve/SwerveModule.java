@@ -145,6 +145,10 @@ public class SwerveModule {
 		return (driveWheelController.getEncVelocity() / 4.0) * DRIVE_WHEEL_ENCODER_CLICK_TO_FOOT / 10.0; //div by 4 to convert from 4X encoding to clicks and divide by 10 to convert deciseconds to seconds
 	}
 	
+	public double getDriveCurrent() {
+		return driveWheelController.getOutputCurrent();
+	}
+	
 	/**
 	 * Set the wheels to any angle that is relative to the robot's front.
 	 * @param angle
@@ -240,5 +244,6 @@ public class SwerveModule {
 		SmartDashboard.putNumber(prefix + "RobotCentricCurrentAngle", getModuleAngle());
 		SmartDashboard.putNumber(prefix + "IndexCount", getEncoderIndexCount());
 		SmartDashboard.putNumber(prefix + "DistanceDriven", getAbsoluteDistanceDriven());
+		SmartDashboard.putNumber(prefix + "DriveCurrent", getDriveCurrent());
 	}
 }
