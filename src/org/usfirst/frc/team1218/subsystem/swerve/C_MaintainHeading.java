@@ -24,7 +24,7 @@ public class C_MaintainHeading extends Command {
 	protected void execute() {
 		Robot.swerveDrive.powerDrive(
 				OI.getDriverLeftJoystickVector(),
-				Math.pow(OI.getDriverRightX(), 3));
+				OI.getSwerveRotationAxis());
 	}
 
 	@Override

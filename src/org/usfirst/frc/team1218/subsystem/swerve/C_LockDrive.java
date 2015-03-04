@@ -25,7 +25,7 @@ public class C_LockDrive extends Command {
 	protected void execute() {
 		Robot.swerveDrive.powerDrive(
 				new Vector(0, OI.getDriverLeftJoystickVector().getY()),
-				Math.pow(OI.getDriverRightX(), 3));
+				OI.getSwerveRotationAxis());
 	}
 	
 	@Override

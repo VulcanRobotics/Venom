@@ -23,7 +23,7 @@ public class C_Swerve extends Command {
 	protected void execute() {
 		Robot.swerveDrive.powerDrive(
 				OI.getDriverLeftJoystickVector(),
-				Math.pow(OI.getDriverRightX(), 3));
+				OI.getSwerveRotationAxis());
 	}
 	
 	@Override

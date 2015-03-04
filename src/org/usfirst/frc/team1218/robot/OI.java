@@ -126,16 +126,8 @@ public class OI {
     	return new Vector(driver.getRawAxis(Axis.LEFT_X), -driver.getRawAxis(Axis.LEFT_Y));
     }
     
-    public static Vector getDriverRightJoystickVector() {
-    	return new Vector(driver.getRawAxis(Axis.RIGHT_X), -driver.getRawAxis(Axis.RIGHT_Y));
-    }
-    
-    public static double getDriverRightX() {
-        return driver.getRawAxis(Axis.RIGHT_X);
-    }
-    
-    public static double getDriverRightY() {
-        return -driver.getRawAxis(Axis.RIGHT_Y);
+    public static double getSwerveRotationAxis() {
+    	return Math.pow(driver.getRawAxis(Axis.RIGHT_X), 3);
     }
     
     public static double getFourBarControlAxis() {
