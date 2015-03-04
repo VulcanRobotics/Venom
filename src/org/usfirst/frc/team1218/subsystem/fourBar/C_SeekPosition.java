@@ -19,7 +19,7 @@ public class C_SeekPosition extends Command {
     protected void initialize() {
     	Robot.fourBar.dartEnablePID(true);
     	Robot.fourBar.setDartPosition(setpoint);
-    	System.out.println("[Escalator]: Seeking Position: " + setpoint);
+    	System.out.println("[Four bar]: Seeking Position: " + setpoint);
     }
     
     protected void execute() {}

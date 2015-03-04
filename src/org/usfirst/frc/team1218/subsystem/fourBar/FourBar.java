@@ -20,14 +20,14 @@ public class FourBar extends Subsystem implements PIDOutput, PIDSource{
 	private final DartController dartRight;
 	private final PIDController positionController;
 	
-	private static final double POSITION_CONTROLLER_P = 1.0;
-	private static final double POSITION_CONTROLLER_I = 0.0001;
+	private static final double POSITION_CONTROLLER_P = 6.0;
+	private static final double POSITION_CONTROLLER_I = 0.05;
 	private static final double POSITION_CONTROLLER_D = 0.0;
 	private static final double POSITION_CONTROLLER_MAX_OUTPUT = 0.5;
 
 	private static final double DART_POSITION_SYNC_P = 0.6; //TODO tune
 	
-	private static final double DART_ON_TARGET_DISTANCE = 0.06;
+	private static final double DART_ON_TARGET_DISTANCE = 0.05;
 	private static final double DART_FAILSAFE_DISTANCE = 0.1;
 	
 	
