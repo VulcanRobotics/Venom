@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1218.robot;
 
+import org.usfirst.frc.team1218.auton.C_AutonDriveWobble;
 import org.usfirst.frc.team1218.subsystem.binIntake.BinIntake;
 import org.usfirst.frc.team1218.subsystem.binIntake.C_SetBinIntake;
 import org.usfirst.frc.team1218.subsystem.binIntake.C_SetClaw;
@@ -59,6 +60,8 @@ public class OI {
 	//Bin Intake
 	public static Button runBinIntake;
 	public static Button openBinGrabber;
+	
+	public static Button testButton; //leave this - convenient test button
 	
 	public OI() {
     	//Driver
@@ -120,6 +123,11 @@ public class OI {
         openBinGrabber = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_OPEN_GRABBER);
         openBinGrabber.whenPressed(new C_SetClaw(true));
         openBinGrabber.whenInactive(new C_SetClaw(false));
+        
+        //test
+        testButton = new JoystickButton(driver, ButtonType.X);
+        //testButton.whenPressed(new C_TwoToteAuton());
+        //testButton.whenPressed( new C_AutonDriveWobble(10.0, 0.0, 0.7));
 	}
     
     public static Vector getDriverLeftJoystickVector() {

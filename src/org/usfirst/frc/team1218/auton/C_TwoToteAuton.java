@@ -32,7 +32,7 @@ public class C_TwoToteAuton extends CommandGroup {
     	//get ready - index set heading , prep for bin pickup, turn on intake, pre position darts
     	addSequential(new C_ZeroRobotHeading());
     	addSequential(new C_Index());
-    	addParallel(new C_SeekPosition(0.2));
+    	addParallel(new C_SeekPosition(0.25));
     	addSequential(new C_GoToTop());
     
     	
@@ -47,6 +47,7 @@ public class C_TwoToteAuton extends CommandGroup {
     	addSequential(new C_WaitForTote(20));
     	addSequential(new C_GoToBottom());
     	addSequential(new C_GoToTop());
+    	addSequential(new C_Index());
     	addParallel(new C_SlowFastDrive());
     	
     	//pickup second tote

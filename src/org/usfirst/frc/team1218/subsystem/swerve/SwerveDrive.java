@@ -147,7 +147,7 @@ public class SwerveDrive extends Subsystem implements PIDOutput{
     	return navModule.getYaw();
     }
     
-    protected void enableHeadingController(double heading) {
+    public void enableHeadingController(double heading) {
     	headingController.enable();
     	headingController.setSetpoint(heading);
     	headingControllerEnabled = true;
