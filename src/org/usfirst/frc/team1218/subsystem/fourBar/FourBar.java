@@ -14,6 +14,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class FourBar extends Subsystem implements PIDOutput, PIDSource{
 	
+	double lastOverCurrentTime = -100;
+	
 	private final DartController dartLeft;
 	private final DartController dartRight;
 	private final PIDController positionController;
@@ -23,7 +25,7 @@ public class FourBar extends Subsystem implements PIDOutput, PIDSource{
 	private static final double POSITION_CONTROLLER_D = 0.0;
 	private static final double POSITION_CONTROLLER_MAX_OUTPUT = 0.5;
 
-	private static final double DART_POSITION_SYNC_P = 0.3; //TODO tune
+	private static final double DART_POSITION_SYNC_P = 0.6; //TODO tune
 	
 	private static final double DART_ON_TARGET_DISTANCE = 0.06;
 	private static final double DART_FAILSAFE_DISTANCE = 0.1;

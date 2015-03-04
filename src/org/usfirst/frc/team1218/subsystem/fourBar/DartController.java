@@ -12,12 +12,12 @@ import edu.wpi.first.wpilibj.PIDSource;
 
 public class DartController implements PIDSource, PIDOutput{
 	
-	double lastOverCurrentTime = -100;
+	
 	
 	static final double TOP_SOFT_LIMIT = 0.89;
 	static final double BOTTOM_SOFT_LIMIT = 0.05;
 	
-	private static final double MAX_AMPERAGE = 20.0;
+	private static final double MAX_AMPERAGE = 100.0;
 	
 	private boolean enabled;
 	
@@ -73,15 +73,18 @@ public class DartController implements PIDSource, PIDOutput{
 	}
 	
 	public void setPower(double power) {
-		if (safetyCheck(power) && Robot.fourBar.isAlignmentSafe() && !Robot.fourBar.isCoolingDown() ) {
+		if (safetyCheck(power) && Robot.fourBar.isAlignmentSafe() ) {
 			talon.set(power);
 		} else {
 			talon.set(0);
+			if (!Robot.fourBar.isAlignmentSafe()) {
+				System.out.println("darts not aligned");
+			}
 		}
 	}
 	
 	public boolean isCoolingDown() {
-		return Timer.getFPGATimestamp() - lastOverCurrentTime < OVER_CURRENT_TIMEOUT || isOverCurrent();
+		return Timer.getFPGATimestamp() - Robot.fourBar.lastOverCurrentTime < OVER_CURRENT_TIMEOUT;
 	}
 	
 	public boolean safetyCheck(double power) {
@@ -99,12 +102,12 @@ public class DartController implements PIDSource, PIDOutput{
 			}
 			if(Robot.fourBar.isCoolingDown()) {
 				talon.set(0);
-				System.out.println("darts went over current limit, cooling off...");
+				System.out.println("darts went over current limit, cooling off...  time since over current: " + (Timer.getFPGATimestamp() - Robot.fourBar.lastOverCurrentTime));
 				return false;
 			}
 			if (Robot.fourBar.isOverCurrent()) {
 				talon.set(0);
-				lastOverCurrentTime = Timer.getFPGATimestamp();
+				Robot.fourBar.lastOverCurrentTime = Timer.getFPGATimestamp();
 				System.out.println("Dart Safety Check Failed: Maximum Amperage Exceeded.");
 				return false;
 			}
