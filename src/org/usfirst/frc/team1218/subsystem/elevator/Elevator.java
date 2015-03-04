@@ -19,7 +19,7 @@ public class Elevator extends Subsystem {
 	private final DigitalOutput toteIndicator;
 	
 	private final double ELEVATOR_OVERAMP_COOLDOWN_TIME = 1.25;
-	private final double ELEVATOR_MAX_CURRENT = 20;
+	private final double ELEVATOR_MAX_CURRENT = 100;
 	
 	public static final double ELEVATOR_MANUAL_POSITIONING_POWER = 1.0;
 	
