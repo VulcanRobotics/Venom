@@ -1,6 +1,5 @@
 package org.usfirst.frc.team1218.subsystem.fourBar;
 
-
 import org.usfirst.frc.team1218.robot.Robot;
 
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
@@ -12,10 +11,8 @@ import edu.wpi.first.wpilibj.PIDSource;
 
 public class DartController implements PIDSource, PIDOutput{
 	
-	
-	
-	static final double TOP_SOFT_LIMIT = 0.89;
-	static final double BOTTOM_SOFT_LIMIT = 0.05;
+	protected static final double TOP_SOFT_LIMIT = 0.89;
+	protected static final double BOTTOM_SOFT_LIMIT = 0.05;
 	
 	private static final double MAX_AMPERAGE = 100.0;
 	
@@ -24,7 +21,7 @@ public class DartController implements PIDSource, PIDOutput{
 	private final CANTalon talon;
 	private final AnalogPotentiometer potentiometer;
 	
-	final static double OVER_CURRENT_TIMEOUT = 5;
+	private final static double OVER_CURRENT_TIMEOUT = 5;
 	
 	public static double SLOWDOWN_DISTANCE = 0.2;
 	

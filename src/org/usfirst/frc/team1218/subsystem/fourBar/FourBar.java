@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1218.subsystem.fourBar;
 
+import org.usfirst.frc.team1218.commands.fourBar.FourBarDefaultCommand;
 import org.usfirst.frc.team1218.robot.Robot;
 import org.usfirst.frc.team1218.robot.RobotMap;
 
@@ -30,13 +31,12 @@ public class FourBar extends Subsystem implements PIDOutput, PIDSource{
 	private static final double DART_ON_TARGET_DISTANCE = 0.05;
 	private static final double DART_FAILSAFE_DISTANCE = 0.1;
 	
-	
 	public static final double PID_HIGH_POSITION = 0.7; //TODO change to something usefulss
 	public static final double PID_LOW_POSITION = 0.2; //TODO change to something useful
 	public static final double PID_GET_BIN_FROM_STEP_POSITION = 0.35; //TODO: find this
 	public static final double PID_GET_NOODLE_POSITION = .42; //TODO: find this
 	
-	public static final double SLOWDOWN_DISTANCE = .2;
+	public static final double SLOWDOWN_NEAR_LIMIT_DISTANCE = 0.2;
 	
 	public FourBar() {
 		dartLeft = new DartController(RobotMap.FOUR_BAR_LEFT_DART, RobotMap.FOUR_BAR_LEFT_DART_POTENTIOMETER);
@@ -53,7 +53,7 @@ public class FourBar extends Subsystem implements PIDOutput, PIDSource{
 	}
 	
     public void initDefaultCommand() {
-       setDefaultCommand(new C_FourBarDefault());
+       setDefaultCommand(new FourBarDefaultCommand());
     }
     
 	public boolean isAlignmentSafe() {
@@ -76,20 +76,20 @@ public class FourBar extends Subsystem implements PIDOutput, PIDSource{
     	positionController.setSetpoint(setpoint);
     }
     
-    double getDistanceToTopLimit() {
+    public double getDistanceToTopLimit() {
     	return DartController.TOP_SOFT_LIMIT - getPosition();
     }
     
-    double getDistanceToBottomLimit() {
+    public double getDistanceToBottomLimit() {
     	return getPosition() - DartController.BOTTOM_SOFT_LIMIT ;
     }
     
     public void setDartPower(double power) {
-    	if (getDistanceToTopLimit() < SLOWDOWN_DISTANCE && power > 0) {
-    		power = power * getDistanceToTopLimit() / SLOWDOWN_DISTANCE;
+    	if (getDistanceToTopLimit() < SLOWDOWN_NEAR_LIMIT_DISTANCE && power > 0) {
+    		power *= getDistanceToTopLimit() / SLOWDOWN_NEAR_LIMIT_DISTANCE;
     	}
-    	if (getDistanceToBottomLimit() < SLOWDOWN_DISTANCE && power < 0) {
-    		power = power * getDistanceToBottomLimit() / SLOWDOWN_DISTANCE;
+    	if (getDistanceToBottomLimit() < SLOWDOWN_NEAR_LIMIT_DISTANCE && power < 0) {
+    		power *= getDistanceToBottomLimit() / SLOWDOWN_NEAR_LIMIT_DISTANCE;
     	}
     	double leftPowerGain = (dartRight.getPosition() - dartLeft.getPosition()) * DART_POSITION_SYNC_P;
         double rightPowerGain =  (dartLeft.getPosition() - dartRight.getPosition()) * DART_POSITION_SYNC_P;
@@ -97,7 +97,7 @@ public class FourBar extends Subsystem implements PIDOutput, PIDSource{
     	dartRight.setPower(power + rightPowerGain);
     }
     
-    protected void dartEnablePID(boolean enabled) {
+    public void dartEnablePID(boolean enabled) {
     	if (enabled) {
     		positionController.enable();
     	} else {
