@@ -8,7 +8,7 @@ import org.usfirst.frc.team1218.commands.elevator.GoToBottom;
 import org.usfirst.frc.team1218.commands.elevator.GoToTop;
 import org.usfirst.frc.team1218.commands.fourBar.SeekPosition;
 import org.usfirst.frc.team1218.commands.swerve.AutoDrive;
-import org.usfirst.frc.team1218.commands.swerve.Index;
+import org.usfirst.frc.team1218.commands.swerve.CalibrateOrientation;
 import org.usfirst.frc.team1218.commands.swerve.ZeroRobotHeading;
 import org.usfirst.frc.team1218.commands.toteIntake.AutorunToteIntake;
 import org.usfirst.frc.team1218.subsystem.binIntake.BinIntake;
@@ -34,7 +34,7 @@ public class Auton_ThreeTote extends CommandGroup {
     	addSequential(new SetClaw(false));
     	addSequential(new ZeroRobotHeading());
     	addParallel(new SeekPosition(0.2));
-    	addSequential(new Index());
+    	addSequential(new CalibrateOrientation());
     	addSequential(new AutorunToteIntake(ToteIntake.TOTE_INTAKE_POWER));
     	
     	
@@ -51,7 +51,7 @@ public class Auton_ThreeTote extends CommandGroup {
     	System.out.println("Done picking up first tote. Time: " + currentTime());
     	addParallel(new AutoDrive(4.5, 0, 0.3));
     	
-    	addSequential(new Index());
+    	addSequential(new CalibrateOrientation());
     	addSequential(new DelayUntilToteDetected(20));
     	addSequential(new GoToBottom());
     	addParallel(new SeekPosition(0.85));
@@ -61,7 +61,7 @@ public class Auton_ThreeTote extends CommandGroup {
     	System.out.println("Done picking up second tote. Time: " + currentTime());
     	addParallel(new AutoDrive(4.5, 0, 0.7));
     	
-    	addSequential(new Index());
+    	addSequential(new CalibrateOrientation());
     	addSequential(new DelayUntilToteDetected(20));
     	addParallel(new GoToBottom());
     	

@@ -4,7 +4,7 @@ import org.usfirst.frc.team1218.commands.elevator.DelayUntilToteDetected;
 import org.usfirst.frc.team1218.commands.elevator.GoToBottom;
 import org.usfirst.frc.team1218.commands.elevator.GoToTop;
 import org.usfirst.frc.team1218.commands.swerve.AutoDrive;
-import org.usfirst.frc.team1218.commands.swerve.Index;
+import org.usfirst.frc.team1218.commands.swerve.CalibrateOrientation;
 import org.usfirst.frc.team1218.commands.swerve.ZeroRobotHeading;
 import org.usfirst.frc.team1218.commands.toteIntake.AutorunToteIntake;
 import org.usfirst.frc.team1218.subsystem.toteIntake.ToteIntake;
@@ -18,7 +18,7 @@ public class Auton_OneTote extends CommandGroup {
     
     public  Auton_OneTote() {
     	//get ready
-        addSequential(new Index());
+        addSequential(new CalibrateOrientation());
         addSequential(new ZeroRobotHeading());
         
         //intake tote

@@ -4,11 +4,11 @@ import org.usfirst.frc.team1218.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class ModuleGoToAngle extends Command{
+public class SwerveModulesGoToAngle extends Command{
 	
 	private double angle;
 	
-	public ModuleGoToAngle(double angle) {
+	public SwerveModulesGoToAngle(double angle) {
 		requires(Robot.swerveDrive);
 		this.angle = angle;
 	}

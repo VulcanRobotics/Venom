@@ -2,32 +2,31 @@ package org.usfirst.frc.team1218.commands.swerve;
 
 import org.usfirst.frc.team1218.robot.OI;
 import org.usfirst.frc.team1218.robot.Robot;
-import org.usfirst.frc.team1218.subsystem.swerve.math.Vector;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- * While engaged only forward and backward movement is possible. Goal is to make backing off of stacks easy.
- *@author afiol-mahon
+ * @author afiol-mahon
  */
-public class LockDrive extends Command {
+public class MaintainRobotHeading extends Command {
 	
-	public LockDrive() {
+	
+	public MaintainRobotHeading() {
 		requires(Robot.swerveDrive);
-		Robot.swerveDrive.setFieldCentricDriveMode(false);
 	}
 	
 	@Override
 	protected void initialize() {
+		Robot.swerveDrive.enableHeadingController(Robot.swerveDrive.getHeading());
 	}
-	
+
 	@Override
 	protected void execute() {
 		Robot.swerveDrive.powerDrive(
-				new Vector(0, OI.getDriverLeftJoystickVector().getY()),
+				OI.getDriverLeftJoystickVector(),
 				OI.getSwerveRotationAxis());
 	}
-	
+
 	@Override
 	protected boolean isFinished() {
 		return false;
@@ -35,7 +34,7 @@ public class LockDrive extends Command {
 
 	@Override
 	protected void end() {
-		Robot.swerveDrive.setFieldCentricDriveMode(true);
+		Robot.swerveDrive.disableHeadingController();
 	}
 
 	@Override

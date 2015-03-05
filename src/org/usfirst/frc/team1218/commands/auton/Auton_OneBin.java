@@ -3,7 +3,7 @@ package org.usfirst.frc.team1218.commands.auton;
 import org.usfirst.frc.team1218.commands.binIntake.SetBinIntake;
 import org.usfirst.frc.team1218.commands.fourBar.SeekPosition;
 import org.usfirst.frc.team1218.commands.swerve.AutoDrive;
-import org.usfirst.frc.team1218.commands.swerve.Index;
+import org.usfirst.frc.team1218.commands.swerve.CalibrateOrientation;
 import org.usfirst.frc.team1218.commands.swerve.ZeroRobotHeading;
 import org.usfirst.frc.team1218.subsystem.binIntake.BinIntake;
 
@@ -20,7 +20,7 @@ public class Auton_OneBin extends CommandGroup {
     public  Auton_OneBin() {
     	addSequential(new ZeroRobotHeading());
     	addSequential(new SetBinIntake(BinIntake.INTAKE_POWER));
-        addSequential(new Index());
+        addSequential(new CalibrateOrientation());
         Timer.delay(0.5);
         addSequential(new SetBinIntake(BinIntake.CONTINOUS_HOLD_POWER));
         addParallel(new SeekPosition(0.5));

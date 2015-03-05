@@ -6,7 +6,7 @@ import org.usfirst.frc.team1218.commands.elevator.GoToBottom;
 import org.usfirst.frc.team1218.commands.elevator.GoToTop;
 import org.usfirst.frc.team1218.commands.fourBar.SeekPosition;
 import org.usfirst.frc.team1218.commands.swerve.AutoDrive;
-import org.usfirst.frc.team1218.commands.swerve.Index;
+import org.usfirst.frc.team1218.commands.swerve.CalibrateOrientation;
 import org.usfirst.frc.team1218.commands.swerve.ZeroRobotHeading;
 import org.usfirst.frc.team1218.commands.toteIntake.AutorunToteIntake;
 import org.usfirst.frc.team1218.subsystem.binIntake.BinIntake;
@@ -31,7 +31,7 @@ public class Auton_TwoTote extends CommandGroup {
     	System.out.println("Two Tote Auton Selected");
     	//get ready - index set heading , prep for bin pickup, turn on intake, pre position darts
     	addSequential(new ZeroRobotHeading());
-    	addSequential(new Index());
+    	addSequential(new CalibrateOrientation());
     	addParallel(new SeekPosition(0.2));
     	addSequential(new GoToTop());
     
@@ -59,7 +59,7 @@ public class Auton_TwoTote extends CommandGroup {
     	addSequential(new SetBinIntake(0.0));  
     	
     	//drive to auto zone
-    	addSequential(new Index());
+    	addSequential(new CalibrateOrientation());
     	addSequential(new AutoDrive(8, 90, 1.0));
     	
     	System.out.println("done 2 tote auton. Total completion time: " + currentTime());

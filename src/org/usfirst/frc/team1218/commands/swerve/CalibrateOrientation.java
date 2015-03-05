@@ -9,13 +9,13 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *@author afiolmahon
  */
-public class Index extends Command {
+public class CalibrateOrientation extends Command {
 
 	private boolean indexed[] = {false, false, false, false};
 	private int[] indexCount = new int[4];
 	
 	
-    public Index() {
+    public CalibrateOrientation() {
         requires(Robot.swerveDrive);
     }
 

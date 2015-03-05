@@ -5,9 +5,9 @@ import org.usfirst.frc.team1218.commands.binIntake.SetClaw;
 import org.usfirst.frc.team1218.commands.elevator.AutoStack;
 import org.usfirst.frc.team1218.commands.elevator.PowerControl;
 import org.usfirst.frc.team1218.commands.fourBar.SeekPosition;
-import org.usfirst.frc.team1218.commands.swerve.Index;
-import org.usfirst.frc.team1218.commands.swerve.LockDrive;
-import org.usfirst.frc.team1218.commands.swerve.MaintainHeading;
+import org.usfirst.frc.team1218.commands.swerve.CalibrateOrientation;
+import org.usfirst.frc.team1218.commands.swerve.LinearDrive;
+import org.usfirst.frc.team1218.commands.swerve.MaintainRobotHeading;
 import org.usfirst.frc.team1218.commands.swerve.ToggleFieldCentricDrive;
 import org.usfirst.frc.team1218.commands.swerve.ZeroRobotHeading;
 import org.usfirst.frc.team1218.commands.toteIntake.RunToteIntake;
@@ -68,16 +68,16 @@ public class OI {
         resetGyro.whenPressed(new ZeroRobotHeading());
         
         maintainHeading = new JoystickButton(driver, RobotMap.BUTTON_MAINTAIN_HEADING);
-        maintainHeading.whileHeld(new MaintainHeading());
+        maintainHeading.whileHeld(new MaintainRobotHeading());
         
         indexSwerve = new JoystickButton(driver, RobotMap.BUTTON_INDEX_SWERVE);
-        indexSwerve.whenPressed(new Index());
+        indexSwerve.whenPressed(new CalibrateOrientation());
         
         fieldCentricToggle = new JoystickButton(driver, RobotMap.BUTTON_FIELD_CENTRIC_TOGGLE);
         fieldCentricToggle.whenPressed(new ToggleFieldCentricDrive());
         
         lockDrive = new JoystickButton(driver, RobotMap.BUTTON_LOCK_DRIVE);
-        lockDrive.whileHeld(new LockDrive());
+        lockDrive.whileHeld(new LinearDrive());
                 
         //Operator
         operator = new Joystick(RobotMap.OPERATOR_JOYSTICK);
