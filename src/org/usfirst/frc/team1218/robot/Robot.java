@@ -61,14 +61,14 @@ public class Robot extends IterativeRobot {
 	
 	public void disabledPeriodic() {
 		autonName = SmartDashboard.getString("Auton_Select", "Not Set");
-		SmartDashboard.putString("Current_Auton_Selector", autonName);
+		SmartDashboard.putString("Current_Auton_Selected", autonName);
 		Scheduler.getInstance().run();
 		syncDashboard();
 	}
 	
     public void autonomousInit() {
     	autonName = SmartDashboard.getString("Auton_Select", "Not Set");
-		SmartDashboard.putString("Current_Auton_Selector", autonName);
+		SmartDashboard.putString("Current_Auton_Selected", autonName);
     	System.out.println("Auton " + autonName + " selected.");
     	switch (autonName) {
     		default:

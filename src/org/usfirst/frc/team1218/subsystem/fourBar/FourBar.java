@@ -26,7 +26,7 @@ public class FourBar extends Subsystem implements PIDOutput, PIDSource{
 	private static final double POSITION_CONTROLLER_D = 0.0;
 	private static final double POSITION_CONTROLLER_MAX_OUTPUT = 0.5;
 
-	private static final double DART_POSITION_SYNC_P = 0.6; //TODO tune
+	private static final double DART_POSITION_SYNC_P = 2.0; //TODO tune
 	
 	private static final double DART_ON_TARGET_DISTANCE = 0.01;
 	private static final double DART_FAILSAFE_DISTANCE = 0.1;
@@ -85,16 +85,16 @@ public class FourBar extends Subsystem implements PIDOutput, PIDSource{
     }
     
     public void setDartPower(double power) {
-    	if (getDistanceToTopLimit() < SLOWDOWN_NEAR_LIMIT_DISTANCE && power > 0) {
-    		power *= getDistanceToTopLimit() / SLOWDOWN_NEAR_LIMIT_DISTANCE;
-    	}
-    	if (getDistanceToBottomLimit() < SLOWDOWN_NEAR_LIMIT_DISTANCE && power < 0) {
-    		power *= getDistanceToBottomLimit() / SLOWDOWN_NEAR_LIMIT_DISTANCE;
-    	}
-    	double leftPowerGain = (dartRight.getPosition() - dartLeft.getPosition()) * DART_POSITION_SYNC_P;
+   		if (getDistanceToTopLimit() < SLOWDOWN_NEAR_LIMIT_DISTANCE && power > 0) {
+       		power *= getDistanceToTopLimit() / SLOWDOWN_NEAR_LIMIT_DISTANCE;
+   		}
+   		if (getDistanceToBottomLimit() < SLOWDOWN_NEAR_LIMIT_DISTANCE && power < 0) {
+       		power *= getDistanceToBottomLimit() / SLOWDOWN_NEAR_LIMIT_DISTANCE;
+       	}
+      	double leftPowerGain = (dartRight.getPosition() - dartLeft.getPosition()) * DART_POSITION_SYNC_P;
         double rightPowerGain =  (dartLeft.getPosition() - dartRight.getPosition()) * DART_POSITION_SYNC_P;
-    	dartLeft.setPower(power + leftPowerGain);
-    	dartRight.setPower(power + rightPowerGain);
+       	dartLeft.setPower(power + leftPowerGain);
+       	dartRight.setPower(power + rightPowerGain);
     }
     
     public void dartEnablePID(boolean enabled) {
@@ -122,7 +122,7 @@ public class FourBar extends Subsystem implements PIDOutput, PIDSource{
     }
     
     public void syncDashboard() {
-    	SmartDashboard.putBoolean("FourBar_isDartKilled", isAlignmentSafe());
+    	SmartDashboard.putBoolean("FourBar_isAlignmentSafe", isAlignmentSafe());
     	
     	SmartDashboard.putNumber("FourBar_Dart_PID_Controller_Setpoint", positionController.getSetpoint());
     	SmartDashboard.putBoolean("FourBar_Dart_PID_Enabled", positionController.isEnable());
