@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1218.subsystem.autonHooks;
 
+import org.usfirst.frc.team1218.commands.autonHooks.HooksDefault;
 import org.usfirst.frc.team1218.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.Solenoid;
@@ -13,7 +14,7 @@ public class Hooks extends Subsystem {
     private final Solenoid hookDeploy;
     
     public void initDefaultCommand() {
-        setDefaultCommand(new C_HooksDefault());
+        setDefaultCommand(new HooksDefault());
     }
     
     public Hooks() {

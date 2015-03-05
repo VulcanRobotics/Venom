@@ -1,20 +1,20 @@
 package org.usfirst.frc.team1218.robot;
 
+import org.usfirst.frc.team1218.commands.binIntake.SetBinIntake;
+import org.usfirst.frc.team1218.commands.binIntake.SetClaw;
+import org.usfirst.frc.team1218.commands.elevator.AutoStack;
+import org.usfirst.frc.team1218.commands.elevator.PowerControl;
+import org.usfirst.frc.team1218.commands.fourBar.SeekPosition;
+import org.usfirst.frc.team1218.commands.swerve.CalibrateOrientation;
+import org.usfirst.frc.team1218.commands.swerve.LinearDrive;
+import org.usfirst.frc.team1218.commands.swerve.MaintainRobotHeading;
+import org.usfirst.frc.team1218.commands.swerve.ToggleFieldCentricDrive;
+import org.usfirst.frc.team1218.commands.swerve.ZeroRobotHeading;
+import org.usfirst.frc.team1218.commands.toteIntake.RunToteIntake;
 import org.usfirst.frc.team1218.subsystem.binIntake.BinIntake;
-import org.usfirst.frc.team1218.subsystem.binIntake.C_SetBinIntake;
-import org.usfirst.frc.team1218.subsystem.binIntake.C_SetClaw;
-import org.usfirst.frc.team1218.subsystem.elevator.C_AutoStack;
-import org.usfirst.frc.team1218.subsystem.elevator.C_ManualControl;
 import org.usfirst.frc.team1218.subsystem.elevator.Elevator;
-import org.usfirst.frc.team1218.subsystem.fourBar.C_SeekPosition;
 import org.usfirst.frc.team1218.subsystem.fourBar.FourBar;
-import org.usfirst.frc.team1218.subsystem.swerve.C_Index;
-import org.usfirst.frc.team1218.subsystem.swerve.C_LockDrive;
-import org.usfirst.frc.team1218.subsystem.swerve.C_MaintainHeading;
-import org.usfirst.frc.team1218.subsystem.swerve.C_ToggleFieldCentricDrive;
-import org.usfirst.frc.team1218.subsystem.swerve.C_ZeroRobotHeading;
 import org.usfirst.frc.team1218.subsystem.swerve.math.Vector;
-import org.usfirst.frc.team1218.subsystem.toteIntake.C_RunToteIntake;
 import org.usfirst.frc.team1218.subsystem.toteIntake.ToteIntake;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -65,61 +65,61 @@ public class OI {
     	driver = new Joystick(RobotMap.DRIVER_JOYSTICK);
     	
         resetGyro = new JoystickButton(driver, RobotMap.BUTTON_RESET_GYRO);
-        resetGyro.whenPressed(new C_ZeroRobotHeading());
+        resetGyro.whenPressed(new ZeroRobotHeading());
         
         maintainHeading = new JoystickButton(driver, RobotMap.BUTTON_MAINTAIN_HEADING);
-        maintainHeading.whileHeld(new C_MaintainHeading());
+        maintainHeading.whileHeld(new MaintainRobotHeading());
         
         indexSwerve = new JoystickButton(driver, RobotMap.BUTTON_INDEX_SWERVE);
-        indexSwerve.whenPressed(new C_Index());
+        indexSwerve.whenPressed(new CalibrateOrientation());
         
         fieldCentricToggle = new JoystickButton(driver, RobotMap.BUTTON_FIELD_CENTRIC_TOGGLE);
-        fieldCentricToggle.whenPressed(new C_ToggleFieldCentricDrive());
+        fieldCentricToggle.whenPressed(new ToggleFieldCentricDrive());
         
         lockDrive = new JoystickButton(driver, RobotMap.BUTTON_LOCK_DRIVE);
-        lockDrive.whileHeld(new C_LockDrive());
+        lockDrive.whileHeld(new LinearDrive());
                 
         //Operator
         operator = new Joystick(RobotMap.OPERATOR_JOYSTICK);
                 
         //elevator
         elevatorManualRaise = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_MANUAL_RAISE);
-        elevatorManualRaise.whileHeld(new C_ManualControl(Elevator.ELEVATOR_MANUAL_POSITIONING_POWER));
+        elevatorManualRaise.whileHeld(new PowerControl(Elevator.ELEVATOR_MANUAL_POSITIONING_POWER));
         
         elevatorManualLower = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_MANUAL_LOWER);
-        elevatorManualLower.whileHeld(new C_ManualControl(-Elevator.ELEVATOR_MANUAL_POSITIONING_POWER));
+        elevatorManualLower.whileHeld(new PowerControl(-Elevator.ELEVATOR_MANUAL_POSITIONING_POWER));
         
         elevatorAutomatic = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_AUTOMATIC);
-        elevatorAutomatic.whileHeld(new C_AutoStack());;
+        elevatorAutomatic.whileHeld(new AutoStack());;
         
         //Tote Intake
         elevatorRunToteIntake = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_RUN_TOTE_INTAKE);
-        elevatorRunToteIntake.whileHeld(new C_RunToteIntake(ToteIntake.TOTE_INTAKE_POWER));
+        elevatorRunToteIntake.whileHeld(new RunToteIntake(ToteIntake.TOTE_INTAKE_POWER));
         
         elevatorReverseToteIntake = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_REVERSE_TOTE_INTAKE);
-        elevatorReverseToteIntake.whileHeld(new C_RunToteIntake(-ToteIntake.TOTE_INTAKE_POWER));
+        elevatorReverseToteIntake.whileHeld(new RunToteIntake(-ToteIntake.TOTE_INTAKE_POWER));
         
         //Four Bar
         fourBarHighPosition = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_HIGH_POSITION);
-        fourBarHighPosition.whileHeld(new C_SeekPosition(FourBar.PID_HIGH_POSITION));
+        fourBarHighPosition.whileHeld(new SeekPosition(FourBar.PID_HIGH_POSITION));
         	
         fourBarLowPosition = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_LOW_POSITION);
-        fourBarLowPosition.whileHeld(new C_SeekPosition(FourBar.PID_LOW_POSITION));
+        fourBarLowPosition.whileHeld(new SeekPosition(FourBar.PID_LOW_POSITION));
         
         fourBarGetBinFromStepPosition = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_GET_BIN_FROM_STEP_POSITION);
-        fourBarGetBinFromStepPosition.whileHeld(new C_SeekPosition(FourBar.PID_GET_BIN_FROM_STEP_POSITION));
+        fourBarGetBinFromStepPosition.whileHeld(new SeekPosition(FourBar.PID_GET_BIN_FROM_STEP_POSITION));
         
         fourBarGetNoodlePosition = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_GET_NOODLE_POSITION);
-        fourBarGetNoodlePosition.whileHeld(new C_SeekPosition(FourBar.PID_GET_NOODLE_POSITION));
+        fourBarGetNoodlePosition.whileHeld(new SeekPosition(FourBar.PID_GET_NOODLE_POSITION));
         
         //Bin Intake
         runBinIntake = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_RUN_BIN_INTAKE);
-        runBinIntake.whenPressed(new C_SetBinIntake(BinIntake.INTAKE_POWER));
-        runBinIntake.whenInactive(new C_SetBinIntake(BinIntake.CONTINOUS_HOLD_POWER));
+        runBinIntake.whenPressed(new SetBinIntake(BinIntake.INTAKE_POWER));
+        runBinIntake.whenInactive(new SetBinIntake(BinIntake.CONTINOUS_HOLD_POWER));
         
         openBinGrabber = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_OPEN_GRABBER);
-        openBinGrabber.whenPressed(new C_SetClaw(true));
-        openBinGrabber.whenInactive(new C_SetClaw(false));
+        openBinGrabber.whenPressed(new SetClaw(true));
+        openBinGrabber.whenInactive(new SetClaw(false));
 	}
     
     public static Vector getDriverLeftJoystickVector() {

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.usfirst.frc.team1218.commands.swerve.Swerve;
 import org.usfirst.frc.team1218.subsystem.swerve.math.Angle;
 import org.usfirst.frc.team1218.subsystem.swerve.math.Vector;
 
@@ -72,7 +73,7 @@ public class SwerveDrive extends Subsystem implements PIDOutput{
     }
     
     public void initDefaultCommand() {
-        setDefaultCommand(new C_Swerve());   
+        setDefaultCommand(new Swerve());   
     }
     
     public void syncDashboard() {
@@ -147,20 +148,20 @@ public class SwerveDrive extends Subsystem implements PIDOutput{
     	return navModule.getYaw();
     }
     
-    protected void enableHeadingController(double heading) {
+    public void enableHeadingController(double heading) {
     	headingController.enable();
     	headingController.setSetpoint(heading);
     	headingControllerEnabled = true;
     	System.out.println("[Swerve Drive]: Heading Controller Enabled with setpoint " + heading + " degrees");
     }
     
-    protected void disableHeadingController() {
+    public void disableHeadingController() {
     	headingControllerEnabled = false;
     	headingController.disable();
     	System.out.println("[Swerve Drive]: Heading Controller Disabled");
     }
     
-    protected void resetDistanceDriven(){
+    public void resetDistanceDriven(){
     	module.forEach(m -> m.resetDistanceDriven());
     }
     
@@ -213,11 +214,11 @@ public class SwerveDrive extends Subsystem implements PIDOutput{
     	module.get(3).setAngle(angle3);
     }
     
-    protected void setModuleAngles(double angle) {
+    public void setModuleAngles(double angle) {
     	module.stream().forEach(m -> m.setAngle(angle));
     }
     
-    protected List<SwerveModule> getModuleList() {
+    public List<SwerveModule> getModuleList() {
     	return module;
     }
     

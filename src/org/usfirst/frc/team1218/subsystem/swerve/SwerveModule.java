@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class SwerveModule {
 	
-	protected final int moduleNumber;
+	public final int moduleNumber;
 	private final double moduleIndexOffset;
 	
 	private boolean invertModule = false;

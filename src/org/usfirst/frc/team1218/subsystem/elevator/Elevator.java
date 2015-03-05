@@ -1,5 +1,7 @@
 package org.usfirst.frc.team1218.subsystem.elevator;
 
+import org.usfirst.frc.team1218.commands.elevator.ElevatorCooldown;
+import org.usfirst.frc.team1218.commands.elevator.ElevatorDefaultCommand;
 import org.usfirst.frc.team1218.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.CANTalon;
@@ -14,22 +16,33 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Elevator extends Subsystem {
 	
+	boolean liftHasReferenced = false;
+	
 	private final CANTalon elevatorController;	
 	private final DigitalInput toteDetector;
 	private final DigitalOutput toteIndicator;
 	
 	private final double ELEVATOR_OVERAMP_COOLDOWN_TIME = 1.25;
-	private final double ELEVATOR_MAX_CURRENT = 20;
+	private final double ELEVATOR_MAX_CURRENT = 100;
 	
 	public static final double ELEVATOR_MANUAL_POSITIONING_POWER = 1.0;
 	
+	public boolean shouldUseSoftLimits = true;
+	public static final int TOP_SOFT_LIMIT = 4350;
+	public static final int BOTTOM_SOFT_LIMT = 0;
+	
     public void initDefaultCommand() {
-    	setDefaultCommand(new C_ElevatorDefault());
+    	setDefaultCommand(new ElevatorDefaultCommand());
     }
     
     public Elevator() {
     	elevatorController = new CANTalon(RobotMap.ELEVATOR_LIFT_MASTER, 300);
     	elevatorController.enableBrakeMode(true);
+    	
+    	elevatorController.setReverseSoftLimit(BOTTOM_SOFT_LIMT);
+    	elevatorController.setForwardSoftLimit(TOP_SOFT_LIMIT);
+    	disableSoftLimits();
+
     	elevatorController.enableLimitSwitch(true, true);
     	elevatorController.ConfigFwdLimitSwitchNormallyOpen(false);
     	elevatorController.ConfigRevLimitSwitchNormallyOpen(false);
@@ -49,9 +62,9 @@ public class Elevator extends Subsystem {
     
     public void setPower(double power) {
     	if (isCurrentSafe()) {
-        	elevatorController.set(power);
+    		elevatorController.set(power);
     	} else {
-    		new C_ElevatorCooldown(ELEVATOR_OVERAMP_COOLDOWN_TIME).start();
+    		new ElevatorCooldown(ELEVATOR_OVERAMP_COOLDOWN_TIME).start();
     	}
     }
      
@@ -63,12 +76,12 @@ public class Elevator extends Subsystem {
     	return toteDetector.get();
     }
     
-   protected boolean getTopLimit() {
-    	return !elevatorController.isFwdLimitSwitchClosed();
+   public boolean getTopLimit() {
+    	return !elevatorController.isFwdLimitSwitchClosed() || elevatorController.getFaultForSoftLim() == 1 ;//TODO check behavior of method getFaultForSoftLim()
     }
     
-    protected boolean getBottomLimit() {
-    	return !elevatorController.isRevLimitSwitchClosed();
+    public boolean getBottomLimit() {
+    	return !elevatorController.isRevLimitSwitchClosed() || elevatorController.getFaultRevSoftLim() == 1 ;
     }
     
     public double getCurrent() {
@@ -82,6 +95,42 @@ public class Elevator extends Subsystem {
     	SmartDashboard.putNumber("Elevator_Position_Error", elevatorController.getClosedLoopError());
     	SmartDashboard.putBoolean("Elevator_Has_Tote", getHasTote());
     	SmartDashboard.putNumber("Elevator_Current", elevatorController.getOutputCurrent());
+    	
+    	if (!liftHasReferenced) {
+    		checkForZero();
+    	}
+    	
     	toteIndicator.set(getHasTote());
     }
-}
+    
+    
+    public void checkForZero() {
+        if (getBottomLimit()) {
+            zeroPosition();
+        }
+    }
+    
+    public boolean atReference() {
+        return !elevatorController.isRevLimitSwitchClosed();
+    }
+    
+    void enableSoftLimits(boolean enabled) {
+    	elevatorController.enableForwardSoftLimit(enabled);
+    	elevatorController.enableReverseSoftLimit(enabled);
+    }
+    
+    void enableSoftLimits() {
+    	enableSoftLimits(true);
+    }
+    
+    void disableSoftLimits() {
+    	enableSoftLimits(false);
+    }
+    
+    public void zeroPosition() {
+    	elevatorController.setPosition(0);
+        liftHasReferenced = true;
+        enableSoftLimits();
+
+    }
+    }

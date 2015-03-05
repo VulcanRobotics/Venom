@@ -1,11 +1,11 @@
 
 package org.usfirst.frc.team1218.robot;
 
-import org.usfirst.frc.team1218.auton.C_JustDrive;
-import org.usfirst.frc.team1218.auton.C_OneToteAuton;
-import org.usfirst.frc.team1218.auton.C_StepAuton;
-import org.usfirst.frc.team1218.auton.C_TwoToteAuton;
-import org.usfirst.frc.team1218.auton.C_ZeroAuton;
+import org.usfirst.frc.team1218.commands.auton.Auton_CalibrateOnly;
+import org.usfirst.frc.team1218.commands.auton.Auton_JustDrive;
+import org.usfirst.frc.team1218.commands.auton.Auton_OneTote;
+import org.usfirst.frc.team1218.commands.auton.Auton_Step;
+import org.usfirst.frc.team1218.commands.auton.Auton_TwoTote;
 import org.usfirst.frc.team1218.subsystem.autonHooks.Hooks;
 import org.usfirst.frc.team1218.subsystem.binIntake.BinIntake;
 import org.usfirst.frc.team1218.subsystem.elevator.Elevator;
@@ -72,21 +72,21 @@ public class Robot extends IterativeRobot {
     	System.out.println("Auton " + autonName + " selected.");
     	switch (autonName) {
     		default:
-    			autonomousCommand = new C_ZeroAuton();
+    			autonomousCommand = new Auton_CalibrateOnly();
     		case "No Auton":
-    			autonomousCommand = new C_ZeroAuton();
+    			autonomousCommand = new Auton_CalibrateOnly();
     			break;
     		case "TwoToteAuton":
-    			autonomousCommand = new C_TwoToteAuton();
+    			autonomousCommand = new Auton_TwoTote();
     			break;
     		case "OneToteAuton":
-    			autonomousCommand = new C_OneToteAuton();
+    			autonomousCommand = new Auton_OneTote();
     			break;
     		case "StepAuton":
-    			autonomousCommand = new C_StepAuton();
+    			autonomousCommand = new Auton_Step();
     			break;
     		case "JustDrive":
-    			autonomousCommand = new C_JustDrive();
+    			autonomousCommand = new Auton_JustDrive();
     			break;
     	}
         if (autonomousCommand != null) autonomousCommand.start();
