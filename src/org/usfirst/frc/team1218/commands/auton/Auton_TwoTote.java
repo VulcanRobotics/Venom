@@ -32,15 +32,13 @@ public class Auton_TwoTote extends CommandGroup {
     	//get ready - index set heading , prep for bin pickup, turn on intake, pre position darts
     	addSequential(new ZeroRobotHeading());
     	addSequential(new CalibrateModules());
-    	addParallel(new SeekPosition(0.2));
+    	addParallel(new SeekPosition(FourBar.PID_AUTON_START_POSITION));
     	//addSequential(new GoToTop());
     
-    	
     	//pickup first bin/tote combo
-
     	addSequential(new AutorunToteIntake(ToteIntake.TOTE_INTAKE_POWER_GENTLE));
     	addSequential(new SetBinIntake(BinIntake.INTAKE_POWER));
-    	addParallel(new AutoDrive(3.0, 0, 1.5));
+    	addParallel(new AutoDrive(3.0, 0, 0.6));
     	Timer.delay(0.5);
     	addParallel(new SeekPosition(FourBar.PID_HIGH_POSITION));
     	addSequential(new SetBinIntake(BinIntake.CONTINOUS_HOLD_POWER));
