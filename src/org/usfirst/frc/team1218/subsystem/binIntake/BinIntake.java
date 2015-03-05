@@ -20,6 +20,8 @@ private final Solenoid clamp;
 	public static final double INTAKE_POWER = 1.0;
 	public static final double CONTINOUS_HOLD_POWER = 0.1;
 	
+	public static final double HAS_BIN_AMPERAGE_THRESHOLD = 2;
+	
 	public BinIntake() {
 		binIntakeLeft = new CANTalon(RobotMap.BIN_INTAKE_L);
 		binIntakeRight = new CANTalon(RobotMap.BIN_INTAKE_R);
@@ -32,6 +34,13 @@ private final Solenoid clamp;
     
     public void setClamp(boolean shouldOpen) {
     	clamp.set(shouldOpen);
+    }
+    
+    boolean hasBin() {
+    	double LeftResistance = binIntakeLeft.getOutputCurrent()/binIntakeLeft.get();
+    	double RightResistance = binIntakeRight.getOutputCurrent()/binIntakeRight.get();
+    	return LeftResistance > HAS_BIN_AMPERAGE_THRESHOLD && RightResistance > HAS_BIN_AMPERAGE_THRESHOLD;
+    	
     }
     
     public void setBinIntake(double power) {
@@ -49,6 +58,8 @@ private final Solenoid clamp;
     	SmartDashboard.putNumber("FourBar_binIntakeLeft_Amperage", binIntakeLeft.getOutputCurrent());
     	SmartDashboard.putNumber("FourBar_binIntakeRight_Amperage", binIntakeRight.getOutputCurrent());
     	SmartDashboard.putNumber("FourBar_Intake_Power", binIntakeLeft.get());
+    	
+    	SmartDashboard.putBoolean("FourBar_BinIntake_Has_Bin", hasBin());
     }
 }
 
