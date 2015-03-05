@@ -37,8 +37,8 @@ private final Solenoid clamp;
     }
     
     boolean hasBin() {
-    	double LeftResistance = binIntakeLeft.getOutputCurrent()/binIntakeLeft.get();
-    	double RightResistance = binIntakeRight.getOutputCurrent()/binIntakeRight.get();
+    	double LeftResistance = binIntakeLeft.getOutputCurrent()/Math.abs(binIntakeLeft.get());
+    	double RightResistance = binIntakeRight.getOutputCurrent()/Math.abs(binIntakeRight.get());
     	return LeftResistance > HAS_BIN_AMPERAGE_THRESHOLD && RightResistance > HAS_BIN_AMPERAGE_THRESHOLD;
     	
     }
@@ -60,6 +60,7 @@ private final Solenoid clamp;
     	SmartDashboard.putNumber("FourBar_Intake_Power", binIntakeLeft.get());
     	
     	SmartDashboard.putBoolean("FourBar_BinIntake_Has_Bin", hasBin());
+    	System.out.println("hasBin: "+ hasBin());
     }
 }
 
