@@ -6,7 +6,7 @@ import org.usfirst.frc.team1218.commands.elevator.GoToBottom;
 import org.usfirst.frc.team1218.commands.elevator.GoToTop;
 import org.usfirst.frc.team1218.commands.fourBar.SeekPosition;
 import org.usfirst.frc.team1218.commands.swerve.AutoDrive;
-import org.usfirst.frc.team1218.commands.swerve.CalibrateOrientation;
+import org.usfirst.frc.team1218.commands.swerve.CalibrateModules;
 import org.usfirst.frc.team1218.commands.swerve.ZeroRobotHeading;
 import org.usfirst.frc.team1218.commands.toteIntake.AutorunToteIntake;
 import org.usfirst.frc.team1218.subsystem.binIntake.BinIntake;
@@ -31,23 +31,23 @@ public class Auton_TwoTote extends CommandGroup {
     	System.out.println("Two Tote Auton Selected");
     	//get ready - index set heading , prep for bin pickup, turn on intake, pre position darts
     	addSequential(new ZeroRobotHeading());
-    	addSequential(new CalibrateOrientation());
-    	addParallel(new SeekPosition(0.2));
-    	addSequential(new GoToTop());
+    	addSequential(new CalibrateModules());
+    	addParallel(new SeekPosition(FourBar.PID_AUTON_START_POSITION));
+    	//addSequential(new GoToTop());
     
-    	
     	//pickup first bin/tote combo
-
     	addSequential(new AutorunToteIntake(ToteIntake.TOTE_INTAKE_POWER_GENTLE));
     	addSequential(new SetBinIntake(BinIntake.INTAKE_POWER));
-    	addParallel(new AutoDrive(1.5, 0, 0.7));
+    	addParallel(new AutoDrive(3.0, 0, 0.6));
     	Timer.delay(0.5);
     	addParallel(new SeekPosition(FourBar.PID_HIGH_POSITION));
-
+    	addSequential(new SetBinIntake(BinIntake.CONTINOUS_HOLD_POWER));
+    	
     	addSequential(new DelayUntilToteDetected(20));
     	addSequential(new GoToBottom());
     	addSequential(new GoToTop());
-    	addParallel(new C_SlowFastDrive());
+    	addSequential(new CalibrateModules());
+    	addParallel(new AutoDrive(5, 0, 0.7));
     	
     	//pickup second tote
     	addSequential(new DelayUntilToteDetected(20));
@@ -59,7 +59,7 @@ public class Auton_TwoTote extends CommandGroup {
     	addSequential(new SetBinIntake(0.0));  
     	
     	//drive to auto zone
-    	addSequential(new CalibrateOrientation());
+    	addSequential(new CalibrateModules());
     	addSequential(new AutoDrive(8, 90, 1.0));
     	
     	System.out.println("done 2 tote auton. Total completion time: " + currentTime());

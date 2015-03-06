@@ -22,17 +22,17 @@ public class FourBar extends Subsystem implements PIDOutput, PIDSource{
 	private final PIDController positionController;
 	
 	private static final double POSITION_CONTROLLER_P = 6.0;
-	private static final double POSITION_CONTROLLER_I = 0.05;
+	private static final double POSITION_CONTROLLER_I = 0.1;
 	private static final double POSITION_CONTROLLER_D = 0.0;
 	private static final double POSITION_CONTROLLER_MAX_OUTPUT = 0.5;
 
 	private static final double DART_POSITION_SYNC_P = 0.6; //TODO tune
 	
-	private static final double DART_ON_TARGET_DISTANCE = 0.05;
+	private static final double DART_ON_TARGET_DISTANCE = 0.01;
 	private static final double DART_FAILSAFE_DISTANCE = 0.1;
 	
 	public static final double PID_HIGH_POSITION = 0.7; //TODO change to something usefulss
-	public static final double PID_LOW_POSITION = 0.2; //TODO change to something useful
+	public static final double PID_AUTON_START_POSITION = 0.16;
 	public static final double PID_GET_BIN_FROM_STEP_POSITION = 0.35; //TODO: find this
 	public static final double PID_GET_NOODLE_POSITION = .42; //TODO: find this
 	

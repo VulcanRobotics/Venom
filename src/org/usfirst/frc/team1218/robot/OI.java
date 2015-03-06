@@ -1,11 +1,12 @@
 package org.usfirst.frc.team1218.robot;
 
+import org.usfirst.frc.team1218.commands.auton.Auton_TwoTote;
 import org.usfirst.frc.team1218.commands.binIntake.SetBinIntake;
 import org.usfirst.frc.team1218.commands.binIntake.SetClaw;
 import org.usfirst.frc.team1218.commands.elevator.AutoStack;
 import org.usfirst.frc.team1218.commands.elevator.PowerControl;
 import org.usfirst.frc.team1218.commands.fourBar.SeekPosition;
-import org.usfirst.frc.team1218.commands.swerve.CalibrateOrientation;
+import org.usfirst.frc.team1218.commands.swerve.CalibrateModules;
 import org.usfirst.frc.team1218.commands.swerve.LinearDrive;
 import org.usfirst.frc.team1218.commands.swerve.MaintainRobotHeading;
 import org.usfirst.frc.team1218.commands.swerve.ToggleFieldCentricDrive;
@@ -53,12 +54,14 @@ public class OI {
 	public static Button elevatorReverseToteIntake;
 	//Four Bar
 	public static Button fourBarHighPosition;
-	public static Button fourBarLowPosition;
+	public static Button fourBarAutonPosition;
 	public static Button fourBarGetBinFromStepPosition;
 	public static Button fourBarGetNoodlePosition;
 	//Bin Intake
 	public static Button runBinIntake;
 	public static Button openBinGrabber;
+	
+	public static Button testButton;
 	
 	public OI() {
     	//Driver
@@ -71,7 +74,7 @@ public class OI {
         maintainHeading.whileHeld(new MaintainRobotHeading());
         
         indexSwerve = new JoystickButton(driver, RobotMap.BUTTON_INDEX_SWERVE);
-        indexSwerve.whenPressed(new CalibrateOrientation());
+        indexSwerve.whenPressed(new CalibrateModules());
         
         fieldCentricToggle = new JoystickButton(driver, RobotMap.BUTTON_FIELD_CENTRIC_TOGGLE);
         fieldCentricToggle.whenPressed(new ToggleFieldCentricDrive());
@@ -103,8 +106,8 @@ public class OI {
         fourBarHighPosition = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_HIGH_POSITION);
         fourBarHighPosition.whileHeld(new SeekPosition(FourBar.PID_HIGH_POSITION));
         	
-        fourBarLowPosition = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_LOW_POSITION);
-        fourBarLowPosition.whileHeld(new SeekPosition(FourBar.PID_LOW_POSITION));
+        fourBarAutonPosition = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_AUTON_START_POSITION);
+        fourBarAutonPosition.whileHeld(new SeekPosition(FourBar.PID_AUTON_START_POSITION));
         
         fourBarGetBinFromStepPosition = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_GET_BIN_FROM_STEP_POSITION);
         fourBarGetBinFromStepPosition.whileHeld(new SeekPosition(FourBar.PID_GET_BIN_FROM_STEP_POSITION));
@@ -120,6 +123,10 @@ public class OI {
         openBinGrabber = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_OPEN_GRABBER);
         openBinGrabber.whenPressed(new SetClaw(true));
         openBinGrabber.whenInactive(new SetClaw(false));
+        
+        //test button
+        testButton = new JoystickButton(driver, ButtonType.X);
+        testButton.whenPressed(new Auton_TwoTote());
 	}
     
     public static Vector getDriverLeftJoystickVector() {
