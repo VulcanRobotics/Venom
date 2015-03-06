@@ -68,7 +68,7 @@ public class Robot extends IterativeRobot {
 	
     public void autonomousInit() {
     	autonName = SmartDashboard.getString("Auton_Select", "Not Set");
-		SmartDashboard.putString("Current_Auton_Selected", autonName);
+		SmartDashboard.putString("Current_Auton", autonName);
     	System.out.println("Auton " + autonName + " selected.");
     	switch (autonName) {
     		default:
