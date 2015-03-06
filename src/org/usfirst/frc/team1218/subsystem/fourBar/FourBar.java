@@ -122,7 +122,7 @@ public class FourBar extends Subsystem implements PIDOutput, PIDSource{
     }
     
     public void syncDashboard() {
-    	SmartDashboard.putBoolean("FourBar_isDartKilled", isAlignmentSafe());
+    	SmartDashboard.putBoolean("FourBar_isDartSafe", isAlignmentSafe());
     	
     	SmartDashboard.putNumber("FourBar_Dart_PID_Controller_Setpoint", positionController.getSetpoint());
     	SmartDashboard.putBoolean("FourBar_Dart_PID_Enabled", positionController.isEnable());
