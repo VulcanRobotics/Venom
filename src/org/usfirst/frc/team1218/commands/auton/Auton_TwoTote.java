@@ -30,16 +30,20 @@ public class Auton_TwoTote extends CommandGroup {
     	
     	System.out.println("Two Tote Auton Selected");
     	//get ready - index set heading , prep for bin pickup, turn on intake, pre position darts
-    	addSequential(new ZeroRobotHeading());
-    	addSequential(new CalibrateModules());
-    	addParallel(new SeekPosition(FourBar.PID_AUTON_START_POSITION));
-    	//addSequential(new GoToTop());
-    
-    	//pickup first bin/tote combo
+    	
+    	//turn on intakes
     	addSequential(new AutorunToteIntake(ToteIntake.TOTE_INTAKE_POWER_GENTLE));
     	addSequential(new SetBinIntake(BinIntake.INTAKE_POWER));
-    	addParallel(new AutoDrive(3.0, 0, 0, 0.6));
-    	Timer.delay(0.5);
+    	
+    	addParallel(new SeekPosition(FourBar.PID_AUTON_START_POSITION));
+    	
+    	//move 4bar to start position
+    	addSequential(new ZeroRobotHeading());
+    	addSequential(new CalibrateModules());
+    	
+    
+    	//pickup first bin/tote combo
+    	addParallel(new AutoDrive(3.0, 0, 0, 1.5));
     	addParallel(new SeekPosition(FourBar.PID_HIGH_POSITION));
     	addSequential(new SetBinIntake(BinIntake.CONTINOUS_HOLD_POWER));
     	
@@ -47,7 +51,7 @@ public class Auton_TwoTote extends CommandGroup {
     	addSequential(new GoToBottom());
     	addSequential(new GoToTop());
     	addSequential(new CalibrateModules());
-    	addParallel(new AutoDrive(5, 0, 0, 0.7));
+    	addParallel(new AutoDrive(5, 0, 0, 1.5));
     	
     	//pickup second tote
     	addSequential(new DelayUntilToteDetected(20));
@@ -60,7 +64,7 @@ public class Auton_TwoTote extends CommandGroup {
     	
     	//drive to auto zone
     	addSequential(new CalibrateModules());
-    	addSequential(new AutoDrive(8, 90, 0, 1.0));
+    	addSequential(new AutoDrive(8, 90, 0, 1.5));
     	
     	System.out.println("done 2 tote auton. Total completion time: " + currentTime());
     	

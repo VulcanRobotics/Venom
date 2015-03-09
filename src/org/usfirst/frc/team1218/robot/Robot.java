@@ -40,17 +40,9 @@ public class Robot extends IterativeRobot {
 	public static OI oi;
 	private static String autonName;
 
-    CameraServer server;
 	public Command robotAuton;
 	
     Command autonomousCommand;
-    
-    public Robot() {
-    	server = CameraServer.getInstance();
-        server.setQuality(50);
-        //the camera name (ex "cam0") can be found through the roborio web interface
-        server.startAutomaticCapture("cam1");
-    }
     
     /**
      * This function is run when the robot is first started up and should be
