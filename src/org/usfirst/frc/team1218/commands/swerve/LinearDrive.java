@@ -14,11 +14,11 @@ public class LinearDrive extends Command {
 	
 	public LinearDrive() {
 		requires(Robot.swerveDrive);
-		Robot.swerveDrive.setFieldCentricDriveMode(false);
 	}
 	
 	@Override
 	protected void initialize() {
+		Robot.swerveDrive.setFieldCentricDriveMode(false);
 	}
 	
 	@Override

@@ -14,7 +14,7 @@ public class DartController implements PIDSource, PIDOutput{
 	protected static final double TOP_SOFT_LIMIT = 0.89;
 	protected static final double BOTTOM_SOFT_LIMIT = 0.05;
 	
-	private static final double MAX_AMPERAGE = 100.0;
+	private static final double MAX_AMPERAGE = 300.0;//XXX fix properly
 	
 	private boolean enabled;
 	
