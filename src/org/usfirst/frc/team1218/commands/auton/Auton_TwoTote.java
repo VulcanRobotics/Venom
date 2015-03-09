@@ -38,7 +38,7 @@ public class Auton_TwoTote extends CommandGroup {
     	//pickup first bin/tote combo
     	addSequential(new AutorunToteIntake(ToteIntake.TOTE_INTAKE_POWER_GENTLE));
     	addSequential(new SetBinIntake(BinIntake.INTAKE_POWER));
-    	addParallel(new AutoDrive(3.0, 0, 0.6));
+    	addParallel(new AutoDrive(3.0, 0, 0, 0.6));
     	Timer.delay(0.5);
     	addParallel(new SeekPosition(FourBar.PID_HIGH_POSITION));
     	addSequential(new SetBinIntake(BinIntake.CONTINOUS_HOLD_POWER));
@@ -47,7 +47,7 @@ public class Auton_TwoTote extends CommandGroup {
     	addSequential(new GoToBottom());
     	addSequential(new GoToTop());
     	addSequential(new CalibrateModules());
-    	addParallel(new AutoDrive(5, 0, 0.7));
+    	addParallel(new AutoDrive(5, 0, 0, 0.7));
     	
     	//pickup second tote
     	addSequential(new DelayUntilToteDetected(20));
@@ -60,7 +60,7 @@ public class Auton_TwoTote extends CommandGroup {
     	
     	//drive to auto zone
     	addSequential(new CalibrateModules());
-    	addSequential(new AutoDrive(8, 90, 1.0));
+    	addSequential(new AutoDrive(8, 90, 0, 1.0));
     	
     	System.out.println("done 2 tote auton. Total completion time: " + currentTime());
     	
@@ -69,8 +69,8 @@ public class Auton_TwoTote extends CommandGroup {
     public class C_SlowFastDrive extends CommandGroup {
         
         public  C_SlowFastDrive() {
-            addSequential(new AutoDrive(4, 0, 0.8));
-            addSequential(new AutoDrive(10, 0, .7));
+            addSequential(new AutoDrive(4, 0, 0, 0.8));
+            addSequential(new AutoDrive(10, 0, 0, 0.7));
         }
     }
 }

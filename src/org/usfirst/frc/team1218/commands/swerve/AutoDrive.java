@@ -15,21 +15,23 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class AutoDrive extends Command implements PIDSource, PIDOutput {
 
-	PIDController distanceController;
-	double direction;
+	private PIDController distanceController;
+	private double direction;
+	private double heading;
 	
-	double P = 1.5;//1.2;
-	double I = 0.0001;
-	double D = 0;
+	private double P = 1.5;//1.2;
+	private double I = 0.0001;
+	private double D = 0;
 	
-	boolean[] moduleToUseInDistanceCalculation = {true, true, true, true};
+	private boolean[] moduleToUseInDistanceCalculation = {true, true, true, true};
 	
-    public AutoDrive(double distance, double direction, double maxSpeed) {
+    public AutoDrive(double distance, double direction, double heading, double maxSpeed) {
     	requires(Robot.swerveDrive);
     	distanceController = new PIDController(P, I, D, this, this);
     	distanceController.setSetpoint(Math.abs(distance));//Could be implemented more nicely
     	distanceController.setOutputRange(-maxSpeed, maxSpeed);
     	this.direction = direction;
+    	this.heading = heading;
     }
     
     public AutoDrive(double distance, double direction, double maxSpeed,
@@ -52,7 +54,7 @@ public class AutoDrive extends Command implements PIDSource, PIDOutput {
     	Robot.swerveDrive.resetDistanceDriven();
     	Timer.delay(0.1);
     	distanceController.enable();
-    	Robot.swerveDrive.enableHeadingController(0);
+    	Robot.swerveDrive.enableHeadingController(heading);
     }
     
     public double pidGet() {
