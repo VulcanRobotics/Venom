@@ -27,7 +27,7 @@ public class Elevator extends Subsystem {
 	
 	public static final double ELEVATOR_MANUAL_POSITIONING_POWER = 1.0;
 	
-	public boolean shouldUseSoftLimits = true;
+	public boolean shouldUseSoftLimits = true;//TODO reference this flag
 	public static final int TOP_SOFT_LIMIT = 4350;
 	public static final int BOTTOM_SOFT_LIMT = 0;
 	
@@ -41,7 +41,7 @@ public class Elevator extends Subsystem {
     	
     	elevatorController.setReverseSoftLimit(BOTTOM_SOFT_LIMT);
     	elevatorController.setForwardSoftLimit(TOP_SOFT_LIMIT);
-    	disableSoftLimits();
+    	enableSoftLimits(false);
 
     	elevatorController.enableLimitSwitch(true, true);
     	elevatorController.ConfigFwdLimitSwitchNormallyOpen(false);
@@ -88,7 +88,7 @@ public class Elevator extends Subsystem {
     	return elevatorController.getOutputCurrent();
     }
     
-    public void syncDashboard() {
+    public void periodicTasks() {
     	SmartDashboard.putNumber("Elevator_Position", getPosition());
     	SmartDashboard.putBoolean("Elevator_Upper_Limit", elevatorController.isFwdLimitSwitchClosed());
     	SmartDashboard.putBoolean("Elevator_Lower_Limit", elevatorController.isRevLimitSwitchClosed());
@@ -106,7 +106,9 @@ public class Elevator extends Subsystem {
     
     public void checkForZero() {
         if (getBottomLimit()) {
-            zeroPosition();
+        	elevatorController.setPosition(0);
+            liftHasReferenced = true;
+            enableSoftLimits(true);
         }
     }
     
@@ -118,19 +120,4 @@ public class Elevator extends Subsystem {
     	elevatorController.enableForwardSoftLimit(enabled);
     	elevatorController.enableReverseSoftLimit(enabled);
     }
-    
-    void enableSoftLimits() {
-    	enableSoftLimits(true);
-    }
-    
-    void disableSoftLimits() {
-    	enableSoftLimits(false);
-    }
-    
-    public void zeroPosition() {
-    	elevatorController.setPosition(0);
-        liftHasReferenced = true;
-        enableSoftLimits();
-
-    }
-    }
+}

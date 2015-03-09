@@ -13,6 +13,7 @@ import org.usfirst.frc.team1218.subsystem.fourBar.FourBar;
 import org.usfirst.frc.team1218.subsystem.swerve.SwerveDrive;
 import org.usfirst.frc.team1218.subsystem.toteIntake.ToteIntake;
 
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.command.Command;
@@ -39,10 +40,17 @@ public class Robot extends IterativeRobot {
 	public static OI oi;
 	private static String autonName;
 
-	
+    CameraServer server;
 	public Command robotAuton;
 	
     Command autonomousCommand;
+    
+    public Robot() {
+    	server = CameraServer.getInstance();
+        server.setQuality(50);
+        //the camera name (ex "cam0") can be found through the roborio web interface
+        server.startAutomaticCapture("cam1");
+    }
     
     /**
      * This function is run when the robot is first started up and should be
@@ -129,7 +137,7 @@ public class Robot extends IterativeRobot {
     
     public void syncDashboard() {
     	Robot.swerveDrive.syncDashboard();
-    	Robot.elevator.syncDashboard();
+    	Robot.elevator.periodicTasks();
     	Robot.fourBar.syncDashboard();
     	Robot.hooks.syncDashboard();
     	Robot.toteIntake.syncDashboard();

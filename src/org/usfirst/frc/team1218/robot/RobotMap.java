@@ -57,10 +57,11 @@ public class RobotMap {
 	//Four Bar
 	public static final int AXIS_FOUR_BAR_CONTROL = 1;
 	public static final int BUTTON_FOUR_BAR_RUN_BIN_INTAKE = 2;
+	public static final int BUTTON_REVERSE_BIN_INTAKE = 4;
 	public static final int BUTTON_FOUR_BAR_OPEN_GRABBER = 1;
 	public static final int BUTTON_FOUR_BAR_HIGH_POSITION = 6;
 	
-	public static final int BUTTON_FOUR_BAR_AUTON_START_POSITION = 4;
+	public static final int BUTTON_FOUR_BAR_AUTON_START_POSITION = 6;
 	public static final int BUTTON_FOUR_BAR_GET_BIN_FROM_STEP_POSITION = 7;
 	public static final int BUTTON_FOUR_BAR_GET_NOODLE_POSITION = 8;
 }
