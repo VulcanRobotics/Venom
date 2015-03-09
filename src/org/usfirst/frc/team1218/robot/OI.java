@@ -60,6 +60,7 @@ public class OI {
 	//Bin Intake
 	public static Button runBinIntake;
 	public static Button openBinGrabber;
+	public static Button reverseBinIntake;
 	
 	public static Button testButton;
 	
@@ -119,6 +120,11 @@ public class OI {
         runBinIntake = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_RUN_BIN_INTAKE);
         runBinIntake.whenPressed(new SetBinIntake(BinIntake.INTAKE_POWER));
         runBinIntake.whenInactive(new SetBinIntake(BinIntake.CONTINOUS_HOLD_POWER));
+        
+        reverseBinIntake = new JoystickButton(operator, RobotMap.BUTTON_REVERSE_BIN_INTAKE);
+        reverseBinIntake.whenPressed(new SetBinIntake(BinIntake.OUTPUT_POWER));
+        reverseBinIntake.whenInactive(new SetBinIntake(BinIntake.CONTINOUS_HOLD_POWER));
+        
         
         openBinGrabber = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_OPEN_GRABBER);
         openBinGrabber.whenPressed(new SetClaw(true));
