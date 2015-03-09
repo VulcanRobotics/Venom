@@ -40,7 +40,7 @@ public class Auton_ThreeTote extends CommandGroup {
     	
     	System.out.println("done index, about to start driving to first tote. Time: " + currentTime());
     	//pickup first bin/tote combo
-    	addParallel(new AutoDrive(3, 0, 1.25));
+    	addParallel(new AutoDrive(3, 0, 0, 1.25));
     	
     	addSequential(new SetRollLeft(BinIntake.INTAKE_POWER));
     	addSequential(new DelayUntilToteDetected(20));
@@ -49,7 +49,7 @@ public class Auton_ThreeTote extends CommandGroup {
     	
     	//pickup second tote
     	System.out.println("Done picking up first tote. Time: " + currentTime());
-    	addParallel(new AutoDrive(4.5, 0, 0.3));
+    	addParallel(new AutoDrive(4.5, 0, 0, 0.3));
     	
     	addSequential(new CalibrateModules());
     	addSequential(new DelayUntilToteDetected(20));
@@ -59,7 +59,7 @@ public class Auton_ThreeTote extends CommandGroup {
     	
     	//pickup third tote
     	System.out.println("Done picking up second tote. Time: " + currentTime());
-    	addParallel(new AutoDrive(4.5, 0, 0.7));
+    	addParallel(new AutoDrive(4.5, 0, 0, 0.7));
     	
     	addSequential(new CalibrateModules());
     	addSequential(new DelayUntilToteDetected(20));
@@ -69,13 +69,13 @@ public class Auton_ThreeTote extends CommandGroup {
     	//drive to auto zone
     	addSequential(new AutorunToteIntake(0));
     	addSequential(new SetBinIntake(0.2));
-    	addSequential(new AutoDrive(8, 90, 0.9));
+    	addSequential(new AutoDrive(8, 90, 0, 0.9));
     	
     	//drop stack
     	System.out.println("in auto zone. Time: " + currentTime());
     	addSequential(new GoToBottom());
     	addSequential(new AutorunToteIntake(-ToteIntake.TOTE_INTAKE_POWER));
-    	addSequential(new AutoDrive(4, 180, 0.7));
+    	addSequential(new AutoDrive(4, 180, 0, 0.7));
     	addSequential(new AutorunToteIntake(0));
     	
     	System.out.println("done three tote autonomous. Total completion time: " + currentTime());

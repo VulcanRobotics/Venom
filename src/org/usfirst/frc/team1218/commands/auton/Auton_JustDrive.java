@@ -14,6 +14,6 @@ public class Auton_JustDrive extends CommandGroup {
     public  Auton_JustDrive() {
         addSequential(new ZeroRobotHeading());
         addSequential(new CalibrateModules());
-        addSequential(new AutoDrive(10, 90, 1.0));
+        addSequential(new AutoDrive(10, 90, 0, 1.0));
     }
 }

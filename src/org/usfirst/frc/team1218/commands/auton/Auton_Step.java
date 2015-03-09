@@ -15,9 +15,9 @@ public class Auton_Step extends CommandGroup {
     public  Auton_Step() {
     	addSequential(new CalibrateModules());
     	addParallel(new GoToTop());
-    	addSequential(new AutoDrive(-6, 0, 1));
+    	addSequential(new AutoDrive(-6, 0, 0, 1));
     	addSequential(new DeployHooks(true));
-    	addSequential(new AutoDrive(10, 0, 1));
+    	addSequential(new AutoDrive(10, 0, 0, 1));
     	addSequential(new DeployHooks(false));
 
     }
