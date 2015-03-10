@@ -10,6 +10,7 @@ import org.usfirst.frc.team1218.commands.swerve.CalibrateModules;
 import org.usfirst.frc.team1218.commands.swerve.LinearDrive;
 import org.usfirst.frc.team1218.commands.swerve.MaintainRobotHeading;
 import org.usfirst.frc.team1218.commands.swerve.ToggleFieldCentricDrive;
+import org.usfirst.frc.team1218.commands.swerve.VisionAlign;
 import org.usfirst.frc.team1218.commands.swerve.ZeroRobotHeading;
 import org.usfirst.frc.team1218.commands.toteIntake.RunToteIntake;
 import org.usfirst.frc.team1218.subsystem.binIntake.BinIntake;
@@ -132,7 +133,7 @@ public class OI {
         
         //test button
         testButton = new JoystickButton(driver, ButtonType.X);
-        testButton.whenPressed(new Auton_TwoTote());
+        testButton.whileHeld(new VisionAlign());
 	}
     
     public static Vector getDriverLeftJoystickVector() {

@@ -18,11 +18,11 @@ public class VisionAlign extends Command implements PIDSource, PIDOutput{
 	
 	private PIDController PID;
 	
-	private final double P = 1.4;
+	private final double P = -1.0;
 	private final double I = 0.0;
 	private final double D = 0.0;
 	
-	private final double MAX_POWER = 1.0;
+	private final double MAX_POWER = 1.5;
 	
     public VisionAlign() {
 
@@ -31,7 +31,7 @@ public class VisionAlign extends Command implements PIDSource, PIDOutput{
     	PID.setInputRange(-1.0, 1.0);
     	PID.setOutputRange(-MAX_POWER, MAX_POWER);
     	PID.setSetpoint(0.0);
-    	PID.setAbsoluteTolerance(0.1);
+    	PID.setAbsoluteTolerance(0.0001);
     	PID.disable();
     }
 
