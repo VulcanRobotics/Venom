@@ -7,6 +7,7 @@ import org.usfirst.frc.team1218.commands.elevator.GoToTop;
 import org.usfirst.frc.team1218.commands.fourBar.SeekPosition;
 import org.usfirst.frc.team1218.commands.swerve.AutoDrive;
 import org.usfirst.frc.team1218.commands.swerve.CalibrateModules;
+import org.usfirst.frc.team1218.commands.swerve.VisionAlign;
 import org.usfirst.frc.team1218.commands.swerve.ZeroRobotHeading;
 import org.usfirst.frc.team1218.commands.toteIntake.AutorunToteIntake;
 import org.usfirst.frc.team1218.subsystem.binIntake.BinIntake;
@@ -43,15 +44,16 @@ public class Auton_TwoTote extends CommandGroup {
     	
     
     	//pickup first bin/tote combo
-    	addParallel(new AutoDrive(3.0, 0, 0, 1.5));
+    	addParallel(new AutoDrive(4.0, 0, 0, 1.5));
     	addParallel(new SeekPosition(FourBar.PID_HIGH_POSITION));
     	addSequential(new SetBinIntake(BinIntake.CONTINOUS_HOLD_POWER));
     	
     	addSequential(new DelayUntilToteDetected(20));
     	addSequential(new GoToBottom());
     	addSequential(new GoToTop());
-    	addSequential(new CalibrateModules());
-    	addParallel(new AutoDrive(5, 0, 0, 1.5));
+    	//addSequential(new CalibrateModules());
+    	addSequential(new VisionAlign());
+    	addParallel(new AutoDrive(6.0, 0, 0, .8));
     	
     	//pickup second tote
     	addSequential(new DelayUntilToteDetected(20));
@@ -63,18 +65,18 @@ public class Auton_TwoTote extends CommandGroup {
     	addSequential(new SetBinIntake(0.0));  
     	
     	//drive to auto zone
-    	addSequential(new CalibrateModules());
-    	addSequential(new AutoDrive(8, 90, 0, 1.5));
+    	//addSequential(new CalibrateModules());
+    	addSequential(new AutoDrive(10, 90, 0, 1.5));
     	
     	System.out.println("done 2 tote auton. Total completion time: " + currentTime());
     	
     }
-    
+    /*
     public class C_SlowFastDrive extends CommandGroup {
         
         public  C_SlowFastDrive() {
             addSequential(new AutoDrive(4, 0, 0, 0.8));
             addSequential(new AutoDrive(10, 0, 0, 0.7));
         }
-    }
+    }*/
 }

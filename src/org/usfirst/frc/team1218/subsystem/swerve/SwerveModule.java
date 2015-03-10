@@ -59,6 +59,7 @@ public class SwerveModule {
 		this.driveWheelController = new CANTalon(RobotMap.SM_DRIVE_MOTOR[moduleNumber]);
 		this.initializeDriveWheelController();
 		this.angleController = new CANTalon(RobotMap.SM_TURN_MOTOR[moduleNumber]);
+		this.angleController.enableBrakeMode(true);
 		this.angleController.enableLimitSwitch(false, false);
 		this.angleEncoder = new AngleEncoder(moduleNumber, moduleAngleOffset);
 		this.anglePIDController = new PIDController(
@@ -79,7 +80,7 @@ public class SwerveModule {
 	
 	private void initializeDriveWheelController() {
 		this.driveWheelController.setFeedbackDevice(FeedbackDevice.QuadEncoder);
-		this.driveWheelController.enableBrakeMode(false);
+		this.driveWheelController.enableBrakeMode(true);
 		this.driveWheelController.enableLimitSwitch(false, false);
 		this.driveWheelController.enableForwardSoftLimit(false);
 		this.driveWheelController.enableReverseSoftLimit(false);

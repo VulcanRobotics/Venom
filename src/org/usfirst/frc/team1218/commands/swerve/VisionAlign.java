@@ -18,8 +18,8 @@ public class VisionAlign extends Command implements PIDSource, PIDOutput{
 	
 	private PIDController PID;
 	
-	private final double P = -1.0;
-	private final double I = 0.0;
+	private final double P = -2.0;
+	private final double I = -0.01;
 	private final double D = 0.0;
 	
 	private final double MAX_POWER = 1.5;
@@ -31,7 +31,7 @@ public class VisionAlign extends Command implements PIDSource, PIDOutput{
     	PID.setInputRange(-1.0, 1.0);
     	PID.setOutputRange(-MAX_POWER, MAX_POWER);
     	PID.setSetpoint(0.0);
-    	PID.setAbsoluteTolerance(0.0001);
+    	PID.setAbsoluteTolerance(0.1);
     	PID.disable();
     }
 
@@ -60,12 +60,13 @@ public class VisionAlign extends Command implements PIDSource, PIDOutput{
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return PID.onTarget();
+        return PID.onTarget() || Math.abs(SmartDashboard.getNumber("xRatio")) >= 0.5;
     }
 
     // Called once after isFinished returns true
     protected void end() {
     	PID.disable();
+    	Robot.swerveDrive.disableHeadingController();
     }
 
     // Called when another command which requires one or more of the same

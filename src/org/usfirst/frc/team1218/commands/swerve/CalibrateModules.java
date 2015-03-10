@@ -40,7 +40,7 @@ public class CalibrateModules extends Command {
     }
 
     protected boolean isFinished() {
-        return (indexed[0] && indexed[1] && indexed[2] && indexed[3]) || isTimedOut();
+        return (indexed[0] && indexed[1] && indexed[2] && indexed[3]);
     }
 
     protected void end() {
