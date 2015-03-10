@@ -31,10 +31,10 @@ public class FourBar extends Subsystem implements PIDOutput, PIDSource{
 	private static final double DART_ON_TARGET_DISTANCE = 0.01;
 	private static final double DART_FAILSAFE_DISTANCE = 0.1;
 	
-	public static final double PID_HIGH_POSITION = 0.7; //TODO change to something usefulss
+	public static final double PID_HIGH_POSITION = 0.7;
 	public static final double PID_AUTON_START_POSITION = 0.16;
 	public static final double PID_GET_BIN_FROM_STEP_POSITION = 0.2;
-	public static final double PID_GET_NOODLE_POSITION = .42; //TODO: find this
+	public static final double PID_GET_NOODLE_POSITION = 0.42; //TODO: find this
 	
 	public static final double SLOWDOWN_NEAR_LIMIT_DISTANCE = 0.2;
 	
@@ -58,14 +58,6 @@ public class FourBar extends Subsystem implements PIDOutput, PIDSource{
     
 	public boolean isAlignmentSafe() {
 		return Robot.fourBar.getDartPositionDifference() < FourBar.DART_FAILSAFE_DISTANCE;
-	}
-	
-	public boolean isOverCurrent() {
-		return dartLeft.isOverCurrent() || dartRight.isOverCurrent();
-	}
-    
-	public boolean isCoolingDown() {
-		return dartLeft.isCoolingDown() || dartRight.isCoolingDown(); 
 	}
 	
     public boolean isOnTarget() {
