@@ -84,6 +84,14 @@ public class DartController implements PIDSource, PIDOutput{
 		return Timer.getFPGATimestamp() - Robot.fourBar.lastOverCurrentTime < OVER_CURRENT_TIMEOUT;
 	}
 	
+	public boolean getBottomSoftLimit(){
+		return getPosition() < BOTTOM_SOFT_LIMIT;
+	}
+	
+	public boolean getTopSoftLimit() {
+		return getPosition() > TOP_SOFT_LIMIT;
+	}
+	
 	public boolean safetyCheck(double power) {
 		if (enabled) {
 			if (getPosition() < BOTTOM_SOFT_LIMIT && power <= 0) { //if below bottom soft limit and going down
