@@ -8,11 +8,11 @@ import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *@author afiolmahon
+ *
+ *indexes, then checks if index sucessful
+ *
  */
 public class CalibrateModules extends Command {
-
-	private boolean indexed[] = {false, false, false, false};
-	private int[] indexCount = new int[4];
 	
 	
     public CalibrateModules() {
@@ -20,31 +20,22 @@ public class CalibrateModules extends Command {
     }
 
     protected void initialize() {
-    	Robot.swerveDrive.getModuleList().stream().forEach(m -> {
-    		indexed[m.moduleNumber] = false;
-    		indexCount[m.moduleNumber] = m.getEncoderIndexCount();
-    		m.enableAnglePID(false);
-			boolean invertTravelDirection = (Angle.diffBetweenAngles(m.getEncoderAngle(), -m.getModuleIndexOffset()) < 180 ? true : false);
-    		m.setPowerToAngleMotor((invertTravelDirection) ? -0.8 : 0.8);
-    	});
+    	Robot.swerveDrive.getModuleList().stream().forEach(m -> m.beginIndex());
     }
 
     protected void execute() {
-    	for (int i = 0; i < 4; i++) {
-    		SwerveModule module = Robot.swerveDrive.getModuleList().get(i);
-    		if (indexCount[i] != module.getEncoderIndexCount()) {
-    		    module.enableAnglePID(true);
-    			indexed[i] = true;
-    		}
-    	}
     }
 
     protected boolean isFinished() {
-        return (indexed[0] && indexed[1] && indexed[2] && indexed[3]);
+    	
+        return (Robot.swerveDrive.getModuleList().get(0).index() &&
+        		Robot.swerveDrive.getModuleList().get(1).index() &&
+        		Robot.swerveDrive.getModuleList().get(2).index() &&
+        		Robot.swerveDrive.getModuleList().get(3).index());
     }
 
     protected void end() {
-    	Robot.swerveDrive.getModuleList().stream().forEach(m -> m.enableAnglePID(true));
+    	Robot.swerveDrive.getModuleList().stream().forEach(m -> m.endIndex());
     	System.out.println("Swerve Drive Indexed");
     }
 

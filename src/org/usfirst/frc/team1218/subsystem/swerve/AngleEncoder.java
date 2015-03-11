@@ -14,7 +14,10 @@ public class AngleEncoder extends Encoder {
 	private Counter indexCounter;
 	private double moduleAngleOffset;
 	
+	private int moduleNumber;
+	
 	public AngleEncoder(int moduleNumber, double moduleAngleOffset) {
+		this.moduleNumber = moduleNumber;
 		super(RobotMap.SM_ANGLE_ENCODER_A[moduleNumber],
 				RobotMap.SM_ANGLE_ENCODER_B[moduleNumber],
 				RobotMap.SM_ANGLE_ENCODER_X[moduleNumber]
@@ -28,6 +31,19 @@ public class AngleEncoder extends Encoder {
 		angle += moduleAngleOffset;
 		angle = Angle.get360Angle(angle);
 		return angle;
+	}
+	
+	public void enableAutoIndex() {
+		super.setIndexSource(RobotMap.SM_ANGLE_ENCODER_X[moduleNumber]);
+	}
+	
+	public void disableAutoIndex(){
+		//stops indexing by using unused pin as index pin -janky fix
+		super.setIndexSource(RobotMap.UNUSED_PIN);
+	}
+	
+	public void resetIndexes(){
+		indexCounter.reset();
 	}
 	
 	public int getIndexCount() {

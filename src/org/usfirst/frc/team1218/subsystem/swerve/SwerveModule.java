@@ -53,6 +53,13 @@ public class SwerveModule {
 	protected static final double ANGLE_CONTROLLER_MAX_POWER = 0.7;
 	protected static final double ANGLE_CONTROLLER_DEGREE_TOLERANCE = 3;
 	
+	private boolean needsIndex = false;
+	private boolean needsIndexDoubleCheck = false;
+	private boolean hasGoneZero = false;
+	private boolean hasGoneRight = false;
+	private boolean hasGoneLeft = false;
+	private double indexAttempts =0 ;
+	
 	public SwerveModule(int moduleNumber, double moduleAngleOffset) {
 		this.moduleNumber = moduleNumber;
 		this.moduleIndexOffset = moduleAngleOffset;
@@ -86,6 +93,98 @@ public class SwerveModule {
 		this.driveWheelController.enableReverseSoftLimit(false);
 		this.driveWheelController.setPosition(0);
 		this.driveWheelController.setPID(DRIVE_WHEEL_VELOCITY_P, DRIVE_WHEEL_VELOCITY_I, DRIVE_WHEEL_VELOCITY_D);
+	}
+	
+	
+	
+	public void beginIndex() {
+		needsIndex = true;
+		needsIndexDoubleCheck = false;
+		enableAnglePID(false);
+		indexAttempts = 0;
+	}
+	
+	
+	//this state machine first does a standard index
+	//it then PIDs to the encoder's zero position, wiggles left and right and looks for the index
+	//if the index is not found, it reindexes, and if it is, this method returns true so CalibrateModules will end
+	public boolean index() {
+		if (indexAttempts > 4) {
+			return true;
+		}
+		//returns true when done -otherwise acts as state machine
+		if (needsIndex) {
+			//normal indexing sequence
+			enableAnglePID(false);
+			angleEncoder.enableAutoIndex();
+			boolean invertTravelDirection = (Angle.diffBetweenAngles(m.getEncoderAngle(), -m.getModuleIndexOffset()) < 180 ? true : false);
+			setPowerToAngleMotor((invertTravelDirection) ? -0.8 : 0.8);
+			if (angleEncoder.getIndexCount() != 0){
+				angleEncoder.enableAutoIndex();
+				angleEncoder.resetIndexes();
+				needsIndexDoubleCheck = true;
+				needsIndex = false;
+				hasGoneZero = false;
+				hasGoneLeft = false;
+				hasGoneRight = false;
+			}
+		}
+		if (needsIndexDoubleCheck) {
+			//goes to zero position on encoder and looks for index
+			
+			enableAnglePID(true);
+			if (!hasGoneZero) {
+				setAngle(0.0);
+				System.out.println("going to zero");
+				if (this.anglePIDController.onTarget()){
+					hasGoneZero = true;
+				}
+			}
+			else {
+				//has gone to zero, can now check left
+				if (!hasGoneLeft) {
+					setAngle(-10.0);
+					System.out.println("going left");
+					if (this.anglePIDController.onTarget()){
+						hasGoneLeft = true;
+					}
+				}
+				else {
+					//has checked left, can now go right
+					setAngle(10.0);
+					System.out.println("going right");
+					if (this.anglePIDController.onTarget()){
+							hasGoneRight = true;
+					}
+
+				}
+			}	
+			
+			if (hasGoneLeft && hasGoneRight && hasGoneZero && angleEncoder.getIndexCount() == 0){
+				//has looked for index around encoder zero but cannot find
+				needsIndex = true;  //try indexing again
+				needsIndexDoubleCheck = false;
+				indexAttempts++;
+				System.out.println("index check failed, trying again");
+			}
+			if (hasGoneZero && angleEncoder.getIndexCount() != 0){
+				//went to zero, then found index - first index must have been correct
+				System.out.println("index check sucessful, returning true");
+				endIndex();
+				return true;
+			}
+		}
+		if (!needsIndex && !needsIndexDoubleCheck){
+			return true; // if done with indexing, keep returning true
+		}
+	}
+	
+	public boolean endIndex(){
+		angleEncoder.enableAutoIndex();
+		enableAnglePID(true);
+		needsIndex = false;
+		needsIndexDoubleCheck = false;
+
 	}
 	
 	public boolean isAnglePIDEnabled() {
