@@ -20,6 +20,7 @@ public class GoToTop extends Command {
     }
 
     protected void execute() {
+    	Robot.elevator.setPower(Elevator.ELEVATOR_POSITIONING_POWER);
     }
 
     protected boolean isFinished() {

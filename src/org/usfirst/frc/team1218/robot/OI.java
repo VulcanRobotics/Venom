@@ -5,12 +5,12 @@ import org.usfirst.frc.team1218.commands.binIntake.SetClaw;
 import org.usfirst.frc.team1218.commands.elevator.AutoStack;
 import org.usfirst.frc.team1218.commands.elevator.EnableElevatorSoftLimits;
 import org.usfirst.frc.team1218.commands.elevator.PowerControl;
+import org.usfirst.frc.team1218.commands.elevator.ReferenceElevatorTop;
 import org.usfirst.frc.team1218.commands.fourBar.SeekPosition;
 import org.usfirst.frc.team1218.commands.swerve.CalibrateModules;
 import org.usfirst.frc.team1218.commands.swerve.LinearDrive;
 import org.usfirst.frc.team1218.commands.swerve.MaintainRobotHeading;
 import org.usfirst.frc.team1218.commands.swerve.ToggleFieldCentricDrive;
-import org.usfirst.frc.team1218.commands.swerve.VisionAlign;
 import org.usfirst.frc.team1218.commands.swerve.ZeroRobotHeading;
 import org.usfirst.frc.team1218.commands.toteIntake.RunToteIntake;
 import org.usfirst.frc.team1218.subsystem.binIntake.BinIntake;
@@ -136,7 +136,7 @@ public class OI {
         
         //test button
         testButton = new JoystickButton(driver, ButtonType.X);
-        testButton.whenPressed(new VisionAlign());
+        testButton.whileHeld(new ReferenceElevatorTop());
 	}
     
     public static Vector getDriverLeftJoystickVector() {

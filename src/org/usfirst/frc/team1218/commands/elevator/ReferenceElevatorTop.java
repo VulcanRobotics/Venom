@@ -28,6 +28,7 @@ public class ReferenceElevatorTop extends Command {
     }
 
     protected void end() {
+    	System.out.println("elevator sucessfully referenced");
     	Robot.elevator.setPower(0);
     	Robot.elevator.setEncoderPosition(Elevator.TOP_SOFT_LIMIT);
         Robot.elevator.enableSoftLimits(true);

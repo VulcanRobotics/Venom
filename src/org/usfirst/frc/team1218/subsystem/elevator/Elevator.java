@@ -26,7 +26,7 @@ public class Elevator extends Subsystem {
 		
 	public static final int TOP_SOFT_LIMIT = 4350;
 	public static final int BOTTOM_SOFT_LIMT = 0;
-	public static final double SLOWDOWN_NEAR_LIMIT_DISTANCE = 200;
+	public static final double SLOWDOWN_NEAR_LIMIT_DISTANCE = 1000;
 	public static final double MIN_SPEED = 100; //clicks per .1 seconds
 	
     public void initDefaultCommand() {
@@ -55,15 +55,23 @@ public class Elevator extends Subsystem {
     }
     
     public double getDistanceToTopLimit() {
+    	double distance = Elevator.TOP_SOFT_LIMIT - getPosition();
+    	if (distance < 0){
+    		distance = 0;
+    	}
     	return Elevator.TOP_SOFT_LIMIT - getPosition();
     }
     
     public double getDistanceToBottomLimit() {
-    	return getPosition() - Elevator.BOTTOM_SOFT_LIMT ;
+    	double distance = getPosition() - Elevator.BOTTOM_SOFT_LIMT;
+    	if (distance < 0){
+    		distance = 0;
+    	}
+    	return distance ;
     }
     
     public void setPower(double power) {
-    	if (softLimitsEnabled && elevatorController.getSpeed() > MIN_SPEED) {
+    	if (softLimitsEnabled) {
     		if (getDistanceToTopLimit() < SLOWDOWN_NEAR_LIMIT_DISTANCE && power > 0) {
                	power *= getDistanceToTopLimit() / SLOWDOWN_NEAR_LIMIT_DISTANCE;
            	}
@@ -75,6 +83,10 @@ public class Elevator extends Subsystem {
            		double sign = Math.signum(power);
            		power = ELEVATOR_MIN_POSITIONING_POWER * sign;
            	}
+           	/*
+           	if (elevatorController.getSpeed() < MIN_SPEED){
+           		power = power / elevatorController.getSpeed();
+           	}*/
     	}
     	elevatorController.set(power);
     }
