@@ -48,6 +48,7 @@ public class OI {
 	public static Button elevatorManualRaise;
 	public static Button elevatorZeroPosition;
 	public static Button elevatorAutomatic;
+	public static Button elevatorDisableSoftLimits;
 	
 	//Tote Intake
 	public static Button elevatorRunToteIntake;
@@ -95,6 +96,9 @@ public class OI {
         
         elevatorAutomatic = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_AUTOMATIC);
         elevatorAutomatic.whileHeld(new AutoStack());;
+        
+        elevatorDisableSoftLimits = new JoystickButton(operator, BUTTON_ELEVATOR_DISABLE_SOFT_LIMITS);
+        elevatorDisableSoftLimits.whenPressed(new EnableElevatorSoftLimits(false));
         
         //Tote Intake
         elevatorRunToteIntake = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_RUN_TOTE_INTAKE);
