@@ -16,7 +16,7 @@ public class GoToTop extends Command {
 
     protected void initialize() {
     	System.out.println("Elevator going to top");
-    	Robot.elevator.setPower(Elevator.ELEVATOR_MANUAL_POSITIONING_POWER);
+    	Robot.elevator.setPower(Elevator.ELEVATOR_POSITIONING_POWER);
     }
 
     protected void execute() {

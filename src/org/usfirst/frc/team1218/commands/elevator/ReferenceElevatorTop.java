@@ -11,43 +11,29 @@ import edu.wpi.first.wpilibj.command.Command;
 public class ReferenceElevatorTop extends Command {
 
     public ReferenceElevatorTop() {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
     	requires(Robot.elevator);
     }
 
-    // Called just before this Command runs the first time
     protected void initialize() {
-    	System.out.println("referencing elevator top");
-    	Robot.elevator.setPower(Elevator.ELEVATOR_MANUAL_POSITIONING_POWER);
-
+    	System.out.println("Referencing Elevator from top limit");
+    	Robot.elevator.setPower(Elevator.ELEVATOR_POSITIONING_POWER);
     }
 
-    // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	
     }
 
-    // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	if (Robot.elevator.getBottomLimit()) {
-        	Robot.elevator.setEncoderPosition(Elevator.TOP_SOFT_LIMIT);
-            Robot.elevator.enableSoftLimits(true);
-            return true;
-        }
-    	else {
-    		return false;
-    	}
+    	return Robot.elevator.atEncoderReference();
     }
 
-    // Called once after isFinished returns true
     protected void end() {
     	Robot.elevator.setPower(0);
+    	Robot.elevator.setEncoderPosition(Elevator.TOP_SOFT_LIMIT);
+        Robot.elevator.enableSoftLimits(true);
     }
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
     protected void interrupted() {
-    	end();
+    	Robot.elevator.setPower(0);
     }
 }

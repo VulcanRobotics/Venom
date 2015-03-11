@@ -3,6 +3,7 @@ package org.usfirst.frc.team1218.robot;
 import org.usfirst.frc.team1218.commands.binIntake.SetBinIntake;
 import org.usfirst.frc.team1218.commands.binIntake.SetClaw;
 import org.usfirst.frc.team1218.commands.elevator.AutoStack;
+import org.usfirst.frc.team1218.commands.elevator.EnableElevatorSoftLimits;
 import org.usfirst.frc.team1218.commands.elevator.PowerControl;
 import org.usfirst.frc.team1218.commands.fourBar.SeekPosition;
 import org.usfirst.frc.team1218.commands.swerve.CalibrateModules;
@@ -28,7 +29,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
  * @author afiolmahon
  * @author liamcook
  */
-public class OI {	
+public class OI {
     //Driver
 	public static Joystick driver;
 	public static Button resetGyro;
@@ -87,17 +88,17 @@ public class OI {
         //Operator
         operator = new Joystick(RobotMap.OPERATOR_JOYSTICK);
                 
-        //elevator
+        //Elevator
         elevatorManualRaise = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_MANUAL_RAISE);
-        elevatorManualRaise.whileHeld(new PowerControl(Elevator.ELEVATOR_MANUAL_POSITIONING_POWER));
+        elevatorManualRaise.whileHeld(new PowerControl(Elevator.ELEVATOR_POSITIONING_POWER));
         
         elevatorManualLower = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_MANUAL_LOWER);
-        elevatorManualLower.whileHeld(new PowerControl(-Elevator.ELEVATOR_MANUAL_POSITIONING_POWER));
+        elevatorManualLower.whileHeld(new PowerControl(-Elevator.ELEVATOR_POSITIONING_POWER));
         
         elevatorAutomatic = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_AUTOMATIC);
         elevatorAutomatic.whileHeld(new AutoStack());;
         
-        elevatorDisableSoftLimits = new JoystickButton(operator, BUTTON_ELEVATOR_DISABLE_SOFT_LIMITS);
+        elevatorDisableSoftLimits = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_DISABLE_SOFT_LIMITS);
         elevatorDisableSoftLimits.whenPressed(new EnableElevatorSoftLimits(false));
         
         //Tote Intake
@@ -128,7 +129,6 @@ public class OI {
         reverseBinIntake = new JoystickButton(operator, RobotMap.BUTTON_REVERSE_BIN_INTAKE);
         reverseBinIntake.whenPressed(new SetBinIntake(BinIntake.OUTPUT_POWER));
         reverseBinIntake.whenInactive(new SetBinIntake(BinIntake.CONTINOUS_HOLD_POWER));
-        
         
         openBinGrabber = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_OPEN_GRABBER);
         openBinGrabber.whenPressed(new SetClaw(true));

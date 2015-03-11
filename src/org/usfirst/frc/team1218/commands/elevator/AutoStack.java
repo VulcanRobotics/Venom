@@ -27,14 +27,14 @@ public class AutoStack extends Command {
     	if (Robot.elevator.getHasTote()) {
     		
     		//if elevator has a tote on the ground, go down if its not in U, otherwise go up
-    		Robot.elevator.setPower(Elevator.ELEVATOR_MANUAL_POSITIONING_POWER * ((needsToRaiseTote) ? 1 : -1));
+    		Robot.elevator.setPower(Elevator.ELEVATOR_POSITIONING_POWER * ((needsToRaiseTote) ? 1 : -1));
     			
     		if (Robot.elevator.getBottomLimit()) {
     			needsToRaiseTote = true;
     		}
     	} else {
     		//if no tote at bottom, always go up
-    		Robot.elevator.setPower(Elevator.ELEVATOR_MANUAL_POSITIONING_POWER);
+    		Robot.elevator.setPower(Elevator.ELEVATOR_POSITIONING_POWER);
     	}
     }
 
