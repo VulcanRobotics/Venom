@@ -31,9 +31,9 @@ public class Elevator extends Subsystem {
 	public static final double ELEVATOR_MIN_POSITIONING_POWER_UP = 0.3;
 	public static final double ELEVATOR_MIN_POSITIONING_POWER_DOWN = 0.2;
 		
-	public static final int TOP_SOFT_LIMIT = 4100;
+	public static final int TOP_SOFT_LIMIT = 4150;
 	public static final int BOTTOM_SOFT_LIMT = 0;
-	public static final int ELEVATOR_STARTING_POSITION = 4100;
+	public static final int ELEVATOR_STARTING_POSITION = 4150;
 	public static final double SLOWDOWN_NEAR_LIMIT_DISTANCE = 1000;
 	public static final double MIN_SPEED = 100; //clicks per .1 seconds
 	
