@@ -16,11 +16,11 @@ public class GoToBottom extends Command {
 
     protected void initialize() {
     	System.out.println("Elevator going to bottom");
-    	Robot.elevator.setPower(-Elevator.ELEVATOR_POSITIONING_POWER);
+    	Robot.elevator.setPosition(-Elevator.BOTTOM_SOFT_LIMT);
     }
 
     protected void execute() {
-    	Robot.elevator.setPower(-Elevator.ELEVATOR_POSITIONING_POWER);
+    	Robot.elevator.setPosition(-Elevator.BOTTOM_SOFT_LIMT);
     }
 
     protected boolean isFinished() {

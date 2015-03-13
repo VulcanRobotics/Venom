@@ -4,7 +4,8 @@ import org.usfirst.frc.team1218.commands.binIntake.SetBinIntake;
 import org.usfirst.frc.team1218.commands.binIntake.SetClaw;
 import org.usfirst.frc.team1218.commands.elevator.AutoStack;
 import org.usfirst.frc.team1218.commands.elevator.EnableElevatorSoftLimits;
-import org.usfirst.frc.team1218.commands.elevator.PowerControl;
+import org.usfirst.frc.team1218.commands.elevator.GoToBottom;
+import org.usfirst.frc.team1218.commands.elevator.GoToTop;
 import org.usfirst.frc.team1218.commands.elevator.ReferenceElevatorTop;
 import org.usfirst.frc.team1218.commands.fourBar.SeekPosition;
 import org.usfirst.frc.team1218.commands.swerve.CalibrateModules;
@@ -14,7 +15,6 @@ import org.usfirst.frc.team1218.commands.swerve.ToggleFieldCentricDrive;
 import org.usfirst.frc.team1218.commands.swerve.ZeroRobotHeading;
 import org.usfirst.frc.team1218.commands.toteIntake.RunToteIntake;
 import org.usfirst.frc.team1218.subsystem.binIntake.BinIntake;
-import org.usfirst.frc.team1218.subsystem.elevator.Elevator;
 import org.usfirst.frc.team1218.subsystem.fourBar.FourBar;
 import org.usfirst.frc.team1218.subsystem.swerve.math.Vector;
 import org.usfirst.frc.team1218.subsystem.toteIntake.ToteIntake;
@@ -90,10 +90,10 @@ public class OI {
                 
         //Elevator
         elevatorManualRaise = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_MANUAL_RAISE);
-        elevatorManualRaise.whileHeld(new PowerControl(Elevator.ELEVATOR_POSITIONING_POWER));
+        elevatorManualRaise.whileHeld(new GoToTop());
         
         elevatorManualLower = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_MANUAL_LOWER);
-        elevatorManualLower.whileHeld(new PowerControl(-Elevator.ELEVATOR_POSITIONING_POWER));
+        elevatorManualLower.whileHeld(new GoToBottom());
         
         elevatorAutomatic = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_AUTOMATIC);
         elevatorAutomatic.whileHeld(new AutoStack());;

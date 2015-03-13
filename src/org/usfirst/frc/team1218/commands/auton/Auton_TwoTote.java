@@ -1,9 +1,11 @@
 package org.usfirst.frc.team1218.commands.auton;
 
 import org.usfirst.frc.team1218.commands.binIntake.SetBinIntake;
+import org.usfirst.frc.team1218.commands.binIntake.SetClaw;
 import org.usfirst.frc.team1218.commands.elevator.DelayUntilToteDetected;
 import org.usfirst.frc.team1218.commands.elevator.GoToBottom;
 import org.usfirst.frc.team1218.commands.elevator.GoToTop;
+import org.usfirst.frc.team1218.commands.elevator.ReferenceElevatorTop;
 import org.usfirst.frc.team1218.commands.fourBar.SeekPosition;
 import org.usfirst.frc.team1218.commands.swerve.AutoDrive;
 import org.usfirst.frc.team1218.commands.swerve.CalibrateModules;
@@ -35,7 +37,8 @@ public class Auton_TwoTote extends CommandGroup {
     	//turn on intakes
     	addSequential(new AutorunToteIntake(ToteIntake.TOTE_INTAKE_POWER_GENTLE));
     	addSequential(new SetBinIntake(BinIntake.INTAKE_POWER));
-    	
+    	addSequential(new SetClaw(false));
+    	addSequential(new ReferenceElevatorTop());
     	addParallel(new SeekPosition(FourBar.PID_AUTON_START_POSITION));
     	
     	//move 4bar to start position

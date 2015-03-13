@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.ControlMode;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DigitalOutput;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -21,11 +22,18 @@ public class Elevator extends Subsystem {
 	private final DigitalInput toteDetector;
 	private final DigitalOutput toteIndicator;
 		
+	
+	public static final double P = 1.3;
+	public static final double I = 0.0;
+	public static final double D = 0.0;
+	
 	public static final double ELEVATOR_POSITIONING_POWER = 1.0;
-	public static final double ELEVATOR_MIN_POSITIONING_POWER = 0.2;
+	public static final double ELEVATOR_MIN_POSITIONING_POWER_UP = 0.3;
+	public static final double ELEVATOR_MIN_POSITIONING_POWER_DOWN = 0.2;
 		
-	public static final int TOP_SOFT_LIMIT = 4350;
+	public static final int TOP_SOFT_LIMIT = 4100;
 	public static final int BOTTOM_SOFT_LIMT = 0;
+	public static final int ELEVATOR_STARTING_POSITION = 4100;
 	public static final double SLOWDOWN_NEAR_LIMIT_DISTANCE = 1000;
 	public static final double MIN_SPEED = 100; //clicks per .1 seconds
 	
@@ -48,6 +56,24 @@ public class Elevator extends Subsystem {
     	
     	toteDetector = new DigitalInput(RobotMap.ELEVATOR_TOTE_DETECTOR);
     	toteIndicator = new DigitalOutput(RobotMap.ELEVATOR_TOTE_INDICATOR);
+    	
+    	
+    	elevatorController.setPID(P, I, D);
+    	enablePID(true);
+    }
+    
+    public void enablePID(boolean shouldEnable) {
+    	if (shouldEnable) {
+    		elevatorController.changeControlMode(ControlMode.Position);
+    	}
+    	else {
+    		elevatorController.changeControlMode(ControlMode.PercentVbus);
+    	}
+    }
+    
+    public void setPosition(double position) {
+    	enablePID(true);
+    	elevatorController.set(position);
     }
     
     public double getPosition() {
@@ -70,16 +96,33 @@ public class Elevator extends Subsystem {
     	return distance ;
     }
     
-    public void setPower(double power) {
+    public void checkSoftLimits() {
+    	
     	if (softLimitsEnabled) {
+    		double power =0;
     		if (getDistanceToTopLimit() < SLOWDOWN_NEAR_LIMIT_DISTANCE && power > 0) {
-               	power *= getDistanceToTopLimit() / SLOWDOWN_NEAR_LIMIT_DISTANCE;
+               	power = ELEVATOR_MIN_POSITIONING_POWER_UP;
+               	setPower(power);
            	}
            	if (getDistanceToBottomLimit() < SLOWDOWN_NEAR_LIMIT_DISTANCE && power < 0) {
-           		power *= getDistanceToBottomLimit() / SLOWDOWN_NEAR_LIMIT_DISTANCE;
+           		power = -ELEVATOR_MIN_POSITIONING_POWER_DOWN;
+           		setPower(power);
            	}
-           	
+    	}
+    }
+    
+    public void setPower(double power) {
+    	elevatorController.changeControlMode(ControlMode.PercentVbus);
+    	if (softLimitsEnabled) {
+    		if (getDistanceToTopLimit() < SLOWDOWN_NEAR_LIMIT_DISTANCE && power > 0) {
+               	power = ELEVATOR_MIN_POSITIONING_POWER_UP;
+           	}
+           	if (getDistanceToBottomLimit() < SLOWDOWN_NEAR_LIMIT_DISTANCE && power < 0) {
+           		power = -ELEVATOR_MIN_POSITIONING_POWER_DOWN;
+           	}
+           	/*
            	if (Math.abs(power) < ELEVATOR_MIN_POSITIONING_POWER) {
+           		System.out.println("below minimum power");
            		double sign = Math.signum(power);
            		power = ELEVATOR_MIN_POSITIONING_POWER * sign;
            	}
@@ -88,6 +131,7 @@ public class Elevator extends Subsystem {
            		power = power / elevatorController.getSpeed();
            	}*/
     	}
+    	System.out.println("set elevator power: "+ power + "time: "+ Timer.getFPGATimestamp());
     	elevatorController.set(power);
     }
      
@@ -120,6 +164,7 @@ public class Elevator extends Subsystem {
     	SmartDashboard.putNumber("Elevator_Current", elevatorController.getOutputCurrent());
     	
     	toteIndicator.set(getHasTote());
+    	
     }
     
     public void setEncoderPosition(double position) {

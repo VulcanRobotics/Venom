@@ -16,11 +16,11 @@ public class GoToTop extends Command {
 
     protected void initialize() {
     	System.out.println("Elevator going to top");
-    	Robot.elevator.setPower(Elevator.ELEVATOR_POSITIONING_POWER);
+    	Robot.elevator.setPosition(Elevator.TOP_SOFT_LIMIT);
     }
 
     protected void execute() {
-    	Robot.elevator.setPower(Elevator.ELEVATOR_POSITIONING_POWER);
+    	Robot.elevator.setPosition(Elevator.TOP_SOFT_LIMIT);
     }
 
     protected boolean isFinished() {

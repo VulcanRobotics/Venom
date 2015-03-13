@@ -16,7 +16,7 @@ public class ReferenceElevatorTop extends Command {
 
     protected void initialize() {
     	System.out.println("Referencing Elevator from top limit");
-    	Robot.elevator.setPower(Elevator.ELEVATOR_POSITIONING_POWER);
+    	Robot.elevator.setPower(Elevator.ELEVATOR_MIN_POSITIONING_POWER_UP);
     }
 
     protected void execute() {
