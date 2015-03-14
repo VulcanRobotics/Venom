@@ -51,8 +51,4 @@ public class CalibrateModules extends Command {
     protected void interrupted() {
     	end();
     }
-    
-    protected void moduleEnablePID() {
-    	
-    }
 }

@@ -30,7 +30,7 @@ public class Auton_OneTote extends CommandGroup {
         addParallel(new AutoDrive(3, 0, 0, 0.8));
         addSequential(new AutorunToteIntake(ToteIntake.TOTE_INTAKE_POWER));
         addSequential(new DelayUntilToteDetected(5), 5);
-        addSequential(new SeekPosition(FourBar.PID_HIGH_POSITION));
+        addParallel(new SeekPosition(FourBar.PID_HIGH_POSITION));
         addSequential(new GoToBottom());
         addSequential(new GoToTop());
         

@@ -51,7 +51,7 @@ public class Auton_TwoTote extends CommandGroup {
     	addParallel(new SeekPosition(FourBar.PID_HIGH_POSITION));
     	addSequential(new SetBinIntake(BinIntake.CONTINOUS_HOLD_POWER));
     	
-    	addSequential(new DelayUntilToteDetected(20));
+    	addSequential(new DelayUntilToteDetected(5));
     	addSequential(new GoToBottom());
     	addSequential(new GoToTop());
     	//addSequential(new CalibrateModules());
@@ -59,7 +59,7 @@ public class Auton_TwoTote extends CommandGroup {
     	addParallel(new AutoDrive(6.0, 0, 0, .8));
     	
     	//pickup second tote
-    	addSequential(new DelayUntilToteDetected(20));
+    	addSequential(new DelayUntilToteDetected(5));
     	addSequential(new GoToBottom());
     	addSequential(new GoToTop());
 
