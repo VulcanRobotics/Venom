@@ -62,7 +62,7 @@ public class OI {
 	public static Button openBinGrabber;
 	public static Button reverseBinIntake;
 	
-	public static Button testButton;
+	public static Button referenceElevator;
 	
 	public OI() {
     	//Driver
@@ -95,6 +95,9 @@ public class OI {
         
         elevatorDisableSoftLimits = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_DISABLE_SOFT_LIMITS);
         elevatorDisableSoftLimits.whenPressed(new EnableElevatorSoftLimits(false));
+        
+        referenceElevator = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_REFERENCE);
+        referenceElevator.whileHeld(new ReferenceElevatorTop());
         
         //Tote Intake
         elevatorRunToteIntake = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_RUN_TOTE_INTAKE);
@@ -130,8 +133,7 @@ public class OI {
         openBinGrabber.whenInactive(new SetClaw(false));
         
         //test button
-        testButton = new JoystickButton(driver, ButtonType.X);
-        testButton.whileHeld(new ReferenceElevatorTop());
+        
 	}
     
     public static Vector getDriverLeftJoystickVector() {
