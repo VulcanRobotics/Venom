@@ -1,6 +1,8 @@
 package org.usfirst.frc.team1218.commands.auton;
 
 import org.usfirst.frc.team1218.commands.binIntake.SetBinIntake;
+import org.usfirst.frc.team1218.commands.binIntake.SetClaw;
+import org.usfirst.frc.team1218.commands.elevator.ReferenceElevatorTop;
 import org.usfirst.frc.team1218.commands.fourBar.SeekPosition;
 import org.usfirst.frc.team1218.commands.swerve.AutoDrive;
 import org.usfirst.frc.team1218.commands.swerve.CalibrateModules;
@@ -18,6 +20,8 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class Auton_OneBin extends CommandGroup {
     
     public  Auton_OneBin() {
+    	addSequential(new ReferenceElevatorTop());
+    	addSequential(new SetClaw(false));
     	addSequential(new ZeroRobotHeading());
     	addSequential(new SetBinIntake(BinIntake.INTAKE_POWER));
         addSequential(new CalibrateModules());

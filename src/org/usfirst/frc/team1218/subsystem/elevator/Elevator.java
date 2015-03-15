@@ -1,6 +1,5 @@
 package org.usfirst.frc.team1218.subsystem.elevator;
 
-import org.usfirst.frc.team1218.commands.elevator.ElevatorCooldown;
 import org.usfirst.frc.team1218.commands.elevator.ElevatorDefaultCommand;
 import org.usfirst.frc.team1218.robot.RobotMap;
 
@@ -8,6 +7,7 @@ import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.ControlMode;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DigitalOutput;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -16,16 +16,26 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Elevator extends Subsystem {
 	
-	boolean liftHasReferenced = false;
+	private boolean softLimitsEnabled = false;
 	
 	private final CANTalon elevatorController;	
 	private final DigitalInput toteDetector;
 	private final DigitalOutput toteIndicator;
+		
 	
-	private final double ELEVATOR_OVERAMP_COOLDOWN_TIME = 1.25;
-	private final double ELEVATOR_MAX_CURRENT = 100;
+	public static final double P = 1.3;
+	public static final double I = 0.0;
+	public static final double D = 0.0;
 	
-	public static final double ELEVATOR_MANUAL_POSITIONING_POWER = 1.0;
+	public static final double ELEVATOR_POSITIONING_POWER = 1.0;
+	public static final double ELEVATOR_MIN_POSITIONING_POWER_UP = 0.3;
+	public static final double ELEVATOR_MIN_POSITIONING_POWER_DOWN = 0.2;
+		
+	public static final int TOP_SOFT_LIMIT = 4150;
+	public static final int BOTTOM_SOFT_LIMT = 0;
+	public static final int ELEVATOR_STARTING_POSITION = 4150;
+	public static final double SLOWDOWN_NEAR_LIMIT_DISTANCE = 1000;
+	public static final double MIN_SPEED = 100; //clicks per .1 seconds
 	
     public void initDefaultCommand() {
     	setDefaultCommand(new ElevatorDefaultCommand());
@@ -34,6 +44,10 @@ public class Elevator extends Subsystem {
     public Elevator() {
     	elevatorController = new CANTalon(RobotMap.ELEVATOR_LIFT_MASTER, 300);
     	elevatorController.enableBrakeMode(true);
+    	
+    	elevatorController.setReverseSoftLimit(BOTTOM_SOFT_LIMT);
+    	elevatorController.setForwardSoftLimit(TOP_SOFT_LIMIT);
+    	enableSoftLimits(false);
 
     	elevatorController.enableLimitSwitch(true, true);
     	elevatorController.ConfigFwdLimitSwitchNormallyOpen(false);
@@ -42,22 +56,83 @@ public class Elevator extends Subsystem {
     	
     	toteDetector = new DigitalInput(RobotMap.ELEVATOR_TOTE_DETECTOR);
     	toteIndicator = new DigitalOutput(RobotMap.ELEVATOR_TOTE_INDICATOR);
+    	
+    	
+    	elevatorController.setPID(P, I, D);
+    	enablePID(true);
+    }
+    
+    public void enablePID(boolean shouldEnable) {
+    	if (shouldEnable) {
+    		elevatorController.changeControlMode(ControlMode.Position);
+    	}
+    	else {
+    		elevatorController.changeControlMode(ControlMode.PercentVbus);
+    	}
+    }
+    
+    public void setPosition(double position) {
+    	enablePID(true);
+    	elevatorController.set(position);
     }
     
     public double getPosition() {
 	   return elevatorController.getPosition();
     }
     
-    public boolean isCurrentSafe() {
-    	return this.getCurrent() < ELEVATOR_MAX_CURRENT;
+    public double getDistanceToTopLimit() {
+    	double distance = Elevator.TOP_SOFT_LIMIT - getPosition();
+    	if (distance < 0){
+    		distance = 0;
+    	}
+    	return Elevator.TOP_SOFT_LIMIT - getPosition();
+    }
+    
+    public double getDistanceToBottomLimit() {
+    	double distance = getPosition() - Elevator.BOTTOM_SOFT_LIMT;
+    	if (distance < 0){
+    		distance = 0;
+    	}
+    	return distance ;
+    }
+    
+    public void checkSoftLimits() {
+    	
+    	if (softLimitsEnabled) {
+    		double power =0;
+    		if (getDistanceToTopLimit() < SLOWDOWN_NEAR_LIMIT_DISTANCE && power > 0) {
+               	power = ELEVATOR_MIN_POSITIONING_POWER_UP;
+               	setPower(power);
+           	}
+           	if (getDistanceToBottomLimit() < SLOWDOWN_NEAR_LIMIT_DISTANCE && power < 0) {
+           		power = -ELEVATOR_MIN_POSITIONING_POWER_DOWN;
+           		setPower(power);
+           	}
+    	}
     }
     
     public void setPower(double power) {
-    	if (isCurrentSafe()) {
-    		elevatorController.set(power);
-    	} else {
-    		new ElevatorCooldown(ELEVATOR_OVERAMP_COOLDOWN_TIME).start();
+    	elevatorController.changeControlMode(ControlMode.PercentVbus);
+    	if (softLimitsEnabled) {
+    		if (getDistanceToTopLimit() < SLOWDOWN_NEAR_LIMIT_DISTANCE && power > 0) {
+               	power = ELEVATOR_MIN_POSITIONING_POWER_UP;
+           	}
+           	if (getDistanceToBottomLimit() < SLOWDOWN_NEAR_LIMIT_DISTANCE && power < 0) {
+           		power = -ELEVATOR_MIN_POSITIONING_POWER_DOWN;
+           	}
+           	/*
+           	if (Math.abs(power) < ELEVATOR_MIN_POSITIONING_POWER) {
+           		System.out.println("below minimum power");
+           		double sign = Math.signum(power);
+           		power = ELEVATOR_MIN_POSITIONING_POWER * sign;
+           	}
+           	/*
+           	if (elevatorController.getSpeed() < MIN_SPEED){
+           		power = power / elevatorController.getSpeed();
+           	}*/
     	}
+    	System.out.println("set elevator power: "+ power + "time: "+ Timer.getFPGATimestamp());
+    	elevatorController.set(power);
     }
      
     public double getPower() {
@@ -69,11 +144,11 @@ public class Elevator extends Subsystem {
     }
     
    public boolean getTopLimit() {
-    	return !elevatorController.isFwdLimitSwitchClosed() || elevatorController.getFaultForSoftLim() == 1 ;//TODO check behavior of method getFaultForSoftLim()
+    	return !elevatorController.isFwdLimitSwitchClosed() || elevatorController.getFaultForSoftLim() == 1;//TODO check behavior of method getFaultForSoftLim()
     }
     
     public boolean getBottomLimit() {
-    	return !elevatorController.isRevLimitSwitchClosed() || elevatorController.getFaultRevSoftLim() == 1 ;
+    	return !elevatorController.isRevLimitSwitchClosed() || elevatorController.getFaultRevSoftLim() == 1;
     }
     
     public double getCurrent() {
@@ -87,6 +162,22 @@ public class Elevator extends Subsystem {
     	SmartDashboard.putNumber("Elevator_Position_Error", elevatorController.getClosedLoopError());
     	SmartDashboard.putBoolean("Elevator_Has_Tote", getHasTote());
     	SmartDashboard.putNumber("Elevator_Current", elevatorController.getOutputCurrent());
+    	
     	toteIndicator.set(getHasTote());
+    	
+    }
+    
+    public void setEncoderPosition(double position) {
+    	elevatorController.setPosition(position);
+    }
+    
+    public boolean atEncoderReference() {
+    	return !elevatorController.isFwdLimitSwitchClosed();
+    }
+    
+    public void enableSoftLimits(boolean enabled) {
+    	elevatorController.enableForwardSoftLimit(enabled);
+    	elevatorController.enableReverseSoftLimit(enabled);
+    	softLimitsEnabled = enabled;
     }
 }

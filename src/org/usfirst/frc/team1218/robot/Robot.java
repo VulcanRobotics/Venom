@@ -99,6 +99,7 @@ public class Robot extends IterativeRobot {
     }
 
     public void teleopInit() {
+    	Robot.binIntake.setClamp(false);
         if (autonomousCommand != null) autonomousCommand.cancel();
         System.out.println("Teleop Initialized");
     }

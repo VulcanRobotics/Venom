@@ -3,17 +3,16 @@ package org.usfirst.frc.team1218.robot;
 import org.usfirst.frc.team1218.commands.binIntake.SetBinIntake;
 import org.usfirst.frc.team1218.commands.binIntake.SetClaw;
 import org.usfirst.frc.team1218.commands.elevator.AutoStack;
-import org.usfirst.frc.team1218.commands.elevator.PowerControl;
+import org.usfirst.frc.team1218.commands.elevator.EnableElevatorSoftLimits;
+import org.usfirst.frc.team1218.commands.elevator.ReferenceElevatorTop;
 import org.usfirst.frc.team1218.commands.fourBar.SeekPosition;
 import org.usfirst.frc.team1218.commands.swerve.CalibrateModules;
 import org.usfirst.frc.team1218.commands.swerve.LinearDrive;
 import org.usfirst.frc.team1218.commands.swerve.MaintainRobotHeading;
 import org.usfirst.frc.team1218.commands.swerve.ToggleFieldCentricDrive;
-import org.usfirst.frc.team1218.commands.swerve.VisionAlign;
 import org.usfirst.frc.team1218.commands.swerve.ZeroRobotHeading;
 import org.usfirst.frc.team1218.commands.toteIntake.RunToteIntake;
 import org.usfirst.frc.team1218.subsystem.binIntake.BinIntake;
-import org.usfirst.frc.team1218.subsystem.elevator.Elevator;
 import org.usfirst.frc.team1218.subsystem.fourBar.FourBar;
 import org.usfirst.frc.team1218.subsystem.swerve.math.Vector;
 import org.usfirst.frc.team1218.subsystem.toteIntake.ToteIntake;
@@ -28,7 +27,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
  * @author afiolmahon
  * @author liamcook
  */
-public class OI {	
+public class OI {
     //Driver
 	public static Joystick driver;
 	public static Button resetGyro;
@@ -48,6 +47,7 @@ public class OI {
 	public static Button elevatorManualRaise;
 	public static Button elevatorZeroPosition;
 	public static Button elevatorAutomatic;
+	public static Button elevatorDisableSoftLimits;
 	
 	//Tote Intake
 	public static Button elevatorRunToteIntake;
@@ -62,7 +62,7 @@ public class OI {
 	public static Button openBinGrabber;
 	public static Button reverseBinIntake;
 	
-	public static Button testButton;
+	public static Button referenceElevator;
 	
 	public OI() {
     	//Driver
@@ -86,15 +86,18 @@ public class OI {
         //Operator
         operator = new Joystick(RobotMap.OPERATOR_JOYSTICK);
                 
-        //elevator
-        elevatorManualRaise = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_MANUAL_RAISE);
-        elevatorManualRaise.whileHeld(new PowerControl(Elevator.ELEVATOR_MANUAL_POSITIONING_POWER));
-        
+        //Elevator
+        elevatorManualRaise = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_MANUAL_RAISE);        
         elevatorManualLower = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_MANUAL_LOWER);
-        elevatorManualLower.whileHeld(new PowerControl(-Elevator.ELEVATOR_MANUAL_POSITIONING_POWER));
         
         elevatorAutomatic = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_AUTOMATIC);
         elevatorAutomatic.whileHeld(new AutoStack());;
+        
+        elevatorDisableSoftLimits = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_DISABLE_SOFT_LIMITS);
+        elevatorDisableSoftLimits.whenPressed(new EnableElevatorSoftLimits(false));
+        
+        referenceElevator = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_REFERENCE);
+        referenceElevator.whileHeld(new ReferenceElevatorTop());
         
         //Tote Intake
         elevatorRunToteIntake = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_RUN_TOTE_INTAKE);
@@ -125,14 +128,12 @@ public class OI {
         reverseBinIntake.whenPressed(new SetBinIntake(BinIntake.OUTPUT_POWER));
         reverseBinIntake.whenInactive(new SetBinIntake(BinIntake.CONTINOUS_HOLD_POWER));
         
-        
         openBinGrabber = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_OPEN_GRABBER);
         openBinGrabber.whenPressed(new SetClaw(true));
         openBinGrabber.whenInactive(new SetClaw(false));
         
         //test button
-        testButton = new JoystickButton(driver, ButtonType.X);
-        testButton.whenPressed(new VisionAlign());
+        
 	}
     
     public static Vector getDriverLeftJoystickVector() {

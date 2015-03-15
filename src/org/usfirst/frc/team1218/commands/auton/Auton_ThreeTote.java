@@ -6,6 +6,7 @@ import org.usfirst.frc.team1218.commands.binIntake.SetRollLeft;
 import org.usfirst.frc.team1218.commands.elevator.DelayUntilToteDetected;
 import org.usfirst.frc.team1218.commands.elevator.GoToBottom;
 import org.usfirst.frc.team1218.commands.elevator.GoToTop;
+import org.usfirst.frc.team1218.commands.elevator.ReferenceElevatorTop;
 import org.usfirst.frc.team1218.commands.fourBar.SeekPosition;
 import org.usfirst.frc.team1218.commands.swerve.AutoDrive;
 import org.usfirst.frc.team1218.commands.swerve.CalibrateModules;
@@ -28,7 +29,7 @@ public class Auton_ThreeTote extends CommandGroup {
     public  Auton_ThreeTote() {
     	
     	startTime = Timer.getFPGATimestamp();
-    	
+    	addSequential(new ReferenceElevatorTop());
     	//get ready - index set heading , prep for bin pickup, turn on intake, pre position darts
     	addSequential(new SetBinIntake(-0.6));
     	addSequential(new SetClaw(false));
