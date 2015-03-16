@@ -156,11 +156,14 @@ public class Elevator extends Subsystem {
     }
     
     public void periodicTasks() {
+    	SmartDashboard.putNumber("Elevator_Max_Height", TOP_SOFT_LIMIT);
     	SmartDashboard.putNumber("Elevator_Position", getPosition());
-    	SmartDashboard.putBoolean("Elevator_Upper_Limit", elevatorController.isFwdLimitSwitchClosed());
-    	SmartDashboard.putBoolean("Elevator_Lower_Limit", elevatorController.isRevLimitSwitchClosed());
+    	SmartDashboard.putBoolean("Elevator_Top_Hard_Limit", elevatorController.isFwdLimitSwitchClosed());
+    	SmartDashboard.putBoolean("Elevator_Bottom_Hard_Limit", elevatorController.isRevLimitSwitchClosed());
+    	SmartDashboard.putBoolean("Elevator_Top_Soft_Limit", elevatorController.getFaultForSoftLim() == 1);
+    	SmartDashboard.putBoolean("Elevator_Bottom_Soft_Limit", elevatorController.getFaultRevSoftLim() == 1);
     	SmartDashboard.putNumber("Elevator_Position_Error", elevatorController.getClosedLoopError());
-    	SmartDashboard.putBoolean("Elevator_Has_Tote", getHasTote());
+    	SmartDashboard.putBoolean("Elevator_Tote_Possession", getHasTote());
     	SmartDashboard.putNumber("Elevator_Current", elevatorController.getOutputCurrent());
     	
     	toteIndicator.set(getHasTote());
