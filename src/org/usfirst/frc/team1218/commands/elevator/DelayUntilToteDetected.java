@@ -25,7 +25,7 @@ public class DelayUntilToteDetected extends Command {
     }
 
     protected boolean isFinished() {
-        return Robot.elevator.getHasTote() || isTimedOut();
+        return Robot.elevator.hasTote() || isTimedOut();
     }
 
     protected void end() {

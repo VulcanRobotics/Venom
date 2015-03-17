@@ -109,7 +109,7 @@ public class Elevator extends Subsystem {
     	return elevatorController.get();
     }
     
-    public boolean getHasTote() {
+    public boolean hasTote() {
     	return toteDetector.get();
     }
     
@@ -133,11 +133,10 @@ public class Elevator extends Subsystem {
     	SmartDashboard.putBoolean("Elevator_Top_Soft_Limit", elevatorController.getFaultForSoftLim() == 1);
     	SmartDashboard.putBoolean("Elevator_Bottom_Soft_Limit", elevatorController.getFaultRevSoftLim() == 1);
     	SmartDashboard.putNumber("Elevator_Position_Error", elevatorController.getClosedLoopError());
-    	SmartDashboard.putBoolean("Elevator_Tote_Possession", getHasTote());
+    	SmartDashboard.putBoolean("Elevator_Tote_Possession", hasTote());
     	SmartDashboard.putNumber("Elevator_Current", elevatorController.getOutputCurrent());
     	
-    	toteIndicator.set(getHasTote());
-    	
+    	toteIndicator.set(hasTote());
     }
     
     public void setEncoderPosition(double position) {

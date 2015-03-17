@@ -10,8 +10,8 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class AutoStack extends Command {
 
-	boolean needsToRaiseTote = false;
-	
+	boolean ascending = false;
+	int state = 0;
     public AutoStack() {
         requires(Robot.elevator);
     }
@@ -20,25 +20,31 @@ public class AutoStack extends Command {
     }
 
     protected void execute() {
-    	if (Robot.elevator.getTopLimit()) {
-    		needsToRaiseTote = false;
-    	}
+    	/*if (Robot.elevator.getTopLimit()) ascending = false;
     	
-    	if (Robot.elevator.getHasTote()) {
-    		//if elevator has a tote on the ground, go down if its not in U, otherwise go up
-    		if (needsToRaiseTote ) {
-            	Robot.elevator.setPosition(Elevator.TOP_SOFT_LIMIT);
-    		} else {
-            	Robot.elevator.setPosition(Elevator.BOTTOM_SOFT_LIMT);
-    		}
+    	if (Robot.elevator.hasTote()) {    		
+    		Robot.elevator.setPosition((ascending) ? Elevator.TOP_SOFT_LIMIT : Elevator.BOTTOM_SOFT_LIMT);
     			
-    		if (Robot.elevator.getBottomLimit()) {
-    			needsToRaiseTote = true;
-    		}
+    		if (Robot.elevator.getBottomLimit()) ascending = true;
     	} else {
-    		//if no tote at bottom, always go up
-    		Robot.elevator.setPower(Elevator.ELEVATOR_POSITIONING_POWER);
-    	}
+    		Robot.elevator.setPosition(Elevator.TOP_SOFT_LIMIT);
+    	}*/
+    	
+    	switch (state) {
+    		case 0: 
+    			Robot.elevator.setPosition(Elevator.TOP_SOFT_LIMIT);
+    			if (Robot.elevator.hasTote()) state = 1;
+    			break;
+    		case 1:
+    			Robot.elevator.setPosition(Elevator.BOTTOM_SOFT_LIMT);
+    			if (Robot.elevator.getBottomLimit() && Robot.elevator.hasTote()) state = 2;
+    			if (!Robot.elevator.hasTote()) state = 0;
+    			break;
+    		case 2:
+    			Robot.elevator.setPosition(Elevator.TOP_SOFT_LIMIT);
+    			if (Robot.elevator.getTopLimit()) state = 0;
+    			break;
+       	}
     }
 
     protected boolean isFinished() {

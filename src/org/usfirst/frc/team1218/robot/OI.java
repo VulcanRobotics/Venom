@@ -3,7 +3,7 @@ package org.usfirst.frc.team1218.robot;
 import org.usfirst.frc.team1218.commands.binIntake.SetBinIntake;
 import org.usfirst.frc.team1218.commands.binIntake.SetClaw;
 import org.usfirst.frc.team1218.commands.elevator.AutoStack;
-import org.usfirst.frc.team1218.commands.elevator.ReferenceElevatorTop;
+import org.usfirst.frc.team1218.commands.elevator.ReferenceElevator;
 import org.usfirst.frc.team1218.commands.fourBar.SeekPosition;
 import org.usfirst.frc.team1218.commands.swerve.CalibrateModules;
 import org.usfirst.frc.team1218.commands.swerve.LinearDrive;
@@ -93,7 +93,7 @@ public class OI {
         elevatorAutomatic.whileHeld(new AutoStack());
         
         referenceElevator = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_REFERENCE);
-        referenceElevator.whileHeld(new ReferenceElevatorTop());
+        referenceElevator.whileHeld(new ReferenceElevator());
         
         //Tote Intake
         elevatorRunToteIntake = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_RUN_TOTE_INTAKE);

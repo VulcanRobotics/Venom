@@ -8,9 +8,9 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class ReferenceElevatorTop extends Command {
+public class ReferenceElevator extends Command {
 
-    public ReferenceElevatorTop() {
+    public ReferenceElevator() {
     	requires(Robot.elevator);
     }
 
