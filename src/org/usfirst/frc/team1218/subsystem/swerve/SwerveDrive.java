@@ -203,8 +203,29 @@ public class SwerveDrive extends Subsystem implements PIDOutput{
     	module.stream().forEach(m -> m.setAngleAndVelocity(moduleVectors.get(m.moduleNumber)));
     }
     
+    public void zeroHeading(double offsetAngle) {
+    	navModule.setYawWithOffset(offsetAngle);
+    }
+    
     public void zeroHeading() {
     	navModule.zeroYaw();
+    }
+    
+    public void autonZeroHeading() {
+    	String direction = SmartDashboard.getString("Calibration_Orientation", "North");
+    	switch (direction) {
+    		default: zeroHeading();
+    			break;
+    		case "North": zeroHeading(0.0);
+    			break;
+    		case "South": zeroHeading(180.0);
+    			break;
+    		case "East": zeroHeading(90.0);
+    			break;
+    		case "West": zeroHeading(-90.0);
+    			break;
+    	}
+    		
     }
     
     protected void setModuleAngles(double angle0, double angle1, double angle2, double angle3) {

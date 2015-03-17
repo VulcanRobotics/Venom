@@ -1,7 +1,7 @@
 
 package org.usfirst.frc.team1218.robot;
 
-import org.usfirst.frc.team1218.commands.auton.Auton_CalibrateOnly;
+import org.usfirst.frc.team1218.commands.auton.Auton_Calibrate;
 import org.usfirst.frc.team1218.commands.auton.Auton_JustDrive;
 import org.usfirst.frc.team1218.commands.auton.Auton_OneTote;
 import org.usfirst.frc.team1218.commands.auton.Auton_Step;
@@ -71,9 +71,9 @@ public class Robot extends IterativeRobot {
     	System.out.println("Auton " + autonName + " selected.");
     	switch (autonName) {
     		default:
-    			autonomousCommand = new Auton_CalibrateOnly();
+    			autonomousCommand = new Auton_Calibrate();
     		case "No Auton":
-    			autonomousCommand = new Auton_CalibrateOnly();
+    			autonomousCommand = new Auton_Calibrate();
     			break;
     		case "TwoToteAuton":
     			autonomousCommand = new Auton_TwoTote();

@@ -1,16 +1,13 @@
 package org.usfirst.frc.team1218.commands.auton;
 
 import org.usfirst.frc.team1218.commands.binIntake.SetBinIntake;
-import org.usfirst.frc.team1218.commands.binIntake.SetClaw;
 import org.usfirst.frc.team1218.commands.binIntake.SetRollLeft;
 import org.usfirst.frc.team1218.commands.elevator.DelayUntilToteDetected;
 import org.usfirst.frc.team1218.commands.elevator.GoToBottom;
 import org.usfirst.frc.team1218.commands.elevator.GoToTop;
-import org.usfirst.frc.team1218.commands.elevator.ReferenceElevatorTop;
 import org.usfirst.frc.team1218.commands.fourBar.SeekPosition;
 import org.usfirst.frc.team1218.commands.swerve.AutoDrive;
 import org.usfirst.frc.team1218.commands.swerve.CalibrateModules;
-import org.usfirst.frc.team1218.commands.swerve.ZeroRobotHeading;
 import org.usfirst.frc.team1218.commands.toteIntake.AutorunToteIntake;
 import org.usfirst.frc.team1218.subsystem.binIntake.BinIntake;
 import org.usfirst.frc.team1218.subsystem.toteIntake.ToteIntake;
@@ -29,13 +26,10 @@ public class Auton_ThreeTote extends CommandGroup {
     public  Auton_ThreeTote() {
     	
     	startTime = Timer.getFPGATimestamp();
-    	addSequential(new ReferenceElevatorTop());
+    	addSequential(new Auton_Calibrate());
     	//get ready - index set heading , prep for bin pickup, turn on intake, pre position darts
     	addSequential(new SetBinIntake(-0.6));
-    	addSequential(new SetClaw(false));
-    	addSequential(new ZeroRobotHeading());
     	addParallel(new SeekPosition(0.2));
-    	addSequential(new CalibrateModules());
     	addSequential(new AutorunToteIntake(ToteIntake.TOTE_INTAKE_POWER));
     	
     	

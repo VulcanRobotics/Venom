@@ -5,29 +5,30 @@ import org.usfirst.frc.team1218.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- * @author afiolmahon
+ *
  */
-public class ZeroRobotHeading extends Command {
-    	
-    public ZeroRobotHeading() {
+public class AutonZeroHeading extends Command {
+
+    public AutonZeroHeading() {
         requires(Robot.swerveDrive);
     }
-    
+
     protected void initialize() {
-        Robot.swerveDrive.zeroHeading();
+    	Robot.swerveDrive.autonZeroHeading();
     }
-    
+
     protected void execute() {
     }
-    
+
     protected boolean isFinished() {
         return true;
     }
-    
+
     protected void end() {
-        System.out.println("NavMXP Yaw zeroed");
+        System.out.println("NavMXP Yaw zeroed and offset from dashboard");
+
     }
-    
+
     protected void interrupted() {
     }
 }
