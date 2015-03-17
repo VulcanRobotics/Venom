@@ -9,10 +9,10 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *@author afiol-mahon
  */
-public class ElevatorDefaultCommand extends Command {
+public class ManualControl extends Command {
 	
 	
-    public ElevatorDefaultCommand() {
+    public ManualControl() {
         requires(Robot.elevator);
     }
     

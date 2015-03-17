@@ -25,9 +25,12 @@ public class AutoStack extends Command {
     	}
     	
     	if (Robot.elevator.getHasTote()) {
-    		
     		//if elevator has a tote on the ground, go down if its not in U, otherwise go up
-    		Robot.elevator.setPower(Elevator.ELEVATOR_POSITIONING_POWER * ((needsToRaiseTote) ? 1 : -1));
+    		if (needsToRaiseTote ) {
+            	Robot.elevator.setPosition(Elevator.TOP_SOFT_LIMIT);
+    		} else {
+            	Robot.elevator.setPosition(Elevator.BOTTOM_SOFT_LIMT);
+    		}
     			
     		if (Robot.elevator.getBottomLimit()) {
     			needsToRaiseTote = true;
@@ -43,7 +46,7 @@ public class AutoStack extends Command {
     }
 
     protected void end() {
-    	Robot.elevator.setPower(0);
+    	Robot.elevator.setPower(0.0);
     }
 
     protected void interrupted() {

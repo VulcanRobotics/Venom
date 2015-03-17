@@ -3,7 +3,6 @@ package org.usfirst.frc.team1218.robot;
 import org.usfirst.frc.team1218.commands.binIntake.SetBinIntake;
 import org.usfirst.frc.team1218.commands.binIntake.SetClaw;
 import org.usfirst.frc.team1218.commands.elevator.AutoStack;
-import org.usfirst.frc.team1218.commands.elevator.EnableElevatorSoftLimits;
 import org.usfirst.frc.team1218.commands.elevator.ReferenceElevatorTop;
 import org.usfirst.frc.team1218.commands.fourBar.SeekPosition;
 import org.usfirst.frc.team1218.commands.swerve.CalibrateModules;
@@ -91,10 +90,7 @@ public class OI {
         elevatorManualLower = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_MANUAL_LOWER);
         
         elevatorAutomatic = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_AUTOMATIC);
-        elevatorAutomatic.whileHeld(new AutoStack());;
-        
-        elevatorDisableSoftLimits = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_DISABLE_SOFT_LIMITS);
-        elevatorDisableSoftLimits.whenPressed(new EnableElevatorSoftLimits(false));
+        elevatorAutomatic.whileHeld(new AutoStack());
         
         referenceElevator = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_REFERENCE);
         referenceElevator.whileHeld(new ReferenceElevatorTop());
