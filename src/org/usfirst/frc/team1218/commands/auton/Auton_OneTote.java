@@ -20,7 +20,7 @@ public class Auton_OneTote extends CommandGroup {
     	//get ready
     	addSequential(new Auton_Calibrate());
         //intake tote
-        addParallel(new AutoDrive(3, 0, 0, 0.8));
+        addParallel(new AutoDrive(3, 270, 270, 0.8));
         addSequential(new AutorunToteIntake(ToteIntake.TOTE_INTAKE_POWER));
         addSequential(new DelayUntilToteDetected(5), 5);
         addParallel(new SeekPosition(FourBar.PID_HIGH_POSITION));
@@ -31,6 +31,6 @@ public class Auton_OneTote extends CommandGroup {
         addSequential(new AutorunToteIntake(0.0));
         
         //drive to autozone
-        addSequential(new AutoDrive(10, 90, 0, 1));
+        addSequential(new AutoDrive(10, 0, 270, 1));
     }
 }

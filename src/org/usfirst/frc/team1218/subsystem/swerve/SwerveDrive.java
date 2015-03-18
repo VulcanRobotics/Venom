@@ -35,7 +35,7 @@ public class SwerveDrive extends Subsystem implements PIDOutput{
 	private static final double[] ALPHA_MODULE_ANGLE_OFFSET = {6.0, 161.0, -66.5, 128.0};
 	private static final double[] BETA_MODULE_ANGLE_OFFSET = {-4.76, 149.08, -13.0, -160.28 - 12.0};	
 	
-	private PIDController headingController;
+	private final PIDController headingController;
 	
 	private boolean fieldCentricDriveMode = true;
 	
@@ -165,26 +165,13 @@ public class SwerveDrive extends Subsystem implements PIDOutput{
     	module.forEach(m -> m.resetDistanceDriven());
     }
     
-    public double getAverageDistanceDriven(boolean SM0, boolean SM1, boolean SM2, boolean SM3) {
-    	int numberToAverage = 0;
+    public double getAverageDistanceDriven() {
     	double totalDistance = 0;
-    	if (SM0) {
-    		numberToAverage++;
-        	totalDistance += Math.abs(module.get(0).getAbsoluteDistanceDriven());
-    	}
-    	if (SM1) {
-    		numberToAverage++;
-        	totalDistance += Math.abs(module.get(1).getAbsoluteDistanceDriven());
-    	}
-    	if (SM2) {
-    		numberToAverage++;
-        	totalDistance += Math.abs(module.get(2).getAbsoluteDistanceDriven());
-    	}
-    	if (SM3) {
-    		numberToAverage++;
-        	totalDistance += Math.abs(module.get(3).getAbsoluteDistanceDriven());
-    	}
-    	return totalDistance / numberToAverage;
+        totalDistance += Math.abs(module.get(0).getAbsoluteDistanceDriven());
+        totalDistance += Math.abs(module.get(1).getAbsoluteDistanceDriven());
+        totalDistance += Math.abs(module.get(2).getAbsoluteDistanceDriven());
+        totalDistance += Math.abs(module.get(3).getAbsoluteDistanceDriven());
+    	return totalDistance / 4.0;
     }
     
     public void powerDrive(Vector translationVector, double rotation) {
@@ -220,9 +207,9 @@ public class SwerveDrive extends Subsystem implements PIDOutput{
     			break;
     		case "South": zeroHeading(180.0);
     			break;
-    		case "East": zeroHeading(90.0);
+    		case "East": zeroHeading(-90.0);
     			break;
-    		case "West": zeroHeading(-90.0);
+    		case "West": zeroHeading(90.0);
     			break;
     	}
     		

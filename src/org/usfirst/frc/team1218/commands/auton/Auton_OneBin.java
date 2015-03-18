@@ -21,6 +21,6 @@ public class Auton_OneBin extends CommandGroup {
         Timer.delay(0.5);
         addSequential(new SetBinIntake(BinIntake.CONTINOUS_HOLD_POWER));
         addParallel(new SeekPosition(0.5));
-        addSequential(new AutoDrive(10, 180, 0, 0.7));
+        addSequential(new AutoDrive(10, 270, 270, 0.7));
     }
 }
