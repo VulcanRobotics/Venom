@@ -18,8 +18,8 @@ public class VisionAlign extends Command implements PIDSource, PIDOutput{
 	
 	private PIDController PID;
 	
-	private final double P = -2.0;
-	private final double I = -0.01;
+	private final double P = -.080;
+	private final double I = 0.0;
 	private final double D = 0.0;
 	
 	private final double MAX_POWER = 1.5;
@@ -40,11 +40,12 @@ public class VisionAlign extends Command implements PIDSource, PIDOutput{
     }
     
     public double pidGet() {
-    	double xRatio = SmartDashboard.getNumber("xRatio", NOT_CONNECTED);
+    	double xRatio = SmartDashboard.getNumber("xDistance", NOT_CONNECTED);
     	if (xRatio == NOT_CONNECTED) {
     		System.out.println("error: cannot connect to roborealm");
     		xRatio = 0;
     	}
+    	System.out.println(xRatio);
     	return xRatio;
     }
     

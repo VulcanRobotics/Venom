@@ -9,6 +9,7 @@ import org.usfirst.frc.team1218.commands.swerve.CalibrateModules;
 import org.usfirst.frc.team1218.commands.swerve.LinearDrive;
 import org.usfirst.frc.team1218.commands.swerve.MaintainRobotHeading;
 import org.usfirst.frc.team1218.commands.swerve.ToggleFieldCentricDrive;
+import org.usfirst.frc.team1218.commands.swerve.VisionAlign;
 import org.usfirst.frc.team1218.commands.swerve.ZeroRobotHeading;
 import org.usfirst.frc.team1218.commands.toteIntake.RunToteIntake;
 import org.usfirst.frc.team1218.subsystem.binIntake.BinIntake;
@@ -62,6 +63,8 @@ public class OI {
 	public static Button reverseBinIntake;
 	
 	public static Button referenceElevator;
+	//test
+	public static Button test;
 	
 	public OI() {
     	//Driver
@@ -129,7 +132,8 @@ public class OI {
         openBinGrabber.whenInactive(new SetClaw(false));
         
         //test button
-        
+        test = new JoystickButton(driver, ButtonType.X);
+        test.whileActive(new VisionAlign());
 	}
     
     public static Vector getDriverLeftJoystickVector() {
