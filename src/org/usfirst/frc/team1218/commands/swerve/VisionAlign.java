@@ -18,9 +18,9 @@ public class VisionAlign extends Command implements PIDSource, PIDOutput{
 	
 	private PIDController PID;
 	
-	private final double P = -.080;
-	private final double I = 0.0;
-	private final double D = 0.0;
+	private final double P = -0.1;
+	private final double I = -0.003;
+	private final double D = -1.0;
 	
 	private final double MAX_POWER = 1.5;
 	
@@ -31,12 +31,12 @@ public class VisionAlign extends Command implements PIDSource, PIDOutput{
     	PID.setInputRange(-1.0, 1.0);
     	PID.setOutputRange(-MAX_POWER, MAX_POWER);
     	PID.setSetpoint(0.0);
-    	PID.setAbsoluteTolerance(0.1);
+    	PID.setAbsoluteTolerance(1);
     	PID.disable();
     }
 
     public void pidWrite(double velocity){
-    	Robot.swerveDrive.powerDrive(new Vector(velocity, 0), 0);
+    	Robot.swerveDrive.powerDrive(new Vector(0, velocity), 0);
     }
     
     public double pidGet() {
@@ -51,7 +51,7 @@ public class VisionAlign extends Command implements PIDSource, PIDOutput{
     
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.swerveDrive.enableHeadingController(0.0);
+    	Robot.swerveDrive.enableHeadingController(-90.0);
     	PID.enable();
     }
 
@@ -61,12 +61,14 @@ public class VisionAlign extends Command implements PIDSource, PIDOutput{
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return PID.onTarget() || Math.abs(SmartDashboard.getNumber("xRatio")) >= 0.5;
+    	double dvdt = Math.abs(SmartDashboard.getNumber("dvdt", NOT_CONNECTED));
+        return PID.onTarget() && dvdt < 0.007;
     }
 
     // Called once after isFinished returns true
     protected void end() {
     	PID.disable();
+    	Robot.swerveDrive.powerDrive(new Vector(0, 0), 0);
     	Robot.swerveDrive.disableHeadingController();
     }
 
