@@ -11,8 +11,8 @@ import edu.wpi.first.wpilibj.PIDSource;
 
 public class DartController implements PIDSource, PIDOutput{
 	
-	protected static final double TOP_SOFT_LIMIT = 0.89;
-	protected static final double BOTTOM_SOFT_LIMIT = 0.05;
+	protected static final double TOP_SOFT_LIMIT = 0.91;
+	protected static final double BOTTOM_SOFT_LIMIT = 0.045;
 	
 	private static final double MAX_AMPERAGE = 300.0;//XXX fix properly
 	
