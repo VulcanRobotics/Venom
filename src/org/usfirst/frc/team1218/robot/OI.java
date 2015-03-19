@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1218.robot;
 
+import org.usfirst.frc.team1218.commands.auton.Auton_TwoTote;
 import org.usfirst.frc.team1218.commands.binIntake.SetBinIntake;
 import org.usfirst.frc.team1218.commands.binIntake.SetClaw;
 import org.usfirst.frc.team1218.commands.elevator.AutoStack;
@@ -133,7 +134,9 @@ public class OI {
         
         //test button
         test = new JoystickButton(driver, ButtonType.X);
-        test.whileActive(new VisionAlign());
+        //test.whenPressed(new Auton_TwoTote());
+        test.whenPressed(new VisionAlign());
+        //test.whenPressed(new AutoDrive(4.0, 270, -90, 1.5));
 	}
     
     public static Vector getDriverLeftJoystickVector() {
