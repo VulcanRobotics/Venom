@@ -24,7 +24,7 @@ public class GoToTop extends Command {
     }
 
     protected boolean isFinished() {
-        return Robot.elevator.getTopLimit();
+        return Robot.elevator.getTopLimit() || Robot.elevator.getPosition() > Elevator.TOP_SOFT_LIMIT-350;
     }
 
     protected void end() {
