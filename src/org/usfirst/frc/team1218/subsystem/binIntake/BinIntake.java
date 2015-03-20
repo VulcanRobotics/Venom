@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class BinIntake extends Subsystem {
     
-//private final Solenoid clamp;
+private final Solenoid clamp;
 	
 	private final CANTalon binIntakeLeft;
 	private final CANTalon binIntakeRight;
@@ -24,7 +24,7 @@ public class BinIntake extends Subsystem {
 	public BinIntake() {
 		binIntakeLeft = new CANTalon(RobotMap.BIN_INTAKE_L);
 		binIntakeRight = new CANTalon(RobotMap.BIN_INTAKE_R);
-		//clamp = new Solenoid(RobotMap.BIN_INTAKE_SOLENOID);
+		clamp = new Solenoid(RobotMap.BIN_INTAKE_SOLENOID);
 	}
 	
     public void initDefaultCommand() {
@@ -32,7 +32,7 @@ public class BinIntake extends Subsystem {
     }
     
     public void setClamp(boolean shouldOpen) {
-    	//clamp.set(!shouldOpen);
+    	clamp.set(!shouldOpen);
     }
     
     public void setBinIntake(double power) {
@@ -46,7 +46,7 @@ public class BinIntake extends Subsystem {
     }
     
     public void syncDashboard() {
-    	//SmartDashboard.putBoolean("FourBar_Clamps_Open", clamp.get());
+    	SmartDashboard.putBoolean("FourBar_Clamps_Open", clamp.get());
     	SmartDashboard.putNumber("FourBar_binIntakeLeft_Amperage", binIntakeLeft.getOutputCurrent());
     	SmartDashboard.putNumber("FourBar_binIntakeRight_Amperage", binIntakeRight.getOutputCurrent());
     	SmartDashboard.putNumber("FourBar_Intake_Power", binIntakeLeft.get());

@@ -37,12 +37,12 @@ public class AutoStack extends Command {
     			break;
     		case 1:
     			Robot.elevator.setPosition(Elevator.BOTTOM_SOFT_LIMT);
-    			if (Robot.elevator.getBottomLimit() && Robot.elevator.hasTote()) state = 2;
+    			if (Robot.elevator.atBottom() && Robot.elevator.hasTote()) state = 2;
     			if (!Robot.elevator.hasTote()) state = 0;
     			break;
     		case 2:
     			Robot.elevator.setPosition(Elevator.TOP_SOFT_LIMIT);
-    			if (Robot.elevator.getTopLimit()) state = 0;
+    			if (Robot.elevator.atTop()) state = 0;
     			break;
        	}
     }

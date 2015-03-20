@@ -1,6 +1,5 @@
 package org.usfirst.frc.team1218.robot;
 
-import org.usfirst.frc.team1218.commands.auton.Auton_TwoTote;
 import org.usfirst.frc.team1218.commands.binIntake.SetBinIntake;
 import org.usfirst.frc.team1218.commands.binIntake.SetClaw;
 import org.usfirst.frc.team1218.commands.elevator.AutoStack;

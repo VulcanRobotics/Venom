@@ -4,9 +4,7 @@ package org.usfirst.frc.team1218.robot;
 import org.usfirst.frc.team1218.commands.auton.Auton_Calibrate;
 import org.usfirst.frc.team1218.commands.auton.Auton_JustDrive;
 import org.usfirst.frc.team1218.commands.auton.Auton_OneTote;
-import org.usfirst.frc.team1218.commands.auton.Auton_Step;
 import org.usfirst.frc.team1218.commands.auton.Auton_TwoTote;
-import org.usfirst.frc.team1218.subsystem.autonHooks.Hooks;
 import org.usfirst.frc.team1218.subsystem.binIntake.BinIntake;
 import org.usfirst.frc.team1218.subsystem.elevator.Elevator;
 import org.usfirst.frc.team1218.subsystem.fourBar.FourBar;
@@ -33,7 +31,6 @@ public class Robot extends IterativeRobot {
 	public static SwerveDrive swerveDrive;
 	public static FourBar fourBar;
 	public static Elevator elevator;
-	public static Hooks hooks;
 	public static ToteIntake toteIntake;
 	public static BinIntake binIntake;
 	public static OI oi;
@@ -51,8 +48,7 @@ public class Robot extends IterativeRobot {
     	swerveDrive = new SwerveDrive();
     	fourBar = new FourBar();
     	elevator = new Elevator();
-    	hooks = new Hooks();
-    	toteIntake = new ToteIntake();
+     	toteIntake = new ToteIntake();
     	binIntake = new BinIntake();
 		oi = new OI();		
         System.out.println("Robot Initialized");
@@ -80,9 +76,6 @@ public class Robot extends IterativeRobot {
     			break;
     		case "OneToteAuton":
     			autonomousCommand = new Auton_OneTote();
-    			break;
-    		case "StepAuton":
-    			autonomousCommand = new Auton_Step();
     			break;
     		case "JustDrive":
     			autonomousCommand = new Auton_JustDrive();
@@ -131,7 +124,6 @@ public class Robot extends IterativeRobot {
     	Robot.swerveDrive.syncDashboard();
     	Robot.elevator.periodicTasks();
     	Robot.fourBar.syncDashboard();
-    	Robot.hooks.syncDashboard();
     	Robot.toteIntake.syncDashboard();
     	Robot.binIntake.syncDashboard();
     	SmartDashboard.putBoolean("isBeta", Preferences.getInstance().getBoolean("isBeta", false));

@@ -25,7 +25,6 @@ public class VisionAlign extends Command implements PIDSource, PIDOutput{
 	private final double MAX_POWER = 1.5;
 	
     public VisionAlign() {
-
     	requires(Robot.swerveDrive);
     	PID = new PIDController(P, I, D, this, this);
     	PID.setInputRange(-1.0, 1.0);
@@ -49,31 +48,25 @@ public class VisionAlign extends Command implements PIDSource, PIDOutput{
     	return xRatio;
     }
     
-    // Called just before this Command runs the first time
     protected void initialize() {
     	Robot.swerveDrive.enableHeadingController(-90.0);
     	PID.enable();
     }
 
-    // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     }
 
-    // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
     	double dvdt = Math.abs(SmartDashboard.getNumber("dvdt", NOT_CONNECTED));
         return PID.onTarget() && dvdt < 0.007;
     }
 
-    // Called once after isFinished returns true
     protected void end() {
     	PID.disable();
     	Robot.swerveDrive.powerDrive(new Vector(0, 0), 0);
     	Robot.swerveDrive.disableHeadingController();
     }
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
     protected void interrupted() {
     	end();
     }

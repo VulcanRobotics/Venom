@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1218.subsystem.elevator;
 
 import org.usfirst.frc.team1218.commands.elevator.ManualControl;
+import org.usfirst.frc.team1218.robot.Robot;
 import org.usfirst.frc.team1218.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.CANTalon;
@@ -30,10 +31,12 @@ public class Elevator extends Subsystem {
 	public static final double ELEVATOR_MIN_POSITIONING_POWER_UP = 0.3;
 	public static final double ELEVATOR_MIN_POSITIONING_POWER_DOWN = 0.2;
 		
-	public static final int TOP_SOFT_LIMIT = 4150;
+	public static final int TOP_SOFT_LIMIT = 4200;
 	public static final int BOTTOM_SOFT_LIMT = 0;
 	public static final double SLOWDOWN_NEAR_LIMIT_DISTANCE = 1000;
 	
+	public static final double BOTTOM_CLEARANCE = 100;
+	public static final double TOP_CLEARANCE = 100;
     public void initDefaultCommand() {
     	setDefaultCommand(new ManualControl());
     }
@@ -111,6 +114,14 @@ public class Elevator extends Subsystem {
     
     public boolean hasTote() {
     	return toteDetector.get();
+    }
+    
+    public boolean atBottom(){
+    	return Robot.elevator.getBottomLimit() || Robot.elevator.getPosition() <= Elevator.BOTTOM_SOFT_LIMT + BOTTOM_CLEARANCE;
+    }
+    
+    public boolean atTop(){
+    	return Robot.elevator.getTopLimit() || Robot.elevator.getPosition() > Elevator.TOP_SOFT_LIMIT-TOP_CLEARANCE;
     }
     
    public boolean getTopLimit() {
