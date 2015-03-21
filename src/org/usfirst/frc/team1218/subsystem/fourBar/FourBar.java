@@ -37,7 +37,7 @@ public class FourBar extends Subsystem implements PIDOutput, PIDSource{
 	public static final double PID_GET_NOODLE_POSITION = 0.42; //TODO: find this
 	
 	public static final double SLOWDOWN_NEAR_LIMIT_DISTANCE = 0.2;
-	public static final double MIN_POWER = 0.1;
+	public static final double MIN_POWER = 0.2;
 	
 	public FourBar() {
 		dartLeft = new DartController(RobotMap.FOUR_BAR_LEFT_DART, RobotMap.FOUR_BAR_LEFT_DART_POTENTIOMETER);
