@@ -15,6 +15,10 @@ import org.usfirst.frc.team1218.subsystem.toteIntake.ToteIntake;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.CommandGroup;
+/**
+ * @author afiol-mahon
+ * @author lcook
+ */
 
 public class Auton_TwoTote extends CommandGroup {
     
@@ -38,11 +42,11 @@ public class Auton_TwoTote extends CommandGroup {
     	addSequential(new SetBinIntake(BinIntake.CONTINOUS_HOLD_POWER));
     	
     	addParallel(new DelayForAndPickupTote(0.5));
-    	addSequential(new AutoDrive(5.2, 270, -90, 2.0));
+    	addSequential(new AutoDrive(5.2, 270.0, -90.0, 2.0));
     	
-    	addSequential(new VisionAlign());
+    	addSequential(new VisionAlign(), 3.0);
     	addSequential(new AutorunToteIntake(ToteIntake.TOTE_INTAKE_POWER_GENTLE));
-    	addParallel(new AutoDrive(4.0, 270, -90, 2.0));
+    	addParallel(new AutoDrive(4.0, 270.0, -90.0, 2.0));
     	
     	//pickup second tote
     	addSequential(new DelayUntilToteDetected(5));
@@ -53,7 +57,7 @@ public class Auton_TwoTote extends CommandGroup {
     	
     	addSequential(new SetBinIntake(BinIntake.CONTINOUS_HOLD_POWER));  
     	//drive to auto zone
-    	addSequential(new AutoDrive(10, 0, -90, 2.0));
+    	addSequential(new AutoDrive(10.0, 0.0, -90.0, 2.0));
     	System.out.println("done 2 tote auton. Total completion time: " + currentTime());
     }
 }

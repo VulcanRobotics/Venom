@@ -22,7 +22,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * @author afiolmahon
  */
 
-public class SwerveDrive extends Subsystem implements PIDOutput{
+public class SwerveDrive extends Subsystem implements PIDOutput {
     
     protected List<SwerveModule> module;
     
@@ -161,7 +161,7 @@ public class SwerveDrive extends Subsystem implements PIDOutput{
     	System.out.println("[Swerve Drive]: Heading Controller Disabled");
     }
     
-    public void resetDistanceDriven(){
+    public void resetDistanceDriven() {
     	module.forEach(m -> m.resetDistanceDriven());
     }
     
@@ -212,7 +212,6 @@ public class SwerveDrive extends Subsystem implements PIDOutput{
     		case "West": zeroHeading(90.0);
     			break;
     	}
-    		
     }
     
     protected void setModuleAngles(double angle0, double angle1, double angle2, double angle3) {

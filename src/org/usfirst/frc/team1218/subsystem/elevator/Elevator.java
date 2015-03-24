@@ -31,7 +31,7 @@ public class Elevator extends Subsystem {
 	public static final double ELEVATOR_MIN_POSITIONING_POWER_UP = 0.3;
 	public static final double ELEVATOR_MIN_POSITIONING_POWER_DOWN = 0.2;
 		
-	public static final int TOP_SOFT_LIMIT = 4200;
+	public static final int TOP_SOFT_LIMIT = 4350;//4200;
 	public static final int BOTTOM_SOFT_LIMT = 0;
 	public static final double SLOWDOWN_NEAR_LIMIT_DISTANCE = 1000;
 	
@@ -44,12 +44,11 @@ public class Elevator extends Subsystem {
     public Elevator() {
     	elevatorController = new CANTalon(RobotMap.ELEVATOR_LIFT_MASTER, 300);
     	elevatorController.enableBrakeMode(true);
-    	
     	elevatorController.setReverseSoftLimit(BOTTOM_SOFT_LIMT);
     	elevatorController.setForwardSoftLimit(TOP_SOFT_LIMIT);
     	enableSoftLimits(false);
 
-    	elevatorController.enableLimitSwitch(true, true);
+    	elevatorController.enableLimitSwitch(true, false);
     	elevatorController.ConfigFwdLimitSwitchNormallyOpen(false);
     	elevatorController.ConfigRevLimitSwitchNormallyOpen(false);
     	elevatorController.changeControlMode(ControlMode.PercentVbus);
@@ -81,7 +80,7 @@ public class Elevator extends Subsystem {
     
     public double getDistanceToTopLimit() {
     	double distance = Elevator.TOP_SOFT_LIMIT - getPosition();
-    	if (distance < 0){
+    	if (distance < 0) {
     		distance = 0;
     	}
     	return Elevator.TOP_SOFT_LIMIT - getPosition();

@@ -20,16 +20,6 @@ public class AutoStack extends Command {
     }
 
     protected void execute() {
-    	/*if (Robot.elevator.getTopLimit()) ascending = false;
-    	
-    	if (Robot.elevator.hasTote()) {    		
-    		Robot.elevator.setPosition((ascending) ? Elevator.TOP_SOFT_LIMIT : Elevator.BOTTOM_SOFT_LIMT);
-    			
-    		if (Robot.elevator.getBottomLimit()) ascending = true;
-    	} else {
-    		Robot.elevator.setPosition(Elevator.TOP_SOFT_LIMIT);
-    	}*/
-    	
     	switch (state) {
     		case 0: 
     			Robot.elevator.setPosition(Elevator.TOP_SOFT_LIMIT);

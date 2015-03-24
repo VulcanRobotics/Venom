@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
  *@author afiolmahon
+ *@author lcook
  */
 public class Auton_Calibrate extends CommandGroup {
     

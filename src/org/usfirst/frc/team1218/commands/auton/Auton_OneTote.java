@@ -12,7 +12,8 @@ import org.usfirst.frc.team1218.subsystem.toteIntake.ToteIntake;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
- *
+ *@author afiolmahon
+ *@author lcook
  */
 public class Auton_OneTote extends CommandGroup {
     
@@ -20,17 +21,15 @@ public class Auton_OneTote extends CommandGroup {
     	//get ready
     	addSequential(new Auton_Calibrate());
         //intake tote
-        addParallel(new AutoDrive(3, 270, 270, 0.8));
+        addParallel(new AutoDrive(3.0, 270.0, -90.0, 0.8));
         addSequential(new AutorunToteIntake(ToteIntake.TOTE_INTAKE_POWER));
-        addSequential(new DelayUntilToteDetected(5), 5);
+        addSequential(new DelayUntilToteDetected(5.0), 5.0);
         addParallel(new SeekPosition(FourBar.PID_HIGH_POSITION));
         addSequential(new GoToBottom());
         addSequential(new GoToTop());
-        
         //stop intakes
         addSequential(new AutorunToteIntake(0.0));
-        
         //drive to autozone
-        addSequential(new AutoDrive(10, 0, 270, 1));
+        addSequential(new AutoDrive(10.0, 0.0, -90.0, 2.0));
     }
 }

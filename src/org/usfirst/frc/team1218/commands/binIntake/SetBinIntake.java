@@ -5,7 +5,8 @@ import org.usfirst.frc.team1218.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- *
+ *@author afiolmahon
+ *@author lcook
  */
 public class SetBinIntake extends Command {
 	
