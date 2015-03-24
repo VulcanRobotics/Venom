@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- *
  *	@author Bob Marley
  */
 public class ToteIntake extends Subsystem {
@@ -29,8 +28,8 @@ public class ToteIntake extends Subsystem {
      * @param power positive value for intake and negative value for output
      */
     public ToteIntake() {
-    	intakeL = new CANTalon(RobotMap.TOTE_INTAKE_L);
-    	intakeR = new CANTalon(RobotMap.TOTE_INTAKE_R);
+    	intakeL = new CANTalon(RobotMap.TOTE_INTAKE_LEFT);
+    	intakeR = new CANTalon(RobotMap.TOTE_INTAKE_RIGHT);
     }
     
     public void setIntakePower(double power) {

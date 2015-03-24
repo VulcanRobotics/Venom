@@ -175,7 +175,6 @@ public class SwerveModule {
 		} else {
 			setWheelPower(0.0);
 		}
-
 	}
 	
 	/**

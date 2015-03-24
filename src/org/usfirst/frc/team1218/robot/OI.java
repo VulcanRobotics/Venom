@@ -1,17 +1,17 @@
 package org.usfirst.frc.team1218.robot;
 
 import org.usfirst.frc.team1218.commands.binIntake.SetBinIntake;
-import org.usfirst.frc.team1218.commands.binIntake.SetClaw;
+import org.usfirst.frc.team1218.commands.binIntake.SetClamp;
 import org.usfirst.frc.team1218.commands.elevator.AutoStack;
 import org.usfirst.frc.team1218.commands.elevator.ReferenceElevator;
 import org.usfirst.frc.team1218.commands.fourBar.SeekPosition;
 import org.usfirst.frc.team1218.commands.swerve.CalibrateModules;
-import org.usfirst.frc.team1218.commands.swerve.LinearDrive;
 import org.usfirst.frc.team1218.commands.swerve.MaintainRobotHeading;
+import org.usfirst.frc.team1218.commands.swerve.TankDrive;
 import org.usfirst.frc.team1218.commands.swerve.ToggleFieldCentricDrive;
 import org.usfirst.frc.team1218.commands.swerve.VisionAlign;
 import org.usfirst.frc.team1218.commands.swerve.ZeroRobotHeading;
-import org.usfirst.frc.team1218.commands.toteIntake.RunToteIntake;
+import org.usfirst.frc.team1218.commands.toteIntake.SetToteIntake;
 import org.usfirst.frc.team1218.subsystem.binIntake.BinIntake;
 import org.usfirst.frc.team1218.subsystem.fourBar.FourBar;
 import org.usfirst.frc.team1218.subsystem.swerve.math.Vector;
@@ -32,9 +32,9 @@ public class OI {
 	public static Joystick driver;
 	public static Button resetGyro;
 	public static Button maintainHeading;
-	public static Button indexSwerve;
+	public static Button calibrateSwerve;
 	public static Button fieldCentricToggle;
-	public static Button lockDrive;
+	public static Button tankDrive;
 	
 	//Operator
 	public static Joystick operator;
@@ -76,14 +76,14 @@ public class OI {
         maintainHeading = new JoystickButton(driver, RobotMap.BUTTON_MAINTAIN_HEADING);
         maintainHeading.whileHeld(new MaintainRobotHeading());
         
-        indexSwerve = new JoystickButton(driver, RobotMap.BUTTON_INDEX_SWERVE);
-        indexSwerve.whenPressed(new CalibrateModules());
+        calibrateSwerve = new JoystickButton(driver, RobotMap.BUTTON_INDEX_SWERVE);
+        calibrateSwerve.whenPressed(new CalibrateModules());
         
         fieldCentricToggle = new JoystickButton(driver, RobotMap.BUTTON_FIELD_CENTRIC_TOGGLE);
         fieldCentricToggle.whenPressed(new ToggleFieldCentricDrive());
         
-        lockDrive = new JoystickButton(driver, RobotMap.BUTTON_LOCK_DRIVE);
-        lockDrive.whileHeld(new LinearDrive());
+        tankDrive = new JoystickButton(driver, RobotMap.BUTTON_TANK_DRIVE);
+        tankDrive.whileHeld(new TankDrive());
                 
         //Operator
         operator = new Joystick(RobotMap.OPERATOR_JOYSTICK);
@@ -100,10 +100,12 @@ public class OI {
         
         //Tote Intake
         elevatorRunToteIntake = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_RUN_TOTE_INTAKE);
-        elevatorRunToteIntake.whileHeld(new RunToteIntake(ToteIntake.TOTE_INTAKE_POWER));
+        elevatorRunToteIntake.whenPressed(new SetToteIntake(ToteIntake.TOTE_INTAKE_POWER));
+        elevatorRunToteIntake.whenReleased(new SetToteIntake(0.0));
         
         elevatorReverseToteIntake = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_REVERSE_TOTE_INTAKE);
-        elevatorReverseToteIntake.whileHeld(new RunToteIntake(-ToteIntake.TOTE_INTAKE_POWER));
+        elevatorReverseToteIntake.whenPressed(new SetToteIntake(-ToteIntake.TOTE_INTAKE_POWER));
+        elevatorReverseToteIntake.whenReleased(new SetToteIntake(0.0));
         
         //Four Bar
         fourBarHighPosition = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_HIGH_POSITION);
@@ -128,8 +130,8 @@ public class OI {
         reverseBinIntake.whenInactive(new SetBinIntake(BinIntake.CONTINOUS_HOLD_POWER));
         
         openBinGrabber = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_OPEN_GRABBER);
-        openBinGrabber.whenPressed(new SetClaw(true));
-        openBinGrabber.whenInactive(new SetClaw(false));
+        openBinGrabber.whenPressed(new SetClamp(true));
+        openBinGrabber.whenInactive(new SetClamp(false));
         
         //test button
         test = new JoystickButton(driver, ButtonType.X);

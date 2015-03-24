@@ -3,7 +3,6 @@ package org.usfirst.frc.team1218.robot;
 
 import org.usfirst.frc.team1218.commands.auton.Auton_Calibrate;
 import org.usfirst.frc.team1218.commands.auton.Auton_JustDrive;
-import org.usfirst.frc.team1218.commands.auton.Auton_OneBin;
 import org.usfirst.frc.team1218.commands.auton.Auton_OneTote;
 import org.usfirst.frc.team1218.commands.auton.Auton_TwoTote;
 import org.usfirst.frc.team1218.subsystem.binIntake.BinIntake;
@@ -80,9 +79,6 @@ public class Robot extends IterativeRobot {
     			break;
     		case "JustDrive":
     			autonomousCommand = new Auton_JustDrive();
-    			break;
-    		case "OneBin":
-    			autonomousCommand = new Auton_OneBin();
     			break;
     	}
         if (autonomousCommand != null) autonomousCommand.start();

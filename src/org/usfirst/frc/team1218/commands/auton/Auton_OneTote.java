@@ -5,7 +5,7 @@ import org.usfirst.frc.team1218.commands.elevator.GoToBottom;
 import org.usfirst.frc.team1218.commands.elevator.GoToTop;
 import org.usfirst.frc.team1218.commands.fourBar.SeekPosition;
 import org.usfirst.frc.team1218.commands.swerve.AutoDrive;
-import org.usfirst.frc.team1218.commands.toteIntake.AutorunToteIntake;
+import org.usfirst.frc.team1218.commands.toteIntake.SetToteIntake;
 import org.usfirst.frc.team1218.subsystem.fourBar.FourBar;
 import org.usfirst.frc.team1218.subsystem.toteIntake.ToteIntake;
 
@@ -22,13 +22,13 @@ public class Auton_OneTote extends CommandGroup {
     	addSequential(new Auton_Calibrate());
         //intake tote
         addParallel(new AutoDrive(3.0, 270.0, -90.0, 0.8));
-        addSequential(new AutorunToteIntake(ToteIntake.TOTE_INTAKE_POWER));
+        addSequential(new SetToteIntake(ToteIntake.TOTE_INTAKE_POWER));
         addSequential(new DelayUntilToteDetected(5.0), 5.0);
         addParallel(new SeekPosition(FourBar.PID_HIGH_POSITION));
         addSequential(new GoToBottom());
         addSequential(new GoToTop());
         //stop intakes
-        addSequential(new AutorunToteIntake(0.0));
+        addSequential(new SetToteIntake(0.0));
         //drive to autozone
         addSequential(new AutoDrive(10.0, 0.0, -90.0, 2.0));
     }

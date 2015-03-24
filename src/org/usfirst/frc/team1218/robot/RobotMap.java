@@ -15,23 +15,21 @@ public class RobotMap {
 	public static final int[] SM_ANGLE_ENCODER_A = {1, 4, 7, 10}; //DIO
 	public static final int[] SM_ANGLE_ENCODER_B = {2, 5, 8, 11}; //DIO
 	
-	public static final int ELEVATOR_LIFT_MASTER = 30;//CAN
+	public static final int ELEVATOR_CONTROLLER = 30;//CAN
 	public static final int ELEVATOR_TOTE_DETECTOR = 12;//DIO
 	public static final int ELEVATOR_TOTE_INDICATOR = 13;//DIO
 	
-	public static final int TOTE_INTAKE_L = 32; //CAN
-	public static final int TOTE_INTAKE_R = 33; //CAN
+	public static final int TOTE_INTAKE_LEFT = 32; //CAN
+	public static final int TOTE_INTAKE_RIGHT = 33; //CAN
 	
 	public static final int FOUR_BAR_LEFT_DART = 20; //CAN
 	public static final int FOUR_BAR_RIGHT_DART = 21; //CAN
 	public static final int FOUR_BAR_LEFT_DART_POTENTIOMETER = 0; //AI
 	public static final int FOUR_BAR_RIGHT_DART_POTENTIOMETER = 1; //AI
 	
-	public static final int BIN_INTAKE_L = 22; //CAN
-	public static final int BIN_INTAKE_R = 23; //CAN
+	public static final int BIN_INTAKE_LEFT = 22; //CAN
+	public static final int BIN_INTAKE_RIGHT = 23; //CAN
 	public static final int BIN_INTAKE_SOLENOID = 0; //PCM
-
-	public static final int HOOK_DEPLOY_SOLENOID = 1; //PCM
 
 	//Driver Control Mapping-----------------------------------------------
 	public static final int DRIVER_JOYSTICK = 0;
@@ -39,7 +37,7 @@ public class RobotMap {
 	public static final int BUTTON_MAINTAIN_HEADING = OI.ButtonType.L1;
 	public static final int BUTTON_INDEX_SWERVE = OI.ButtonType.A;
 	public static final int BUTTON_FIELD_CENTRIC_TOGGLE = OI.ButtonType.Y;
-	public static final int BUTTON_LOCK_DRIVE = OI.ButtonType.R1;
+	public static final int BUTTON_TANK_DRIVE = OI.ButtonType.R1;
 	public static final int TRIGGER_TURBO_DRIVE = OI.Axis.TRIGGER_L;
 	
 	//Operator Control Mapping---------------------------------------------

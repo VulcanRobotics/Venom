@@ -11,6 +11,10 @@ import edu.wpi.first.wpilibj.Encoder;
  */
 public class AngleEncoder extends Encoder {
 	
+	/*
+	 *FIXME I believe issue with swerve is when robot passes an index during regular operation and calibrates, should only index when index command is called? maybe that will fix problem 
+	 */
+	
 	private Counter indexCounter;
 	private double moduleAngleOffset;
 	

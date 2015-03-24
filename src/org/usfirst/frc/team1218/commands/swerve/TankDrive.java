@@ -10,9 +10,9 @@ import edu.wpi.first.wpilibj.command.Command;
  * While engaged only forward and backward movement is possible. Goal is to make backing off of stacks easy.
  *@author afiol-mahon
  */
-public class LinearDrive extends Command {
+public class TankDrive extends Command {
 	
-	public LinearDrive() {
+	public TankDrive() {
 		requires(Robot.swerveDrive);
 	}
 	

@@ -14,9 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *@author afiol-mahon
  */
 public class FourBar extends Subsystem implements PIDOutput, PIDSource{
-	
-	double lastOverCurrentTime = -100;
-	
+		
 	private final DartController dartLeft;
 	private final DartController dartRight;
 	private final PIDController positionController;
@@ -59,14 +57,6 @@ public class FourBar extends Subsystem implements PIDOutput, PIDSource{
     
 	public boolean isAlignmentSafe() {
 		return Robot.fourBar.getDartPositionDifference() < FourBar.DART_FAILSAFE_DISTANCE;
-	}
-	
-	public boolean isOverCurrent() {
-		return dartLeft.isOverCurrent() || dartRight.isOverCurrent();
-	}
-    
-	public boolean isCoolingDown() {
-		return dartLeft.isCoolingDown() || dartRight.isCoolingDown(); 
 	}
 	
     public boolean isOnTarget() {
@@ -122,8 +112,6 @@ public class FourBar extends Subsystem implements PIDOutput, PIDSource{
     	}
     }
     
-    
-    
     protected void disableDarts() {
     	dartEnablePID(false);
     	dartLeft.disable();
@@ -153,15 +141,15 @@ public class FourBar extends Subsystem implements PIDOutput, PIDSource{
     	
     	SmartDashboard.putNumber("FourBar_Dart_Position_Difference", getDartPositionDifference());
     	    	
-    	SmartDashboard.putBoolean("FourBar_Left_Dart_Fwd_Limit", dartLeft.isFwdLimitSwitchClosed());
-    	SmartDashboard.putBoolean("FourBar_Right_Dart_Fwd_Limit", dartRight.isFwdLimitSwitchClosed());
-    	SmartDashboard.putBoolean("FourBar_Left_Dart_Rev_Limit", dartLeft.isRevLimitSwitchClosed());
-    	SmartDashboard.putBoolean("FourBar_Right_Dart_Rev_Limit", dartRight.isRevLimitSwitchClosed());
+    	SmartDashboard.putBoolean("FourBar_Left_Top_Hard_Limit", !dartLeft.isFwdLimitSwitchClosed());
+    	SmartDashboard.putBoolean("FourBar_Right_Top_Hard_Limit", !dartRight.isFwdLimitSwitchClosed());
+    	SmartDashboard.putBoolean("FourBar_Left_Bottom_Hard_Limit", !dartLeft.isRevLimitSwitchClosed());
+    	SmartDashboard.putBoolean("FourBar_Right_Bottom_Hard_Limit", !dartRight.isRevLimitSwitchClosed());
     	
-    	SmartDashboard.putBoolean("FourBar_Right_Bottom_Soft_Limit", dartRight.getBottomSoftLimit());
+    	SmartDashboard.putBoolean("FourBar_Left_Top_Soft_Limit", dartLeft.getTopSoftLimit());
     	SmartDashboard.putBoolean("FourBar_Left_Bottom_Soft_Limit", dartLeft.getBottomSoftLimit());
     	SmartDashboard.putBoolean("FourBar_Right_Top_Soft_Limit", dartRight.getTopSoftLimit());
-    	SmartDashboard.putBoolean("FourBar_Left_Top_Soft_Limit", dartLeft.getTopSoftLimit());
+    	SmartDashboard.putBoolean("FourBar_Right_Bottom_Soft_Limit", dartRight.getBottomSoftLimit());
     }
 
 	@Override

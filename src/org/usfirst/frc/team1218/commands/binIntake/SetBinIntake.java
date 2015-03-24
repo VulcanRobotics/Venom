@@ -21,16 +21,13 @@ public class SetBinIntake extends Command {
     	Robot.binIntake.setBinIntake(power);
     }
 
-    protected void execute() {
-    }
+    protected void execute() {}
 
     protected boolean isFinished() {
         return true;
     }
 
-    protected void end() {
-    }
+    protected void end() {}
 
-    protected void interrupted() {
-    }
+    protected void interrupted() {}
 }

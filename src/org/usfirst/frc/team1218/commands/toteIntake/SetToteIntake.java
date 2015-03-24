@@ -7,11 +7,11 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *@author afiol-mahon
  */
-public class AutorunToteIntake extends Command {
+public class SetToteIntake extends Command {
 	
 	private double power;
 	
-    public AutorunToteIntake(double power) {
+    public SetToteIntake(double power) {
     	requires(Robot.toteIntake);
     	this.power = power;
     }

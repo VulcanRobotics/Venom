@@ -9,11 +9,10 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *@author afiolmahon
  */
-public class CalibrateModules extends Command {
+public class CalibrateModules extends Command {//TODO try to speed up
 
 	private boolean indexed[] = {false, false, false, false};
 	private int[] indexCount = new int[4];
-	
 	
     public CalibrateModules() {
         requires(Robot.swerveDrive);

@@ -4,7 +4,6 @@ import org.usfirst.frc.team1218.robot.Robot;
 
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.CANTalon;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.CANTalon.ControlMode;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
@@ -13,16 +12,12 @@ public class DartController implements PIDSource, PIDOutput{
 	
 	protected static final double TOP_SOFT_LIMIT = 0.91;
 	protected static final double BOTTOM_SOFT_LIMIT = 0.045;
-	
-	private static final double MAX_AMPERAGE = 300.0;//XXX fix properly
-	
+		
 	private boolean enabled;
 	
 	private final CANTalon talon;
 	private final AnalogPotentiometer potentiometer;
-	
-	private final static double OVER_CURRENT_TIMEOUT = 5;
-	
+		
 	public static double SLOWDOWN_DISTANCE = 0.2;
 	
 	public DartController(int deviceNumber, int potentiometerPort) {
@@ -40,7 +35,7 @@ public class DartController implements PIDSource, PIDOutput{
 		if (!Robot.fourBar.isAlignmentSafe()) {
 			enabled = true;
 		} else {
-			System.out.println("Cannot enable dart: DartSafety has been triggered...");
+			System.out.println("Cannot enable dart: DartSafety triggered...");
 		}
 	}
 	
@@ -65,10 +60,6 @@ public class DartController implements PIDSource, PIDOutput{
 		return talon.getOutputCurrent();
 	}
 	
-	public boolean isOverCurrent() {
-		return getCurrent() > MAX_AMPERAGE;
-	}
-	
 	public void setPower(double power) {
 		if (safetyCheck(power) && Robot.fourBar.isAlignmentSafe() ) {
 			talon.set(power);
@@ -80,11 +71,7 @@ public class DartController implements PIDSource, PIDOutput{
 		}
 	}
 	
-	public boolean isCoolingDown() {
-		return Timer.getFPGATimestamp() - Robot.fourBar.lastOverCurrentTime < OVER_CURRENT_TIMEOUT;
-	}
-	
-	public boolean getBottomSoftLimit(){
+	public boolean getBottomSoftLimit() {
 		return getPosition() < BOTTOM_SOFT_LIMIT;
 	}
 	
@@ -103,17 +90,6 @@ public class DartController implements PIDSource, PIDOutput{
 			if (getPosition() > TOP_SOFT_LIMIT && power >= 0) { //if above top soft limit and going up
 				talon.set(0);
 				System.out.println("Dart Safety Check Failed: Top Soft Limit Hit and power " + power + " was written to dart.");
-				return false;
-			}
-			if(Robot.fourBar.isCoolingDown()) {
-				talon.set(0);
-				System.out.println("darts went over current limit, cooling off...  time since over current: " + (Timer.getFPGATimestamp() - Robot.fourBar.lastOverCurrentTime));
-				return false;
-			}
-			if (Robot.fourBar.isOverCurrent()) {
-				talon.set(0);
-				Robot.fourBar.lastOverCurrentTime = Timer.getFPGATimestamp();
-				System.out.println("Dart Safety Check Failed: Maximum Amperage Exceeded.");
 				return false;
 			}
 			

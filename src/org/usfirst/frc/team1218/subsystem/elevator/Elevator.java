@@ -42,7 +42,7 @@ public class Elevator extends Subsystem {
     }
     
     public Elevator() {
-    	elevatorController = new CANTalon(RobotMap.ELEVATOR_LIFT_MASTER, 300);
+    	elevatorController = new CANTalon(RobotMap.ELEVATOR_CONTROLLER, 300);
     	elevatorController.enableBrakeMode(true);
     	elevatorController.setReverseSoftLimit(BOTTOM_SOFT_LIMT);
     	elevatorController.setForwardSoftLimit(TOP_SOFT_LIMIT);
@@ -143,9 +143,8 @@ public class Elevator extends Subsystem {
     	SmartDashboard.putBoolean("Elevator_Top_Soft_Limit", elevatorController.getFaultForSoftLim() == 1);
     	SmartDashboard.putBoolean("Elevator_Bottom_Soft_Limit", elevatorController.getFaultRevSoftLim() == 1);
     	SmartDashboard.putNumber("Elevator_Position_Error", elevatorController.getClosedLoopError());
-    	SmartDashboard.putBoolean("Elevator_Tote_Possession", hasTote());
+    	SmartDashboard.putBoolean("Elevator_Has_Tote", hasTote());
     	SmartDashboard.putNumber("Elevator_Current", elevatorController.getOutputCurrent());
-    	
     	toteIndicator.set(hasTote());
     }
     

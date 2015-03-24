@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  * @author lcook
  */
-public class AutoStack extends Command {
+public class AutoStack extends Command {//TODO try using autostack during autons to prevent dropping or other things
 
 	boolean ascending = false;
 	int state = 0;

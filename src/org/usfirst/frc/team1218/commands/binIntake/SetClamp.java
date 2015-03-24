@@ -8,11 +8,11 @@ import edu.wpi.first.wpilibj.command.Command;
  *@author afiolmahon
  *@author lcook
  */
-public class SetClaw extends Command {
+public class SetClamp extends Command {
 
 	boolean shouldOpen;
 	
-    public SetClaw(boolean shouldOpen) {
+    public SetClamp(boolean shouldOpen) {
     	requires(Robot.binIntake);
     	this.shouldOpen = shouldOpen;
     }

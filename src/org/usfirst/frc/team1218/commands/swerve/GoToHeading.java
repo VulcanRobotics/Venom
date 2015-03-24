@@ -6,7 +6,7 @@ import org.usfirst.frc.team1218.subsystem.swerve.math.Vector;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- *
+ *@author afiolmahon
  */
 public class GoToHeading extends Command {
 
