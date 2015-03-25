@@ -6,8 +6,8 @@ import org.usfirst.frc.team1218.robot.Robot;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
- *@author afiolmahon
- *@author lcook
+ * @author afiolmahon
+ * @author lcook
  */
 public class Auton_JustDrive extends CommandGroup {
     

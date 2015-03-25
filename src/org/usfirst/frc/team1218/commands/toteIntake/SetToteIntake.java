@@ -5,7 +5,7 @@ import org.usfirst.frc.team1218.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- *@author afiol-mahon
+ * @author afiol-mahon
  */
 public class SetToteIntake extends Command {
 	
@@ -17,21 +17,16 @@ public class SetToteIntake extends Command {
     }
     
     protected void initialize() {
-    }
-    
-    protected void execute() {
     	Robot.toteIntake.setIntakePower(power);
     }
+    
+    protected void execute() {}
     
     protected boolean isFinished() {
         return true;
     }
     
-    protected void end() {
-    	
-    }
+    protected void end() {}
     
-    protected void interrupted() {
-    	end();
-    }
+    protected void interrupted() {}
 }

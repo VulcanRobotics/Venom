@@ -22,7 +22,6 @@ public class Elevator extends Subsystem {
 	private final DigitalInput toteDetector;
 	private final DigitalOutput toteIndicator;
 		
-	
 	public static final double P = 1.3;
 	public static final double I = 0.0;
 	public static final double D = 0.0;

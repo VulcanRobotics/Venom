@@ -8,8 +8,8 @@ import org.usfirst.frc.team1218.commands.swerve.CalibrateModules;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
- *@author afiolmahon
- *@author lcook
+ * @author afiolmahon
+ * @author lcook
  */
 public class Auton_Calibrate extends CommandGroup {
     

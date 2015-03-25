@@ -6,16 +6,25 @@ import org.usfirst.frc.team1218.subsystem.elevator.Elevator;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
+ * @author afiolmahon
  * @author lcook
  */
 public class AutoStack extends Command {//TODO try using autostack during autons to prevent dropping or other things
 
-	boolean ascending = false;
-	int state = 0;
+	private int state = 0;
+	private int numberToStack = -1;
+	private int stackCounter = 0;
+	
+	
     public AutoStack() {
         requires(Robot.elevator);
     }
-
+    
+    public AutoStack(int numberToStack) {
+    	requires(Robot.elevator);
+    	this.numberToStack = numberToStack;
+    }
+    
     protected void initialize() {
     }
 
@@ -31,6 +40,7 @@ public class AutoStack extends Command {//TODO try using autostack during autons
     			if (!Robot.elevator.hasTote()) state = 0;
     			break;
     		case 2:
+    			stackCounter++;
     			Robot.elevator.setPosition(Elevator.TOP_SOFT_LIMIT);
     			if (Robot.elevator.atTop()) state = 0;
     			break;
@@ -38,11 +48,12 @@ public class AutoStack extends Command {//TODO try using autostack during autons
     }
 
     protected boolean isFinished() {
-        return false;
+        return (numberToStack != -1) && (stackCounter >= numberToStack);
     }
 
     protected void end() {
-    	Robot.elevator.setPower(0.0);
+		Robot.elevator.setPosition(Elevator.TOP_SOFT_LIMIT);
+
     }
 
     protected void interrupted() {

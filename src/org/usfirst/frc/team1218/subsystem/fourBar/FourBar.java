@@ -24,7 +24,7 @@ public class FourBar extends Subsystem implements PIDOutput, PIDSource{
 	private static final double POSITION_CONTROLLER_D = 0.01;
 	private static final double POSITION_CONTROLLER_MAX_OUTPUT = 0.5;
 
-	private static final double DART_POSITION_SYNC_P = 2.0; //TODO tune
+	private static final double DART_POSITION_SYNC_P = 2.0;
 	
 	private static final double DART_ON_TARGET_DISTANCE = 0.01;
 	private static final double DART_FAILSAFE_DISTANCE = 0.1;
