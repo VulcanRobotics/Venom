@@ -157,7 +157,7 @@ public class FourBar extends Subsystem implements PIDOutput, PIDSource{
     	SmartDashboard.putBoolean("FourBar_Right_Bottom_Soft_Limit", dartRight.getBottomSoftLimit());
     	
     	//TODO Test that this works and add Dashboard component
-    	//enableDartHardLimits(SmartDashboard.getBoolean("DartHardLimitsEnabled", true));
+    	enableDartHardLimits(SmartDashboard.getBoolean("DartHardLimitsEnabled", false));
     }
 
 	@Override
