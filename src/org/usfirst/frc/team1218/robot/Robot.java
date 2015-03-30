@@ -123,7 +123,7 @@ public class Robot extends IterativeRobot {
     public void syncDashboard() {
     	Robot.swerveDrive.syncDashboard();
     	Robot.elevator.periodicTasks();
-    	Robot.fourBar.syncDashboard();
+    	Robot.fourBar.periodicTasks();
     	Robot.toteIntake.syncDashboard();
     	Robot.binIntake.syncDashboard();
     	SmartDashboard.putBoolean("isBeta", Preferences.getInstance().getBoolean("isBeta", false));

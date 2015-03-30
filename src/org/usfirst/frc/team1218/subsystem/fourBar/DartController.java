@@ -25,7 +25,7 @@ public class DartController implements PIDSource, PIDOutput{
 		talon = new CANTalon(deviceNumber, 300);
 		potentiometer = new AnalogPotentiometer(potentiometerPort);
 		talon.changeControlMode(ControlMode.PercentVbus);
-		talon.enableLimitSwitch(true, true);
+		//XXX talon.enableLimitSwitch(true, true);
 		talon.ConfigFwdLimitSwitchNormallyOpen(false);
 		talon.ConfigRevLimitSwitchNormallyOpen(false);
 		talon.enableBrakeMode(true);
@@ -42,6 +42,10 @@ public class DartController implements PIDSource, PIDOutput{
 	public void disable() {
 		enabled = false;
 		talon.set(0.0);
+	}
+	
+	public void enableHardLimits(boolean enabled) {
+		talon.enableLimitSwitch(enabled, enabled);
 	}
 	
 	public boolean isEnabled() {

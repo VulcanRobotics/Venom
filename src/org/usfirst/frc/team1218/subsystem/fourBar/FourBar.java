@@ -29,7 +29,7 @@ public class FourBar extends Subsystem implements PIDOutput, PIDSource{
 	private static final double DART_ON_TARGET_DISTANCE = 0.01;
 	private static final double DART_FAILSAFE_DISTANCE = 0.1;
 	
-	public static final double PID_HIGH_POSITION = 0.7; //TODO change to something usefulss
+	public static final double PID_HIGH_POSITION = 0.7; //TODO change to something useful
 	public static final double PID_AUTON_START_POSITION = 0.16;
 	public static final double PID_GET_BIN_FROM_STEP_POSITION = 0.2;
 	public static final double PID_GET_NOODLE_POSITION = 0.42; //TODO: find this
@@ -112,11 +112,9 @@ public class FourBar extends Subsystem implements PIDOutput, PIDSource{
     	}
     }
     
-    protected void disableDarts() {
-    	dartEnablePID(false);
-    	dartLeft.disable();
-    	dartRight.disable();
-    	positionController.disable();
+    public void enableDartHardLimits(boolean enable) {
+    	dartLeft.enableHardLimits(enable);
+    	dartRight.enableHardLimits(enable);
     }
     
     protected void enableDarts() {
@@ -124,7 +122,14 @@ public class FourBar extends Subsystem implements PIDOutput, PIDSource{
        	dartRight.enable();
     }
     
-    public void syncDashboard() {
+    protected void disableDarts() {
+    	dartEnablePID(false);
+    	dartLeft.disable();
+    	dartRight.disable();
+    	positionController.disable();
+    }
+    
+    public void periodicTasks() {
     	SmartDashboard.putBoolean("FourBar_isDartSafe", isAlignmentSafe());
     	
     	SmartDashboard.putNumber("FourBar_Dart_PID_Controller_Setpoint", positionController.getSetpoint());
@@ -150,6 +155,9 @@ public class FourBar extends Subsystem implements PIDOutput, PIDSource{
     	SmartDashboard.putBoolean("FourBar_Left_Bottom_Soft_Limit", dartLeft.getBottomSoftLimit());
     	SmartDashboard.putBoolean("FourBar_Right_Top_Soft_Limit", dartRight.getTopSoftLimit());
     	SmartDashboard.putBoolean("FourBar_Right_Bottom_Soft_Limit", dartRight.getBottomSoftLimit());
+    	
+    	//TODO Test that this works and add Dashboard component
+    	//enableDartHardLimits(SmartDashboard.getBoolean("DartHardLimitsEnabled", true));
     }
 
 	@Override
