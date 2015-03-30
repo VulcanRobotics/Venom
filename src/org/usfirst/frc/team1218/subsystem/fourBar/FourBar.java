@@ -55,6 +55,14 @@ public class FourBar extends Subsystem implements PIDOutput, PIDSource{
        setDefaultCommand(new FourBarDefaultCommand());
     }
     
+    public void leftDartManual(double power) {
+    	dartLeft.talon.set(power);
+    }
+    
+    public void rightDartManual(double power) {
+    	dartRight.talon.set(power);
+    }
+    
 	public boolean isAlignmentSafe() {
 		return Robot.fourBar.getDartPositionDifference() < FourBar.DART_FAILSAFE_DISTANCE;
 	}
@@ -156,7 +164,6 @@ public class FourBar extends Subsystem implements PIDOutput, PIDSource{
     	SmartDashboard.putBoolean("FourBar_Right_Top_Soft_Limit", dartRight.getTopSoftLimit());
     	SmartDashboard.putBoolean("FourBar_Right_Bottom_Soft_Limit", dartRight.getBottomSoftLimit());
     	
-    	//TODO Test that this works and add Dashboard component
     	enableDartHardLimits(SmartDashboard.getBoolean("DartHardLimitsEnabled", false));
     }
 

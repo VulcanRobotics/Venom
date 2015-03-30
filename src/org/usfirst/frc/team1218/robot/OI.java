@@ -4,6 +4,8 @@ import org.usfirst.frc.team1218.commands.binIntake.SetBinIntake;
 import org.usfirst.frc.team1218.commands.binIntake.SetClamp;
 import org.usfirst.frc.team1218.commands.elevator.AutoStack;
 import org.usfirst.frc.team1218.commands.elevator.ReferenceElevator;
+import org.usfirst.frc.team1218.commands.fourBar.LeftDartManualControl;
+import org.usfirst.frc.team1218.commands.fourBar.RightDartManualControl;
 import org.usfirst.frc.team1218.commands.fourBar.SeekPosition;
 import org.usfirst.frc.team1218.commands.swerve.CalibrateModules;
 import org.usfirst.frc.team1218.commands.swerve.MaintainRobotHeading;
@@ -57,6 +59,12 @@ public class OI {
 	public static Button fourBarAutonPosition;
 	public static Button fourBarGetBinFromStepPosition;
 	public static Button fourBarGetNoodlePosition;
+	
+	public static DashboardButton leftDartUp;
+	public static DashboardButton leftDartDown;
+	public static DashboardButton rightDartUp;
+	public static DashboardButton rightDartDown;
+	
 	//Bin Intake
 	public static Button runBinIntake;
 	public static Button openBinGrabber;
@@ -119,6 +127,18 @@ public class OI {
         
         fourBarGetNoodlePosition = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_GET_NOODLE_POSITION);
         fourBarGetNoodlePosition.whileHeld(new SeekPosition(FourBar.PID_GET_NOODLE_POSITION));
+        
+        leftDartUp = new DashboardButton("leftDartManualUp", false);
+        leftDartUp.whileActive(new LeftDartManualControl(0.3));
+
+        leftDartDown = new DashboardButton("leftDartManualDown", false);
+    	leftDartDown.whileActive(new LeftDartManualControl(-0.3));
+
+    	rightDartUp = new DashboardButton("rightDartManualUp", false);
+    	rightDartUp.whileActive(new RightDartManualControl(0.3));
+    	
+    	rightDartDown = new DashboardButton("rightDartManualDown", false);
+    	rightDartDown.whileActive(new RightDartManualControl(-0.3));
         
         //Bin Intake
         runBinIntake = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_RUN_BIN_INTAKE);

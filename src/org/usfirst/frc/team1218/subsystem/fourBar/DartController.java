@@ -15,7 +15,7 @@ public class DartController implements PIDSource, PIDOutput{
 		
 	private boolean enabled;
 	
-	private final CANTalon talon;
+	public final CANTalon talon;
 	private final AnalogPotentiometer potentiometer;
 		
 	public static double SLOWDOWN_DISTANCE = 0.2;
