@@ -91,7 +91,7 @@ public class OI {
         
         tankDrive = new JoystickButton(driver, RobotMap.BUTTON_TANK_DRIVE);
         tankDrive.whileHeld(new TankDrive());
-        
+        /*
         //forward d-pad, set field centric
         //upDPad = ?
         upDPad.whenPressed(new SetFieldHeading(0));
@@ -115,7 +115,7 @@ public class OI {
         downDPad.whenPressed(new SetFieldHeading(0));
         downDPad.whenPressed(new EnableMaintainHeading(false));
         downDPad.whenPressed(new SetFieldCentric(false));
-                
+            */    
          //Operator
         operator = new Joystick(RobotMap.OPERATOR_JOYSTICK);
                 

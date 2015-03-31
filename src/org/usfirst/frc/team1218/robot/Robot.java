@@ -4,6 +4,7 @@ package org.usfirst.frc.team1218.robot;
 import org.usfirst.frc.team1218.commands.auton.Auton_Calibrate;
 import org.usfirst.frc.team1218.commands.auton.Auton_JustDrive;
 import org.usfirst.frc.team1218.commands.auton.Auton_OneTote;
+import org.usfirst.frc.team1218.commands.auton.Auton_ThreeTote;
 import org.usfirst.frc.team1218.commands.auton.Auton_TwoTote;
 import org.usfirst.frc.team1218.subsystem.binIntake.BinIntake;
 import org.usfirst.frc.team1218.subsystem.elevator.Elevator;
@@ -74,8 +75,8 @@ public class Robot extends IterativeRobot {
     		case "TwoToteAuton":
     			autonomousCommand = new Auton_TwoTote();
     			break;
-    		case "OneToteAuton":
-    			autonomousCommand = new Auton_OneTote();
+    		case "ThreeToteAuton":
+    			autonomousCommand = new Auton_ThreeTote();
     			break;
     		case "JustDrive":
     			autonomousCommand = new Auton_JustDrive();
