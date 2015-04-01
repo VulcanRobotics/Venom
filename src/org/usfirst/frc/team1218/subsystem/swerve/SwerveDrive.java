@@ -245,6 +245,9 @@ public class SwerveDrive extends Subsystem implements PIDOutput, PIDSource {
     			break;
     		case "West": zeroHeading(90.0);
     			break;
+    		case "-135" : zeroHeading(135.0);
+    			break;
+    		
     	}
     }
     
