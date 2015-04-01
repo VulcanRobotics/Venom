@@ -7,6 +7,7 @@ import org.usfirst.frc.team1218.commands.elevator.DelayUntilToteDetected;
 import org.usfirst.frc.team1218.commands.elevator.GoToBottom;
 import org.usfirst.frc.team1218.commands.fourBar.SeekPosition;
 import org.usfirst.frc.team1218.commands.swerve.AutoDrive;
+import org.usfirst.frc.team1218.commands.swerve.VisionAlign;
 import org.usfirst.frc.team1218.commands.toteIntake.SetToteIntake;
 import org.usfirst.frc.team1218.subsystem.binIntake.BinIntake;
 import org.usfirst.frc.team1218.subsystem.fourBar.FourBar;
@@ -21,16 +22,8 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  * @author lcook
  */
 public class Auton_ThreeTote extends CommandGroup {
-    
-	private final double startTime;
-	
-	private double currentTime() {
-		return Timer.getFPGATimestamp() - startTime;
-	}
-	
-    public  Auton_ThreeTote() {
-    	startTime = Timer.getFPGATimestamp();
     	
+    public  Auton_ThreeTote() {    	
     	System.out.println("Three Tote Auton Selected");
     	
     	//turn on intakes
@@ -59,14 +52,15 @@ public class Auton_ThreeTote extends CommandGroup {
     	addSequential(new AutoDrive(3.0, 270.0, -45.0, 2.0)); //forward robot-centric, moves past bin
     	addSequential(new AutoDrive(2.0, 180.0, -45.0, 2.0)); //right robot centric, moves back to original path to pickup 3rd tote
     	addSequential(new AutoDrive(4.0, 270.0, -90.0, 2.0)); // moves forward to thirds tote
-    	//addSequential(new VisionAlign(), 3.0);
+    	Timer.delay(10);
+    	addSequential(new VisionAlign(), 3.0);
     	addSequential(new Print("ready to drive into third tote, time: " + Timer.getMatchTime()));
     	//get third tote in robot, lower other two on top
     	addSequential(new AutoDrive(4.0, 270.0, -90.0, 2.0));
     	addParallel(new GoToBottom());
 
     	//drive to auto zone
-    	addSequential(new AutoDrive(10.0, 0.0, -90.0, 2.0));
+    	addSequential(new AutoDrive(7.2, 0.0, -90.0, 2.0));
     	
     	//spit out stack and drive back
     	addSequential(new SetToteIntake(-ToteIntake.TOTE_INTAKE_POWER));
