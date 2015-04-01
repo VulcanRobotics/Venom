@@ -38,7 +38,8 @@ public class Auton_ThreeTote extends CommandGroup {
     	//pickup first and second bin/tote combo
 		addSequential(new DelayUntilToteDetected(5.0));
 		addParallel(new AutoStack());
-    	addSequential(new AutoDrive(7.2, 270.0, -90.0, 2.0));
+    	addSequential(new AutoDrive(5.2, 270.0, -90.0, 2.0));
+    	addSequential(new AutoDrive(2.0, 270.0, -90.0, 1.0));
 
     	//drive around 2nd bin to third tote
     	//addSequential(new AutoDrive(2.0, 90.0, -90, 2.0)); //move back to get four bar out of way
@@ -52,7 +53,7 @@ public class Auton_ThreeTote extends CommandGroup {
     	addSequential(new Print("ready to drive into third tote, time: " + Timer.getMatchTime()));
     	
     	//get third tote in robot, lower other two on top
-    	addParallel(new AutoDrive(4.0, 270.0, -90.0, 2.0));
+    	addParallel(new AutoDrive(4.0, 270.0, -90.0, 1.0));
     	addSequential(new DelayUntilToteDetected(5.0));
     	addParallel(new SetToteIntake(ToteIntake.TOTE_INTAKE_POWER_HOLD));
     	addParallel(new GoToBottom());
