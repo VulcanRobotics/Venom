@@ -39,8 +39,6 @@ public class SwerveModule {
 	protected static final double DRIVE_WHEEL_VELOCITY_D = 0.0;
 	
 	protected static final double DRIVE_WHEEL_MAX_VELOCITY = 8.0; //feet per second
-	protected static final double DEFAULT_DRIVE_POWER = 0.4;
-	protected static final double MAX_DRIVE_POWER = 0.8;
 
 	protected static final double ANGLE_CONTROLLER_P = -0.02;
 	protected static final double ANGLE_CONTROLLER_I = -0.0005;
@@ -212,9 +210,7 @@ public class SwerveModule {
 		} else {
 			power *= (invertModule) ? -1.0 : 1.0;
 			this.driveWheelController.changeControlMode(ControlMode.PercentVbus);
-			this.driveWheelController.set(
-					(DEFAULT_DRIVE_POWER + ((MAX_DRIVE_POWER - DEFAULT_DRIVE_POWER) * OI.getTurboPower()))//Apply Turbo Throttle
-					* power); //Applies module specific motor preferences
+			this.driveWheelController.set(power); //Applies module specific motor preferences
 		}
 	}
 	

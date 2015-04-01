@@ -5,11 +5,11 @@ import org.usfirst.frc.team1218.commands.binIntake.SetClamp;
 import org.usfirst.frc.team1218.commands.elevator.AutoStack;
 import org.usfirst.frc.team1218.commands.elevator.ReferenceElevator;
 import org.usfirst.frc.team1218.commands.fourBar.SeekPosition;
+import org.usfirst.frc.team1218.commands.swerve.AutoDrive;
 import org.usfirst.frc.team1218.commands.swerve.CalibrateModules;
 import org.usfirst.frc.team1218.commands.swerve.MaintainRobotHeading;
 import org.usfirst.frc.team1218.commands.swerve.TankDrive;
 import org.usfirst.frc.team1218.commands.swerve.ToggleFieldCentricDrive;
-import org.usfirst.frc.team1218.commands.swerve.VisionAlign;
 import org.usfirst.frc.team1218.commands.swerve.ZeroRobotHeading;
 import org.usfirst.frc.team1218.commands.toteIntake.SetToteIntake;
 import org.usfirst.frc.team1218.subsystem.binIntake.BinIntake;
@@ -164,8 +164,8 @@ public class OI {
         //test button
         test = new JoystickButton(driver, ButtonType.X);
         //test.whenPressed(new Auton_TwoTote());
-        test.whenPressed(new VisionAlign());
-        //test.whenPressed(new AutoDrive(4.0, 270, -90, 1.5));
+        //test.whenPressed(new VisionAlign());
+        test.whenPressed(new AutoDrive(4.0, 0, 0, 1.5));
 	}
     
     public static Vector getDriverLeftJoystickVector() {
