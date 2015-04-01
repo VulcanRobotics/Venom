@@ -40,9 +40,12 @@ public class AutoStack extends Command {//TODO try using autostack during autons
     			if (!Robot.elevator.hasTote()) state = 0;
     			break;
     		case 2:
-    			stackCounter++;
+    			
     			Robot.elevator.setPosition(Elevator.TOP_SOFT_LIMIT);
-    			if (Robot.elevator.atTop()) state = 0;
+    			if (Robot.elevator.atTop()) {
+    				state = 0;
+    				stackCounter++;
+    			}
     			break;
        	}
     }

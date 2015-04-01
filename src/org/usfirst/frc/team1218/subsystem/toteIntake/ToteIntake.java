@@ -32,6 +32,11 @@ public class ToteIntake extends Subsystem {
     	intakeR = new CANTalon(RobotMap.TOTE_INTAKE_RIGHT);
     }
     
+    public void setPower(double power) {
+    	intakeFromLeft(power);
+    	intakeFromRight(power);
+    }
+    
     public boolean hasTote() {
     	return getAverageCurrent() > HAS_TOTE_CURRENT_THRESHOLD;
     }

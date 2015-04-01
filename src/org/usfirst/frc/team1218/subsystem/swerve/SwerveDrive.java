@@ -113,6 +113,7 @@ public class SwerveDrive extends Subsystem implements PIDOutput, PIDSource {
      * @param fieldCentricCompensator a gyroscope output that can let the robot drive field-centric, pass 0 if robot centric drive is desired.
      */
     public List<Vector> swerveVectorCalculator(Vector translationVector, double rotation) {
+    	rotation *=  (DEFAULT_DRIVE_POWER + ((MAX_DRIVE_POWER - DEFAULT_DRIVE_POWER) * OI.getTurboPower()));
     	double xPerpendicular = X_PERPENDICULAR_CONSTANT;
     	double yPerpendicular = Y_PERPENDICULAR_CONSTANT;
     	if (headingControllerEnabled) {
@@ -129,6 +130,7 @@ public class SwerveDrive extends Subsystem implements PIDOutput, PIDSource {
     	
     	//Apply Turbo Throttle
     	translationVector.scaleMagnitude((DEFAULT_DRIVE_POWER + ((MAX_DRIVE_POWER - DEFAULT_DRIVE_POWER) * OI.getTurboPower())));
+    	
     	
     	List<Vector> moduleVector = new ArrayList<Vector>(Arrays.asList(
     			new Vector(translationVector.getX() + xPerpendicular, translationVector.getY() - yPerpendicular),
