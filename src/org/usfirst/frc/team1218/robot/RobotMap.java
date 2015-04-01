@@ -54,6 +54,9 @@ public class RobotMap {
 	public static final int BUTTON_ELEVATOR_RUN_TOTE_INTAKE = 5;
 	public static final int BUTTON_ELEVATOR_REVERSE_TOTE_INTAKE = 3;
 	
+	public static final int BUTTON_TOTE_INTAKE_FROM_LEFT = 7;
+	public static final int BUTTON_TOTE_INTAKE_FROM_RIGHT = 8;
+	
 	//Four Bar
 	public static final int AXIS_FOUR_BAR_CONTROL = 1;
 	public static final int BUTTON_FOUR_BAR_RUN_BIN_INTAKE = 2;
@@ -62,6 +65,4 @@ public class RobotMap {
 	public static final int BUTTON_FOUR_BAR_HIGH_POSITION = 6;
 	
 	public static final int BUTTON_FOUR_BAR_AUTON_START_POSITION = 6;
-	public static final int BUTTON_FOUR_BAR_GET_BIN_FROM_STEP_POSITION = 7;
-	public static final int BUTTON_FOUR_BAR_GET_NOODLE_POSITION = 8;
 }
