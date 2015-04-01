@@ -168,8 +168,8 @@ public class OI {
         //test button
         test = new JoystickButton(driver, ButtonType.X);
         //test.whenPressed(new Auton_TwoTote());
-        //test.whenPressed(new VisionAlign());
-        test.whenPressed(new AutoStack(1));
+        test.whenPressed(new VisionAlign());
+        //test.whenPressed(new AutoStack(1));
         //test.whenPressed(new AutoDrive(4.0, 0, 0, 1.5));
 	}
     

@@ -40,20 +40,20 @@ public class Auton_ThreeTote extends CommandGroup {
 		addSequential(new DelayUntilToteDetected(5.0));
 		
     	addSequential(new DriveAndPickup(4.2, 270.0, -90.0, 1.7));
-    	addSequential(new DriveAndPickup(3.5, 270.0, -90.0, 0.8));
+    	addSequential(new VisionAlign(), 2.0);
+    	addParallel(new AutoStack(1));
+    	addSequential(new AutoDrive(3.5, 270.0, -90.0, 0.8));
     	
     	//drive around 2nd bin to third tote
-    	//addSequential(new AutoDrive(2.0, 90.0, -90, 2.0)); //move back to get four bar out of way
-    	addSequential(new AutoDrive(3.0, 0.0, -70.0, 2.0)); // moves left robot-centric to get away from bin
     	addParallel(new SeekPosition(0.2));
-    	addSequential(new Delay(0.75));
+    	addSequential(new AutoDrive(3.0, 0.0, -70.0, 2.0)); // moves left robot-centric to get away from bin
     	addSequential(new AutoDrive(2.0, 270.0, -70.0, 2.0)); //forward robot-centric, moves past bin
     	addSequential(new AutoDrive(4.0, 180.0, -90.0, 2.0)); //right robot centric, moves back to original path to pickup 3rd tote
     	addParallel(new SeekPosition(FourBar.PID_HIGH_POSITION));
     	addSequential(new AutoDrive(1.0, 0.0, -90.0, 2.0));
     	
     	addSequential(new AutoDrive(3.5, 270.0, -90.0, 2.0)); // moves forward to thirds tote
-    	addSequential(new VisionAlign(), 3.0);
+    	addSequential(new VisionAlign(), 2.0);
     	addSequential(new Print("ready to drive into third tote, time: " + Timer.getMatchTime()));
     	
     	//get third tote in robot, lower other two on top
