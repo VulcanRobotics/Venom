@@ -4,6 +4,7 @@ import org.usfirst.frc.team1218.commands.auton.Auton_Calibrate;
 import org.usfirst.frc.team1218.commands.auton.Auton_JustDrive;
 import org.usfirst.frc.team1218.commands.auton.Auton_ThreeTote;
 import org.usfirst.frc.team1218.commands.auton.Auton_TwoTote;
+import org.usfirst.frc.team1218.subsystem.binGrabber.BinGrabber;
 import org.usfirst.frc.team1218.subsystem.binIntake.BinIntake;
 import org.usfirst.frc.team1218.subsystem.elevator.Elevator;
 import org.usfirst.frc.team1218.subsystem.fourBar.FourBar;
@@ -35,7 +36,7 @@ public class Robot extends IterativeRobot {
 	public static BinIntake binIntake;
 	public static OI oi;
 	private static String autonName;
-
+	public static BinGrabber binGrabber;
 	public Command robotAuton;
 
 	Command autonomousCommand;
@@ -50,6 +51,7 @@ public class Robot extends IterativeRobot {
 		elevator = new Elevator();
 		toteIntake = new ToteIntake();
 		binIntake = new BinIntake();
+		binGrabber = new BinGrabber();
 		oi = new OI();
 		System.out.println("Robot Initialized");
 	}

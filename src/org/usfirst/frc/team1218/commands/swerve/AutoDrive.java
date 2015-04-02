@@ -19,9 +19,9 @@ public class AutoDrive extends Command implements PIDSource, PIDOutput {
 	private final double direction;
 	private final double heading;
 	
-	private static final double P = 1.5;
-	private static final double I = 0.0001;
-	private static final double D = 0;
+	private static final double P = 2.0;
+	private static final double I = 0.001;
+	private static final double D = 1;
 		
     public AutoDrive(double distance, double direction, double heading, double maxSpeed) {
     	requires(Robot.swerveDrive);

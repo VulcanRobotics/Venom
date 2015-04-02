@@ -44,7 +44,7 @@ public class VisionAlign extends Command implements PIDSource, PIDOutput{
     		System.out.println("error: cannot connect to roborealm");
     		xRatio = 0;
     	}
-    	System.out.println(xRatio);
+    	System.out.println("vision displacment of" +  xRatio);
     	return xRatio;
     }
     

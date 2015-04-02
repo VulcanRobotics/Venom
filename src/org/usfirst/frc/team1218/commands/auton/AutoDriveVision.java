@@ -12,6 +12,6 @@ public class AutoDriveVision extends CommandGroup {
     
     public  AutoDriveVision(double distance, double direction, double heading, double power) {
         addSequential(new AutoDrive(distance, direction, heading, power));
-        addSequential(new VisionAlign());
+        addSequential(new VisionAlign(), 3.0);
     }
 }
