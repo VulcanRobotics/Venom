@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1218.robot;
 
+import org.usfirst.frc.team1218.commands.binGrabber.SetGrabber;
 import org.usfirst.frc.team1218.commands.binIntake.SetBinIntake;
 import org.usfirst.frc.team1218.commands.binIntake.SetClamp;
 import org.usfirst.frc.team1218.commands.elevator.AutoStack;
@@ -11,6 +12,7 @@ import org.usfirst.frc.team1218.commands.swerve.TankDrive;
 import org.usfirst.frc.team1218.commands.swerve.ToggleFieldCentricDrive;
 import org.usfirst.frc.team1218.commands.swerve.ZeroRobotHeading;
 import org.usfirst.frc.team1218.commands.toteIntake.SetToteIntake;
+import org.usfirst.frc.team1218.subsystem.binGrabber.BinGrabber;
 import org.usfirst.frc.team1218.subsystem.binIntake.BinIntake;
 import org.usfirst.frc.team1218.subsystem.fourBar.FourBar;
 import org.usfirst.frc.team1218.subsystem.swerve.math.Vector;
@@ -170,8 +172,7 @@ public class OI {
         //test.whenPressed(new VisionAlign());
         //test.whenPressed(new AutoStack(1));
         //test.whenPressed(new AutoDrive(6.8, 0, 0, 1.5));
-        test.whenPressed(new MaintainRobotHeading(0));
-       
+        //test.whenPressed(new MaintainRobotHeading(0));
 	}
     
     public static Vector getDriverLeftJoystickVector() {

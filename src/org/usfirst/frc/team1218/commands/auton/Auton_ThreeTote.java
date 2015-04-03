@@ -17,6 +17,7 @@ import org.usfirst.frc.team1218.subsystem.elevator.Elevator;
 import org.usfirst.frc.team1218.subsystem.fourBar.FourBar;
 import org.usfirst.frc.team1218.subsystem.toteIntake.ToteIntake;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 
@@ -54,13 +55,11 @@ public class Auton_ThreeTote extends CommandGroup {
     			addParallel(new AutoDrive(4.0, 270, -90.0, 0.9));
     			addSequential(new DelayUntilToteDetected(4.0));
     			addParallel(new AutoStack(1));
-    			addSequential(new MaintainRobotHeading(-30), 0.75);
-    			addParallel(new SeekPosition(0.21));
-    			addSequential(new Delay(0.5));
-    			addSequential(new MaintainRobotHeading(-120), 0.75);
-    			addParallel(new SeekPosition(FourBar.PID_HIGH_POSITION));
-    			addSequential(new MaintainRobotHeading(-90), 0.5);
-    			addSequential(new AutoDrive(2.5, 270, -90, 2.2));
+    			addSequential(new AutoDrive(2.5, 0, -90, 2.4));
+    			addSequential(new AutoDrive(2.0, 270, -90, 2.4));
+    			addSequential(new AutoDrive(3.5, 180, -90, 2.4));
+    			addSequential(new AutoDrive(2, 0, -90,  2.4));
+    			addParallel(new SeekPosition(FourBar.PID_HIGH_POSITION), 2.0);
      		}
     	}
     	addSequential(new SecondDrive());
@@ -71,9 +70,9 @@ public class Auton_ThreeTote extends CommandGroup {
     	addParallel(new ElevatorHoldPosition(Elevator.BOTTOM_SOFT_LIMT));
     	addParallel(new SetToteIntake(ToteIntake.TOTE_INTAKE_POWER_HOLD));
     	
-    	addSequential(new AutoDrive(8.0, 0, -90, 2.0));
+    	addSequential(new AutoDrive(9.0, 0, -90, 2.0));
     	addParallel(new SetToteIntake(-ToteIntake.TOTE_INTAKE_POWER));
-    	
+    	addParallel(new Print("spitting out totes: " + Timer.getMatchTime()));
     	addSequential(new AutoDrive(2.0, 90, -90, 2.0));
     }
 }

@@ -46,7 +46,7 @@ public class Auton_TwoTote extends CommandGroup {
 		//Go To Second Tote
     	addSequential(new AutoDrive(5.2, 270.0, -90.0, 2.0));
     	addSequential(new VisionAlign(), 3.0);
-    	addParallel(new AutoDrive(4.0, 270.0, -90.0, 2.0));
+    	addParallel(new AutoDrive(4.0, 270.0, -90.0, 1.0));
     	
     	//pickup second tote
     	addSequential(new DelayUntilToteDetected(5.0));
