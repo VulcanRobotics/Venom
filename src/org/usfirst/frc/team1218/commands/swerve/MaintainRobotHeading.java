@@ -10,14 +10,20 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class MaintainRobotHeading extends Command {
 	
-	
+	boolean canFinish = false;
+	double heading = 0;
 	public MaintainRobotHeading() {
 		requires(Robot.swerveDrive);
 	}
 	
+	public MaintainRobotHeading(double heading){
+		this.heading = heading;
+		canFinish = true;
+	}
+	
 	@Override
 	protected void initialize() {
-		Robot.swerveDrive.enableHeadingController(Robot.swerveDrive.getHeading());
+		Robot.swerveDrive.enableHeadingController(canFinish ? heading : Robot.swerveDrive.getHeading());
 	}
 
 	@Override
@@ -29,7 +35,7 @@ public class MaintainRobotHeading extends Command {
 
 	@Override
 	protected boolean isFinished() {
-		return false;
+		return canFinish && Robot.swerveDrive.isHeadingOnTarget();
 	}
 
 	@Override

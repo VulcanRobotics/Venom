@@ -27,7 +27,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class SwerveDrive extends Subsystem implements PIDOutput, PIDSource {
     
 	protected static final double DEFAULT_DRIVE_POWER = 0.4;
-	protected static final double MAX_DRIVE_POWER = 0.8;
+	protected static final double MAX_DRIVE_POWER = 1.0;
 	
     protected List<SwerveModule> module;
     
@@ -53,7 +53,7 @@ public class SwerveDrive extends Subsystem implements PIDOutput, PIDSource {
 	private double headingControllerOutput;
 	
 	private static final double HEADING_CONTROLLER_P = 0.02;
-	private static final double HEADING_CONTROLLER_I = 0.0;
+	private static final double HEADING_CONTROLLER_I = 0.00;
 	private static final double HEADING_CONTROLLER_D = 0.0;
 	
     public SwerveDrive() {

@@ -5,7 +5,6 @@ import org.usfirst.frc.team1218.commands.binIntake.SetClamp;
 import org.usfirst.frc.team1218.commands.elevator.AutoStack;
 import org.usfirst.frc.team1218.commands.elevator.ReferenceElevator;
 import org.usfirst.frc.team1218.commands.fourBar.SeekPosition;
-import org.usfirst.frc.team1218.commands.swerve.AutoDrive;
 import org.usfirst.frc.team1218.commands.swerve.CalibrateModules;
 import org.usfirst.frc.team1218.commands.swerve.MaintainRobotHeading;
 import org.usfirst.frc.team1218.commands.swerve.TankDrive;
@@ -170,7 +169,9 @@ public class OI {
         //test.whenPressed(new Auton_TwoTote());
         //test.whenPressed(new VisionAlign());
         //test.whenPressed(new AutoStack(1));
-        test.whenPressed(new AutoDrive(6.8, 0, 0, 1.5));
+        //test.whenPressed(new AutoDrive(6.8, 0, 0, 1.5));
+        test.whenPressed(new MaintainRobotHeading(0));
+       
 	}
     
     public static Vector getDriverLeftJoystickVector() {
