@@ -49,15 +49,20 @@ public class Auton_ThreeTote extends CommandGroup {
     	addSequential(new SetBinIntake(BinIntake.INTAKE_POWER));
     	addSequential(new SetToteIntake(ToteIntake.TOTE_INTAKE_POWER));
         
+    	class SlowFast extends CommandGroup{
+    		SlowFast() {
+    			addSequential(new AutoDrive(2.0, 270, -90.0, 1.2));
+    		    addParallel(new AutoDriveVision(4.0, 270.0, -90.0, 2.0));
+    		}
+    	}
     	
     	class SecondDrive extends CommandGroup{
     		SecondDrive(){
-    			addSequential(new AutoDrive(2.5, 270, -90.0, 1.2));
-    			addSequential(new SetClamp(false));
-    			addParallel(new AutoDriveVision(4.0, 270.0, -90.0, 2.0));
+    			addParallel(new SlowFast());
     			addSequential(new DelayUntilToteDetected(2.0));
-    			addParallel(new AutoStack(1));
+    			addSequential(new SetClamp(false));
     			addParallel(new SeekPosition(FourBar.PID_HIGH_POSITION));
+    			addParallel(new AutoStack(1));
     			addSequential(new Delay(0.5));
     			addSequential(new SetBinIntake(BinIntake.CONTINOUS_HOLD_POWER));
     		}
