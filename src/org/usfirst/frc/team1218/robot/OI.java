@@ -7,11 +7,11 @@ import org.usfirst.frc.team1218.commands.elevator.ReferenceElevator;
 import org.usfirst.frc.team1218.commands.fourBar.LeftDartManualControl;
 import org.usfirst.frc.team1218.commands.fourBar.RightDartManualControl;
 import org.usfirst.frc.team1218.commands.fourBar.SeekPosition;
+import org.usfirst.frc.team1218.commands.swerve.AutoDrive;
 import org.usfirst.frc.team1218.commands.swerve.CalibrateModules;
 import org.usfirst.frc.team1218.commands.swerve.MaintainRobotHeading;
 import org.usfirst.frc.team1218.commands.swerve.TankDrive;
 import org.usfirst.frc.team1218.commands.swerve.ToggleFieldCentricDrive;
-import org.usfirst.frc.team1218.commands.swerve.VisionAlign;
 import org.usfirst.frc.team1218.commands.swerve.ZeroRobotHeading;
 import org.usfirst.frc.team1218.commands.toteIntake.SetToteIntake;
 import org.usfirst.frc.team1218.subsystem.binIntake.BinIntake;
@@ -54,11 +54,13 @@ public class OI {
 	//Tote Intake
 	public static Button elevatorRunToteIntake;
 	public static Button elevatorReverseToteIntake;
+	
+	public static Button toteIntakeFromLeft;
+	public static Button toteIntakeFromRight;
+	
 	//Four Bar
 	public static Button fourBarHighPosition;
 	public static Button fourBarAutonPosition;
-	public static Button fourBarGetBinFromStepPosition;
-	public static Button fourBarGetNoodlePosition;
 	
 	public static DashboardButton leftDartUp;
 	public static DashboardButton leftDartDown;
@@ -96,6 +98,8 @@ public class OI {
         
         tankDrive = new JoystickButton(driver, RobotMap.BUTTON_TANK_DRIVE);
         tankDrive.whileHeld(new TankDrive());
+        
+        //TODO look at
         /*
         //forward d-pad, set field centric
         //upDPad = ?
@@ -121,6 +125,7 @@ public class OI {
         downDPad.whenPressed(new EnableMaintainHeading(false));
         downDPad.whenPressed(new SetFieldCentric(false));
             */    
+        
          //Operator
         operator = new Joystick(RobotMap.OPERATOR_JOYSTICK);
                 
@@ -136,12 +141,20 @@ public class OI {
         
         //Tote Intake
         elevatorRunToteIntake = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_RUN_TOTE_INTAKE);
-        elevatorRunToteIntake.whenPressed(new SetToteIntake(ToteIntake.TOTE_INTAKE_POWER));
-        elevatorRunToteIntake.whenReleased(new SetToteIntake(0.0));
+        elevatorRunToteIntake.whenPressed(new SetToteIntake(true, true, ToteIntake.TOTE_INTAKE_POWER));
+        elevatorRunToteIntake.whenReleased(new SetToteIntake(true, true, 0.0));
         
         elevatorReverseToteIntake = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_REVERSE_TOTE_INTAKE);
-        elevatorReverseToteIntake.whenPressed(new SetToteIntake(-ToteIntake.TOTE_INTAKE_POWER));
-        elevatorReverseToteIntake.whenReleased(new SetToteIntake(0.0));
+        elevatorReverseToteIntake.whenPressed(new SetToteIntake(true, true, -ToteIntake.TOTE_INTAKE_POWER));
+        elevatorReverseToteIntake.whenReleased(new SetToteIntake(true, true, 0.0));
+        
+        toteIntakeFromLeft = new JoystickButton(operator, RobotMap.BUTTON_TOTE_INTAKE_FROM_LEFT);
+        toteIntakeFromLeft.whenPressed(new SetToteIntake(true, false, ToteIntake.TOTE_INTAKE_POWER));
+        toteIntakeFromLeft.whenReleased(new SetToteIntake(true, false, 0.0));
+        
+        toteIntakeFromRight = new JoystickButton(operator, RobotMap.BUTTON_TOTE_INTAKE_FROM_RIGHT);
+        toteIntakeFromRight.whenPressed(new SetToteIntake(false, true, ToteIntake.TOTE_INTAKE_POWER));
+        toteIntakeFromRight.whenReleased(new SetToteIntake(false, true, 0.0));
         
         //Four Bar
         fourBarHighPosition = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_HIGH_POSITION);
@@ -149,12 +162,6 @@ public class OI {
         	
         fourBarAutonPosition = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_AUTON_START_POSITION);
         fourBarAutonPosition.whileHeld(new SeekPosition(FourBar.PID_AUTON_START_POSITION));
-        
-        fourBarGetBinFromStepPosition = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_GET_BIN_FROM_STEP_POSITION);
-        fourBarGetBinFromStepPosition.whileHeld(new SeekPosition(FourBar.PID_GET_BIN_FROM_STEP_POSITION));
-        
-        fourBarGetNoodlePosition = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_GET_NOODLE_POSITION);
-        fourBarGetNoodlePosition.whileHeld(new SeekPosition(FourBar.PID_GET_NOODLE_POSITION));
         
         leftDartUp = new DashboardButton("leftDartManualUp", false);
         leftDartUp.whileActive(new LeftDartManualControl(0.3));
@@ -167,7 +174,7 @@ public class OI {
     	
     	rightDartDown = new DashboardButton("rightDartManualDown", false);
     	rightDartDown.whileActive(new RightDartManualControl(-0.3));
-        
+    	
         //Bin Intake
         runBinIntake = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_RUN_BIN_INTAKE);
         runBinIntake.whenPressed(new SetBinIntake(BinIntake.INTAKE_POWER));
@@ -184,8 +191,8 @@ public class OI {
         //test button
         test = new JoystickButton(driver, ButtonType.X);
         //test.whenPressed(new Auton_TwoTote());
-        test.whenPressed(new VisionAlign());
-        //test.whenPressed(new AutoDrive(4.0, 270, -90, 1.5));
+        //test.whenPressed(new VisionAlign());
+        test.whenPressed(new AutoDrive(4.0, 0, 0, 1.5));
 	}
     
     public static Vector getDriverLeftJoystickVector() {

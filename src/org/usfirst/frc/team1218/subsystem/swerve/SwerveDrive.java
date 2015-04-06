@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.usfirst.frc.team1218.commands.swerve.Swerve;
+import org.usfirst.frc.team1218.robot.OI;
 import org.usfirst.frc.team1218.subsystem.swerve.math.Angle;
 import org.usfirst.frc.team1218.subsystem.swerve.math.Vector;
 
@@ -25,6 +26,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SwerveDrive extends Subsystem implements PIDOutput, PIDSource {
     
+	protected static final double DEFAULT_DRIVE_POWER = 0.4;
+	protected static final double MAX_DRIVE_POWER = 0.8;
+	
     protected List<SwerveModule> module;
     
     private final SerialPort navSerialPort;
@@ -123,6 +127,9 @@ public class SwerveDrive extends Subsystem implements PIDOutput, PIDSource {
         	translationVector.pushAngle(-getHeading());
     	}
     	
+    	//Apply Turbo Throttle
+    	translationVector.scaleMagnitude((DEFAULT_DRIVE_POWER + ((MAX_DRIVE_POWER - DEFAULT_DRIVE_POWER) * OI.getTurboPower())));
+    	
     	List<Vector> moduleVector = new ArrayList<Vector>(Arrays.asList(
     			new Vector(translationVector.getX() + xPerpendicular, translationVector.getY() - yPerpendicular),
     			new Vector(translationVector.getX() - xPerpendicular, translationVector.getY() - yPerpendicular),
@@ -133,6 +140,7 @@ public class SwerveDrive extends Subsystem implements PIDOutput, PIDSource {
     	double maxMagnitude = 0;
     	
     	for (int i = 0; i < 4; i++) maxMagnitude = (moduleVector.get(i).getMagnitude() > maxMagnitude) ? moduleVector.get(i).getMagnitude() : maxMagnitude;
+    	
     	
     	double scaleFactor = ((maxMagnitude > 1.0) ? 1.0 / maxMagnitude : 1.0);
     	
