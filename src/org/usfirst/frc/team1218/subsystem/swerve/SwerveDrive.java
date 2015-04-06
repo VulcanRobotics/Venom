@@ -84,6 +84,7 @@ public class SwerveDrive extends Subsystem implements PIDOutput, PIDSource {
     
     public void syncDashboard() {
     	SmartDashboard.putNumber("SwerveDrive: Robot_Heading", Angle.get360Angle(navModule.getYaw()));
+    	SmartDashboard.putNumber("SwerveDrive: Average Distance Driven", getAverageDistanceDriven());
     	module.stream().forEach(m -> m.syncDashboard());
     	SmartDashboard.putBoolean("SwerveDrive: HeadingControllerEnabled", headingControllerEnabled);
     	SmartDashboard.putBoolean("SwerveDrive: FieldCentricDrive", isFieldCentricDriveMode());
@@ -182,11 +183,19 @@ public class SwerveDrive extends Subsystem implements PIDOutput, PIDSource {
     
     public double getAverageDistanceDriven() {
     	double totalDistance = 0;
-        totalDistance += Math.abs(module.get(0).getAbsoluteDistanceDriven());
-        totalDistance += Math.abs(module.get(1).getAbsoluteDistanceDriven());
-        totalDistance += Math.abs(module.get(2).getAbsoluteDistanceDriven());
-        totalDistance += Math.abs(module.get(3).getAbsoluteDistanceDriven());
-    	return totalDistance / 4.0;
+    	double n = 0;
+    	for (int i = 0; i<4; i++) {
+    		if (module.get(i).getAbsoluteDistanceDriven() > 0.3) {
+
+    			totalDistance += Math.abs(module.get(i).getAbsoluteDistanceDriven());
+    			n++;
+    		}
+    	}
+    	if (n == 0) {
+    		System.out.println("no swerve modules have gone more than .3 feet");
+    		n = 1;
+    	}
+    	return totalDistance / n;
     }
     
     public void powerDrive(Vector translationVector, double rotation) {
