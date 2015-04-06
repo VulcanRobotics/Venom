@@ -26,6 +26,10 @@ public class BinGrabber extends Subsystem {
 		release.set(state);
 	}
 	
+	public boolean get(){
+		return release.get();
+	}
+	
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
