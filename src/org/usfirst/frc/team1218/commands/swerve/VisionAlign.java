@@ -22,7 +22,7 @@ public class VisionAlign extends Command implements PIDSource, PIDOutput{
 	private final double I = -0.003;
 	private final double D = -1.0;
 	
-	private final double MAX_POWER = 1.5;
+	private final double MAX_POWER = 0.9;
 	
     public VisionAlign() {
     	requires(Robot.swerveDrive);
@@ -44,7 +44,7 @@ public class VisionAlign extends Command implements PIDSource, PIDOutput{
     		System.out.println("error: cannot connect to roborealm");
     		xRatio = 0;
     	}
-    	System.out.println(xRatio);
+    	System.out.println("vision displacment of" +  xRatio);
     	return xRatio;
     }
     

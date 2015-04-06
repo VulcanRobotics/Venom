@@ -30,6 +30,8 @@ public class RobotMap {
 	public static final int BIN_INTAKE_LEFT = 22; //CAN
 	public static final int BIN_INTAKE_RIGHT = 23; //CAN
 	public static final int BIN_INTAKE_SOLENOID = 0; //PCM
+	
+	public static final int BIN_GRABBER_RELEASE = 1; //PCM
 
 	//Driver Control Mapping-----------------------------------------------
 	public static final int DRIVER_JOYSTICK = 0;

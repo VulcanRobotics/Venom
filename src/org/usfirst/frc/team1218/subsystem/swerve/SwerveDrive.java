@@ -27,7 +27,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class SwerveDrive extends Subsystem implements PIDOutput, PIDSource {
     
 	protected static final double DEFAULT_DRIVE_POWER = 0.4;
-	protected static final double MAX_DRIVE_POWER = 0.8;
+	protected static final double MAX_DRIVE_POWER = 1.0;
 	
     protected List<SwerveModule> module;
     
@@ -53,7 +53,7 @@ public class SwerveDrive extends Subsystem implements PIDOutput, PIDSource {
 	private double headingControllerOutput;
 	
 	private static final double HEADING_CONTROLLER_P = 0.02;
-	private static final double HEADING_CONTROLLER_I = 0.0;
+	private static final double HEADING_CONTROLLER_I = 0.00;
 	private static final double HEADING_CONTROLLER_D = 0.0;
 	
     public SwerveDrive() {
@@ -113,6 +113,7 @@ public class SwerveDrive extends Subsystem implements PIDOutput, PIDSource {
      * @param fieldCentricCompensator a gyroscope output that can let the robot drive field-centric, pass 0 if robot centric drive is desired.
      */
     public List<Vector> swerveVectorCalculator(Vector translationVector, double rotation) {
+    	rotation *=  (DEFAULT_DRIVE_POWER + ((MAX_DRIVE_POWER - DEFAULT_DRIVE_POWER) * OI.getTurboPower()));
     	double xPerpendicular = X_PERPENDICULAR_CONSTANT;
     	double yPerpendicular = Y_PERPENDICULAR_CONSTANT;
     	if (headingControllerEnabled) {
@@ -129,6 +130,7 @@ public class SwerveDrive extends Subsystem implements PIDOutput, PIDSource {
     	
     	//Apply Turbo Throttle
     	translationVector.scaleMagnitude((DEFAULT_DRIVE_POWER + ((MAX_DRIVE_POWER - DEFAULT_DRIVE_POWER) * OI.getTurboPower())));
+    	
     	
     	List<Vector> moduleVector = new ArrayList<Vector>(Arrays.asList(
     			new Vector(translationVector.getX() + xPerpendicular, translationVector.getY() - yPerpendicular),
@@ -243,6 +245,9 @@ public class SwerveDrive extends Subsystem implements PIDOutput, PIDSource {
     			break;
     		case "West": zeroHeading(90.0);
     			break;
+    		case "-135" : zeroHeading(135.0);
+    			break;
+    		
     	}
     }
     

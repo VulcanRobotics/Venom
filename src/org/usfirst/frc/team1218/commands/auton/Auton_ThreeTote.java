@@ -2,14 +2,16 @@ package org.usfirst.frc.team1218.commands.auton;
 
 import org.usfirst.frc.team1218.commands.Print;
 import org.usfirst.frc.team1218.commands.binIntake.SetBinIntake;
+import org.usfirst.frc.team1218.commands.binIntake.SetClamp;
 import org.usfirst.frc.team1218.commands.elevator.AutoStack;
 import org.usfirst.frc.team1218.commands.elevator.DelayUntilToteDetected;
-import org.usfirst.frc.team1218.commands.elevator.GoToBottom;
+import org.usfirst.frc.team1218.commands.elevator.ElevatorHoldPosition;
 import org.usfirst.frc.team1218.commands.fourBar.SeekPosition;
 import org.usfirst.frc.team1218.commands.swerve.AutoDrive;
 import org.usfirst.frc.team1218.commands.swerve.VisionAlign;
 import org.usfirst.frc.team1218.commands.toteIntake.SetToteIntake;
 import org.usfirst.frc.team1218.subsystem.binIntake.BinIntake;
+import org.usfirst.frc.team1218.subsystem.elevator.Elevator;
 import org.usfirst.frc.team1218.subsystem.fourBar.FourBar;
 import org.usfirst.frc.team1218.subsystem.toteIntake.ToteIntake;
 
@@ -27,44 +29,46 @@ public class Auton_ThreeTote extends CommandGroup {
     	System.out.println("Three Tote Auton Selected");
     	
     	//turn on intakes
-    	addParallel(new SetToteIntake(ToteIntake.TOTE_INTAKE_POWER));
-    	addParallel(new SetBinIntake(BinIntake.CONTINOUS_HOLD_POWER));
-    	
+    	addParallel(new SetClamp(false));
+    	addParallel(new SetToteIntake(1.0));
+    	addParallel(new SetBinIntake(BinIntake.INTAKE_POWER));
     	addSequential(new Auton_Calibrate());
-    	//addSequential(new Print("Three Tote Auton Calibrate done, time: " + Timer.getMatchTime()));
-       	addParallel(new SeekPosition(FourBar.PID_HIGH_POSITION));
-    	
-    	//pickup first and second bin/tote combo
-		addSequential(new DelayUntilToteDetected(5.0));
-		addParallel(new AutoStack());
-    	addSequential(new AutoDrive(5.2, 270.0, -90.0, 2.0));
-    	addSequential(new AutoDrive(2.0, 270.0, -90.0, 1.0));
-
-    	//drive around 2nd bin to third tote
-    	//addSequential(new AutoDrive(2.0, 90.0, -90, 2.0)); //move back to get four bar out of way
-    	addSequential(new AutoDrive(3.0, 0.0, -70.0, 2.0)); // moves left robot-centric to get away from bin
-    	addSequential(new SeekPosition(0.27));
-    	addSequential(new AutoDrive(2.0, 270.0, -70.0, 2.0)); //forward robot-centric, moves past bin
-    	addSequential(new AutoDrive(3.0, 180.0, -90.0, 2.0)); //right robot centric, moves back to original path to pickup 3rd tote
+    	addParallel(new SetBinIntake(BinIntake.CONTINOUS_HOLD_POWER));
     	addParallel(new SeekPosition(FourBar.PID_HIGH_POSITION));
-    	addSequential(new AutoDrive(4.0, 270.0, -90.0, 2.0)); // moves forward to thirds tote
-    	addSequential(new VisionAlign(), 3.0);
-    	addSequential(new Print("ready to drive into third tote, time: " + Timer.getMatchTime()));
     	
-    	//get third tote in robot, lower other two on top
-    	addParallel(new AutoDrive(4.0, 270.0, -90.0, 1.0));
+    	class FirstDrive extends CommandGroup {
+    	     FirstDrive() {  
+    	    	 addParallel(new AutoStack(1));
+    	         addSequential(new AutoDrive(4.0, 270.0, -90, 2.2));
+    	    	 }
+    	}
+    	addSequential( new FirstDrive());
+    	addParallel(new SetToteIntake(0.7));
+    	addSequential(new VisionAlign(), 1.0);
+    	
+    	addParallel(new Print("vision aligned"));
+    	
+    	class SecondDrive extends CommandGroup{
+    		SecondDrive(){
+    			addParallel(new AutoDrive(4.0, 270, -90.0, 0.9));
+    			addSequential(new DelayUntilToteDetected(4.0));
+    			addParallel(new AutoStack(1));
+    			addSequential(new AutoDrive(2.5, 0, -90, 2.4));
+    			addSequential(new AutoDrive(3.0, 270, -90, 2.4));
+    			addSequential(new AutoDrive(2.5, 180, -90, 2.4));
+     		}
+    	}
+    	addSequential(new SecondDrive());
+    	addSequential(new VisionAlign(), 1.0);
+    	
+    	addParallel(new AutoDrive(6.0, 270.0, -90, 0.9));
     	addSequential(new DelayUntilToteDetected(5.0));
+    	addParallel(new ElevatorHoldPosition(Elevator.BOTTOM_SOFT_LIMT));
     	addParallel(new SetToteIntake(ToteIntake.TOTE_INTAKE_POWER_HOLD));
-    	addParallel(new GoToBottom());
-
-    	//drive to auto zone
-    	addSequential(new AutoDrive(9.2, 0.0, -90.0, 2.0));
     	
-    	//spit out stack and drive back
-    	addSequential(new SetToteIntake(-ToteIntake.TOTE_INTAKE_POWER));
-    	addSequential(new AutoDrive(5.0, 90.0, -90.0, 2.0));
-    	addSequential(new Print("Three Tote Auton done, time: " + Timer.getMatchTime()));
-
-    	
+    	addSequential(new AutoDrive(9.0, 0, -90, 2.0));
+    	addParallel(new SetToteIntake(-ToteIntake.TOTE_INTAKE_POWER));
+    	addParallel(new Print("spitting out totes: " + Timer.getMatchTime()));
+    	addSequential(new AutoDrive(2.0, 90, -90, 2.0));
     }
 }

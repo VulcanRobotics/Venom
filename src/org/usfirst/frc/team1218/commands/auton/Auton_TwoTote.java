@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1218.commands.auton;
 
 import org.usfirst.frc.team1218.commands.binIntake.SetBinIntake;
+import org.usfirst.frc.team1218.commands.binIntake.SetClamp;
 import org.usfirst.frc.team1218.commands.elevator.AutoStack;
 import org.usfirst.frc.team1218.commands.elevator.DelayUntilToteDetected;
 import org.usfirst.frc.team1218.commands.fourBar.SeekPosition;
@@ -33,6 +34,7 @@ public class Auton_TwoTote extends CommandGroup {
     	addSequential(new Auton_Calibrate());
     	
     	//turn on intakes
+    	addSequential(new SetClamp(false));
     	addParallel(new SetToteIntake(ToteIntake.TOTE_INTAKE_POWER_GENTLE));
     	addParallel(new SetBinIntake(BinIntake.CONTINOUS_HOLD_POWER));
     	addParallel(new SeekPosition(FourBar.PID_HIGH_POSITION));
@@ -44,7 +46,7 @@ public class Auton_TwoTote extends CommandGroup {
 		//Go To Second Tote
     	addSequential(new AutoDrive(5.2, 270.0, -90.0, 2.0));
     	addSequential(new VisionAlign(), 3.0);
-    	addParallel(new AutoDrive(4.0, 270.0, -90.0, 2.0));
+    	addParallel(new AutoDrive(4.0, 270.0, -90.0, 1.0));
     	
     	//pickup second tote
     	addSequential(new DelayUntilToteDetected(5.0));

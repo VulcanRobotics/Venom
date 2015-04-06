@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1218.commands.auton;
 
 import org.usfirst.frc.team1218.commands.binIntake.SetBinIntake;
+import org.usfirst.frc.team1218.commands.binIntake.SetClamp;
 import org.usfirst.frc.team1218.commands.elevator.AutoStack;
 import org.usfirst.frc.team1218.commands.elevator.DelayUntilToteDetected;
 import org.usfirst.frc.team1218.commands.fourBar.SeekPosition;
@@ -20,6 +21,7 @@ public class Auton_OneTote extends CommandGroup {
     
     public  Auton_OneTote() {
     	//get ready
+    	addSequential(new SetClamp(false));
     	addSequential(new Auton_Calibrate());
     	addParallel(new SetBinIntake(BinIntake.CONTINOUS_HOLD_POWER));
         addParallel(new SeekPosition(FourBar.PID_HIGH_POSITION));
