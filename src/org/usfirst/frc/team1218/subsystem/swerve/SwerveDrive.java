@@ -34,10 +34,7 @@ public class SwerveDrive extends Subsystem implements PIDOutput, PIDSource {
     private final SerialPort navSerialPort;
     private final IMUAdvanced navModule;
     
-    public static final double LEFT_CHUTE_DOOR_ANGLE = -45.0;
-    public static final double RIGHT_CHUTE_DOOR_ANGLE = 135.0;
-    
-    private double fieldHeading = 0; // the heading of the coordinate system the robot is currently centric to
+    private double fieldCentricHeading = 0;
     
 	private static final double X_PERPENDICULAR_CONSTANT = 0.546;
 	private static final double Y_PERPENDICULAR_CONSTANT = 0.837;
@@ -53,7 +50,7 @@ public class SwerveDrive extends Subsystem implements PIDOutput, PIDSource {
 	private double headingControllerOutput;
 	
 	private static final double HEADING_CONTROLLER_P = 0.02;
-	private static final double HEADING_CONTROLLER_I = 0.00;
+	private static final double HEADING_CONTROLLER_I = 0.0;
 	private static final double HEADING_CONTROLLER_D = 0.0;
 	
     public SwerveDrive() {
@@ -87,6 +84,7 @@ public class SwerveDrive extends Subsystem implements PIDOutput, PIDSource {
     }
     
     public void syncDashboard() {
+    	//TODO check values correspond with dashboard
     	SmartDashboard.putNumber("SwerveDrive: Robot_Heading", Angle.get360Angle(navModule.getYaw()));
     	SmartDashboard.putNumber("SwerveDrive: Average Distance Driven", getAverageDistanceDriven());
     	module.stream().forEach(m -> m.syncDashboard());
@@ -165,13 +163,12 @@ public class SwerveDrive extends Subsystem implements PIDOutput, PIDSource {
     	return getHeading();
     }
     
-    public float getHeading() {
-    	return (float) (navModule.getYaw() - fieldHeading); 
+    public double getHeading() {
+    	return (navModule.getYaw() - fieldCentricHeading); 
     }
     
-    public void setFieldHeading(double heading)
-    {
-    	this.fieldHeading = heading;
+    public void setFieldHeading(double heading) {
+    	this.fieldCentricHeading = heading;
     }
     
     public void enableHeadingController(double heading) {
@@ -191,12 +188,12 @@ public class SwerveDrive extends Subsystem implements PIDOutput, PIDSource {
     	module.forEach(m -> m.resetDistanceDriven());
     }
     
+    //TODO use navx to discount wheels that are off the ground
     public double getAverageDistanceDriven() {
     	double totalDistance = 0;
     	double n = 0;
     	for (int i = 0; i<4; i++) {
     		if (module.get(i).getAbsoluteDistanceDriven() > 0.3) {
-
     			totalDistance += Math.abs(module.get(i).getAbsoluteDistanceDriven());
     			n++;
     		}
@@ -233,6 +230,7 @@ public class SwerveDrive extends Subsystem implements PIDOutput, PIDSource {
     }
     
     public void autonZeroHeading() {
+    	//TODO should this pass a number from the dashboard instead?
     	String direction = SmartDashboard.getString("Calibration_Orientation", "North");
     	switch (direction) {
     		default: zeroHeading();
@@ -247,7 +245,6 @@ public class SwerveDrive extends Subsystem implements PIDOutput, PIDSource {
     			break;
     		case "-135" : zeroHeading(135.0);
     			break;
-    		
     	}
     }
     

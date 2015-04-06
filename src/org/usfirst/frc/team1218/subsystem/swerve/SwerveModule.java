@@ -209,7 +209,7 @@ public class SwerveModule {
 		} else {
 			power *= (invertModule) ? -1.0 : 1.0;
 			this.driveWheelController.changeControlMode(ControlMode.PercentVbus);
-			this.driveWheelController.set(power); //Applies module specific motor preferences
+			this.driveWheelController.set(power);
 		}
 	}
 	
