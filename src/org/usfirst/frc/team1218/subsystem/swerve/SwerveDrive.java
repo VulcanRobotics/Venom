@@ -194,7 +194,7 @@ public class SwerveDrive extends Subsystem implements PIDOutput, PIDSource {
     		}
     	}
     	if (n == 0) {
-    		System.out.println("no swerve modules have gone more than .3 feet");
+    		//System.out.println("no swerve modules have gone more than .3 feet");
     		n = 1;
     	}
     	return totalDistance / n;
