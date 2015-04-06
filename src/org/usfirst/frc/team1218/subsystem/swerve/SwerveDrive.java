@@ -12,6 +12,7 @@ import com.kauailabs.nav6.frc.IMUAdvanced;
 
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
+import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -22,12 +23,17 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * @author afiolmahon
  */
 
-public class SwerveDrive extends Subsystem implements PIDOutput {
+public class SwerveDrive extends Subsystem implements PIDOutput, PIDSource {
     
     protected List<SwerveModule> module;
     
     private final SerialPort navSerialPort;
     private final IMUAdvanced navModule;
+    
+    public static final double LEFT_CHUTE_DOOR_ANGLE = -45.0;
+    public static final double RIGHT_CHUTE_DOOR_ANGLE = 135.0;
+    
+    private double fieldHeading = 0; // the heading of the coordinate system the robot is currently centric to
     
 	private static final double X_PERPENDICULAR_CONSTANT = 0.546;
 	private static final double Y_PERPENDICULAR_CONSTANT = 0.837;
@@ -62,7 +68,7 @@ public class SwerveDrive extends Subsystem implements PIDOutput {
 				HEADING_CONTROLLER_P,
 				HEADING_CONTROLLER_I,
 				HEADING_CONTROLLER_D,
-				navModule,
+				this,
 				this);
 		headingController.setOutputRange(-1.0, 1.0);
 		headingController.setInputRange(-180, 180);
@@ -144,8 +150,17 @@ public class SwerveDrive extends Subsystem implements PIDOutput {
     			);
     }
     
+    public double pidGet(){
+    	return getHeading();
+    }
+    
     public float getHeading() {
-    	return navModule.getYaw();
+    	return (float) (navModule.getYaw() - fieldHeading); 
+    }
+    
+    public void setFieldHeading(double heading)
+    {
+    	this.fieldHeading = heading;
     }
     
     public void enableHeadingController(double heading) {

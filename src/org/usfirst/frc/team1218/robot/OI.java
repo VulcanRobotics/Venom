@@ -8,7 +8,10 @@ import org.usfirst.frc.team1218.commands.fourBar.LeftDartManualControl;
 import org.usfirst.frc.team1218.commands.fourBar.RightDartManualControl;
 import org.usfirst.frc.team1218.commands.fourBar.SeekPosition;
 import org.usfirst.frc.team1218.commands.swerve.CalibrateModules;
+import org.usfirst.frc.team1218.commands.swerve.EnableMaintainHeading;
 import org.usfirst.frc.team1218.commands.swerve.MaintainRobotHeading;
+import org.usfirst.frc.team1218.commands.swerve.SetFieldCentric;
+import org.usfirst.frc.team1218.commands.swerve.SetFieldHeading;
 import org.usfirst.frc.team1218.commands.swerve.TankDrive;
 import org.usfirst.frc.team1218.commands.swerve.ToggleFieldCentricDrive;
 import org.usfirst.frc.team1218.commands.swerve.VisionAlign;
@@ -74,6 +77,10 @@ public class OI {
 	//test
 	public static Button test;
 	
+	public static Button upDPad;
+	public static Button leftDPad;
+	public static Button rightDPad;
+	public static Button downDPad;
 	public OI() {
     	//Driver
     	driver = new Joystick(RobotMap.DRIVER_JOYSTICK);
@@ -92,8 +99,32 @@ public class OI {
         
         tankDrive = new JoystickButton(driver, RobotMap.BUTTON_TANK_DRIVE);
         tankDrive.whileHeld(new TankDrive());
-                
-        //Operator
+        /*
+        //forward d-pad, set field centric
+        //upDPad = ?
+        upDPad.whenPressed(new SetFieldHeading(0));
+        upDPad.whenPressed(new EnableMaintainHeading(false));
+        upDPad.whenPressed(new SetFieldCentric(true));
+
+        //left d-pad, set left chute door  centric
+		//leftDPad = ?
+        leftDPad.whenPressed(new SetFieldHeading(Robot.swerveDrive.LEFT_CHUTE_DOOR_ANGLE));
+        leftDPad.whenPressed(new EnableMaintainHeading(true));
+        leftDPad.whenPressed(new SetFieldCentric(true));
+
+       //right d-pad, set right chute door  centric
+		//rightDPad = ?
+        rightDPad.whenPressed(new SetFieldHeading(Robot.swerveDrive.RIGHT_CHUTE_DOOR_ANGLE));
+        rightDPad.whenPressed(new EnableMaintainHeading(true));
+        rightDPad.whenPressed(new SetFieldCentric(true));
+
+        //down d-pad, set robot centric
+		//downDPad = ?
+        downDPad.whenPressed(new SetFieldHeading(0));
+        downDPad.whenPressed(new EnableMaintainHeading(false));
+        downDPad.whenPressed(new SetFieldCentric(false));
+            */    
+         //Operator
         operator = new Joystick(RobotMap.OPERATOR_JOYSTICK);
                 
         //Elevator
