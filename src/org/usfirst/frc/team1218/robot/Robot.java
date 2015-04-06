@@ -3,7 +3,6 @@ package org.usfirst.frc.team1218.robot;
 
 import org.usfirst.frc.team1218.commands.auton.Auton_Calibrate;
 import org.usfirst.frc.team1218.commands.auton.Auton_JustDrive;
-import org.usfirst.frc.team1218.commands.auton.Auton_OneTote;
 import org.usfirst.frc.team1218.commands.auton.Auton_ThreeTote;
 import org.usfirst.frc.team1218.commands.auton.Auton_TwoTote;
 import org.usfirst.frc.team1218.subsystem.binIntake.BinIntake;
