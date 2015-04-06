@@ -56,10 +56,8 @@ public class Auton_ThreeTote extends CommandGroup {
     			addSequential(new DelayUntilToteDetected(4.0));
     			addParallel(new AutoStack(1));
     			addSequential(new AutoDrive(2.5, 0, -90, 2.4));
-    			addSequential(new AutoDrive(2.0, 270, -90, 2.4));
-    			addSequential(new AutoDrive(3.5, 180, -90, 2.4));
-    			addSequential(new AutoDrive(2, 0, -90,  2.4));
-    			addParallel(new SeekPosition(FourBar.PID_HIGH_POSITION), 2.0);
+    			addSequential(new AutoDrive(3.0, 270, -90, 2.4));
+    			addSequential(new AutoDrive(2.5, 180, -90, 2.4));
      		}
     	}
     	addSequential(new SecondDrive());
