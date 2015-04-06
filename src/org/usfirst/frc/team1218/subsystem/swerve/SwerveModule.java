@@ -16,6 +16,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class SwerveModule {
 	
+	double MAX_GROUNDED_VELOCITY = 10;
+	
+	boolean shouldDiscount = false;
 	public final int moduleNumber;
 	private final double moduleIndexOffset;
 	
@@ -90,6 +93,7 @@ public class SwerveModule {
 	}
 	
 	public void resetDistanceDriven() {
+		shouldDiscount = false;
 		driveWheelController.setPosition(0);
 	}
 	
@@ -136,7 +140,14 @@ public class SwerveModule {
 	}
 	
 	public double getAbsoluteDistanceDriven() {
-		return Math.abs((driveWheelController.getPosition() / 4.0) * DRIVE_WHEEL_ENCODER_CLICK_TO_FOOT);
+		double distance = Math.abs((driveWheelController.getPosition() / 4.0) * DRIVE_WHEEL_ENCODER_CLICK_TO_FOOT);
+		if (getVelocity() > MAX_GROUNDED_VELOCITY){
+			shouldDiscount = true;
+		}
+		if (shouldDiscount){
+			distance = 0;
+		}
+		return distance;
 	}
 	
 	public double getVelocity() {
@@ -240,5 +251,6 @@ public class SwerveModule {
 		SmartDashboard.putNumber(prefix + "IndexCount", getEncoderIndexCount());
 		SmartDashboard.putNumber(prefix + "DistanceDriven", getAbsoluteDistanceDriven());
 		SmartDashboard.putNumber(prefix + "DriveCurrent", getDriveCurrent());
+		SmartDashboard.putNumber(prefix + "Speed", getVelocity());
 	}
 }

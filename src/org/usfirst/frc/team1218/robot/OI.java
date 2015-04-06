@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1218.robot;
 
+import org.usfirst.frc.team1218.commands.binGrabber.ToggleBinGrabber;
 import org.usfirst.frc.team1218.commands.binIntake.SetBinIntake;
 import org.usfirst.frc.team1218.commands.binIntake.SetClamp;
 import org.usfirst.frc.team1218.commands.elevator.AutoStack;
@@ -162,6 +163,7 @@ public class OI {
 
         //test button
         test = new JoystickButton(driver, ButtonType.X);
+        test.whenPressed(new ToggleBinGrabber());
         //test.whenPressed(new Auton_TwoTote());
         //test.whenPressed(new VisionAlign());
         //test.whenPressed(new AutoStack(1));
