@@ -132,6 +132,8 @@ public class SwerveDrive extends Subsystem implements PIDOutput, PIDSource {
     			new Vector(translationVector.getX() + xPerpendicular, translationVector.getY() + yPerpendicular)
     			));
     	
+    	moduleVector.stream().forEach(v -> v.scaleMagnitude((DEFAULT_DRIVE_POWER + ((MAX_DRIVE_POWER - DEFAULT_DRIVE_POWER) * OI.getTurboPower()))));
+    	
     	double maxMagnitude = 0;
     	
     	for (int i = 0; i < 4; i++) maxMagnitude = (moduleVector.get(i).getMagnitude() > maxMagnitude) ? moduleVector.get(i).getMagnitude() : maxMagnitude;
@@ -140,7 +142,6 @@ public class SwerveDrive extends Subsystem implements PIDOutput, PIDSource {
     	
     	moduleVector.stream().forEach(v -> {
     		v.scaleMagnitude(scaleFactor);
-        	v.scaleMagnitude((DEFAULT_DRIVE_POWER + ((MAX_DRIVE_POWER - DEFAULT_DRIVE_POWER) * OI.getTurboPower())));
     		if (v.getMagnitude() > 1.0) v.setMagnitude(1.0);
     	});
     	return moduleVector;
