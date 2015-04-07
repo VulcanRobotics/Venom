@@ -16,8 +16,7 @@ public class Swerve extends Command {
 	}
 	
 	@Override
-	protected void initialize() {
-	}
+	protected void initialize() {}
 
 	@Override
 	protected void execute() {
@@ -27,16 +26,12 @@ public class Swerve extends Command {
 	}
 	
 	@Override
-	protected boolean isFinished() {
-		return false;
-	}
+	protected boolean isFinished() {return false;}
 
 	@Override
-	protected void end() {
-	}
+	protected void end() {}
 
 	@Override
-	protected void interrupted() {
-	}
+	protected void interrupted() {}
 
 }

@@ -16,8 +16,7 @@ public class LeftDartManualControl extends Command {
     	this.power = power;
     }
 
-    protected void initialize() {
-    }
+    protected void initialize() {}
 
     protected void execute() {
     	Robot.fourBar.leftDartManual(power);

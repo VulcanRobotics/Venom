@@ -26,7 +26,7 @@ public class AutoDrive extends Command implements PIDSource, PIDOutput {
     public AutoDrive(double distance, double direction, double heading, double maxSpeed) {
     	requires(Robot.swerveDrive);
     	distanceController = new PIDController(P, I, D, this, this);
-    	distanceController.setSetpoint(Math.abs(distance));//Could be implemented more nicely
+    	distanceController.setSetpoint(Math.abs(distance)); //TODO Could be implemented more nicely
     	distanceController.setOutputRange(-maxSpeed, maxSpeed);
     	this.direction = direction;
     	this.heading = heading;
@@ -52,8 +52,7 @@ public class AutoDrive extends Command implements PIDSource, PIDOutput {
     	Robot.swerveDrive.powerDrive(power, 0);
     }
 
-    protected void execute() {
-    }
+    protected void execute() {}
 
     protected boolean isFinished() {
         return (Math.abs(distanceController.getError()) < 0.25) || isTimedOut();

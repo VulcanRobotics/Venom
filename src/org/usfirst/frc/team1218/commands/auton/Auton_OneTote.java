@@ -22,7 +22,7 @@ public class Auton_OneTote extends CommandGroup {
     public  Auton_OneTote() {
     	//get ready
     	addSequential(new SetClamp(false));
-    	addSequential(new Auton_Calibrate());
+    	addSequential(new Auton_Calibrate(false));
     	addParallel(new SetBinIntake(BinIntake.CONTINOUS_HOLD_POWER));
         addParallel(new SeekPosition(FourBar.PID_HIGH_POSITION));
     	addParallel(new SetToteIntake(ToteIntake.TOTE_INTAKE_POWER));

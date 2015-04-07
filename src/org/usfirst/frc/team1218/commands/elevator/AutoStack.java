@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.command.Command;
  * @author afiolmahon
  * @author lcook
  */
-public class AutoStack extends Command {//TODO try using autostack during autons to prevent dropping or other things
+public class AutoStack extends Command {
 
 	private int state = 0;
 	private int numberToStack = -1;
@@ -25,8 +25,7 @@ public class AutoStack extends Command {//TODO try using autostack during autons
     	this.numberToStack = numberToStack;
     }
     
-    protected void initialize() {
-    }
+    protected void initialize() {}
 
     protected void execute() {
     	switch (state) {

@@ -19,20 +19,14 @@ public class SetClamp extends Command {
 
     protected void initialize() {
     	Robot.binIntake.setClamp(shouldOpen);
-    }
-
-    protected void execute() {
-    }
-
-    protected boolean isFinished() {
-        return true;
-    }
-
-    protected void end() {
     	System.out.println("Four bar claw open:" + shouldOpen);
     }
+
+    protected void execute() {}
+
+    protected boolean isFinished() {return true;}
+
+    protected void end() {}
     
-    protected void interrupted() {
-    	end();
-    }
+    protected void interrupted() {}
 }

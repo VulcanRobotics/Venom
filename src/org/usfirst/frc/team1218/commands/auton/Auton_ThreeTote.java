@@ -33,8 +33,7 @@ public class Auton_ThreeTote extends CommandGroup {
     	addParallel(new SetClamp(false));
     	addParallel(new SetToteIntake(1.0));
     	addParallel(new SetBinIntake(BinIntake.INTAKE_POWER));
-    	addSequential(new Auton_Calibrate()
-    	);
+    	addSequential(new Auton_Calibrate(false));
     	addParallel(new SetBinIntake(BinIntake.CONTINOUS_HOLD_POWER));
     	addParallel(new SeekPosition(FourBar.PID_HIGH_POSITION));
     	addSequential(new Delay(0.5));
@@ -50,7 +49,7 @@ public class Auton_ThreeTote extends CommandGroup {
     	
     	addParallel(new Print("vision aligned"));
     	
-    	class SecondDrive extends CommandGroup{
+    	class SecondDrive extends CommandGroup {
     		SecondDrive(){
     			addParallel(new AutoDrive(4.0, 270, -90.0, 0.9));
     			addSequential(new DelayUntilToteDetected(4.0));
@@ -60,6 +59,7 @@ public class Auton_ThreeTote extends CommandGroup {
     			addSequential(new AutoDrive(2.5, 0, -90, 1.7));
      		}
     	}
+    	
     	addSequential(new SecondDrive());
     	addSequential(new VisionAlign(), 0.7);
     	

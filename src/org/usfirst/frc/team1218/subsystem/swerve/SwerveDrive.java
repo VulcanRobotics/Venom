@@ -84,7 +84,6 @@ public class SwerveDrive extends Subsystem implements PIDOutput, PIDSource {
     }
     
     public void syncDashboard() {
-    	//TODO check values correspond with dashboard
     	SmartDashboard.putNumber("SwerveDrive: Robot_Heading", Angle.get360Angle(navModule.getYaw()));
     	SmartDashboard.putNumber("SwerveDrive: Average Distance Driven", getAverageDistanceDriven());
     	module.stream().forEach(m -> m.syncDashboard());

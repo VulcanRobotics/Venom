@@ -31,7 +31,7 @@ public class Auton_TwoTote extends CommandGroup {
     public  Auton_TwoTote() {
     	startTime = Timer.getFPGATimestamp();
     	System.out.println("Two Tote Auton Selected");
-    	addSequential(new Auton_Calibrate());
+    	addSequential(new Auton_Calibrate(false));
     	
     	//turn on intakes
     	addSequential(new SetClamp(false));

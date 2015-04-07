@@ -15,7 +15,7 @@ public class Auton_Step extends CommandGroup {
     
     public  Auton_Step() {
     	addSequential(new SetGrabber(BinGrabber.REALEASED));
-        addSequential(new Auton_Calibrate());
+        addSequential(new Auton_Calibrate(false));
         addSequential(new AutoDrive(5, 180, 180, 2.0));
         addSequential(new SeekPosition(FourBar.PID_HIGH_POSITION));
     }

@@ -70,9 +70,9 @@ public class Robot extends IterativeRobot {
 		System.out.println("Auton " + autonName + " selected.");
 		switch (autonName) {
 		default:
-			autonomousCommand = new Auton_Calibrate();
+			autonomousCommand = new Auton_Calibrate(false);
 		case "No Auton":
-			autonomousCommand = new Auton_Calibrate();
+			autonomousCommand = new Auton_Calibrate(false);
 			break;
 		case "TwoToteAuton":
 			autonomousCommand = new Auton_TwoTote();
