@@ -6,6 +6,7 @@ import org.usfirst.frc.team1218.commands.binIntake.SetBinIntake;
 import org.usfirst.frc.team1218.commands.binIntake.SetClamp;
 import org.usfirst.frc.team1218.commands.elevator.AutoStack;
 import org.usfirst.frc.team1218.commands.elevator.DelayUntilToteDetected;
+import org.usfirst.frc.team1218.commands.elevator.ElevatorGoTo;
 import org.usfirst.frc.team1218.commands.elevator.ElevatorHoldPosition;
 import org.usfirst.frc.team1218.commands.fourBar.SeekPosition;
 import org.usfirst.frc.team1218.commands.swerve.AutoDrive;
@@ -41,12 +42,12 @@ public class Auton_ThreeTote extends CommandGroup {
     	class FirstDrive extends CommandGroup {
     	     FirstDrive() {  
     	    	 addParallel(new AutoStack(1));
-    	         addSequential(new AutoDrive(4.0, 270.0, -90, 2.1));
+    	         addSequential(new AutoDrive(3.5, 270.0, -90, 2.1));
     	    	 }
     	}
     	addSequential( new FirstDrive());
     	addParallel(new SetToteIntake(0.9));
-    	addSequential(new VisionAlign(), 0.7);
+    	//addSequential(new VisionAlign(), 0.7);
     	
     	addParallel(new Print("vision aligned"));
     	
@@ -55,9 +56,9 @@ public class Auton_ThreeTote extends CommandGroup {
     			addParallel(new AutoDrive(4.0, 270, -90.0, 0.9));
     			addSequential(new DelayUntilToteDetected(4.0));
     			addParallel(new AutoStack(1));
-    			addSequential(new AutoDrive(2.5, 0, -90, 2.5));
+    			addSequential(new AutoDrive(2.0, 180, -90, 1.7));
     			addSequential(new AutoDrive(3.0, 270, -90, 2.5));
-    			addSequential(new AutoDrive(2.5, 180, -90, 2.5));
+    			addSequential(new AutoDrive(2.5, 0, -90, 1.7));
      		}
     	}
     	addSequential(new SecondDrive());

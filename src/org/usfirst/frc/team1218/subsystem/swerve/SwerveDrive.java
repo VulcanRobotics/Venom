@@ -233,6 +233,11 @@ public class SwerveDrive extends Subsystem implements PIDOutput, PIDSource {
     	navModule.zeroYaw();
     }
     
+    
+    public boolean hasBeenIndexed(){
+    	return module.get(0).hasBeenIndexed();
+    }
+    
     public void autonZeroHeading() {
     	//TODO should this pass a number from the dashboard instead?
     	String direction = SmartDashboard.getString("Calibration_Orientation", "North");

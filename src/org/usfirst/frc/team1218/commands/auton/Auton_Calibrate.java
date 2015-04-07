@@ -16,7 +16,7 @@ public class Auton_Calibrate extends CommandGroup {
     public  Auton_Calibrate() {
     	addParallel(new ReferenceElevator());
         addSequential(new AutonZeroHeading());
-        addParallel(new CalibrateModules());
+        //addParallel(new CalibrateModules());
     	addSequential(new Print("Auton_Calibrate Complete"));
     	System.out.println("Auton_Calibrate Complete");
     }

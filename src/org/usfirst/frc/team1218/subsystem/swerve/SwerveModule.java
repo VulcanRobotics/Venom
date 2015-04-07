@@ -74,7 +74,6 @@ public class SwerveModule {
 		this.anglePIDController.setAbsoluteTolerance(ANGLE_CONTROLLER_DEGREE_TOLERANCE);
 		this.anglePIDController.onTarget();
 		//Begin Module
-		this.angleEncoder.reset();
 		this.anglePIDController.enable();
 	}
 	
@@ -155,6 +154,10 @@ public class SwerveModule {
 	
 	public void configureForNoIndex(){
 		angleEncoder.configureForNoIndex();
+	}
+	
+	public boolean hasBeenIndexed(){
+		return angleEncoder.hasBeenIndexed();
 	}
 	
 	public double getVelocity() {
