@@ -19,6 +19,7 @@ public class CalibrateModules extends Command {//TODO try to speed up
     }
 
     protected void initialize() {
+    	Robot.swerveDrive.configureForIndexing();
     	Robot.swerveDrive.getModuleList().stream().forEach(m -> {
     		indexed[m.moduleNumber] = false;
     		indexCount[m.moduleNumber] = m.getEncoderIndexCount();
@@ -43,6 +44,7 @@ public class CalibrateModules extends Command {//TODO try to speed up
     }
 
     protected void end() {
+    	Robot.swerveDrive.configureForNoIndex();
     	Robot.swerveDrive.getModuleList().stream().forEach(m -> m.enableAnglePID(true));
     	System.out.println("Swerve Drive Indexed");
     }
