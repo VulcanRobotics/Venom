@@ -140,7 +140,7 @@ public class SwerveModule {
 	
 	public double getAbsoluteDistanceDriven() {
 		double distance = Math.abs((driveWheelController.getPosition() / 4.0) * DRIVE_WHEEL_ENCODER_CLICK_TO_FOOT);
-		if (getVelocity() > MAX_GROUNDED_VELOCITY){
+		if (getVelocity() > MAX_GROUNDED_VELOCITY) {
 			shouldDiscount = true;
 		}
 		if (shouldDiscount){
@@ -148,12 +148,10 @@ public class SwerveModule {
 		}
 		return distance;
 	}
-	public void configureForIndexing(){
-		angleEncoder.configureForIndexing();
-	}
 	
-	public void configureForNoIndex(){
-		angleEncoder.configureForNoIndex();
+	public void enableIndexing(boolean enabled) {
+		angleEncoder.enableIndexing(enabled);
+		System.out.println("SM_" + moduleNumber + " encoder indexing set to " + enabled);
 	}
 	
 	public boolean hasBeenIndexed(){

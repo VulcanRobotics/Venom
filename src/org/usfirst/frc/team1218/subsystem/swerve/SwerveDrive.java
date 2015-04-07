@@ -221,12 +221,8 @@ public class SwerveDrive extends Subsystem implements PIDOutput, PIDSource {
     	navModule.setYawWithOffset(offsetAngle);
     }
     
-    public void configureForIndexing(){
-    	module.stream().forEach(m -> m.configureForIndexing());
-    }
-    
-    public void configureForNoIndex(){
-    	module.stream().forEach(m -> m.configureForNoIndex());
+    public void enableIndexing(boolean enabled) {
+    	module.stream().forEach(m -> m.enableIndexing(enabled));
     }
     
     public void zeroHeading() {

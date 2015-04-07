@@ -6,7 +6,6 @@ import org.usfirst.frc.team1218.commands.binIntake.SetBinIntake;
 import org.usfirst.frc.team1218.commands.binIntake.SetClamp;
 import org.usfirst.frc.team1218.commands.elevator.AutoStack;
 import org.usfirst.frc.team1218.commands.elevator.DelayUntilToteDetected;
-import org.usfirst.frc.team1218.commands.elevator.ElevatorGoTo;
 import org.usfirst.frc.team1218.commands.elevator.ElevatorHoldPosition;
 import org.usfirst.frc.team1218.commands.fourBar.SeekPosition;
 import org.usfirst.frc.team1218.commands.swerve.AutoDrive;
