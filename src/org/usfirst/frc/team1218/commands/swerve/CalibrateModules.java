@@ -1,7 +1,6 @@
 package org.usfirst.frc.team1218.commands.swerve;
 
 import org.usfirst.frc.team1218.robot.Robot;
-import org.usfirst.frc.team1218.subsystem.swerve.SwerveModule;
 import org.usfirst.frc.team1218.subsystem.swerve.math.Angle;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -19,8 +18,8 @@ public class CalibrateModules extends Command {//TODO try to speed up
     }
 
     protected void initialize() {
-    	if (!Robot.swerveDrive.hasBeenIndexed()){
-    		Robot.swerveDrive.configureForIndexing();
+    	if (!Robot.swerveDrive.hasBeenIndexed()) {
+    		Robot.swerveDrive.enableIndexing(true);
     	}
     	
     	Robot.swerveDrive.getModuleList().stream().forEach(m -> {
@@ -33,13 +32,12 @@ public class CalibrateModules extends Command {//TODO try to speed up
     }
 
     protected void execute() {
-    	for (int i = 0; i < 4; i++) {
-    		SwerveModule module = Robot.swerveDrive.getModuleList().get(i);
-    		if (indexCount[i] != module.getEncoderIndexCount()) {
-    		    module.enableAnglePID(true);
-    			indexed[i] = true;
+    	Robot.swerveDrive.getModuleList().stream().forEach(m -> {
+    		if (indexCount[m.moduleNumber] != m.getEncoderIndexCount()) {
+    			m.enableAnglePID(true);
+    			indexed[m.moduleNumber] = true;
     		}
-    	}
+    	});
     }
 
     protected boolean isFinished() {
@@ -47,9 +45,6 @@ public class CalibrateModules extends Command {//TODO try to speed up
     }
 
     protected void end() {
-    	System.out.println("swerve drive finished indexing");
-    	//Robot.swerveDrive.configureForNoIndex();
-    	//System.out.println("swerve drive will no longer index");
     	Robot.swerveDrive.getModuleList().stream().forEach(m -> m.enableAnglePID(true));
     	System.out.println("Swerve Drive Indexed");
     }

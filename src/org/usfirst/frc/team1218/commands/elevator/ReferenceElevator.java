@@ -19,9 +19,7 @@ public class ReferenceElevator extends Command {
     	Robot.elevator.setPower(Elevator.ELEVATOR_MIN_POSITIONING_POWER_UP);
     }
 
-    protected void execute() {
-    	
-    }
+    protected void execute() {}
 
     protected boolean isFinished() {
     	return Robot.elevator.atEncoderReference();

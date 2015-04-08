@@ -21,16 +21,11 @@ public class SetRollLeft extends Command {
     	Robot.binIntake.runLeft(power);
     }
     
-    protected void execute() {
-    }
+    protected void execute() {}
     
-    protected boolean isFinished() {
-        return true;
-    }
+    protected boolean isFinished() {return true;}
     
-    protected void end() {
-    	Robot.binIntake.runLeft(power);
-    }
+    protected void end() {}
     
     protected void interrupted() {
     	end();

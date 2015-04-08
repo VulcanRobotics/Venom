@@ -18,19 +18,15 @@ public class DelayUntilToteDetected extends Command {
     
     protected void initialize() {
     	setTimeout(timeout);
-    	
     }
     
-    protected void execute() {
-    }
+    protected void execute() {}
     
     protected boolean isFinished() {
         return Robot.elevator.hasTote() || isTimedOut();
     }
     
-    protected void end() {
-    }
+    protected void end() {}
      
-    protected void interrupted() {
-    }
+    protected void interrupted() {}
 }

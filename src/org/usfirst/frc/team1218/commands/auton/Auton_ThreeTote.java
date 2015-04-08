@@ -6,7 +6,6 @@ import org.usfirst.frc.team1218.commands.binIntake.SetBinIntake;
 import org.usfirst.frc.team1218.commands.binIntake.SetClamp;
 import org.usfirst.frc.team1218.commands.elevator.AutoStack;
 import org.usfirst.frc.team1218.commands.elevator.DelayUntilToteDetected;
-import org.usfirst.frc.team1218.commands.elevator.ElevatorGoTo;
 import org.usfirst.frc.team1218.commands.elevator.ElevatorHoldPosition;
 import org.usfirst.frc.team1218.commands.fourBar.SeekPosition;
 import org.usfirst.frc.team1218.commands.swerve.AutoDrive;
@@ -35,7 +34,7 @@ public class Auton_ThreeTote extends CommandGroup {
     	addParallel(new SetBinIntake(BinIntake.CONTINOUS_HOLD_POWER));
     	addParallel(new SetToteIntake(1.0));
     	addParallel(new SetBinIntake(BinIntake.INTAKE_POWER));
-    	addSequential(new Auton_Calibrate());
+    	addSequential(new Auton_Calibrate(false));
     	
     	addParallel(new SeekPosition(FourBar.PID_HIGH_POSITION));
     	class FirstDrive extends CommandGroup {
@@ -61,6 +60,7 @@ public class Auton_ThreeTote extends CommandGroup {
     			addSequential(new AutoDrive(2.5, 0, -90, 2.4));
      		}
     	}
+    	
     	addSequential(new SecondDrive());
     	addSequential(new VisionAlign(), 0.7);
     	

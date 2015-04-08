@@ -84,7 +84,6 @@ public class SwerveDrive extends Subsystem implements PIDOutput, PIDSource {
     }
     
     public void syncDashboard() {
-    	//TODO check values correspond with dashboard
     	SmartDashboard.putNumber("SwerveDrive: Robot_Heading", Angle.get360Angle(navModule.getYaw()));
     	SmartDashboard.putNumber("SwerveDrive: Average Distance Driven", getAverageDistanceDriven());
     	module.stream().forEach(m -> m.syncDashboard());
@@ -221,12 +220,8 @@ public class SwerveDrive extends Subsystem implements PIDOutput, PIDSource {
     	navModule.setYawWithOffset(offsetAngle);
     }
     
-    public void configureForIndexing(){
-    	module.stream().forEach(m -> m.configureForIndexing());
-    }
-    
-    public void configureForNoIndex(){
-    	module.stream().forEach(m -> m.configureForNoIndex());
+    public void enableIndexing(boolean enabled) {
+    	module.stream().forEach(m -> m.enableIndexing(enabled));
     }
     
     public void zeroHeading() {

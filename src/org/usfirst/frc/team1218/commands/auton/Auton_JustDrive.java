@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class Auton_JustDrive extends CommandGroup {
     
     public  Auton_JustDrive() {
-    	addSequential(new Auton_Calibrate());
+    	addSequential(new Auton_Calibrate(false));
     	addSequential(new AutoDrive(10, 0, Robot.swerveDrive.getHeading(), 1.0));
     }
 }

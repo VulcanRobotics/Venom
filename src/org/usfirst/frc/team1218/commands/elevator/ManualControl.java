@@ -16,8 +16,7 @@ public class ManualControl extends Command {
         requires(Robot.elevator);
     }
     
-    protected void initialize() {
-    }
+    protected void initialize() {}
     
     protected void execute() {
     	if (OI.elevatorManualRaise.get()) {
@@ -33,9 +32,7 @@ public class ManualControl extends Command {
         return false;
     }
     
-    protected void end() {
-    	
-    }
+    protected void end() {}
     
     protected void interrupted() {
     	end();

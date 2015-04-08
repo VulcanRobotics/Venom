@@ -9,10 +9,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  *
  */
 public class BinGrabber extends Subsystem {
-    
-    // Put methods for controlling this subsystem
-    // here. Call these from Commands.
-
+	
 	public static final boolean REALEASED = true;
 	public static final boolean HELD  = false;
 	
@@ -31,8 +28,6 @@ public class BinGrabber extends Subsystem {
 	}
 	
     public void initDefaultCommand() {
-        // Set the default command for a subsystem here.
-        //setDefaultCommand(new MySpecialCommand());
     }
 }
 

@@ -13,10 +13,12 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  */
 public class Auton_Calibrate extends CommandGroup {
     
-    public  Auton_Calibrate() {
+    public  Auton_Calibrate(boolean calibrateModules) {
     	addParallel(new ReferenceElevator());
         addSequential(new AutonZeroHeading());
-        //addParallel(new CalibrateModules());
+        if (calibrateModules) {
+            addParallel(new CalibrateModules());
+        }
     	addSequential(new Print("Auton_Calibrate Complete"));
     	System.out.println("Auton_Calibrate Complete");
     }
