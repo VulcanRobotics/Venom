@@ -8,6 +8,7 @@ import org.usfirst.frc.team1218.commands.elevator.ReferenceElevator;
 import org.usfirst.frc.team1218.commands.fourBar.LeftDartManualControl;
 import org.usfirst.frc.team1218.commands.fourBar.RightDartManualControl;
 import org.usfirst.frc.team1218.commands.fourBar.SeekPosition;
+import org.usfirst.frc.team1218.commands.swerve.AlignStrait;
 import org.usfirst.frc.team1218.commands.swerve.CalibrateModules;
 import org.usfirst.frc.team1218.commands.swerve.MaintainRobotHeading;
 import org.usfirst.frc.team1218.commands.swerve.TankDrive;
@@ -76,6 +77,8 @@ public class OI {
 	//test
 	public static Button test;
 
+	public static Button alignSwerves;
+	
 	public static Button upDPad;
 	public static Button leftDPad;
 	public static Button rightDPad;
@@ -102,6 +105,10 @@ public class OI {
          //Operator
         operator = new Joystick(RobotMap.OPERATOR_JOYSTICK);
 
+        //Swerve
+        alignSwerves = new JoystickButton(operator, RobotMap.BUTTON_PREPARE_FOR_AUTON);
+        alignSwerves.whileHeld(new AlignStrait());
+        
         //Elevator
         elevatorManualRaise = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_MANUAL_RAISE);
         elevatorManualLower = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_MANUAL_LOWER);
@@ -130,12 +137,10 @@ public class OI {
         toteIntakeFromRight.whenReleased(new SetToteIntake(false, true, 0.0));
 
         //Four Bar
-        fourBarHighPosition = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_HIGH_POSITION);
-        fourBarHighPosition.whileHeld(new SeekPosition(FourBar.PID_HIGH_POSITION));
-
+     /*
         fourBarAutonPosition = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_AUTON_START_POSITION);
         fourBarAutonPosition.whileHeld(new SeekPosition(FourBar.PID_AUTON_START_POSITION));
-
+*/
         leftDartUp = new DashboardButton("leftDartManualUp", false);
         leftDartUp.whileActive(new LeftDartManualControl(0.3));
 
@@ -158,8 +163,8 @@ public class OI {
         reverseBinIntake.whenInactive(new SetBinIntake(BinIntake.CONTINOUS_HOLD_POWER));
 
         openBinGrabber = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_OPEN_GRABBER);
-        openBinGrabber.whenPressed(new SetClamp(true));
-        openBinGrabber.whenInactive(new SetClamp(false));
+        openBinGrabber.whenPressed(new SetClamp(BinIntake.OPEN));
+        openBinGrabber.whenInactive(new SetClamp(BinIntake.CLOSED));
 
         //test button
         test = new JoystickButton(driver, ButtonType.X);

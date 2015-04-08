@@ -34,6 +34,11 @@ public class Vector {
     	return Math.sqrt(x * x + y * y);
     }
     
+    public void add(Vector newVector){
+    	this.x += newVector.x;
+    	this.y += newVector.y;
+    }
+    
     public void setMagnitude(double newMagnitude) {
     	double oldMagnitude = this.getMagnitude();
     	this.setX(getX() / oldMagnitude * newMagnitude);

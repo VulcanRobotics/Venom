@@ -26,6 +26,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SwerveDrive extends Subsystem implements PIDOutput, PIDSource {
 	
+	public Vector totalDistanceDriven;
+	
 	protected static final double DEFAULT_DRIVE_POWER = 0.4;
 	protected static final double MAX_DRIVE_POWER = 0.8;
 	
@@ -54,6 +56,7 @@ public class SwerveDrive extends Subsystem implements PIDOutput, PIDSource {
 	private static final double HEADING_CONTROLLER_D = 0.0;
 	
     public SwerveDrive() {
+    	totalDistanceDriven = new Vector(0, 0);
     	boolean isBeta = Preferences.getInstance().getBoolean("isBeta", false);
     	module = new ArrayList<SwerveModule>(Arrays.asList(
     				new SwerveModule(0, (isBeta) ? BETA_MODULE_ANGLE_OFFSET[0] : ALPHA_MODULE_ANGLE_OFFSET[0]),
@@ -101,6 +104,10 @@ public class SwerveDrive extends Subsystem implements PIDOutput, PIDSource {
     
     public void setFieldCentricDriveMode(boolean enabled) {
     	fieldCentricDriveMode = enabled;
+    }
+    
+    public void addToDistanceDriven(Vector vectorToAdd){
+    	totalDistanceDriven.add(vectorToAdd);
     }
     
     /**
@@ -152,6 +159,10 @@ public class SwerveDrive extends Subsystem implements PIDOutput, PIDSource {
     			&& module.get(2).isAngleCorrect()
     			&& module.get(3).isAngleCorrect()
     			);
+    }
+    
+    public void faceForward(){
+    	module.stream().forEach(m -> m.faceForward());
     }
     
     public double pidGet(){

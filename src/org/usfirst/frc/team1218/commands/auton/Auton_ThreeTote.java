@@ -30,7 +30,7 @@ public class Auton_ThreeTote extends CommandGroup {
     	System.out.println("Three Tote Auton Selected");
     	
     	//turn on intakes
-    	addParallel(new SetClamp(false));
+    	addParallel(new SetClamp(BinIntake.CLOSED));
     	addParallel(new SetBinIntake(BinIntake.CONTINOUS_HOLD_POWER));
     	addParallel(new SetToteIntake(1.0));
     	addParallel(new SetBinIntake(BinIntake.INTAKE_POWER));
@@ -54,15 +54,15 @@ public class Auton_ThreeTote extends CommandGroup {
     			addSequential(new AutoDrive(2.2, 180, -90, 2.0), 1.2);
     			addSequential(new AutoDrive(0.1, 0, -90, 1.7));
     			addSequential(new AutoDrive(2.0, 270, -90, 2.5));
-    			addSequential(new AutoDrive(2.5, 0, -90, 2.4));
+    			addSequential(new AutoDrive(1.5, 0, -90, 2.4));
      		}
     	}
     	
     	addSequential(new SecondDrive());
-    	addSequential(new VisionAlign(), 0.7);
+    	addSequential(new VisionAlign(), 1.3);
     	
     	addParallel(new AutoDrive(6.0, 270.0, -90, 1.3));
-    	addSequential(new DelayUntilToteDetected(5.0));
+    	addSequential(new DelayUntilToteDetected(4.0));
     	addParallel(new ElevatorHoldPosition(Elevator.BOTTOM_SOFT_LIMT));
     	addParallel(new SetToteIntake(ToteIntake.TOTE_INTAKE_POWER_HOLD));
     	

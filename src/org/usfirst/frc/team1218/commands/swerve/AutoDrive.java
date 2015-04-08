@@ -33,9 +33,10 @@ public class AutoDrive extends Command implements PIDSource, PIDOutput {
     }
     
     protected void initialize() {
+    	System.out.println("autodrive initilized with initial distance of: " + distanceController.getSetpoint());
     	setTimeout(10);
     	Robot.swerveDrive.resetDistanceDriven();
-    	Timer.delay(0.1);
+    	Timer.delay(0.01);
     	distanceController.enable();
     	Robot.swerveDrive.enableHeadingController(heading);
     }
@@ -45,7 +46,7 @@ public class AutoDrive extends Command implements PIDSource, PIDOutput {
     }
     
     public void pidWrite(double magnitude) {
-    	System.out.println("autodrive output: " + magnitude);
+    	//System.out.println("autodrive output: " + magnitude);
     	Vector power = new Vector(1, 1);
     	power.setAngle(direction);
     	power.setMagnitude(magnitude);
@@ -59,12 +60,17 @@ public class AutoDrive extends Command implements PIDSource, PIDOutput {
     }
 
     protected void end() {
+    	Vector distance = new Vector(1, 1);
+    	distance.setMagnitude(Robot.swerveDrive.getAverageDistanceDriven());
+    	distance.setAngle(direction);
+    	Robot.swerveDrive.totalDistanceDriven.add(distance );
     	distanceController.disable();
     	Robot.swerveDrive.disableHeadingController();
-    	System.out.println("autodrive ended");
+    	System.out.println("autodrive ended, total distance is : " + Robot.swerveDrive.totalDistanceDriven.debug(""));
     }
 
     protected void interrupted() {
+    	System.out.println("autodrive interupted");
     	end();
     }
 }

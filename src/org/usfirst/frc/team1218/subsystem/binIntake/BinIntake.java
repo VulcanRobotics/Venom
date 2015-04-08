@@ -16,8 +16,11 @@ public class BinIntake extends Subsystem {
 	private final CANTalon binIntakeLeft;
 	private final CANTalon binIntakeRight;
 	
+	public static final boolean OPEN = true;
+	public static final boolean CLOSED = false;
+	
 	public static final double INTAKE_POWER = 1.0;
-	public static final double CONTINOUS_HOLD_POWER = 0.1;
+	public static final double CONTINOUS_HOLD_POWER = 0.15;
 	public static final double OUTPUT_POWER = -0.2;
 	
 	public BinIntake() {
@@ -31,6 +34,12 @@ public class BinIntake extends Subsystem {
     }
     
     public void setClamp(boolean shouldOpen) {
+    	if (shouldOpen == OPEN){
+    		System.out.println("Fourbar claw opened");
+    	}
+    	if (shouldOpen == CLOSED){
+    		System.out.println("Fourbar claw closed");
+    	}
     	clamp.set(!shouldOpen);
     }
     

@@ -158,6 +158,10 @@ public class SwerveModule {
 		return angleEncoder.hasBeenIndexed();
 	}
 	
+	public void faceForward(){
+		this.anglePIDController.setSetpoint(0);
+	}
+	
 	public double getVelocity() {
 		return (driveWheelController.getEncVelocity() / 4.0) * DRIVE_WHEEL_ENCODER_CLICK_TO_FOOT / 10.0; //div by 4 to convert from 4X encoding to clicks and divide by 10 to convert deciseconds to seconds
 	}
