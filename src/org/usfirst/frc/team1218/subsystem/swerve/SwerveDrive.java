@@ -189,7 +189,7 @@ public class SwerveDrive extends Subsystem implements PIDOutput, PIDSource {
     	double totalDistance = 0;
     	double n = 0;
     	for (int i = 0; i<4; i++) {
-    		if (module.get(i).getAbsoluteDistanceDriven() > 0.3) {
+    		if (module.get(i).getAbsoluteDistanceDriven() > 0.05) {
     			totalDistance += Math.abs(module.get(i).getAbsoluteDistanceDriven());
     			n++;
     		}
