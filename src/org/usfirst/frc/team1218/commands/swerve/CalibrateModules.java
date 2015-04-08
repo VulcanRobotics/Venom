@@ -18,9 +18,7 @@ public class CalibrateModules extends Command {//TODO try to speed up
     }
 
     protected void initialize() {
-    	if (!Robot.swerveDrive.hasBeenIndexed()) {
-    		Robot.swerveDrive.enableIndexing(true);
-    	}
+    	Robot.swerveDrive.enableIndexing(true);
     	
     	Robot.swerveDrive.getModuleList().stream().forEach(m -> {
     		indexed[m.moduleNumber] = false;
