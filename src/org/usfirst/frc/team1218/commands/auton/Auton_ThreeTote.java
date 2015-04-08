@@ -40,7 +40,7 @@ public class Auton_ThreeTote extends CommandGroup {
     	class FirstDrive extends CommandGroup {
     	     FirstDrive() {  
     	    	 addParallel(new AutoStack(1));
-    	         addSequential(new AutoDrive(3.5, 270.0, -90, 2.1));
+    	         addSequential(new AutoDrive(3.0, 270.0, -90, 1.4));
     	    	 }
     	}
     	addSequential( new FirstDrive());
@@ -51,10 +51,10 @@ public class Auton_ThreeTote extends CommandGroup {
     			addParallel(new AutoDrive(4.0, 270, -90.0, 0.9));
     			addSequential(new DelayUntilToteDetected(4.0));
     			addParallel(new AutoStack(1));
-    			addSequential(new AutoDrive(2.2, 180, -90, 2.0), 1.2);
-    			addSequential(new AutoDrive(0.1, 0, -90, 1.7));
+    			addSequential(new AutoDrive(2.2, 180, -95, 2.0), 1.2);
+    			addSequential(new AutoDrive(0.1, 0, -95, 1.7));
     			addSequential(new AutoDrive(2.0, 270, -90, 2.5));
-    			addSequential(new AutoDrive(1.5, 0, -90, 2.4));
+    			addSequential(new AutoDrive(1.9, 0, -90, 2.4));
      		}
     	}
     	

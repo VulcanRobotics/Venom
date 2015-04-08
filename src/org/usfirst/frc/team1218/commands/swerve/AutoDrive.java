@@ -36,7 +36,7 @@ public class AutoDrive extends Command implements PIDSource, PIDOutput {
     	System.out.println("autodrive initilized with initial distance of: " + distanceController.getSetpoint());
     	setTimeout(10);
     	Robot.swerveDrive.resetDistanceDriven();
-    	Timer.delay(0.01);
+    	Timer.delay(0.05);
     	distanceController.enable();
     	Robot.swerveDrive.enableHeadingController(heading);
     }
