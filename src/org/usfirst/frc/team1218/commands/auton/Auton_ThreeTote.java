@@ -6,6 +6,7 @@ import org.usfirst.frc.team1218.commands.binIntake.SetBinIntake;
 import org.usfirst.frc.team1218.commands.binIntake.SetClamp;
 import org.usfirst.frc.team1218.commands.elevator.AutoStack;
 import org.usfirst.frc.team1218.commands.elevator.DelayUntilToteDetected;
+import org.usfirst.frc.team1218.commands.elevator.ElevatorGoTo;
 import org.usfirst.frc.team1218.commands.elevator.ElevatorHoldPosition;
 import org.usfirst.frc.team1218.commands.fourBar.SeekPosition;
 import org.usfirst.frc.team1218.commands.swerve.AutoDrive;
@@ -41,23 +42,34 @@ public class Auton_ThreeTote extends CommandGroup {
     	     FirstDrive() {  
     	    	 addParallel(new AutoStack(1));
     	         addSequential(new AutoDrive(3.0, 270.0, -90, 1.4));
-    	    	 }
+    	     }
     	}
     	addSequential( new FirstDrive());
+    	addSequential(new VisionAlign(), 0.5);
     	addParallel(new SetToteIntake(0.9));
 
+    	class Pickup extends CommandGroup{
+    		Pickup(){
+    			addSequential(new ElevatorGoTo(Elevator.BOTTOM_SOFT_LIMT));
+    			addParallel(new ElevatorGoTo(Elevator.TOP_SOFT_LIMIT));
+    			addSequential(new Delay(0.2));
+    			addParallel(new SetToteIntake(-.6));
+    		}
+    	}
+    	
     	class SecondDrive extends CommandGroup{
     		SecondDrive(){
-    			addParallel(new AutoDrive(4.0, 270, -90.0, 0.9));
+    			addParallel(new AutoDrive(6.0, 270, -90.0, 0.9));
     			addSequential(new DelayUntilToteDetected(4.0));
-    			addParallel(new AutoStack(1));
+    			//addParallel(new AutoStack(1));
+    			addParallel(new Pickup());
     			addSequential(new AutoDrive(2.2, 180, -95, 2.0), 1.2);
     			addSequential(new AutoDrive(0.1, 0, -95, 1.7));
-    			addSequential(new AutoDrive(2.0, 270, -90, 2.5));
+    			addSequential(new AutoDrive(2.5, 270, -90, 2.5));
     			addSequential(new AutoDrive(1.9, 0, -90, 2.4));
      		}
     	}
-    	
+    	addParallel(new SetToteIntake(0.9));
     	addSequential(new SecondDrive());
     	addSequential(new VisionAlign(), 1.3);
     	
@@ -66,7 +78,7 @@ public class Auton_ThreeTote extends CommandGroup {
     	addParallel(new ElevatorHoldPosition(Elevator.BOTTOM_SOFT_LIMT));
     	addParallel(new SetToteIntake(ToteIntake.TOTE_INTAKE_POWER_HOLD));
     	
-    	addSequential(new AutoDrive(6.0, 0, -90, 2.5));
+    	addSequential(new AutoDrive(4.0, 0, -90, 2.5));
     	addParallel(new SetToteIntake(-ToteIntake.TOTE_INTAKE_POWER));
     	addParallel(new Print("spitting out totes: " + Timer.getMatchTime()));
     	addSequential(new AutoDrive(2.0, 90, -90, 2.0));

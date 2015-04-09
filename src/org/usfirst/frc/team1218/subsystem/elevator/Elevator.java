@@ -34,7 +34,7 @@ public class Elevator extends Subsystem {
 	public static final int BOTTOM_SOFT_LIMT = 0;
 	public static final double SLOWDOWN_NEAR_LIMIT_DISTANCE = 1000;
 	
-	public static final double BOTTOM_CLEARANCE = 50;
+	public static final double BOTTOM_CLEARANCE = 100;
 	public static final double TOP_CLEARANCE = 100;
     public void initDefaultCommand() {
     	setDefaultCommand(new ManualControl());
