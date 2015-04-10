@@ -28,7 +28,7 @@ public class Auton_OneTote extends CommandGroup {
     	addParallel(new SetToteIntake(ToteIntake.TOTE_INTAKE_POWER));
 
     	//Drive
-        addParallel(new AutoDrive(3.0, 270.0, -90.0, 0.8));
+        addParallel(new AutoDrive(3.0, 270.0, -90.0, 1.2));
     	
         //intake tote
         addSequential(new DelayUntilToteDetected(5.0));

@@ -18,8 +18,8 @@ public class Auton_Step extends CommandGroup {
     	addSequential(new SetGrabber(BinGrabber.REALEASED));
         addSequential(new Auton_Calibrate(false));
         addSequential(new Delay(1.0));
-        addSequential(new AutoDrive(5.0, 180, 180, 2.0));
-        addSequential(new Delay(8.0));
-        addSequential(new SeekPosition(FourBar.PID_HIGH_POSITION));
+        addSequential(new AutoDrive(3.0, 180, 180, 2.0));
+        //addSequential(new Delay(8.0));
+        //addSequential(new SeekPosition(FourBar.PID_HIGH_POSITION));
     }
 }

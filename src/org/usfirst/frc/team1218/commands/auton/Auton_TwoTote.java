@@ -1,3 +1,4 @@
+
 package org.usfirst.frc.team1218.commands.auton;
 
 import org.usfirst.frc.team1218.commands.Delay;
@@ -12,7 +13,6 @@ import org.usfirst.frc.team1218.commands.toteIntake.SetToteIntake;
 import org.usfirst.frc.team1218.subsystem.binIntake.BinIntake;
 import org.usfirst.frc.team1218.subsystem.fourBar.FourBar;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
@@ -44,6 +44,6 @@ public class Auton_TwoTote extends CommandGroup {
 		addSequential(new DelayUntilToteDetected(4.0));
 		addParallel(new AutoStack(1));
 		addSequential(new Delay(3));
-		addSequential(new AutoDrive(5, 0, -90, 2.2));
+		addSequential(new AutoDrive(8, 0, -90, 2.2));
     }
 }
