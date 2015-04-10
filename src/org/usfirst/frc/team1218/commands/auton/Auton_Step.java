@@ -2,10 +2,8 @@ package org.usfirst.frc.team1218.commands.auton;
 
 import org.usfirst.frc.team1218.commands.Delay;
 import org.usfirst.frc.team1218.commands.binGrabber.SetGrabber;
-import org.usfirst.frc.team1218.commands.fourBar.SeekPosition;
 import org.usfirst.frc.team1218.commands.swerve.AutoDrive;
 import org.usfirst.frc.team1218.subsystem.binGrabber.BinGrabber;
-import org.usfirst.frc.team1218.subsystem.fourBar.FourBar;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 

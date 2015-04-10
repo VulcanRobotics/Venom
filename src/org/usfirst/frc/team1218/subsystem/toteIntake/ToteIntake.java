@@ -22,10 +22,6 @@ public class ToteIntake extends Subsystem {
         
     }
     
-    /**
-     * Set state for intake motors
-     * @param power positive value for intake and negative value for output
-     */
     public ToteIntake() {
     	intakeL = new CANTalon(RobotMap.TOTE_INTAKE_LEFT);
     	intakeR = new CANTalon(RobotMap.TOTE_INTAKE_RIGHT);
@@ -50,7 +46,7 @@ public class ToteIntake extends Subsystem {
     
 	public void syncDashboard() {
 		SmartDashboard.putNumber("Tote_Intake_Power", intakeL.get());
-		SmartDashboard.putNumber("Tote_Intake_Right_Power", intakeL.getOutputCurrent());
+		SmartDashboard.putNumber("Tote_Intake_Right_Power", intakeR.getOutputCurrent());
 		SmartDashboard.putNumber("Tote_Intake_Left_Power", intakeL.getOutputCurrent());
 	}
 }
