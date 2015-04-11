@@ -236,6 +236,11 @@ public class SwerveModule {
 		}
 	}
 	
+	public void setRawWheelPower(double power) {
+		this.driveWheelController.changeControlMode(ControlMode.PercentVbus);
+		this.driveWheelController.set(power);
+	}
+	
 	/**
 	 * write a speed that should be maintained to the controller
 	 * @param speed ft/s

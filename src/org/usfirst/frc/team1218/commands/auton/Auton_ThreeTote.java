@@ -46,7 +46,7 @@ public class Auton_ThreeTote extends CommandGroup {
     	     }
     	}
     	addSequential( new FirstDrive());
-    	addSequential(new VisionAlign(), 0.5);
+    	addSequential(new VisionAlign(), 1.0);
     	addParallel(new AutoToteIntake());
 
     	class Pickup extends CommandGroup {

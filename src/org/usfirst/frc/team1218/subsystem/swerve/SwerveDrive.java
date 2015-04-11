@@ -106,6 +106,10 @@ public class SwerveDrive extends Subsystem implements PIDOutput, PIDSource {
     	fieldCentricDriveMode = enabled;
     }
     
+    public void setRawWheelPower(double power) {
+    	module.stream().forEach(m -> m.setRawWheelPower(power));
+    }
+    
     public void addToDistanceDriven(Vector vectorToAdd){
     	totalDistanceDriven.add(vectorToAdd);
     }
