@@ -12,6 +12,7 @@ import org.usfirst.frc.team1218.subsystem.fourBar.FourBar;
 import org.usfirst.frc.team1218.subsystem.swerve.SwerveDrive;
 import org.usfirst.frc.team1218.subsystem.toteIntake.ToteIntake;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.command.Command;
@@ -63,7 +64,7 @@ public class Robot extends IterativeRobot {
 		Scheduler.getInstance().run();
 		syncDashboard();
 	}
-
+	
 	public void autonomousInit() {
 		autonName = SmartDashboard.getString("Auton_Select", "Not Set");
 		SmartDashboard.putString("Current_Auton", autonName);

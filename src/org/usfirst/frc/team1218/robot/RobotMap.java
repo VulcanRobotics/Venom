@@ -44,6 +44,7 @@ public class RobotMap {
 	
 	//Operator Control Mapping---------------------------------------------
 	public static final int OPERATOR_JOYSTICK = 1;
+	public static final int AXIS_OPERATOR_ROTATE = 2;
 	
 	//Elevator
 	public static final int BUTTON_ELEVATOR_MANUAL_RAISE = 9;

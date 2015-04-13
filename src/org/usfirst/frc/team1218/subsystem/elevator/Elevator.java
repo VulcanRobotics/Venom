@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.ControlMode;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DigitalOutput;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -150,17 +151,22 @@ public class Elevator extends Subsystem {
     }
     
     public void rumble(){
-    	if (atTop()){
-    		OI.setRumble(OI.CENTER, false);
+    	if (DriverStation.getInstance().isEnabled()){
+    		if (atTop()){
+        		OI.setRumble(OI.CENTER, false);
+        	}
+        	else
+        	{
+        		if (elevatorController.getSpeed() > 0) {
+        			OI.setRumble(OI.RIGHT, true);
+        		}
+        		else{
+        			OI.setRumble(OI.LEFT, true);
+        		}
+        	}
     	}
-    	else
-    	{
-    		if (elevatorController.getSpeed() > 0) {
-    			OI.setRumble(OI.RIGHT, true);
-    		}
-    		else{
-    			OI.setRumble(OI.LEFT, true);
-    		}
+    	else{
+    		OI.setRumble(OI.CENTER, false);
     	}
     }
     

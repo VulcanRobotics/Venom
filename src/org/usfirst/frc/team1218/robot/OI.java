@@ -215,6 +215,10 @@ public class OI {
 		return operator.getRawAxis(RobotMap.AXIS_FOUR_BAR_CONTROL);
     }
 
+    public static double getOperatorRotation(){
+    	return operator.getRawAxis(RobotMap.AXIS_OPERATOR_ROTATE);
+    }
+    
 	public static class Axis {
 	    public final static int LEFT_X = 0;
 	    public final static int LEFT_Y = 1;
