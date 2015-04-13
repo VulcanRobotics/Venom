@@ -157,12 +157,18 @@ public class Elevator extends Subsystem {
         	}
         	else
         	{
-        		if (elevatorController.getSpeed() > 0) {
-        			OI.setRumble(OI.RIGHT, true);
+        		if (elevatorController.getSpeed() == 0) {
+        			OI.setRumble(OI.CENTER, true);
         		}
-        		else{
-        			OI.setRumble(OI.LEFT, true);
-        		}
+        		else
+        		{
+        			if (elevatorController.getSpeed() > 0) {
+            			OI.setRumble(OI.RIGHT, true);
+            		}
+            		else{
+            			OI.setRumble(OI.LEFT, true);
+            		}
+        		}	
         	}
     	}
     	else{
