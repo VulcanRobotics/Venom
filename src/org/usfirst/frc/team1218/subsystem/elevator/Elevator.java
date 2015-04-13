@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1218.subsystem.elevator;
 
 import org.usfirst.frc.team1218.commands.elevator.ManualControl;
+import org.usfirst.frc.team1218.robot.OI;
 import org.usfirst.frc.team1218.robot.Robot;
 import org.usfirst.frc.team1218.robot.RobotMap;
 
@@ -145,6 +146,22 @@ public class Elevator extends Subsystem {
     	SmartDashboard.putBoolean("Elevator_Has_Tote", hasTote());
     	SmartDashboard.putNumber("Elevator_Current", elevatorController.getOutputCurrent());
     	toteIndicator.set(hasTote());
+    	rumble();
+    }
+    
+    public void rumble(){
+    	if (atTop()){
+    		OI.setRumble(OI.CENTER, false);
+    	}
+    	else
+    	{
+    		if (elevatorController.getSpeed() > 0) {
+    			OI.setRumble(OI.RIGHT, true);
+    		}
+    		else{
+    			OI.setRumble(OI.LEFT, true);
+    		}
+    	}
     }
     
     public void setEncoderPosition(double position) {

@@ -20,6 +20,7 @@ import org.usfirst.frc.team1218.subsystem.swerve.math.Vector;
 import org.usfirst.frc.team1218.subsystem.toteIntake.ToteIntake;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Joystick.RumbleType;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
@@ -30,6 +31,12 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
  * @author liamcook
  */
 public class OI {
+	
+	public static final int CENTER = 1218;
+	public static final int RIGHT= 193;
+	public static final int LEFT = 219;
+	
+	static final float RUMBLE_POWER = (float) 0.7;
     //Driver
 	public static Joystick driver;
 	public static Button resetGyro;
@@ -174,8 +181,28 @@ public class OI {
         //test.whenPressed(new AutoStack(1));
         //test.whenPressed(new AutoDrive(6.8, 0, 0, 1.5));
         //test.whenPressed(new MaintainRobotHeading(0));
+        
+        
 	}
-
+	
+	public static void setRumble(int position, boolean shouldRumble){
+		switch (position){
+		case CENTER:
+			driver.setRumble(RumbleType.kLeftRumble, shouldRumble ? RUMBLE_POWER : 0);
+			driver.setRumble(RumbleType.kRightRumble, shouldRumble ? RUMBLE_POWER : 0);
+			break;
+		case LEFT:
+			driver.setRumble(RumbleType.kLeftRumble, shouldRumble ? RUMBLE_POWER : 0);
+			driver.setRumble(RumbleType.kRightRumble, 0);
+			break;
+		case RIGHT:
+			driver.setRumble(RumbleType.kLeftRumble, 0);
+			driver.setRumble(RumbleType.kRightRumble, shouldRumble ? RUMBLE_POWER : 0);
+			break;
+		}
+		
+	}
+	
     public static Vector getDriverLeftJoystickVector() {
     	return new Vector(driver.getRawAxis(Axis.LEFT_X), -driver.getRawAxis(Axis.LEFT_Y));
     }
