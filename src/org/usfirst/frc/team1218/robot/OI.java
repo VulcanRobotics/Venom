@@ -62,9 +62,6 @@ public class OI {
 	public static Button elevatorRunToteIntake;
 	public static Button elevatorReverseToteIntake;
 
-	public static Button toteIntakeFromLeft;
-	public static Button toteIntakeFromRight;
-
 	//Four Bar
 	public static Button fourBarHighPosition;
 	public static Button fourBarAutonPosition;
@@ -133,14 +130,6 @@ public class OI {
         elevatorReverseToteIntake = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_REVERSE_TOTE_INTAKE);
         elevatorReverseToteIntake.whenPressed(new SetToteIntake(true, true, -ToteIntake.TOTE_INTAKE_POWER));
         elevatorReverseToteIntake.whenReleased(new SetToteIntake(true, true, 0.0));
-
-        toteIntakeFromLeft = new JoystickButton(operator, RobotMap.BUTTON_TOTE_INTAKE_FROM_LEFT);
-        toteIntakeFromLeft.whenPressed(new SetToteIntake(true, false, ToteIntake.TOTE_INTAKE_POWER));
-        toteIntakeFromLeft.whenReleased(new SetToteIntake(true, false, 0.0));
-
-        toteIntakeFromRight = new JoystickButton(operator, RobotMap.BUTTON_TOTE_INTAKE_FROM_RIGHT);
-        toteIntakeFromRight.whenPressed(new SetToteIntake(false, true, ToteIntake.TOTE_INTAKE_POWER));
-        toteIntakeFromRight.whenReleased(new SetToteIntake(false, true, 0.0));
 
         //Four Bar
      /*
