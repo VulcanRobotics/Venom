@@ -92,12 +92,23 @@ public class FourBar extends Subsystem implements PIDOutput, PIDSource{
     
     public void setDartPower(double power) {
    		if (getDistanceToTopLimit() < SLOWDOWN_NEAR_LIMIT_DISTANCE && power > 0) {
-       		power *= getDistanceToTopLimit() / SLOWDOWN_NEAR_LIMIT_DISTANCE;
+   			if (getDistanceToTopLimit() > 0){ 
+   				power *= getDistanceToTopLimit() / SLOWDOWN_NEAR_LIMIT_DISTANCE;
+   			}
+   			else {
+   				power = 0; //prevents oscilating around limit
+   			}
+       		
    		}
    		
    		if (getDistanceToBottomLimit() < SLOWDOWN_NEAR_LIMIT_DISTANCE && power < 0) {
-       		power *= getDistanceToBottomLimit() / SLOWDOWN_NEAR_LIMIT_DISTANCE;
-       	}
+   			if (getDistanceToBottomLimit() > 0) { 
+   				power *= getDistanceToBottomLimit() / SLOWDOWN_NEAR_LIMIT_DISTANCE;
+   			}
+   			else {
+   				power = 0; //prevents oscilating around limit
+   			}
+   		}
    		
    		if (Math.abs(power) < MIN_POWER) {
    			double sign = Math.signum(power);
