@@ -28,8 +28,16 @@ public class Elevator extends Subsystem {
 	public static final double I = 0.0;
 	public static final double D = 0.0;
 	
+	public static final double PUp = 0.7;
+	public static final double IUp = 0;
+	public static final double DUp = 0;
+	
+	public static final double PDown = 1.3;
+	public static final double IDown = 0;
+	public static final double DDown = 0;
+	
 	public static final double ELEVATOR_POSITIONING_POWER = 1.0;
-	public static final double ELEVATOR_MIN_POSITIONING_POWER_UP = 0.3;
+	public static final double ELEVATOR_MIN_POSITIONING_POWER_UP = 0.15;
 	public static final double ELEVATOR_MIN_POSITIONING_POWER_DOWN = 0.2;
 		
 	public static final int TOP_SOFT_LIMIT = 4350;
@@ -37,7 +45,7 @@ public class Elevator extends Subsystem {
 	public static final double SLOWDOWN_NEAR_LIMIT_DISTANCE = 1000;
 	
 	public static final double BOTTOM_CLEARANCE = 200;
-	public static final double TOP_CLEARANCE = 100;
+	public static final double TOP_CLEARANCE = 200;
     public void initDefaultCommand() {
     	setDefaultCommand(new ManualControl());
     }
@@ -47,7 +55,7 @@ public class Elevator extends Subsystem {
     	elevatorController.enableBrakeMode(true);
     	elevatorController.setReverseSoftLimit(BOTTOM_SOFT_LIMT);
     	elevatorController.setForwardSoftLimit(TOP_SOFT_LIMIT);
-    	enableSoftLimits(false);
+    	enableSoftLimits(true);
 
     	elevatorController.enableLimitSwitch(true, false);
     	elevatorController.ConfigFwdLimitSwitchNormallyOpen(false);
@@ -72,6 +80,12 @@ public class Elevator extends Subsystem {
     
     public void setPosition(double position) {
     	enablePID(true);
+    	if (position > elevatorController.getEncPosition()){
+    		elevatorController.setPID(PUp, IUp, DUp);
+    	}
+    	else {
+    		elevatorController.setPID(PDown, IDown, DDown);
+    	}
     	elevatorController.set(position);
     }
     
