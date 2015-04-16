@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Joystick.RumbleType;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -111,9 +112,8 @@ public class OI {
 
         //Swerve
         alignSwerves = new JoystickButton(operator, RobotMap.BUTTON_PREPARE_FOR_AUTON);//TODO put on driver
-        alignSwerves.whileHeld(new SetRawWheelAngle(0)); //TODO: get from dashboard to get wheel angle for next auton
+        alignSwerves.whileHeld(new SetRawWheelAngle(360 - SmartDashboard.getNumber("Swerve_Module_Initial_Position", 0))); //FIMXE: only updates on initialization
 
-        
         //Elevator
         elevatorManualRaise = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_MANUAL_RAISE);
         elevatorManualLower = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_MANUAL_LOWER);
