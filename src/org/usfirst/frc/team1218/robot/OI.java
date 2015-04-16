@@ -134,17 +134,9 @@ public class OI {
         elevatorReverseToteIntake.whenReleased(new SetToteIntake(true, true, 0.0));
 
         //Four Bar
-<<<<<<< HEAD
-     /*
-        fourBarAutonPosition = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_AUTON_START_POSITION);
-        fourBarAutonPosition.whileHeld(new SeekPosition(FourBar.PID_AUTON_START_POSITION));
-*/
         fourBarStepBinPosition = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_STEP_BIN_POSITION);
         fourBarStepBinPosition.whileHeld(new SeekPosition(FourBar.PID_GET_BIN_FROM_STEP_POSITION));
-=======
-        //fourBarAutonPosition = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_AUTON_START_POSITION);
-        //fourBarAutonPosition.whileHeld(new SeekPosition(FourBar.PID_AUTON_START_POSITION));
->>>>>>> origin/master
+
         
         leftDartUp = new DashboardButton("leftDartManualUp", false);
         leftDartUp.whileActive(new LeftDartManualControl(0.3));
