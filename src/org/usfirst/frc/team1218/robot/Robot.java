@@ -67,6 +67,8 @@ public class Robot extends IterativeRobot {
 	
 	public void autonomousInit() {
 		autonName = SmartDashboard.getString("Auton_Select", "Not Set");
+		Robot.swerveDrive.setInitalOffset(SmartDashboard.getNumber("Swerve_Module_Initial_Position", 0));
+		System.out.println("initial swerve module position was: " + SmartDashboard.getNumber("Swerve_Module_Initial_Position", 0));
 		SmartDashboard.putString("Current_Auton", autonName);
 		System.out.println("Auton " + autonName + " selected.");
 		switch (autonName) {
@@ -108,6 +110,7 @@ public class Robot extends IterativeRobot {
 		System.out.println("Teleop Initialized");
 	}
 
+	
 	/**
 	 * This function is called when the disabled button is hit. You can use it
 	 * to reset subsystems before shutting down.

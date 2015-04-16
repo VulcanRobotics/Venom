@@ -7,15 +7,17 @@ import org.usfirst.frc.team1218.commands.elevator.AutoStack;
 import org.usfirst.frc.team1218.commands.elevator.ReferenceElevator;
 import org.usfirst.frc.team1218.commands.fourBar.LeftDartManualControl;
 import org.usfirst.frc.team1218.commands.fourBar.RightDartManualControl;
-import org.usfirst.frc.team1218.commands.swerve.AlignStrait;
+import org.usfirst.frc.team1218.commands.fourBar.SeekPosition;
 import org.usfirst.frc.team1218.commands.swerve.CalibrateModules;
 import org.usfirst.frc.team1218.commands.swerve.MaintainRobotHeading;
+import org.usfirst.frc.team1218.commands.swerve.SetRawWheelAngle;
 import org.usfirst.frc.team1218.commands.swerve.TankDrive;
 import org.usfirst.frc.team1218.commands.swerve.ToggleFieldCentricDrive;
 import org.usfirst.frc.team1218.commands.swerve.ZeroRobotHeading;
 import org.usfirst.frc.team1218.commands.toteIntake.SetToteIntake;
 import org.usfirst.frc.team1218.subsystem.binGrabber.BinGrabber;
 import org.usfirst.frc.team1218.subsystem.binIntake.BinIntake;
+import org.usfirst.frc.team1218.subsystem.fourBar.FourBar;
 import org.usfirst.frc.team1218.subsystem.swerve.math.Vector;
 import org.usfirst.frc.team1218.subsystem.toteIntake.ToteIntake;
 
@@ -65,7 +67,8 @@ public class OI {
 	//Four Bar
 	public static Button fourBarHighPosition;
 	public static Button fourBarAutonPosition;
-
+	public static Button fourBarStepBinPosition;
+	
 	public static DashboardButton leftDartUp;
 	public static DashboardButton leftDartDown;
 	public static DashboardButton rightDartUp;
@@ -110,7 +113,7 @@ public class OI {
 
         //Swerve
         alignSwerves = new JoystickButton(operator, RobotMap.BUTTON_PREPARE_FOR_AUTON);
-        alignSwerves.whileHeld(new AlignStrait());
+        alignSwerves.whileHeld(new SetRawWheelAngle(0));
         
         //Elevator
         elevatorManualRaise = new JoystickButton(operator, RobotMap.BUTTON_ELEVATOR_MANUAL_RAISE);
@@ -136,6 +139,9 @@ public class OI {
         fourBarAutonPosition = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_AUTON_START_POSITION);
         fourBarAutonPosition.whileHeld(new SeekPosition(FourBar.PID_AUTON_START_POSITION));
 */
+        fourBarStepBinPosition = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_STEP_BIN_POSITION);
+        fourBarStepBinPosition.whileHeld(new SeekPosition(FourBar.PID_GET_BIN_FROM_STEP_POSITION));
+        
         leftDartUp = new DashboardButton("leftDartManualUp", false);
         leftDartUp.whileActive(new LeftDartManualControl(0.3));
 

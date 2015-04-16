@@ -114,6 +114,10 @@ public class SwerveModule {
 		return moduleIndexOffset;
 	}
 	
+	public void setRawWheelAngle(double angle){
+		anglePIDController.setSetpoint(angle);
+	}
+	
 	/**
 	 * Get the value of the encoder currently used on the angle
 	 * @returns degree position of encoder
@@ -147,6 +151,10 @@ public class SwerveModule {
 			distance = 0;
 		}
 		return distance;
+	}
+	
+	public void setInitialOffset(double offset){
+		angleEncoder.setInitialPosition(offset);
 	}
 	
 	public void enableIndexing(boolean enabled) {

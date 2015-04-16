@@ -60,6 +60,11 @@ public class AngleEncoder implements PIDSource {
 		return angle;
 	}
 	
+	public void setInitialPosition(double offset){
+		encoder.reset();
+		this.encoderOffset = -offset; //if starting at 10, then subtract 10 from all future encoder readings
+	}
+	
 	public int getIndexCount() {
 		return indexCounter.get();
 	}

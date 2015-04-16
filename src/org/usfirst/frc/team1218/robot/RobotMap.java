@@ -65,4 +65,5 @@ public class RobotMap {
 	public static final int BUTTON_FOUR_BAR_HIGH_POSITION = 6;
 	public static final int BUTTON_PREPARE_FOR_AUTON = 6;
 	public static final int BUTTON_FOUR_BAR_AUTON_START_POSITION = 6;
+	public static final int BUTTON_FOUR_BAR_STEP_BIN_POSITION = 7;
 }

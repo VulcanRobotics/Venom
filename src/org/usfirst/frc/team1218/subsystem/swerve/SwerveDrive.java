@@ -94,6 +94,14 @@ public class SwerveDrive extends Subsystem implements PIDOutput, PIDSource {
     	SmartDashboard.putBoolean("SwerveDrive: FieldCentricDrive", isFieldCentricDriveMode());
     }
     
+    public void setInitalOffset(double offset){
+    	module.forEach(m -> m.setInitialOffset(offset));
+    }
+    
+    public void setRawWheelAngle(double angle){
+    	module.forEach(m -> m.setRawWheelAngle(angle));
+    }
+    
     public boolean isHeadingOnTarget() {
     	return headingController.onTarget();
     }
