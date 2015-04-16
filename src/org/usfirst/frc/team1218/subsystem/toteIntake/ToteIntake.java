@@ -34,6 +34,7 @@ public class ToteIntake extends Subsystem {
     public void setPower(double power) {
     	powerL = power;
     	powerR = power;
+    	update();
     }
 
     public double getAverageCurrent() {

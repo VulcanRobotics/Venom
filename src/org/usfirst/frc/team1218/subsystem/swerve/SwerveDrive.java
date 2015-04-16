@@ -51,7 +51,7 @@ public class SwerveDrive extends Subsystem implements PIDOutput, PIDSource {
 	private boolean headingControllerEnabled;
 	private double headingControllerOutput;
 	
-	private static final double HEADING_CONTROLLER_P = 0.02;
+	private static final double HEADING_CONTROLLER_P = 0.05;
 	private static final double HEADING_CONTROLLER_I = 0.0;
 	private static final double HEADING_CONTROLLER_D = 0.0;
 	
@@ -199,6 +199,7 @@ public class SwerveDrive extends Subsystem implements PIDOutput, PIDSource {
     public void disableHeadingController() {
     	headingControllerEnabled = false;
     	headingController.disable();
+    	headingControllerOutput = 0;
     	System.out.println("[Swerve Drive]: Heading Controller Disabled");
     }
     

@@ -12,11 +12,16 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  *@author afiol-mahon
  */
+/**
+ *@author afiol-mahon
+ */
 public class FourBar extends Subsystem implements PIDOutput, PIDSource{
 		
 	private final DartController dartLeft;
 	private final DartController dartRight;
 	private final PIDController positionController;
+	
+	private static final double FEEDFORWARD_UP = 0.2;
 	
 	private static final double POSITION_CONTROLLER_P = 3.0;
 	private static final double POSITION_CONTROLLER_I = 0.02;
@@ -179,7 +184,13 @@ public class FourBar extends Subsystem implements PIDOutput, PIDSource{
 
 	@Override
 	public void pidWrite(double output) {
-		setDartPower(output);
+		if (output > 1){
+			setDartPower(output + FEEDFORWARD_UP);
+		}
+		else{
+			setDartPower(output);
+		}
+		
 	}
 	
 	@Override

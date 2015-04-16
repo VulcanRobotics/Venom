@@ -49,7 +49,7 @@ public class BinIntake extends Subsystem {
     }
     
     public void runLeft(double power) {
-    	binIntakeLeft.set(-power);
+    	binIntakeLeft.set(power);
     	binIntakeRight.set(-power);
     }
     

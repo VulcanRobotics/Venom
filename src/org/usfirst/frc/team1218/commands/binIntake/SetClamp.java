@@ -26,7 +26,7 @@ public class SetClamp extends Command {
 
     protected boolean isFinished() {return true;}
 
-    protected void end() {}
+    protected void end() {Robot.binIntake.setClamp(shouldOpen);}
     
-    protected void interrupted() {}
+    protected void interrupted() {end();}
 }

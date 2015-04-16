@@ -41,6 +41,8 @@ public class MaintainRobotHeading extends Command {
 	@Override
 	protected void end() {
 		Robot.swerveDrive.disableHeadingController();
+		Robot.swerveDrive.setRawWheelPower(0);
+		
 	}
 
 	@Override

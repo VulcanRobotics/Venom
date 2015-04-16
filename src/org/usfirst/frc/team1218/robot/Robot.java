@@ -98,6 +98,7 @@ public class Robot extends IterativeRobot {
 	 */
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
+		syncDashboard();
 	}
 
 	public void teleopInit() {
