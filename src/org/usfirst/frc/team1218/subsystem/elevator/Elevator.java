@@ -23,18 +23,19 @@ public class Elevator extends Subsystem {
 	private final CANTalon elevatorController;	
 	private final DigitalInput toteDetector;
 	private final DigitalOutput toteIndicator;
-		
+	
+	//TODO remove this set of constants?
 	public static final double P = 1.3;
 	public static final double I = 0.0;
 	public static final double D = 0.0;
 	
-	public static final double PUp = 0.7;
-	public static final double IUp = 0;
-	public static final double DUp = 0;
+	public static final double P_UP = 0.7;
+	public static final double I_UP = 0;
+	public static final double D_UP = 0;
 	
-	public static final double PDown = 1.3;
-	public static final double IDown = 0;
-	public static final double DDown = 0;
+	public static final double P_DOWN = 1.3;
+	public static final double I_DOWN = 0;
+	public static final double D_DOWN = 0;
 	
 	public static final double ELEVATOR_POSITIONING_POWER = 1.0;
 	public static final double ELEVATOR_MIN_POSITIONING_POWER_UP = 0.15;
@@ -80,11 +81,10 @@ public class Elevator extends Subsystem {
     
     public void setPosition(double position) {
     	enablePID(true);
-    	if (position > elevatorController.getEncPosition()){
-    		elevatorController.setPID(PUp, IUp, DUp);
-    	}
-    	else {
-    		elevatorController.setPID(PDown, IDown, DDown);
+    	if (position > elevatorController.getEncPosition()) {
+    		elevatorController.setPID(P_UP, I_UP, D_UP);
+    	} else {
+    		elevatorController.setPID(P_DOWN, I_DOWN, D_DOWN);
     	}
     	elevatorController.set(position);
     }
@@ -130,11 +130,11 @@ public class Elevator extends Subsystem {
     	return toteDetector.get();
     }
     
-    public boolean atBottom(){
+    public boolean atBottom() {
     	return Robot.elevator.getBottomLimit() || Robot.elevator.getPosition() <= Elevator.BOTTOM_SOFT_LIMT + BOTTOM_CLEARANCE;
     }
     
-    public boolean atTop(){
+    public boolean atTop() {
     	return Robot.elevator.getTopLimit() || Robot.elevator.getPosition() > Elevator.TOP_SOFT_LIMIT-TOP_CLEARANCE;
     }
     
@@ -164,29 +164,17 @@ public class Elevator extends Subsystem {
     	rumble();
     }
     
-    public void rumble(){
-    	if (DriverStation.getInstance().isEnabled()){
-    		if (atTop()){
-        		OI.setRumble(OI.CENTER, false);
-        	}
-        	else
-        	{
-        		if (elevatorController.getSpeed() == 0) {
-        			OI.setRumble(OI.CENTER, true);
-        		}
-        		else
-        		{
-        			if (elevatorController.getSpeed() > 0) {
-            			OI.setRumble(OI.RIGHT, true);
-            		}
-            		else{
-            			OI.setRumble(OI.LEFT, true);
-            		}
-        		}	
-        	}
-    	}
-    	else{
-    		OI.setRumble(OI.CENTER, false);
+    public void rumble() {
+    	if (DriverStation.getInstance().isEnabled() && !atTop()) {
+    		if (elevatorController.getSpeed() == 0) {
+        		OI.setRumble(OI.RumblePosition.CENTER, true); //enabled, not at top, speed = 0
+        	} else if (elevatorController.getSpeed() > 0) { 
+            	OI.setRumble(OI.RumblePosition.RIGHT, true);//enabled, not at top, speed > 0
+            } else {
+            	OI.setRumble(OI.RumblePosition.LEFT, true); //enabled not at top speed < 0
+            }
+        } else {
+    		OI.setRumble(OI.RumblePosition.CENTER, false);//not enabled
     	}
     }
     

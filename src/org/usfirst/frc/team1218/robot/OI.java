@@ -32,11 +32,8 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
  */
 public class OI {
 	
-	public static final int CENTER = 1218;
-	public static final int RIGHT= 193;
-	public static final int LEFT = 219;
+	public static final float RUMBLE_POWER = 0.7f;
 	
-	static final float RUMBLE_POWER = (float) 0.7;
     //Driver
 	public static Joystick driver;
 	public static Button resetGyro;
@@ -86,6 +83,7 @@ public class OI {
 	public static Button leftDPad;
 	public static Button rightDPad;
 	public static Button downDPad;
+	
 	public OI() {
     	//Driver
     	driver = new Joystick(RobotMap.DRIVER_JOYSTICK);
@@ -109,7 +107,7 @@ public class OI {
         operator = new Joystick(RobotMap.OPERATOR_JOYSTICK);
 
         //Swerve
-        alignSwerves = new JoystickButton(operator, RobotMap.BUTTON_PREPARE_FOR_AUTON);
+        alignSwerves = new JoystickButton(operator, RobotMap.BUTTON_PREPARE_FOR_AUTON);//TODO put on driver
         alignSwerves.whileHeld(new AlignStrait());
         
         //Elevator
@@ -132,10 +130,9 @@ public class OI {
         elevatorReverseToteIntake.whenReleased(new SetToteIntake(true, true, 0.0));
 
         //Four Bar
-     /*
-        fourBarAutonPosition = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_AUTON_START_POSITION);
-        fourBarAutonPosition.whileHeld(new SeekPosition(FourBar.PID_AUTON_START_POSITION));
-*/
+        //fourBarAutonPosition = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_AUTON_START_POSITION);
+        //fourBarAutonPosition.whileHeld(new SeekPosition(FourBar.PID_AUTON_START_POSITION));
+        
         leftDartUp = new DashboardButton("leftDartManualUp", false);
         leftDartUp.whileActive(new LeftDartManualControl(0.3));
 
@@ -162,7 +159,7 @@ public class OI {
         openBinGrabber.whenInactive(new SetClamp(BinIntake.CLOSED));
 
         //test button
-        test = new JoystickButton(driver, ButtonType.X);
+        test = new JoystickButton(driver, ButtonType.X);//TODO move to operator
         test.whenPressed(new SetGrabber(BinGrabber.REALEASED));
         test.whenInactive(new SetGrabber(BinGrabber.HELD));
         //test.whenPressed(new Auton_TwoTote());
@@ -170,24 +167,27 @@ public class OI {
         //test.whenPressed(new AutoStack(1));
         //test.whenPressed(new AutoDrive(6.8, 0, 0, 1.5));
         //test.whenPressed(new MaintainRobotHeading(0));
-        
-        
 	}
 	
-	public static void setRumble(int position, boolean shouldRumble){
-		switch (position){
-		case CENTER:
-			driver.setRumble(RumbleType.kLeftRumble, shouldRumble ? RUMBLE_POWER : 0);
-			driver.setRumble(RumbleType.kRightRumble, shouldRumble ? RUMBLE_POWER : 0);
-			break;
-		case LEFT:
-			driver.setRumble(RumbleType.kLeftRumble, shouldRumble ? RUMBLE_POWER : 0);
-			driver.setRumble(RumbleType.kRightRumble, 0);
-			break;
-		case RIGHT:
+	public static void setRumble(int position, boolean shouldRumble) {
+		if (shouldRumble) {
+			switch (position) {
+				case RumblePosition.CENTER:
+					driver.setRumble(RumbleType.kLeftRumble, RUMBLE_POWER);
+					driver.setRumble(RumbleType.kRightRumble, RUMBLE_POWER);
+					break;
+				case RumblePosition.LEFT:
+					driver.setRumble(RumbleType.kLeftRumble, RUMBLE_POWER);
+					driver.setRumble(RumbleType.kRightRumble, 0);
+					break;
+				case RumblePosition.RIGHT:
+					driver.setRumble(RumbleType.kLeftRumble, 0);
+					driver.setRumble(RumbleType.kRightRumble, RUMBLE_POWER);
+					break;
+			}
+		} else {
 			driver.setRumble(RumbleType.kLeftRumble, 0);
-			driver.setRumble(RumbleType.kRightRumble, shouldRumble ? RUMBLE_POWER : 0);
-			break;
+			driver.setRumble(RumbleType.kRightRumble, 0);
 		}
 		
 	}
@@ -204,7 +204,7 @@ public class OI {
 		return operator.getRawAxis(RobotMap.AXIS_FOUR_BAR_CONTROL);
     }
 
-    public static double getOperatorRotation(){
+    public static double getOperatorRotation() {
     	return operator.getRawAxis(RobotMap.AXIS_OPERATOR_ROTATE);
     }
     
@@ -226,6 +226,12 @@ public class OI {
 		 public final static int R1 = 6;
 		 public final static int LEFT_THUMB = 9;
 		 public final static int RIGHT_THUMB = 10;
+	}
+	
+	public static class RumblePosition {
+		public static final int CENTER = 1218;
+		public static final int RIGHT= 193;
+		public static final int LEFT = 219;
 	}
 
 	public static double getTurboPower() {
