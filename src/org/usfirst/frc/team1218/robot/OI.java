@@ -135,7 +135,9 @@ public class OI {
 
         //Four Bar
         fourBarStepBinPosition = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_STEP_BIN_POSITION);
-        fourBarStepBinPosition.whenPressed(new SeekPosition(FourBar.PID_GET_BIN_FROM_STEP_POSITION));
+        //fourBarStepBinPosition.whenPressed(new SeekPosition(FourBar.PID_GET_BIN_FROM_STEP_POSITION));
+        
+        fourBarStepBinPosition.whenPressed(new SeekPosition(.14, .13, .15));
         
         leftDartUp = new DashboardButton("leftDartManualUp", false);
         leftDartUp.whileActive(new LeftDartManualControl(0.3));

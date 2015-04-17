@@ -36,15 +36,15 @@ public class Auton_ThreeTote extends CommandGroup {
     	addParallel(new AutoStack(1));
     	
     	addParallel(new SetClamp(BinIntake.CLOSED));
-    	addParallel(new SeekPosition(0.23));
+    	addParallel(new SeekPosition(0.2));
     	
     	addSequential(new AutoDrive(1.5, 270, -90, 2.0));
-    	addSequential(new SwivelAndDrop(2.4, -60, -30));
+    	addSequential(new SwivelAndDrop(2.5, -60, -30));
     	addParallel(new SetRollLeft(-1.0));
     	
     	class WaitForFourbarAndRotate extends CommandGroup{
     		WaitForFourbarAndRotate(){
-    			addParallel(new SeekPosition(.15, .13, .15));
+    			addParallel(new SeekPosition(.13, .13, .15));
     	    	addSequential(new MaintainRobotHeading(-80));
     	    	addSequential(new SetBinIntake(0.9));
     	    	addSequential(new VisionAlign(), 1.0);
@@ -59,14 +59,13 @@ public class Auton_ThreeTote extends CommandGroup {
     	class PickupAndDrive extends CommandGroup{
     		PickupAndDrive(){
     			addParallel(new AutoStack(1));
-    			
+    			addParallel(new AutoDrive(2.0, 270, -90, 0.0), 0.5);
             	addSequential(new SetClamp(BinIntake.CLOSED));
-            	addParallel(new SeekPosition(0.8));
-     	
-            	//addSequential(new AutoDrive(2.0, 270, -90, 2.0));
+            	addParallel(new SeekPosition(1.0, 0.55, 0.9));
     		}
     	}
     	addSequential(new PickupAndDrive());
+    	addParallel(new SeekPosition(0.8, 0.7, 0.9));
     	addSequential(new SetBinIntake(BinIntake.CONTINOUS_HOLD_POWER));
     	
     	//addSequential(new VisionAlign(), 1.0);

@@ -23,7 +23,7 @@ public class SwivelAndDrop extends Command {
     	this.rotationSpeed = rotationSpeed;
     	this.dropPoint = dropPoint;
     	this.finishPoint = finishPoint;
-    }
+    }	
 
     // Called just before this Command runs the first time
     protected void initialize() {
@@ -34,6 +34,7 @@ public class SwivelAndDrop extends Command {
     protected void execute() {
     	if(Robot.swerveDrive.getHeading() > dropPoint) {
     		Robot.binIntake.setClamp(BinIntake.OPEN);
+    		Robot.binIntake.setBinIntake(-1.0);
     	}
     }
 
