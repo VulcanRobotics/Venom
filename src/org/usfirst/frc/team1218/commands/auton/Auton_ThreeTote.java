@@ -7,7 +7,7 @@ import org.usfirst.frc.team1218.commands.binIntake.SetClamp;
 import org.usfirst.frc.team1218.commands.binIntake.SetRollLeft;
 import org.usfirst.frc.team1218.commands.elevator.AutoStack;
 import org.usfirst.frc.team1218.commands.elevator.DelayUntilToteDetected;
-import org.usfirst.frc.team1218.commands.elevator.ElevatorHoldPosition;
+import org.usfirst.frc.team1218.commands.elevator.ElevatorHoldPositionWhenToteDetected;
 import org.usfirst.frc.team1218.commands.fourBar.SeekPosition;
 import org.usfirst.frc.team1218.commands.swerve.AutoDrive;
 import org.usfirst.frc.team1218.commands.swerve.MaintainRobotHeading;
@@ -30,7 +30,7 @@ public class Auton_ThreeTote extends CommandGroup {
     	System.out.println("Three Tote Auton Selected");
     	addSequential(new SetClamp(BinIntake.OPEN));
     	addParallel(new Auton_Calibrate(true));
-    	addSequential(new Delay(5.0));
+    	addSequential(new Delay(1.5));
     	
     	addParallel(new AutoToteIntake());
     	addParallel(new AutoStack(1));
@@ -44,22 +44,23 @@ public class Auton_ThreeTote extends CommandGroup {
     	
     	class WaitForFourbarAndRotate extends CommandGroup{
     		WaitForFourbarAndRotate(){
-    			addParallel(new SeekPosition(.13, .13, .15));
+    			addParallel(new SeekPosition(.135, .13, .15));
     	    	addSequential(new MaintainRobotHeading(-80));
     	    	addSequential(new SetBinIntake(0.9));
-    	    	addSequential(new VisionAlign(), 1.0);
+    	    	//addSequential(new VisionAlign(), 0.5); //TODO: add this back in but don't make it delay seqeuncing
     		}
     	}
     	addSequential(new WaitForFourbarAndRotate());
     	    	
     	addParallel(new CloseClampWhenIntakesHitTote());
-    	addParallel(new AutoDrive(7.0, 270, -90, 1.3));
+    	//addParallel(new AutoDrive(7.0, 270, -90, 1.3));
+    	addParallel(new VisionAlign(-1.3));
     	addSequential(new DelayUntilToteDetected(10.0));
     	
     	class PickupAndDrive extends CommandGroup{
     		PickupAndDrive(){
     			addParallel(new AutoStack(1));
-    			addParallel(new AutoDrive(2.0, 270, -90, 0.0), 0.5);
+    			addParallel(new AutoDrive(2.0, 270, -90, 0.0), 0.5); //stop
             	addSequential(new SetClamp(BinIntake.CLOSED));
             	addParallel(new SeekPosition(1.0, 0.55, 0.9));
     		}
@@ -68,12 +69,12 @@ public class Auton_ThreeTote extends CommandGroup {
     	addParallel(new SeekPosition(0.8, 0.7, 0.9));
     	addSequential(new SetBinIntake(BinIntake.CONTINOUS_HOLD_POWER));
     	
-    	//addSequential(new VisionAlign(), 1.0);
-    	addParallel(new AutoDrive(6.0, 270, -90, 1.4));
-    	addSequential(new DelayUntilToteDetected(4.0));
-    	addParallel(new ElevatorHoldPosition(Elevator.BOTTOM_SOFT_LIMT));
+    	addParallel(new VisionAlign(-1.4));
+    	//addParallel(new AutoDrive(6.0, 270, -90, 1.4));
+    	addSequential(new DelayUntilToteDetected(6.0));
+    	addParallel(new ElevatorHoldPositionWhenToteDetected(Elevator.BOTTOM_SOFT_LIMT));
     	
-    	addSequential(new AutoDrive(4.0, 0, -90, 2.0));
+    	addSequential(new AutoDrive(4.0, 0, -90, 2.5));
     	addSequential(new SetToteIntake(-0.8));
     	addSequential(new AutoDrive(3.0, 90, -90, 2.4));
     }

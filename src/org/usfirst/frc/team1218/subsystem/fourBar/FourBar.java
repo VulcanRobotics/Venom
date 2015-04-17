@@ -23,9 +23,9 @@ public class FourBar extends Subsystem implements PIDOutput, PIDSource{
 	
 	private static final double FEEDFORWARD_UP = 0.2;
 	
-	private static final double POSITION_CONTROLLER_P = 3.0;
-	private static final double POSITION_CONTROLLER_I = 0.02;
-	private static final double POSITION_CONTROLLER_D = 0.01;
+	private static final double POSITION_CONTROLLER_P = 10.0;
+	private static final double POSITION_CONTROLLER_I = 0.2;
+	private static final double POSITION_CONTROLLER_D = 0.0;
 	private static final double POSITION_CONTROLLER_MAX_OUTPUT = 0.8;
 
 	private static final double DART_POSITION_SYNC_P = 2.0;
@@ -96,6 +96,8 @@ public class FourBar extends Subsystem implements PIDOutput, PIDSource{
 	}
     
     public void setDartPower(double power) {
+    	
+    	
    		if (getDistanceToTopLimit() < SLOWDOWN_NEAR_LIMIT_DISTANCE && power > 0) {
    			if (getDistanceToTopLimit() > 0){ 
    				power *= getDistanceToTopLimit() / SLOWDOWN_NEAR_LIMIT_DISTANCE;
@@ -115,10 +117,11 @@ public class FourBar extends Subsystem implements PIDOutput, PIDSource{
    			}
    		}
    		
-   		if (Math.abs(power) < MIN_POWER) {
+   		if (Math.abs(power) < MIN_POWER && !positionController.isEnable()) {
    			double sign = Math.signum(power);
    			power = MIN_POWER * sign;
    		}
+
    		
    		//Power Gain combats the left and right dart position drift
       	double leftPowerGain = (dartRight.getPosition() - dartLeft.getPosition()) * DART_POSITION_SYNC_P;

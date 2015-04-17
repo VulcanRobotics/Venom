@@ -19,7 +19,10 @@ public class FourBarDefaultCommand extends Command {
     }
 
     protected void execute() {
+    	
     	double power = OI.getFourBarControlAxis();
+
+    	
     	if (Math.abs(power) > 0.1) {
     		Robot.fourBar.setDartPower(power);
     	} else {

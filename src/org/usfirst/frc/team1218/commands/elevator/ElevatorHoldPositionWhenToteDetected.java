@@ -8,11 +8,11 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class ElevatorHoldPosition extends Command {
+public class ElevatorHoldPositionWhenToteDetected extends Command {
 
 	double position;
 	
-    public ElevatorHoldPosition(double position) {
+    public ElevatorHoldPositionWhenToteDetected(double position) {
     	if (position > Elevator.TOP_SOFT_LIMIT || position < Elevator.BOTTOM_SOFT_LIMT) {
     		System.out.println("tried to assign an elevator position that was out of bounds");
     		position = 1000;
@@ -24,7 +24,10 @@ public class ElevatorHoldPosition extends Command {
     protected void initialize() {}
 
     protected void execute() {
-    	Robot.elevator.setPosition(position);
+    	if (Robot.elevator.hasTote()){
+    		Robot.elevator.setPosition(position);
+    	}
+    	
     }
     
     protected boolean isFinished() {return false;}
