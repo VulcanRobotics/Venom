@@ -1,13 +1,12 @@
 package org.usfirst.frc.team1218.commands.auton;
 
-import org.usfirst.frc.team1218.commands.Delay;
+import org.usfirst.frc.team1218.commands.binIntake.CloseClampWhenIntakesHitTote;
 import org.usfirst.frc.team1218.commands.binIntake.SetBinIntake;
 import org.usfirst.frc.team1218.commands.binIntake.SetClamp;
 import org.usfirst.frc.team1218.commands.binIntake.SetRollLeft;
 import org.usfirst.frc.team1218.commands.elevator.AutoStack;
 import org.usfirst.frc.team1218.commands.elevator.DelayUntilToteDetected;
 import org.usfirst.frc.team1218.commands.elevator.ElevatorHoldPosition;
-import org.usfirst.frc.team1218.commands.fourBar.FourBarGoToBottom;
 import org.usfirst.frc.team1218.commands.fourBar.SeekPosition;
 import org.usfirst.frc.team1218.commands.swerve.AutoDrive;
 import org.usfirst.frc.team1218.commands.swerve.MaintainRobotHeading;
@@ -41,13 +40,13 @@ public class Auton_ThreeTote extends CommandGroup {
     	addSequential(new MaintainRobotHeading(-30));
     	addSequential(new SetClamp(BinIntake.OPEN));
     	addParallel(new SetRollLeft(-1.0));
-    	addSequential(new FourBarGoToBottom());
-    	addSequential(new MaintainRobotHeading(-90));
-    	addParallel(new SeekPosition(0.17));
+    	addSequential(new MaintainRobotHeading(-100));
+    	addParallel(new SeekPosition(.15, .132, .16));
     	
     	addSequential(new SetBinIntake(0.9));
     	addSequential(new VisionAlign(), 1.0);
-    	addParallel(new AutoDrive(7.0, 270, -90, 1.4));
+    	addParallel(new CloseClampWhenIntakesHitTote());
+    	addParallel(new AutoDrive(7.0, 270, -90, 1.3));
     	addSequential(new DelayUntilToteDetected(10.0));
     	
     	class PickupAndDrive extends CommandGroup{

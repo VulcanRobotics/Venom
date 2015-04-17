@@ -76,8 +76,11 @@ public class ToteIntake extends Subsystem {
     	setLeft(powerL);
     }
     
+  
+    
 	public void syncDashboard() {
 		update();
+		SmartDashboard.putNumber("Tote_Intake_Current", getAverageCurrent());
 		SmartDashboard.putNumber("Tote_Intake_Power", intakeL.get());
 		SmartDashboard.putNumber("Tote_Intake_Right_Power", intakeR.getOutputCurrent());
 		SmartDashboard.putNumber("Tote_Intake_Left_Power", intakeL.getOutputCurrent());

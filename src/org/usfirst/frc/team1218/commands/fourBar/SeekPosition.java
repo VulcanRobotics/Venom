@@ -10,10 +10,23 @@ import edu.wpi.first.wpilibj.command.Command;
 public class SeekPosition extends Command {
 	
 	private double setpoint;
+	final boolean  useSpecificbounds;
+	
+	double lowerBound = 0;
+	double upperBound = 0;
 	
     public SeekPosition(double setpoint) {
         requires(Robot.fourBar);
         this.setpoint = setpoint;
+        useSpecificbounds = false;
+    }
+    
+    public SeekPosition(double setpoint, double lowerBound, double upperBound){
+    	requires(Robot.fourBar);
+    	this.setpoint = setpoint;
+    	useSpecificbounds = true;
+    	this.lowerBound = lowerBound;
+    	this.upperBound = upperBound;
     }
     
     protected void initialize() {
@@ -25,7 +38,7 @@ public class SeekPosition extends Command {
     protected void execute() {}
     
     protected boolean isFinished() {
-    	return Robot.fourBar.isOnTarget();
+    	return (!useSpecificbounds && Robot.fourBar.isOnTarget()) || (useSpecificbounds && Robot.fourBar.getPosition() > lowerBound && Robot.fourBar.getPosition() < upperBound);
     }
 
     protected void end() {
