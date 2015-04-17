@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1218.commands.auton;
 
+import org.usfirst.frc.team1218.commands.Delay;
 import org.usfirst.frc.team1218.commands.binIntake.CloseClampWhenIntakesHitTote;
 import org.usfirst.frc.team1218.commands.binIntake.SetBinIntake;
 import org.usfirst.frc.team1218.commands.binIntake.SetClamp;
@@ -28,8 +29,9 @@ public class Auton_ThreeTote extends CommandGroup {
     public  Auton_ThreeTote() {    	
     	System.out.println("Three Tote Auton Selected");
     	addSequential(new SetClamp(BinIntake.OPEN));
-    	addSequential(new Auton_Calibrate(false));
-
+    	addParallel(new Auton_Calibrate(true));
+    	addSequential(new Delay(5.0));
+    	
     	addParallel(new AutoToteIntake());
     	addParallel(new AutoStack(1));
     	
@@ -37,14 +39,19 @@ public class Auton_ThreeTote extends CommandGroup {
     	addParallel(new SeekPosition(0.23));
     	
     	addSequential(new AutoDrive(1.5, 270, -90, 2.0));
-    	addSequential(new MaintainRobotHeading(-30));
-    	addSequential(new SetClamp(BinIntake.OPEN));
+    	addSequential(new SwivelAndDrop(2.4, -60, -30));
     	addParallel(new SetRollLeft(-1.0));
-    	addSequential(new MaintainRobotHeading(-100));
-    	addParallel(new SeekPosition(.15, .132, .16));
     	
-    	addSequential(new SetBinIntake(0.9));
-    	addSequential(new VisionAlign(), 1.0);
+    	class WaitForFourbarAndRotate extends CommandGroup{
+    		WaitForFourbarAndRotate(){
+    			addParallel(new SeekPosition(.15, .13, .15));
+    	    	addSequential(new MaintainRobotHeading(-80));
+    	    	addSequential(new SetBinIntake(0.9));
+    	    	addSequential(new VisionAlign(), 1.0);
+    		}
+    	}
+    	addSequential(new WaitForFourbarAndRotate());
+    	    	
     	addParallel(new CloseClampWhenIntakesHitTote());
     	addParallel(new AutoDrive(7.0, 270, -90, 1.3));
     	addSequential(new DelayUntilToteDetected(10.0));
@@ -56,7 +63,7 @@ public class Auton_ThreeTote extends CommandGroup {
             	addSequential(new SetClamp(BinIntake.CLOSED));
             	addParallel(new SeekPosition(0.8));
      	
-            	addSequential(new AutoDrive(2.0, 270, -90, 2.0));
+            	//addSequential(new AutoDrive(2.0, 270, -90, 2.0));
     		}
     	}
     	addSequential(new PickupAndDrive());
