@@ -17,7 +17,7 @@ public class VisionAlign extends Command implements PIDSource, PIDOutput{
 	private double NOT_CONNECTED = 3;
 	private PIDController PID;
 	
-	private final double P = -0.1;
+	private final double P = -0.05;
 	private final double I = -0.0;
 	private final double D = -1.0;
 	
@@ -40,7 +40,7 @@ public class VisionAlign extends Command implements PIDSource, PIDOutput{
     void generalSetup(){
     	
     	PID = new PIDController(P, I, D, this, this);
-    	PID.setInputRange(-1.0, 1.0);
+    	PID.setInputRange(-2.0, 2.0);
     	PID.setOutputRange(-MAX_POWER, MAX_POWER);
     	PID.setSetpoint(0.0);
     	PID.setAbsoluteTolerance(1);
