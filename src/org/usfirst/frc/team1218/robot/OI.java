@@ -5,6 +5,8 @@ import org.usfirst.frc.team1218.commands.binIntake.SetBinIntake;
 import org.usfirst.frc.team1218.commands.binIntake.SetClamp;
 import org.usfirst.frc.team1218.commands.elevator.AutoStack;
 import org.usfirst.frc.team1218.commands.elevator.ReferenceElevator;
+import org.usfirst.frc.team1218.commands.fourBar.FourBarDefaultCommand;
+import org.usfirst.frc.team1218.commands.fourBar.FourbarManualCancelTrigger;
 import org.usfirst.frc.team1218.commands.fourBar.LeftDartManualControl;
 import org.usfirst.frc.team1218.commands.fourBar.RightDartManualControl;
 import org.usfirst.frc.team1218.commands.fourBar.SeekPosition;
@@ -17,7 +19,6 @@ import org.usfirst.frc.team1218.commands.swerve.ZeroRobotHeading;
 import org.usfirst.frc.team1218.commands.toteIntake.SetToteIntake;
 import org.usfirst.frc.team1218.subsystem.binGrabber.BinGrabber;
 import org.usfirst.frc.team1218.subsystem.binIntake.BinIntake;
-import org.usfirst.frc.team1218.subsystem.fourBar.FourBar;
 import org.usfirst.frc.team1218.subsystem.swerve.math.Vector;
 import org.usfirst.frc.team1218.subsystem.toteIntake.ToteIntake;
 
@@ -66,6 +67,8 @@ public class OI {
 	public static Button fourBarHighPosition;
 	public static Button fourBarAutonPosition;
 	public static Button fourBarStepBinPosition;
+	public static FourbarManualCancelTrigger fourBarManualCancelTrigger;
+	
 	
 	public static DashboardButton leftDartUp;
 	public static DashboardButton leftDartDown;
@@ -137,7 +140,10 @@ public class OI {
         fourBarStepBinPosition = new JoystickButton(operator, RobotMap.BUTTON_FOUR_BAR_STEP_BIN_POSITION);
         //fourBarStepBinPosition.whenPressed(new SeekPosition(FourBar.PID_GET_BIN_FROM_STEP_POSITION));
         
-        fourBarStepBinPosition.whenPressed(new SeekPosition(.14, .13, .15));
+        fourBarManualCancelTrigger = new FourbarManualCancelTrigger();
+        fourBarManualCancelTrigger.whenActive(new FourBarDefaultCommand());
+        
+        fourBarStepBinPosition.whenPressed(new SeekPosition(.21, .195, .223));
         
         leftDartUp = new DashboardButton("leftDartManualUp", false);
         leftDartUp.whileActive(new LeftDartManualControl(0.3));
