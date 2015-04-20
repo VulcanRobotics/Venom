@@ -11,6 +11,7 @@ import org.usfirst.frc.team1218.commands.elevator.ElevatorHoldPositionWhenToteDe
 import org.usfirst.frc.team1218.commands.fourBar.SeekPosition;
 import org.usfirst.frc.team1218.commands.swerve.AutoDrive;
 import org.usfirst.frc.team1218.commands.swerve.MaintainRobotHeading;
+import org.usfirst.frc.team1218.commands.swerve.SetHeadingController;
 import org.usfirst.frc.team1218.commands.swerve.VisionAlign;
 import org.usfirst.frc.team1218.commands.toteIntake.AutoToteIntake;
 import org.usfirst.frc.team1218.commands.toteIntake.SetToteIntake;
@@ -46,6 +47,8 @@ public class Auton_ThreeTote extends CommandGroup {
     		WaitForFourbarAndRotate(){
     			addParallel(new SeekPosition(.135, .13, .15));
     	    	addSequential(new MaintainRobotHeading(-80));
+    	    	addParallel(new Delay(0.4));
+    	    	addSequential(new SetHeadingController(-90));
     	    	addSequential(new SetBinIntake(0.9));
     	    	//addSequential(new VisionAlign(), 0.5); //TODO: add this back in but don't make it delay seqeuncing
     		}
@@ -54,7 +57,7 @@ public class Auton_ThreeTote extends CommandGroup {
     	    	
     	addParallel(new CloseClampWhenIntakesHitTote());
     	//addParallel(new AutoDrive(7.0, 270, -90, 1.3));
-    	addParallel(new VisionAlign(-1.3));
+    	addParallel(new VisionAlign(-1.0));
     	addSequential(new DelayUntilToteDetected(10.0));
     	
     	class PickupAndDrive extends CommandGroup{

@@ -55,6 +55,10 @@ public class FourBar extends Subsystem implements PIDOutput, PIDSource{
 		System.out.println("Four Bar Initialized");
 	}
 	
+	public double getPIDOutput(){
+		return positionController.get();
+	}
+	
     public void initDefaultCommand() {
        setDefaultCommand(new FourBarDefaultCommand());
     }

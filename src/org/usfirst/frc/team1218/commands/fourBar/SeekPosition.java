@@ -35,7 +35,9 @@ public class SeekPosition extends Command {
     	System.out.println("[Four bar]: Seeking Position: " + setpoint);
     }
     
-    protected void execute() {}
+    protected void execute() {
+    	System.out.println("four bar position: " + Robot.fourBar.getPosition() + ", power: " + Robot.fourBar.getPIDOutput());
+    }
     
     protected boolean isFinished() {
     	return (!useSpecificbounds && Robot.fourBar.isOnTarget()) || (useSpecificbounds && Robot.fourBar.getPosition() > lowerBound && Robot.fourBar.getPosition() < upperBound);
