@@ -30,8 +30,8 @@ public class Auton_ThreeTote extends CommandGroup {
     public  Auton_ThreeTote() {    	
     	System.out.println("Three Tote Auton Selected");
     	addSequential(new SetClamp(BinIntake.OPEN));
-    	addParallel(new Auton_Calibrate(true));
-    	addSequential(new Delay(1.5));
+    	addParallel(new Auton_Calibrate(false));
+    	addSequential(new Delay(0.5));
     	
     	addParallel(new AutoToteIntake());
     	addParallel(new AutoStack(1));
@@ -77,7 +77,7 @@ public class Auton_ThreeTote extends CommandGroup {
     	addSequential(new DelayUntilToteDetected(6.0));
     	addParallel(new ElevatorHoldPositionWhenToteDetected(Elevator.BOTTOM_SOFT_LIMT));
     	
-    	addSequential(new AutoDrive(4.0, 0, -90, 2.5));
+    	addSequential(new AutoDrive(9.0, 0, -90, 2.5));
     	addSequential(new SetToteIntake(-0.8));
     	addSequential(new AutoDrive(3.0, 90, -90, 2.4));
     }
