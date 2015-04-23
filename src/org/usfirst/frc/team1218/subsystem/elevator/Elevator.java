@@ -41,7 +41,7 @@ public class Elevator extends Subsystem {
 	public static final double ELEVATOR_MIN_POSITIONING_POWER_UP = 0.15;
 	public static final double ELEVATOR_MIN_POSITIONING_POWER_DOWN = 0.2;
 		
-	public static final int TOP_SOFT_LIMIT = 4350;
+	public static final int TOP_SOFT_LIMIT = 4400;
 	public static final int BOTTOM_SOFT_LIMT = 0;
 	public static final double SLOWDOWN_NEAR_LIMIT_DISTANCE = 1000;
 	
@@ -73,8 +73,7 @@ public class Elevator extends Subsystem {
     public void enablePID(boolean shouldEnable) {
     	if (shouldEnable) {
     		elevatorController.changeControlMode(ControlMode.Position);
-    	}
-    	else {
+    	} else {
     		elevatorController.changeControlMode(ControlMode.PercentVbus);
     	}
     }
