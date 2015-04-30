@@ -77,7 +77,7 @@ public class Auton_ThreeTote extends CommandGroup {
     	addSequential(new DelayUntilToteDetected(6.0));
     	addParallel(new ElevatorHoldPositionWhenToteDetected(Elevator.BOTTOM_SOFT_LIMT));
     	
-    	addSequential(new AutoDrive(9.0, 0, -90, 2.5));
+    	addSequential(new AutoDrive(12.0, 0, -90, 2.5));
     	addSequential(new SetToteIntake(-0.8));
     	addSequential(new AutoDrive(3.0, 90, -90, 2.4));
     }
