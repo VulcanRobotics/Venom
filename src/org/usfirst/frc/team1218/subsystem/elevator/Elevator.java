@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- *@author afiol-mahon
+ * @author afiol-mahon
  */
 public class Elevator extends Subsystem {
 	
@@ -23,11 +23,6 @@ public class Elevator extends Subsystem {
 	private final CANTalon elevatorController;	
 	private final DigitalInput toteDetector;
 	private final DigitalOutput toteIndicator;
-	
-	//TODO remove this set of constants?
-	public static final double P = 1.3;
-	public static final double I = 0.0;
-	public static final double D = 0.0;
 	
 	public static final double P_UP = 0.7;
 	public static final double I_UP = 0;
@@ -47,6 +42,7 @@ public class Elevator extends Subsystem {
 	
 	public static final double BOTTOM_CLEARANCE = 200;
 	public static final double TOP_CLEARANCE = 200;
+	
     public void initDefaultCommand() {
     	setDefaultCommand(new ManualControl());
     }
@@ -66,10 +62,14 @@ public class Elevator extends Subsystem {
     	toteDetector = new DigitalInput(RobotMap.ELEVATOR_TOTE_DETECTOR);
     	toteIndicator = new DigitalOutput(RobotMap.ELEVATOR_TOTE_INDICATOR);
     	
-    	elevatorController.setPID(P, I, D);
+    	elevatorController.setPID(P_DOWN, I_DOWN, D_DOWN);
     	enablePID(true);
     }
     
+    /**
+     * Enable or Disable PID position control of elevator position
+     * @param shouldEnable
+     */
     public void enablePID(boolean shouldEnable) {
     	if (shouldEnable) {
     		elevatorController.changeControlMode(ControlMode.Position);
@@ -78,6 +78,10 @@ public class Elevator extends Subsystem {
     	}
     }
     
+    /**
+     * Set an encoder position that the elevator will go to and maintain
+     * @param position
+     */
     public void setPosition(double position) {
     	enablePID(true);
     	if (position > elevatorController.getEncPosition()) {
@@ -88,18 +92,28 @@ public class Elevator extends Subsystem {
     	elevatorController.set(position);
     }
     
+    /**
+     * Get position of elevator
+     * @return elevator position in encoder clicks
+     */
     public double getPosition() {
 	   return elevatorController.getPosition();
     }
     
+    /**
+     * @return Distance in clicks from current elevator position to top of elevator
+     */
     public double getDistanceToTopLimit() {
     	double distance = Elevator.TOP_SOFT_LIMIT - getPosition();
     	if (distance < 0) {
     		distance = 0;
     	}
-    	return Elevator.TOP_SOFT_LIMIT - getPosition();
+    	return distance;
     }
     
+    /**
+     * @return Distance in clicks from current elevator position to bottom of elevator
+     */
     public double getDistanceToBottomLimit() {
     	double distance = getPosition() - Elevator.BOTTOM_SOFT_LIMT;
     	if (distance < 0) {
@@ -108,6 +122,10 @@ public class Elevator extends Subsystem {
     	return distance ;
     }
     
+    /**
+     * Manually set a power for the elevator to move at.
+     * @param power
+     */
     public void setPower(double power) {
     	elevatorController.changeControlMode(ControlMode.PercentVbus);
     	if (softLimitsEnabled) {
@@ -121,30 +139,51 @@ public class Elevator extends Subsystem {
     	elevatorController.set(power);
     }
      
+    /**
+     * @return Power currently set to elevator
+     */
     public double getPower() {
     	return elevatorController.get();
     }
     
+    /**
+     * @return true if the elevator has a tote at the bottom
+     */
     public boolean hasTote() {
     	return toteDetector.get();
     }
     
+    /**
+     * @return true if elevator is at the bottom of its range
+     */
     public boolean atBottom() {
     	return Robot.elevator.getBottomLimit() || Robot.elevator.getPosition() <= Elevator.BOTTOM_SOFT_LIMT + BOTTOM_CLEARANCE;
     }
     
+    /**
+     * @return true if elevator is at the top of its range
+     */
     public boolean atTop() {
     	return Robot.elevator.getTopLimit() || Robot.elevator.getPosition() > Elevator.TOP_SOFT_LIMIT-TOP_CLEARANCE;
     }
     
+   /**
+    * @return The state of top limit switch
+    */
    public boolean getTopLimit() {
     	return !elevatorController.isFwdLimitSwitchClosed() || elevatorController.getFaultForSoftLim() == 1;
     }
     
+   /**
+    * @return The state of bottom limit switch
+    */
     public boolean getBottomLimit() {
     	return !elevatorController.isRevLimitSwitchClosed() || elevatorController.getFaultRevSoftLim() == 1;
     }
     
+    /**
+     * @return Current in amps drawn from elevator
+     */
     public double getCurrent() {
     	return elevatorController.getOutputCurrent();
     }
@@ -163,6 +202,9 @@ public class Elevator extends Subsystem {
     	rumble();
     }
     
+    /**
+     * Decides to rumble the driver controller if elevator is not at the top, provides driver with feedback on the elevator position that they cannot see.
+     */
     public void rumble() {
     	if (DriverStation.getInstance().isEnabled() && !atTop()) {
     		if (elevatorController.getSpeed() == 0) {
@@ -177,14 +219,25 @@ public class Elevator extends Subsystem {
     	}
     }
     
+    /**
+     * Set a position to the encoder for elevator calibration
+     * @param position
+     */
     public void setEncoderPosition(double position) {
     	elevatorController.setPosition(position);
     }
     
+    /**
+     * @return true if the elevator is at the top and the encoder can be safely zeroed
+     */
     public boolean atEncoderReference() {
     	return !elevatorController.isFwdLimitSwitchClosed();
     }
     
+    /**
+     * Toggle if the elevator will observe the soft limits that the encoder provides. Should be disabled until the encoder has been calibrated at least once.
+     * @param enabled
+     */
     public void enableSoftLimits(boolean enabled) {
     	elevatorController.enableForwardSoftLimit(enabled);
     	elevatorController.enableReverseSoftLimit(enabled);

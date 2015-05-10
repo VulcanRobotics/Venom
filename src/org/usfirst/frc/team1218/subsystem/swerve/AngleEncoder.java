@@ -9,10 +9,10 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDSource;
 
 /**
+ * Wrapper class for the encoder that provides swerve module specific encoder output and utility
  * @author afiol-mahon
  */
 public class AngleEncoder implements PIDSource {
-	
 	/*
 	 *FIXME I believe issue with swerve is when robot passes an index during regular operation and calibrates, should only index when index command is called? maybe that will fix problem 
 	 */
@@ -36,6 +36,9 @@ public class AngleEncoder implements PIDSource {
 		indexCounter = new Counter(x);
 	}
 	
+	/**
+	 * If manual wheel alignment at start of match is compromised, this method will revert to reading the index to calibrate during operation
+	 */
 	public void enableIndexing(boolean enabled) {
 		if (enabled) {
 			encoder.free();
@@ -49,10 +52,16 @@ public class AngleEncoder implements PIDSource {
 		}
 	}
 	
+	/**
+	 * @return true if module has indexed before
+	 */
 	public boolean hasBeenIndexed() {
 		return indexOffset != 0;
 	}
 	
+	/**
+	 * returns the angle of the swerve module from 0-360, 0 and 360 both representing forward on the robot
+	 */
 	public double pidGet() {
 		double angle = encoder.get() * SwerveModule.ANGLE_CONTROLLER_ENCODER_CLICK_TO_DEGREE;
 		angle += encoderOffset;
@@ -60,11 +69,18 @@ public class AngleEncoder implements PIDSource {
 		return angle;
 	}
 	
-	public void setInitialPosition(double offset){
+	/**
+	 * Calibrate module encoder at an offset
+	 * @param offset
+	 */
+	public void setInitialOffset(double offset) {
 		encoder.reset();
 		this.encoderOffset = -offset; //if starting at 10, then subtract 10 from all future encoder readings
 	}
 	
+	/**
+	 * @return number of times the module has seen the index
+	 */
 	public int getIndexCount() {
 		return indexCounter.get();
 	}

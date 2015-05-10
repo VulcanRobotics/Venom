@@ -3,7 +3,7 @@ package org.usfirst.frc.team1218.commands;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- *
+ * @author lcook
  */
 public class Print extends Command {
 
@@ -17,16 +17,13 @@ public class Print extends Command {
     	System.out.println(str);
     }
 
-    protected void execute() {
-    }
+    protected void execute() {}
 
     protected boolean isFinished() {
         return true;
     }
 
-    protected void end() {
-    }
+    protected void end() {}
 
-    protected void interrupted() {
-    }
+    protected void interrupted() {}
 }

@@ -18,7 +18,7 @@ public class SetRollLeft extends Command {
     }
     
     protected void initialize() {
-    	Robot.binIntake.runLeft(power);
+    	Robot.binIntake.setBinIntake(power);
     }
     
     protected void execute() {}

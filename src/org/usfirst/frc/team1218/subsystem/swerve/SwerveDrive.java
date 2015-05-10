@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Provides Mid/High level module control code.
+ * Coordinates the actions of all swerve modules.
  * @author afiolmahon
  */
 
@@ -38,6 +39,7 @@ public class SwerveDrive extends Subsystem implements PIDOutput, PIDSource {
     
     private double fieldCentricHeading = 0;
     
+    //Relates to dimensions of drivetrain, used so that swerve understands what wheel orientation faces towards the center of the robot, ex. different for a square vs rectangular drivetrain
 	private static final double X_PERPENDICULAR_CONSTANT = 0.546;
 	private static final double Y_PERPENDICULAR_CONSTANT = 0.837;
 	
@@ -94,18 +96,32 @@ public class SwerveDrive extends Subsystem implements PIDOutput, PIDSource {
     	SmartDashboard.putBoolean("SwerveDrive: FieldCentricDrive", isFieldCentricDriveMode());
     }
     
+    /**
+     * Start all module angle encoders at an offset for beginning a match with any wheel orientation
+     * @param offset the position of the wheels from 0-360
+     */
     public void setInitalOffset(double offset){
     	module.forEach(m -> m.setInitialOffset(offset));
     }
     
+    /**
+     * Set an absolute direction for the modules to face, without spoofing the direction by flipping the wheel direction
+     * @param angle
+     */
     public void setRawWheelAngle(double angle){
     	module.forEach(m -> m.setRawWheelAngle(angle));
     }
     
+    /**
+     * @return true if the robot is facing the pidcontrollers target direction
+     */
     public boolean isHeadingOnTarget() {
     	return headingController.onTarget();
     }
     
+    /**
+     * @return true if robot drive is field centric, false if the drive is robot centric
+     */
     public boolean isFieldCentricDriveMode() {
     	return fieldCentricDriveMode;
     }

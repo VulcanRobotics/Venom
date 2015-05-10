@@ -8,7 +8,8 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- *@author afiolmahon
+ * The subsystem for the fourbar intake
+ * @author afiolmahon
  */
 public class BinIntake extends Subsystem {
     
@@ -29,10 +30,12 @@ public class BinIntake extends Subsystem {
 		clamp = new Solenoid(RobotMap.BIN_INTAKE_SOLENOID);
 	}
 	
-    public void initDefaultCommand() {
-    	
-    }
+    public void initDefaultCommand() {}
     
+    /**
+     * Toggles fourbar grabber
+     * @param shouldOpen true for open fourbar
+     */
     public void setClamp(boolean shouldOpen) {
     	if (shouldOpen == OPEN){
     		System.out.println("Fourbar claw opened");
@@ -43,17 +46,16 @@ public class BinIntake extends Subsystem {
     	clamp.set(!shouldOpen);
     }
     
+    /**
+     * Sets a power to the bin intake, a negative power spits out objects
+     * @param power
+     */
     public void setBinIntake(double power) {
     	binIntakeLeft.set(power);
     	binIntakeRight.set(-power);
     }
     
-    public void runLeft(double power) {
-    	binIntakeLeft.set(power);
-    	binIntakeRight.set(-power);
-    }
-    
-    public void syncDashboard() {
+    public void periodicTasks() {
     	SmartDashboard.putBoolean("FourBar_Clamps_Open", clamp.get());
     	SmartDashboard.putNumber("FourBar_Intake_Power", binIntakeLeft.get());
     }

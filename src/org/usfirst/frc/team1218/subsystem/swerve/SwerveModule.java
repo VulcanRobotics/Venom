@@ -114,7 +114,7 @@ public class SwerveModule {
 		return moduleIndexOffset;
 	}
 	
-	public void setRawWheelAngle(double angle){
+	public void setRawWheelAngle(double angle) {
 		anglePIDController.setSetpoint(angle);
 	}
 	
@@ -153,8 +153,8 @@ public class SwerveModule {
 		return distance;
 	}
 	
-	public void setInitialOffset(double offset){
-		angleEncoder.setInitialPosition(offset);
+	public void setInitialOffset(double offset) {
+		angleEncoder.setInitialOffset(offset);
 	}
 	
 	public void enableIndexing(boolean enabled) {

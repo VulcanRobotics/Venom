@@ -6,7 +6,7 @@ import org.usfirst.frc.team1218.commands.swerve.VisionAlign;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
- *
+ * @author lcook
  */
 public class AutoDriveVision extends CommandGroup {
     

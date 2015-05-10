@@ -6,16 +6,17 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
- *
+ * Auton Can Grabber subsystem
+ * @author lcook
  */
 public class BinGrabber extends Subsystem {
 	
 	public static final boolean REALEASED = true;
-	public static final boolean HELD  = false;
+	public static final boolean HELD = false;
 	
-	Solenoid release;
+	private Solenoid release;
 	
-	public BinGrabber(){
+	public BinGrabber() {
 		release = new Solenoid(RobotMap.BIN_GRABBER_RELEASE);
 	}
 	
@@ -23,7 +24,7 @@ public class BinGrabber extends Subsystem {
 		release.set(state);
 	}
 	
-	public boolean get(){
+	public boolean get() {
 		return release.get();
 	}
 	

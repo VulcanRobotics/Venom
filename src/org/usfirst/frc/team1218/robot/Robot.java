@@ -61,9 +61,12 @@ public class Robot extends IterativeRobot {
 		autonName = SmartDashboard.getString("Auton_Select", "Not Set");
 		SmartDashboard.putString("Current_Auton_Selected", autonName);
 		Scheduler.getInstance().run();
-		syncDashboard();
+		periodicTasks();
 	}
 	
+	/**
+	 * Selects an auton based on dashboard input
+	 */
 	public void autonomousInit() {
 		autonName = SmartDashboard.getString("Auton_Select", "Not Set");
 		Robot.swerveDrive.setInitalOffset(SmartDashboard.getNumber("Swerve_Module_Initial_Position", 0));
@@ -98,7 +101,7 @@ public class Robot extends IterativeRobot {
 	 */
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
-		syncDashboard();
+		periodicTasks();
 	}
 
 	public void teleopInit() {
@@ -124,7 +127,7 @@ public class Robot extends IterativeRobot {
 	 */
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-		syncDashboard();
+		periodicTasks();
 	}
 
 	/**
@@ -134,12 +137,15 @@ public class Robot extends IterativeRobot {
 		LiveWindow.run();
 	}
     
-    public void syncDashboard() {
+	/**
+	 * Called periodically to update values displayed on dashboard
+	 */
+    public void periodicTasks() {
     	Robot.swerveDrive.syncDashboard();
     	Robot.elevator.periodicTasks();
     	Robot.fourBar.periodicTasks();
     	Robot.toteIntake.syncDashboard();
-    	Robot.binIntake.syncDashboard();
+    	Robot.binIntake.periodicTasks();
     	SmartDashboard.putBoolean("isBeta", Preferences.getInstance().getBoolean("isBeta", false));
     }
 }

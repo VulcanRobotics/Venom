@@ -45,6 +45,7 @@ public class OI {
 	public static Button calibrateSwerve;
 	public static Button fieldCentricToggle;
 	public static Button tankDrive;
+	public static Button alignSwerves;
 
 	//Operator
 	public static Joystick operator;
@@ -68,8 +69,6 @@ public class OI {
 	public static Button fourBarAutonPosition;
 	public static Button fourBarStepBinPosition;
 	public static FourbarManualCancelTrigger fourBarManualCancelTrigger;
-	
-	
 	public static DashboardButton leftDartUp;
 	public static DashboardButton leftDartDown;
 	public static DashboardButton rightDartUp;
@@ -79,17 +78,10 @@ public class OI {
 	public static Button runBinIntake;
 	public static Button openBinGrabber;
 	public static Button reverseBinIntake;
-
 	public static Button referenceElevator;
+	
 	//test
 	public static Button test;
-
-	public static Button alignSwerves;
-	
-	public static Button upDPad;
-	public static Button leftDPad;
-	public static Button rightDPad;
-	public static Button downDPad;
 	
 	public OI() {
     	//Driver
@@ -110,7 +102,7 @@ public class OI {
         tankDrive = new JoystickButton(driver, RobotMap.BUTTON_TANK_DRIVE);
         tankDrive.whileHeld(new TankDrive());
 
-         //Operator
+        //Operator
         operator = new Joystick(RobotMap.OPERATOR_JOYSTICK);
 
         //Swerve
